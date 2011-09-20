@@ -21,6 +21,8 @@
 		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
 		D2730FD9142921B200EB5CB7 /* MBMInstallationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMInstallationModel.m */; };
+		D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */; };
+		D2730FE01429322A00EB5CB7 /* MNMInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2730FDF1429322A00EB5CB7 /* MNMInstallerWindow.xib */; };
 		D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMInstallationItem.m */; };
 		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
 		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
@@ -86,6 +88,9 @@
 		D231F44E1428EE7B002DB999 /* LKInclude.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKInclude.pch; path = ../../LKKit/LKInclude.pch; sourceTree = "<group>"; };
 		D231F44F1428F035002DB999 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.markdown; path = ../README.markdown; sourceTree = SOURCE_ROOT; };
 		D2730FD8142921B200EB5CB7 /* MBMInstallationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationModel.m; sourceTree = "<group>"; };
+		D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallerController.h; sourceTree = "<group>"; };
+		D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallerController.m; sourceTree = "<group>"; };
+		D2730FDF1429322A00EB5CB7 /* MNMInstallerWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MNMInstallerWindow.xib; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MBMInstallationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationItem.h; sourceTree = "<group>"; };
 		D28F77E914209D1D0015E42F /* MBMInstallationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationItem.m; sourceTree = "<group>"; };
 		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
@@ -170,6 +175,8 @@
 				D216B351141DFDE1003788DC /* MBMAppDelegate.m */,
 				D2E90292141E36110058618F /* MBMMySparkleDelegate.h */,
 				D2E90293141E36110058618F /* MBMMySparkleDelegate.m */,
+				D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */,
+				D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */,
 				D2E9029C141E63990058618F /* Model */,
 				D2F38F14141E9E6D00E564FB /* Utils */,
 				D2E9029D141E63D10058618F /* Resources */,
@@ -235,6 +242,7 @@
 				D216B347141DFDE1003788DC /* InfoPlist.strings */,
 				D216B353141DFDE2003788DC /* MainMenu.xib */,
 				D216B34D141DFDE1003788DC /* Credits.rtf */,
+				D2730FDF1429322A00EB5CB7 /* MNMInstallerWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -336,6 +344,7 @@
 				D216B355141DFDE2003788DC /* MainMenu.xib in Resources */,
 				D2E902A0141E643F0058618F /* lk-warnings.xcconfig in Resources */,
 				D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */,
+				D2730FE01429322A00EB5CB7 /* MNMInstallerWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +390,7 @@
 				D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */,
 				D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */,
 				D2730FD9142921B200EB5CB7 /* MBMInstallationModel.m in Sources */,
+				D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
