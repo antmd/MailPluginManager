@@ -7,6 +7,8 @@
 
 	#import "NSString+LKStructUtils.h"
 
-	#import	"LKPCHInclude.h"
+	#import	"LKInclude.pch"
+	#import	"LKLogHelper.h"
+
 	#import "MBMConstants.h"
 #endif

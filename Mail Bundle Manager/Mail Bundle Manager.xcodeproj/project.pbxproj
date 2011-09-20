@@ -19,6 +19,8 @@
 		D216B369141DFDE2003788DC /* Mail_Bundle_ManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B368141DFDE2003788DC /* Mail_Bundle_ManagerTests.m */; };
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
 		D216B380141E1C21003788DC /* MBMInstallationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37F141E1C21003788DC /* MBMInstallationModel.m */; };
+		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
+		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
 		D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMInstallationItem.m */; };
 		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
 		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
@@ -78,6 +80,11 @@
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMInstallationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationModel.h; sourceTree = "<group>"; };
 		D216B37F141E1C21003788DC /* MBMInstallationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationModel.m; sourceTree = "<group>"; };
+		D231F4471428ED4E002DB999 /* NSString+LKStructUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKStructUtils.h"; path = "../../LKKit/Categories/NSString+LKStructUtils.h"; sourceTree = "<group>"; };
+		D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKStructUtils.m"; path = "../../LKKit/Categories/NSString+LKStructUtils.m"; sourceTree = "<group>"; };
+		D231F44B1428ED5E002DB999 /* LKLogHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKLogHelper.h; path = ../../LKKit/Helpers/LKLogHelper.h; sourceTree = "<group>"; };
+		D231F44C1428ED5E002DB999 /* LKLogHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKLogHelper.m; path = ../../LKKit/Helpers/LKLogHelper.m; sourceTree = "<group>"; };
+		D231F44E1428EE7B002DB999 /* LKInclude.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKInclude.pch; path = ../../LKKit/LKInclude.pch; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MBMInstallationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationItem.h; sourceTree = "<group>"; };
 		D28F77E914209D1D0015E42F /* MBMInstallationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationItem.m; sourceTree = "<group>"; };
 		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
@@ -91,7 +98,6 @@
 		D2E902A8141E70110058618F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "Mail Bundle Manager/Sparkle.framework"; sourceTree = "<group>"; };
 		D2E902AB141E72460058618F /* MBMSparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSparkleDelegate.h; sourceTree = "<group>"; };
 		D2E902AC141E72470058618F /* MBMSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSparkleDelegate.m; sourceTree = "<group>"; };
-		D2F38F12141E9DBE00E564FB /* LKPCHInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKPCHInclude.h; path = ../../../LKKit/LKPCHInclude.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,8 +204,8 @@
 			children = (
 				D216B346141DFDE1003788DC /* Mail Bundle Manager-Info.plist */,
 				D216B34C141DFDE1003788DC /* Mail Bundle Manager-Prefix.pch */,
+				D231F44E1428EE7B002DB999 /* LKInclude.pch */,
 				D216B34A141DFDE1003788DC /* main.m */,
-				D2F38F12141E9DBE00E564FB /* LKPCHInclude.h */,
 				D2E9029F141E643F0058618F /* lk-warnings.xcconfig */,
 			);
 			name = Project;
@@ -243,6 +249,10 @@
 		D2F38F14141E9E6D00E564FB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D231F4471428ED4E002DB999 /* NSString+LKStructUtils.h */,
+				D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */,
+				D231F44B1428ED5E002DB999 /* LKLogHelper.h */,
+				D231F44C1428ED5E002DB999 /* LKLogHelper.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -367,6 +377,8 @@
 				D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */,
 				D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */,
 				D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */,
+				D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */,
+				D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

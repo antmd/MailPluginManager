@@ -5,6 +5,9 @@
       location = "group:Mail Bundle Manager/Mail Bundle Manager.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:LKKit/LKKit.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../../UsefulRepos/Injector/Injector.xcodeproj">
    </FileRef>
    <FileRef
