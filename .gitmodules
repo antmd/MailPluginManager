@@ -1,0 +1,3 @@
+[submodule "LKKit"]
+	path = LKKit
+	url = git@github.com:lksoft/LKKit.git
