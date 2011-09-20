@@ -1,0 +1,567 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
+		D216B349141DFDE1003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B347141DFDE1003788DC /* InfoPlist.strings */; };
+		D216B34B141DFDE1003788DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B34A141DFDE1003788DC /* main.m */; };
+		D216B34F141DFDE1003788DC /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D216B34D141DFDE1003788DC /* Credits.rtf */; };
+		D216B352141DFDE1003788DC /* MBMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B351141DFDE1003788DC /* MBMAppDelegate.m */; };
+		D216B355141DFDE2003788DC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D216B353141DFDE2003788DC /* MainMenu.xib */; };
+		D216B35D141DFDE2003788DC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B35C141DFDE2003788DC /* SenTestingKit.framework */; };
+		D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
+		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
+		D216B369141DFDE2003788DC /* Mail_Bundle_ManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B368141DFDE2003788DC /* Mail_Bundle_ManagerTests.m */; };
+		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
+		D216B380141E1C21003788DC /* MBMInstallationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37F141E1C21003788DC /* MBMInstallationModel.m */; };
+		D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMInstallationItem.m */; };
+		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
+		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
+		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
+		D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */; };
+		D2E902A0141E643F0058618F /* lk-warnings.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */; };
+		D2E902A9141E70110058618F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
+		D2E902AA141E70290058618F /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
+		D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MBMSparkleDelegate.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D216B35F141DFDE2003788DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D216B339141DFDE1003788DC;
+			remoteInfo = "Mail Bundle Manager";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D216B379141E0071003788DC /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D2E902AA141E70290058618F /* Sparkle.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D216B33A141DFDE1003788DC /* Mail Bundle Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mail Bundle Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D216B33E141DFDE1003788DC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		D216B341141DFDE1003788DC /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		D216B342141DFDE1003788DC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D216B343141DFDE1003788DC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D216B346141DFDE1003788DC /* Mail Bundle Manager-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mail Bundle Manager-Info.plist"; sourceTree = "<group>"; };
+		D216B348141DFDE1003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D216B34A141DFDE1003788DC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D216B34C141DFDE1003788DC /* Mail Bundle Manager-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mail Bundle Manager-Prefix.pch"; sourceTree = "<group>"; };
+		D216B34E141DFDE1003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		D216B350141DFDE1003788DC /* MBMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBMAppDelegate.h; sourceTree = "<group>"; };
+		D216B351141DFDE1003788DC /* MBMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MBMAppDelegate.m; sourceTree = "<group>"; };
+		D216B354141DFDE2003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D216B35B141DFDE2003788DC /* Mail Bundle ManagerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mail Bundle ManagerTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D216B35C141DFDE2003788DC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D216B363141DFDE2003788DC /* Mail Bundle ManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mail Bundle ManagerTests-Info.plist"; sourceTree = "<group>"; };
+		D216B365141DFDE2003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D216B367141DFDE2003788DC /* Mail_Bundle_ManagerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mail_Bundle_ManagerTests.h; sourceTree = "<group>"; };
+		D216B368141DFDE2003788DC /* Mail_Bundle_ManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mail_Bundle_ManagerTests.m; sourceTree = "<group>"; };
+		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMConstants.h; sourceTree = "<group>"; };
+		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConstants.m; sourceTree = "<group>"; };
+		D216B37E141E1C21003788DC /* MBMInstallationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationModel.h; sourceTree = "<group>"; };
+		D216B37F141E1C21003788DC /* MBMInstallationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationModel.m; sourceTree = "<group>"; };
+		D28F77E814209D1D0015E42F /* MBMInstallationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationItem.h; sourceTree = "<group>"; };
+		D28F77E914209D1D0015E42F /* MBMInstallationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationItem.m; sourceTree = "<group>"; };
+		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
+		D2E90292141E36110058618F /* MBMMySparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMySparkleDelegate.h; sourceTree = "<group>"; };
+		D2E90293141E36110058618F /* MBMMySparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMySparkleDelegate.m; sourceTree = "<group>"; };
+		D2E90295141E4C7F0058618F /* MBMMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMailBundle.h; sourceTree = "<group>"; };
+		D2E90296141E4C7F0058618F /* MBMMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMailBundle.m; sourceTree = "<group>"; };
+		D2E90298141E5EF90058618F /* NSBundle+MBMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+MBMAdditions.h"; sourceTree = "<group>"; };
+		D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+MBMAdditions.m"; sourceTree = "<group>"; };
+		D2E9029F141E643F0058618F /* lk-warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "lk-warnings.xcconfig"; path = "../../../lk-warnings.xcconfig"; sourceTree = "<group>"; };
+		D2E902A8141E70110058618F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "Mail Bundle Manager/Sparkle.framework"; sourceTree = "<group>"; };
+		D2E902AB141E72460058618F /* MBMSparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSparkleDelegate.h; sourceTree = "<group>"; };
+		D2E902AC141E72470058618F /* MBMSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSparkleDelegate.m; sourceTree = "<group>"; };
+		D2F38F12141E9DBE00E564FB /* LKPCHInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKPCHInclude.h; path = ../../../LKKit/LKPCHInclude.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D216B337141DFDE1003788DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */,
+				D2E902A9141E70110058618F /* Sparkle.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D216B357141DFDE2003788DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D216B35D141DFDE2003788DC /* SenTestingKit.framework in Frameworks */,
+				D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D216B32F141DFDE1003788DC = {
+			isa = PBXGroup;
+			children = (
+				D216B344141DFDE1003788DC /* Mail Bundle Manager */,
+				D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */,
+				D216B33D141DFDE1003788DC /* Frameworks */,
+				D216B33B141DFDE1003788DC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D216B33B141DFDE1003788DC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D216B33A141DFDE1003788DC /* Mail Bundle Manager.app */,
+				D216B35B141DFDE2003788DC /* Mail Bundle ManagerTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D216B33D141DFDE1003788DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D2E902A8141E70110058618F /* Sparkle.framework */,
+				D216B33E141DFDE1003788DC /* Cocoa.framework */,
+				D216B35C141DFDE2003788DC /* SenTestingKit.framework */,
+				D216B340141DFDE1003788DC /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D216B340141DFDE1003788DC /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D216B341141DFDE1003788DC /* AppKit.framework */,
+				D216B342141DFDE1003788DC /* CoreData.framework */,
+				D216B343141DFDE1003788DC /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		D216B344141DFDE1003788DC /* Mail Bundle Manager */ = {
+			isa = PBXGroup;
+			children = (
+				D216B350141DFDE1003788DC /* MBMAppDelegate.h */,
+				D216B351141DFDE1003788DC /* MBMAppDelegate.m */,
+				D2E90292141E36110058618F /* MBMMySparkleDelegate.h */,
+				D2E90293141E36110058618F /* MBMMySparkleDelegate.m */,
+				D2E9029C141E63990058618F /* Model */,
+				D2F38F14141E9E6D00E564FB /* Utils */,
+				D2E9029D141E63D10058618F /* Resources */,
+				D2E9029E141E63F70058618F /* Categories */,
+				D2E9029B141E638B0058618F /* Project */,
+				D216B37B141E1676003788DC /* MBMConstants.h */,
+				D216B37C141E1676003788DC /* MBMConstants.m */,
+			);
+			path = "Mail Bundle Manager";
+			sourceTree = "<group>";
+		};
+		D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				D216B367141DFDE2003788DC /* Mail_Bundle_ManagerTests.h */,
+				D216B368141DFDE2003788DC /* Mail_Bundle_ManagerTests.m */,
+				D216B362141DFDE2003788DC /* Supporting Files */,
+			);
+			path = "Mail Bundle ManagerTests";
+			sourceTree = "<group>";
+		};
+		D216B362141DFDE2003788DC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D216B363141DFDE2003788DC /* Mail Bundle ManagerTests-Info.plist */,
+				D216B364141DFDE2003788DC /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D2E9029B141E638B0058618F /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				D216B346141DFDE1003788DC /* Mail Bundle Manager-Info.plist */,
+				D216B34C141DFDE1003788DC /* Mail Bundle Manager-Prefix.pch */,
+				D216B34A141DFDE1003788DC /* main.m */,
+				D2F38F12141E9DBE00E564FB /* LKPCHInclude.h */,
+				D2E9029F141E643F0058618F /* lk-warnings.xcconfig */,
+			);
+			name = Project;
+			sourceTree = "<group>";
+		};
+		D2E9029C141E63990058618F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D2E90295141E4C7F0058618F /* MBMMailBundle.h */,
+				D2E90296141E4C7F0058618F /* MBMMailBundle.m */,
+				D2E902AB141E72460058618F /* MBMSparkleDelegate.h */,
+				D2E902AC141E72470058618F /* MBMSparkleDelegate.m */,
+				D216B37E141E1C21003788DC /* MBMInstallationModel.h */,
+				D216B37F141E1C21003788DC /* MBMInstallationModel.m */,
+				D28F77E814209D1D0015E42F /* MBMInstallationItem.h */,
+				D28F77E914209D1D0015E42F /* MBMInstallationItem.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		D2E9029D141E63D10058618F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D2D7BEEF14223B840059E153 /* InstallDocument.png */,
+				D216B347141DFDE1003788DC /* InfoPlist.strings */,
+				D216B353141DFDE2003788DC /* MainMenu.xib */,
+				D216B34D141DFDE1003788DC /* Credits.rtf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		D2E9029E141E63F70058618F /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				D2E90298141E5EF90058618F /* NSBundle+MBMAdditions.h */,
+				D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		D2F38F14141E9E6D00E564FB /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D216B339141DFDE1003788DC /* Mail Bundle Manager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D216B36C141DFDE2003788DC /* Build configuration list for PBXNativeTarget "Mail Bundle Manager" */;
+			buildPhases = (
+				D216B336141DFDE1003788DC /* Sources */,
+				D216B337141DFDE1003788DC /* Frameworks */,
+				D216B338141DFDE1003788DC /* Resources */,
+				D216B379141E0071003788DC /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Mail Bundle Manager";
+			productName = "Mail Bundle Manager";
+			productReference = D216B33A141DFDE1003788DC /* Mail Bundle Manager.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D216B35A141DFDE2003788DC /* Mail Bundle ManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D216B36F141DFDE2003788DC /* Build configuration list for PBXNativeTarget "Mail Bundle ManagerTests" */;
+			buildPhases = (
+				D216B356141DFDE2003788DC /* Sources */,
+				D216B357141DFDE2003788DC /* Frameworks */,
+				D216B358141DFDE2003788DC /* Resources */,
+				D216B359141DFDE2003788DC /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D216B360141DFDE2003788DC /* PBXTargetDependency */,
+			);
+			name = "Mail Bundle ManagerTests";
+			productName = "Mail Bundle ManagerTests";
+			productReference = D216B35B141DFDE2003788DC /* Mail Bundle ManagerTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D216B331141DFDE1003788DC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Little Known Software";
+			};
+			buildConfigurationList = D216B334141DFDE1003788DC /* Build configuration list for PBXProject "Mail Bundle Manager" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D216B32F141DFDE1003788DC;
+			productRefGroup = D216B33B141DFDE1003788DC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D216B339141DFDE1003788DC /* Mail Bundle Manager */,
+				D216B35A141DFDE2003788DC /* Mail Bundle ManagerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D216B338141DFDE1003788DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D216B349141DFDE1003788DC /* InfoPlist.strings in Resources */,
+				D216B34F141DFDE1003788DC /* Credits.rtf in Resources */,
+				D216B355141DFDE2003788DC /* MainMenu.xib in Resources */,
+				D2E902A0141E643F0058618F /* lk-warnings.xcconfig in Resources */,
+				D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D216B358141DFDE2003788DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D216B359141DFDE2003788DC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D216B336141DFDE1003788DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D216B34B141DFDE1003788DC /* main.m in Sources */,
+				D216B352141DFDE1003788DC /* MBMAppDelegate.m in Sources */,
+				D216B37D141E1676003788DC /* MBMConstants.m in Sources */,
+				D216B380141E1C21003788DC /* MBMInstallationModel.m in Sources */,
+				D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */,
+				D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */,
+				D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */,
+				D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */,
+				D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D216B356141DFDE2003788DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D216B369141DFDE2003788DC /* Mail_Bundle_ManagerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D216B360141DFDE2003788DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D216B339141DFDE1003788DC /* Mail Bundle Manager */;
+			targetProxy = D216B35F141DFDE2003788DC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D216B347141DFDE1003788DC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D216B348141DFDE1003788DC /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D216B34D141DFDE1003788DC /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D216B34E141DFDE1003788DC /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		D216B353141DFDE2003788DC /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D216B354141DFDE2003788DC /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		D216B364141DFDE2003788DC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D216B365141DFDE2003788DC /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D216B36A141DFDE2003788DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D216B36B141DFDE2003788DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D216B36D141DFDE2003788DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/BundleManager-hkiioppegywfxnfbleygmdtegopz/Build/Products/Debug\"",
+					"\"$(SRCROOT)/Mail Bundle Manager\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				INFOPLIST_FILE = "Mail Bundle Manager/Mail Bundle Manager-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D216B36E141DFDE2003788DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/BundleManager-hkiioppegywfxnfbleygmdtegopz/Build/Products/Debug\"",
+					"\"$(SRCROOT)/Mail Bundle Manager\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				INFOPLIST_FILE = "Mail Bundle Manager/Mail Bundle Manager-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		D216B370141DFDE2003788DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Bundle Manager.app/Contents/MacOS/Mail Bundle Manager";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				INFOPLIST_FILE = "Mail Bundle ManagerTests/Mail Bundle ManagerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D216B371141DFDE2003788DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Bundle Manager.app/Contents/MacOS/Mail Bundle Manager";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				INFOPLIST_FILE = "Mail Bundle ManagerTests/Mail Bundle ManagerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D216B334141DFDE1003788DC /* Build configuration list for PBXProject "Mail Bundle Manager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D216B36A141DFDE2003788DC /* Debug */,
+				D216B36B141DFDE2003788DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D216B36C141DFDE2003788DC /* Build configuration list for PBXNativeTarget "Mail Bundle Manager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D216B36D141DFDE2003788DC /* Debug */,
+				D216B36E141DFDE2003788DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D216B36F141DFDE2003788DC /* Build configuration list for PBXNativeTarget "Mail Bundle ManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D216B370141DFDE2003788DC /* Debug */,
+				D216B371141DFDE2003788DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D216B331141DFDE1003788DC /* Project object */;
+}

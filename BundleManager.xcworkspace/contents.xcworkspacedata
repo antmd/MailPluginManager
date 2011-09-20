@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Mail Bundle Manager/Mail Bundle Manager.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../UsefulRepos/Injector/Injector.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../UsefulRepos/Mail-Plugin-Manager/MailPluginManager.xcodeproj">
+   </FileRef>
+</Workspace>

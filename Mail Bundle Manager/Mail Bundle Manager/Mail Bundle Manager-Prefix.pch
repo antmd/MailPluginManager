@@ -1,0 +1,12 @@
+//
+// Prefix header for all source files of the 'Mail Bundle Manager' target in the 'Mail Bundle Manager' project
+//
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+
+	#import "NSString+LKStructUtils.h"
+
+	#import	"LKPCHInclude.h"
+	#import "MBMConstants.h"
+#endif
