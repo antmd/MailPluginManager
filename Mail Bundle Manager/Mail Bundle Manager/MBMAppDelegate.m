@@ -20,7 +20,9 @@
 @synthesize installing = _installing;
 @synthesize uninstalling = _uninstalling;
 @synthesize updating = _updating;
+@synthesize checkingCrashReports = _checkingCrashReports;
 @synthesize validating = _validating;
+@synthesize managing = _managing;
 @synthesize runningFromInstallDisk = _runningFromInstallDisk;
 @synthesize executablePath = _executablePath;
 @synthesize singleBundlePath = _singleBundlePath;
@@ -71,8 +73,20 @@
 		self.updating = YES;
 		self.singleBundlePath = secondArg;
 	}
+	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:firstArg]) {
+		self.checkingCrashReports = YES;
+		self.singleBundlePath = secondArg;
+	}
+	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:firstArg]) {
+		self.updating = YES;
+		self.checkingCrashReports = YES;
+		self.singleBundlePath = secondArg;
+	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:firstArg]) {
 		self.validating = YES;
+	}
+	else {
+		self.managing = YES;
 	}
 }
 
@@ -134,11 +148,20 @@
 	else if (self.validating) {
 		[self validateAllBundles];
 	}
-	else {
+	
+	//	Then check to see if a bundle is to have it's crash reports checked
+	if (self.checkingCrashReports) {
+		//	Get the mail bundle
+		MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:self.singleBundlePath];
+		//	Tell it to check its crash reports
+		[mailBundle sendCrashReports];
+	}
+	
+	//	Finally test to see if we should be showing the general management window
+	if (self.managing) {
 		[self showBundleManagerWindow];
 	}
 	
-	NSLog(@"didFinish called");
 }
 
 

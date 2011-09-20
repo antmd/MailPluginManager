@@ -9,6 +9,8 @@
 extern NSString	*kMBMCommandLineInstallKey;
 extern NSString	*kMBMCommandLineUninstallKey;
 extern NSString	*kMBMCommandLineUpdateKey;
+extern NSString	*kMBMCommandLineCheckCrashReportsKey;
+extern NSString	*kMBMCommandLineUpdateAndCrashReportsKey;
 extern NSString	*kMBMCommandLineValidateAllKey;
 
 extern NSString	*kMBMPlistExtension;
@@ -28,6 +30,14 @@ extern NSString	*kMBMMinOSVersionKey;
 extern NSString	*kMBMMaxOSVersionKey;
 extern NSString	*kMBMMinMailVersionKey;
 extern NSString	*kMBMIsBundleManagerKey;
+
+extern NSString	*kMBMConfirmationStepsKey;
+extern NSString	*kMBMConfirmationTypeKey;
+extern NSString	*kMBMConfirmationTitleKey;
+extern NSString	*kMBMConfirmationBulletTitleKey;
+extern NSString	*kMBMConfirmationTypeReleaseNotes;
+extern NSString	*kMBMConfirmationTypeLicense;
+extern NSString	*kMBMConfirmationTypeConfirm;
 
 extern NSString	*kMBMMailBundleIdentifier;
 extern NSString	*kMBMMailBundleExtension;

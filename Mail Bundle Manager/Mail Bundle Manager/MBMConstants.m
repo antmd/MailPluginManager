@@ -11,6 +11,8 @@
 NSString	*kMBMCommandLineInstallKey = @"-install";
 NSString	*kMBMCommandLineUninstallKey = @"-uninstall";
 NSString	*kMBMCommandLineUpdateKey = @"-update";
+NSString	*kMBMCommandLineCheckCrashReportsKey = @"-check-crash-reports";
+NSString	*kMBMCommandLineUpdateAndCrashReportsKey = @"-update-and-crash-reports";
 NSString	*kMBMCommandLineValidateAllKey = @"-validate-all";
 
 NSString	*kMBMPlistExtension = @"plist";
@@ -30,6 +32,14 @@ NSString	*kMBMMinOSVersionKey = @"min-os-major-version";
 NSString	*kMBMMaxOSVersionKey = @"max-os-major-version";
 NSString	*kMBMMinMailVersionKey = @"min-mail-version";
 NSString	*kMBMIsBundleManagerKey = @"is-bundle-manager";
+
+NSString	*kMBMConfirmationStepsKey = @"confirmation-steps";
+NSString	*kMBMConfirmationTypeKey = @"type";
+NSString	*kMBMConfirmationTitleKey = @"title";
+NSString	*kMBMConfirmationBulletTitleKey = @"bullet-title";
+NSString	*kMBMConfirmationTypeReleaseNotes = @"release-notes";
+NSString	*kMBMConfirmationTypeLicense = @"license";
+NSString	*kMBMConfirmationTypeConfirm = @"confirm";
 
 
 NSString	*kMBMMailBundleIdentifier = @"com.apple.mail";

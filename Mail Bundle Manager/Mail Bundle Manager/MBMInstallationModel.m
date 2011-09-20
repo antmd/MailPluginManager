@@ -22,6 +22,7 @@
 @synthesize maxOSVersion = _maxOSVersion;
 @synthesize minMailVersion = _minMailVersion;
 @synthesize bundleManager = _bundleManager;
+@synthesize confirmationStepList = _confirmationStepList;
 @synthesize installationItemList = _installationItemList;
 
 - (BOOL)shouldInstallManager {
@@ -192,9 +193,25 @@
 		//	Get the installation manifest contents and the items
 		NSDictionary	*manifestDict = [NSDictionary dictionaryWithContentsOfFile:manifestPath];
 		NSArray			*installItems = [manifestDict valueForKey:kMBMInstallItemsKey];
-		NSMutableArray	*newItems = [NSMutableArray arrayWithCapacity:[installItems count]];
+		NSArray			*confirmationSteps = [manifestDict valueForKey:kMBMConfirmationStepsKey];
+		NSMutableArray	*newItems = nil;
 		
+		//	Get the confirmation steps
 		//	Create each of the items
+		newItems = [NSMutableArray arrayWithCapacity:[confirmationSteps count]];
+		for (NSDictionary *itemDict in confirmationSteps) {
+			[newItems addObject:itemDict];
+		}
+		
+		//	Set our confirmation list to the new array, but only if it is not nil
+		if (newItems) {
+			_confirmationStepList = [[NSArray arrayWithArray:newItems] retain];
+		}
+		
+		
+		//	Get the installation list
+		//	Create each of the items
+		newItems = [NSMutableArray arrayWithCapacity:[installItems count]];
 		for (NSDictionary *itemDict in installItems) {
 			MBMInstallationItem	*anItem = [[[MBMInstallationItem alloc] initWithDictionary:itemDict fromInstallationFilePath:installFilePath] autorelease];
 			if (anItem.isBundleManager) {
@@ -207,6 +224,7 @@
 		
 		//	Set our items list to the new array
 		_installationItemList = [[NSArray arrayWithArray:newItems] retain];
+		
 		
 		//	See if there are any version requirements - set defaults first
 		_minOSVersion = kMBMNoVersionRequirement;

@@ -163,6 +163,10 @@
 	[NSApp terminate:self];
 }
 
+- (void)sendCrashReports {
+	//	TODO: Put in the crash reporting
+}
+
 #pragma mark - Class Methods
 
 + (MBMMailBundle *)mailBundleForIdentifier:(NSString *)aBundleIdentifier {

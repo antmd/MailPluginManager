@@ -17,6 +17,7 @@
 @property	(nonatomic, assign, readonly)	CGFloat				minMailVersion;
 @property	(assign, readonly)				BOOL				shouldInstallManager;
 @property	(nonatomic, retain, readonly)	MBMInstallationItem	*bundleManager;
+@property	(nonatomic, retain, readonly)	NSArray				*confirmationStepList;
 @property	(nonatomic, retain, readonly)	NSArray				*installationItemList;
 
 - (id)initWithInstallPackageAtPath:(NSString *)installFilePath;

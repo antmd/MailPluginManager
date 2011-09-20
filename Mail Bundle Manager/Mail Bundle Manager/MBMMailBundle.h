@@ -33,5 +33,6 @@
 
 - (void)updateIfNecessary;
 - (void)uninstall;
+- (void)sendCrashReports;
 
 @end
