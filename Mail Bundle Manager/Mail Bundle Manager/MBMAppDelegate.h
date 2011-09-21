@@ -27,6 +27,8 @@
 @property (nonatomic, copy)		NSString				*singleBundlePath;
 @property (nonatomic, retain)	MBMInstallationModel	*installationModel;
 
+@property (nonatomic, retain)	NSWindowController		*currentController;
+
 - (void)validateAllBundles;
 - (void)showBundleManagerWindow;
 

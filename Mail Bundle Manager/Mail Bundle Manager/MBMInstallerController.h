@@ -10,11 +10,13 @@
 #import <WebKit/WebKit.h>
 
 #import "MBMInstallationModel.h"
+#import "MBMAnimatedListController.h"
 
 @interface MBMInstallerController : NSWindowController {
 }
 
-@property	(nonatomic, retain)	MBMInstallationModel	*installationModel;
+@property	(nonatomic, retain)	MBMInstallationModel		*installationModel;
+@property	(nonatomic, retain)	MBMAnimatedListController	*installListController;
 
 @property	(assign) IBOutlet NSImageView	*backgroundImageView;
 @property	(assign) IBOutlet NSView		*installStepsView;
@@ -22,4 +24,7 @@
 @property	(assign) IBOutlet WebView		*displayWebView;
 @property	(assign) IBOutlet NSButton		*previousStepButton;
 @property	(assign) IBOutlet NSButton		*actionButton;
+
+- (id)initWithInstallationModel:(MBMInstallationModel *)aModel;
+- (void)updateCurrentConfiguration;
 @end

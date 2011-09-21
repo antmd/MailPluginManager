@@ -9,6 +9,7 @@
 #import "MBMAppDelegate.h"
 
 #import "MBMMailBundle.h"
+#import "MBMInstallerController.h"
 
 @interface MBMAppDelegate ()
 + (BOOL)validInstallFile:(NSString *)installFilePath;
@@ -27,6 +28,7 @@
 @synthesize executablePath = _executablePath;
 @synthesize singleBundlePath = _singleBundlePath;
 @synthesize installationModel = _installationModel;
+@synthesize currentController = _currentController;
 
 - (void)dealloc {
 	[_executablePath release];
@@ -128,10 +130,15 @@
 	
 	//	Then determine the process to continue down
 	if (self.installing) {
+		
+		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithInstallationModel:self.installationModel] autorelease];
+		[controller showWindow:self];
+		self.currentController = controller;
+		
 		//	Ask the model to install everything
-		[self.installationModel installAll];
-		//	Then quit
-		[NSApp terminate:self];
+//		[self.installationModel installAll];
+//		//	Then quit
+//		[NSApp terminate:self];
 	}
 	else if (self.uninstalling) {
 		//	Get the mail bundle
