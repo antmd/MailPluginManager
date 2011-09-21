@@ -12,6 +12,8 @@
 
 @interface MBMInstallationModel : NSObject
 
+@property	(nonatomic, copy, readonly)		NSString			*displayName;
+@property	(nonatomic, copy, readonly)		NSString			*backgroundImagePath;
 @property	(nonatomic, assign, readonly)	CGFloat				minOSVersion;
 @property	(nonatomic, assign, readonly)	CGFloat				maxOSVersion;
 @property	(nonatomic, assign, readonly)	CGFloat				minMailVersion;

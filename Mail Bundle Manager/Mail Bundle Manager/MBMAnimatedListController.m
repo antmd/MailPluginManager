@@ -10,11 +10,11 @@
 
 #import "LKCGStructs.h"
 
-#define TEXT_FIELD_X		50.0f
-#define TEXT_FIELD_Y		300.0f
-#define TEXT_FIELD_WIDTH	100.0f
-#define TEXT_FIELD_HEIGHT	23.0f
-#define TEXT_FIELD_OFFSET	10.0f
+#define TEXT_FIELD_X			20.0f
+#define TEXT_FIELD_WIDTH		150.0f
+#define TEXT_FIELD_HEIGHT		23.0f
+#define TEXT_FIELD_TOP_OFFSET	25.0f
+#define TEXT_FIELD_OFFSET		10.0f
 
 
 @implementation MBMAnimatedListController
@@ -33,7 +33,7 @@
 		//	Create the view hierarchy
 		NSArray			*titleArray = (NSArray *)[self representedObject];
 		NSMutableArray	*textList = [NSMutableArray arrayWithCapacity:[titleArray count]];
-		NSRect			fieldFrame = NSMakeRect(TEXT_FIELD_X, TEXT_FIELD_Y, TEXT_FIELD_WIDTH, TEXT_FIELD_HEIGHT);
+		NSRect			fieldFrame = NSMakeRect(TEXT_FIELD_X, (aView.frame.size.height - (TEXT_FIELD_TOP_OFFSET + TEXT_FIELD_HEIGHT)), TEXT_FIELD_WIDTH, TEXT_FIELD_HEIGHT);
 		for (NSDictionary *itemDict in titleArray) {
 			NSTextField		*aField = [[[NSTextField alloc] initWithFrame:fieldFrame] autorelease];
 			NSString	*aTitle = [itemDict valueForKey:kMBMConfirmationBulletTitleKey];
@@ -43,6 +43,10 @@
 			[aField setStringValue:aTitle];
 			[aField setAlignment:NSLeftTextAlignment];
 			[aField setTextColor:[NSColor blackColor]];
+			[aField setBackgroundColor:[NSColor clearColor]];
+			[aField setEditable:NO];
+			[aField setBezeled:NO];
+			[aField setBordered:NO];
 			
 			//	Add the view to our internal list and to the main view
 			[textList addObject:aField];

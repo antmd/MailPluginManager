@@ -18,6 +18,8 @@
 
 #pragma mark - Accessors
 
+@synthesize displayName = _displayName;
+@synthesize backgroundImagePath = _backgroundImagePath;
 @synthesize minOSVersion = _minOSVersion;
 @synthesize maxOSVersion = _maxOSVersion;
 @synthesize minMailVersion = _minMailVersion;
@@ -238,6 +240,14 @@
 		}
 		if ([manifestDict valueForKey:kMBMMinMailVersionKey]) {
 			_minMailVersion = [[manifestDict valueForKey:kMBMMinMailVersionKey] floatValue];
+		}
+		
+		//	set the installation display name and background if there is one
+		if ([manifestDict valueForKey:kMBMInstallDisplayNameKey]) {
+			_displayName = [[manifestDict valueForKey:kMBMInstallDisplayNameKey] copy];
+		}
+		if ([manifestDict valueForKey:kMBMInstallBGImagePathKey]) {
+			_backgroundImagePath = [[installFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMInstallBGImagePathKey]] copy];
 		}
 		
 	}

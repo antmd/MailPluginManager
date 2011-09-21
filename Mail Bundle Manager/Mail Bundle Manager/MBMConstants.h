@@ -20,6 +20,8 @@ extern NSString	*kMBMBundleFolderName;
 extern NSString	*kMBMDisabledBundleFolderPrefix;
 
 extern NSString	*kMBMInstallerFileExtension;
+extern NSString	*kMBMInstallBGImagePathKey;
+extern NSString	*kMBMInstallDisplayNameKey;
 extern NSString	*kMBMInstallItemsKey;
 extern NSString	*kMBMNameKey;
 extern NSString	*kMBMDescriptionKey;

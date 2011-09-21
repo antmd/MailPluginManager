@@ -22,6 +22,8 @@ NSString	*kMBMBundleFolderName = @"Bundles";
 NSString	*kMBMDisabledBundleFolderPrefix = @"Bundles (";
 
 NSString	*kMBMInstallerFileExtension = @"mbinstall";
+NSString	*kMBMInstallBGImagePathKey = @"install-background-image-path";
+NSString	*kMBMInstallDisplayNameKey = @"install-display-name";
 NSString	*kMBMInstallItemsKey = @"install-items";
 NSString	*kMBMNameKey = @"name";
 NSString	*kMBMDescriptionKey = @"description";

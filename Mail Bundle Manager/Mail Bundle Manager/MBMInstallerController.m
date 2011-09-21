@@ -38,7 +38,13 @@
 	self.installListController = [[[MBMAnimatedListController alloc] initWithContentList:self.installationModel.confirmationStepList inView:self.installStepsView] autorelease];
 	self.installListController.selectedStep = 0;
 	
+	//	Set the window title from the installation Model
+	NSString	*localizedFormat = NSLocalizedString([[self window] title], @"");
+	[[self window] setTitle:[NSString stringWithFormat:localizedFormat, self.installationModel.displayName]];
+	
 	//	Get the image for the background from the installationModel
+	NSImage	*bgImage = [[[NSImage alloc] initWithContentsOfFile:self.installationModel.backgroundImagePath] autorelease];
+	[self.backgroundImageView setImage:bgImage];
 	
 	//	Update the window based on the step
 	[self updateCurrentConfiguration];
