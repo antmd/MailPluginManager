@@ -10,8 +10,8 @@
 
 #import "LKCGStructs.h"
 
-#define TEXT_FIELD_X		0.0f
-#define TEXT_FIELD_Y		0.0f
+#define TEXT_FIELD_X		50.0f
+#define TEXT_FIELD_Y		300.0f
 #define TEXT_FIELD_WIDTH	100.0f
 #define TEXT_FIELD_HEIGHT	23.0f
 #define TEXT_FIELD_OFFSET	10.0f
@@ -49,18 +49,18 @@
 			[[self view] addSubview:aField];
 			
 			//	Adjust the frame for another field, if needed
-			fieldFrame = LKRectByOffsettingX(fieldFrame, TEXT_FIELD_OFFSET);
+			fieldFrame = LKRectByOffsettingY(fieldFrame, -1.0f * (TEXT_FIELD_HEIGHT + TEXT_FIELD_OFFSET));
 		}
 		
 		//	Create a dummy animator view for the moment that shows the step
-		NSTextField	*animatorView = [[[NSTextField alloc] initWithFrame:NSMakeRect(10.0f, 200.0f, 25.0f, 23.0f)] autorelease];
+		NSTextField	*animatorView = [[[NSTextField alloc] initWithFrame:NSMakeRect(10.0f, 20.0f, 50.0f, 23.0f)] autorelease];
 		[animatorView setTextColor:[NSColor redColor]];
 		[animatorView setAlignment:NSCenterTextAlignment];
 		self.animatorView = animatorView;
 		[[self view] addSubview:animatorView];
 		
-		//	Set the selected step to the first by default
-		self.selectedStep = 0;
+		//	Set to unreasonable value for init
+		self.selectedStep = 100000;
 		
     
 	}
@@ -71,7 +71,7 @@
 
 - (void)setSelectedStep:(NSInteger)aSelectedStep {
 	if (_selectedStep != aSelectedStep) {
-		[(NSTextField *)self.animatorView setIntegerValue:aSelectedStep];
+		[(NSTextField *)self.animatorView setStringValue:[NSString stringWithFormat:@"%d", aSelectedStep]];
 		_selectedStep = aSelectedStep;
 	}
 }
