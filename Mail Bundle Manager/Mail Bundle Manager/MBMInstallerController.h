@@ -31,4 +31,7 @@
 @property	(assign) IBOutlet NSScrollView	*displayTextScrollView;
 
 - (id)initWithInstallationModel:(MBMInstallationModel *)aModel;
+
+- (IBAction)moveToPreviousStep:(id)sender;
+- (IBAction)moveToNextStep:(id)sender;
 @end

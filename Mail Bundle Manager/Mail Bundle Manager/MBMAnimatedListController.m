@@ -16,9 +16,10 @@
 #define TEXT_FIELD_TOP_OFFSET	25.0f
 #define TEXT_FIELD_OFFSET		10.0f
 #define ANIMATOR_VIEW_X			0.0f
-#define ANIMATOR_TOP_OFFSET		19.0f
+#define ANIMATOR_TOP_START		19.0f
 #define ANIMATOR_VIEW_WIDTH		210.0f
 #define ANIMATOR_VIEW_HEIGHT	30.0f
+#define ANIMATOR_TOP_OFFSET		4.0f
 
 #define TEXT_UNSELECTED_COLOR	[NSColor colorWithDeviceWhite:0.323 alpha:1.000]
 #define TEXT_SELECTED_COLOR		[NSColor colorWithDeviceWhite:0.945 alpha:1.000]
@@ -43,7 +44,7 @@
 
 		//	Create the view hierarchy
 		//	Create the animator view for the moment that shows the step
-		NSImageView	*animatorBGView = [[NSImageView alloc] initWithFrame:NSMakeRect(ANIMATOR_VIEW_X, aView.frame.size.height - (ANIMATOR_TOP_OFFSET + ANIMATOR_VIEW_HEIGHT), ANIMATOR_VIEW_WIDTH, ANIMATOR_VIEW_HEIGHT)];
+		NSImageView	*animatorBGView = [[NSImageView alloc] initWithFrame:NSMakeRect(ANIMATOR_VIEW_X, aView.frame.size.height - (ANIMATOR_TOP_START + ANIMATOR_VIEW_HEIGHT), ANIMATOR_VIEW_WIDTH, ANIMATOR_VIEW_HEIGHT)];
 		[animatorBGView setImage:[NSImage imageNamed:kMBMAnimationBackgroundImageName]];
 		[animatorBGView setImageScaling:NSScaleNone];
 		[[self view] addSubview:animatorBGView];
@@ -55,6 +56,27 @@
 		NSRect			fieldFrame = NSMakeRect(TEXT_FIELD_X, (aView.frame.size.height - (TEXT_FIELD_TOP_OFFSET + TEXT_FIELD_HEIGHT)), TEXT_FIELD_WIDTH, TEXT_FIELD_HEIGHT);
 		for (NSDictionary *itemDict in titleArray) {
 			NSTextField		*aField = [[[NSTextField alloc] initWithFrame:fieldFrame] autorelease];
+			
+			/*
+			CATextLayer	*textLayer = [CATextLayer layer];
+			[aField setLayer:textLayer];
+			
+
+			textLayer.string = [itemDict valueForKey:kMBMConfirmationLocalizedTitleKey];
+			textLayer.alignmentMode = NSLeftTextAlignment;
+			textLayer.fontSize = 16.0f;
+			textLayer.opaque = YES;
+
+			CGColorRef color = CGColorCreateGenericRGB(0.267, 0.271, 0.278, 1.000);
+			textLayer.foregroundColor = color;
+			CGColorRelease(color);
+			color = CGColorCreateGenericGray(1.000, 0.000);
+			textLayer.backgroundColor = color;
+			CGColorRelease(color);
+			
+			[aField setWantsLayer:YES];
+			*/
+
 			[aField setStringValue:[itemDict valueForKey:kMBMConfirmationLocalizedTitleKey]];
 			[aField setAlignment:NSLeftTextAlignment];
 			[aField setTextColor:TEXT_UNSELECTED_COLOR];
@@ -114,6 +136,14 @@
 	if (fromField) {
 		[fromField setTextColor:TEXT_UNSELECTED_COLOR];
 	}
+	
+	//	Move the marker background view
+	CGFloat	offsetCount = (toItem > fromItem)?-1.0f:1.0f;
+	if (fromItem == kMBMInvalidStep) {
+		offsetCount = 0.0f;
+	}
+	CGRect	aRect = LKRectByOffsettingY(self.animatorView.frame, (offsetCount * (ANIMATOR_VIEW_HEIGHT + ANIMATOR_TOP_OFFSET)));
+	[[self.animatorView animator] setFrame:aRect];
 	
 }
 

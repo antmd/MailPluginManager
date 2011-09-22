@@ -9,7 +9,7 @@
 #import "MBMInstallerController.h"
 
 @interface MBMInstallerController ()
-- (void)updateCurrentConfigurationFromStep:(NSInteger)fromStep toStep:(NSInteger)toStep;
+- (void)updateCurrentConfigurationToStep:(NSInteger)toStep;
 @end
 
 @implementation MBMInstallerController
@@ -39,15 +39,20 @@
     return self;
 }
 
+- (IBAction)moveToNextStep:(id)sender {
+	self.currentInstallStep = self.currentInstallStep + 1;
+}
+
+- (IBAction)moveToPreviousStep:(id)sender {
+	self.currentInstallStep = self.currentInstallStep - 1;
+}
+
 - (void)windowDidLoad {
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 	//	Create the install steps view
 	self.installListController = [[[MBMAnimatedListController alloc] initWithContentList:self.installationModel.confirmationStepList inView:self.installStepsView] autorelease];
-	
-	//	Set the current step
-	self.currentInstallStep = 0;
 	
 	//	Set the window title from the installation Model
 	NSString	*localizedFormat = NSLocalizedString([[self window] title], @"");
@@ -60,23 +65,29 @@
 	//	Localize the Go Back step as well
 	[self.previousStepButton setTitle:NSLocalizedString(@"Go Back", @"Go Back button text for installation")];
 	
+	//	Set the current step
+	self.currentInstallStep = 0;
+	
 }
 
 - (void)setCurrentInstallStep:(NSInteger)aCurrentInstallStep {
 	if (_currentInstallStep != aCurrentInstallStep) {
-		[self updateCurrentConfigurationFromStep:_currentInstallStep toStep:aCurrentInstallStep];
+		
+		//	Validate that we don't go beyond our range
+		if ([self.installationModel.confirmationStepList count] <= (NSUInteger)aCurrentInstallStep) {
+			//	Don't do anything for the moment
+			return;
+		}
+		
+		[self updateCurrentConfigurationToStep:aCurrentInstallStep];
 		_currentInstallStep = aCurrentInstallStep;
 	}
 }
 
-- (void)updateCurrentConfigurationFromStep:(NSInteger)fromStep toStep:(NSInteger)toStep {
+- (void)updateCurrentConfigurationToStep:(NSInteger)toStep {
 	
 	NSArray			*configItems = self.installationModel.confirmationStepList;
-	NSDictionary	*oldStepDict = nil;
 	NSDictionary	*newStepDict = nil;
-	if ((fromStep != kMBMInvalidStep) && ([configItems count] > (NSUInteger)fromStep)) {
-		oldStepDict = [configItems objectAtIndex:fromStep];
-	}
 	if ([configItems count] > (NSUInteger)toStep) {
 		newStepDict = [configItems objectAtIndex:toStep];
 	}
