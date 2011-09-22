@@ -27,6 +27,7 @@ extern NSString	*kMBMNameKey;
 extern NSString	*kMBMDescriptionKey;
 extern NSString	*kMBMPermissionsKey;
 extern NSString	*kMBMPathKey;
+extern NSString	*kMBMPathIsHTMLKey;
 extern NSString	*kMBMDestinationPathKey;
 extern NSString	*kMBMMinOSVersionKey;
 extern NSString	*kMBMMaxOSVersionKey;
@@ -34,9 +35,11 @@ extern NSString	*kMBMMinMailVersionKey;
 extern NSString	*kMBMIsBundleManagerKey;
 
 extern NSString	*kMBMConfirmationStepsKey;
-extern NSString	*kMBMConfirmationTypeKey;
 extern NSString	*kMBMConfirmationTitleKey;
 extern NSString	*kMBMConfirmationBulletTitleKey;
+extern NSString	*kMBMConfirmationLocalizedTitleKey;
+extern NSString	*kMBMConfirmationLocalizedBulletTitleKey;
+extern NSString	*kMBMConfirmationTypeKey;
 extern NSString	*kMBMConfirmationTypeReleaseNotes;
 extern NSString	*kMBMConfirmationTypeLicense;
 extern NSString	*kMBMConfirmationTypeConfirm;
@@ -46,6 +49,8 @@ extern NSString	*kMBMMailBundleExtension;
 extern NSString	*kMBMMailBundleUUIDKey;
 extern NSString	*kMBMMailBundleUUIDListKey;
 extern NSString	*kMBMMessageBundlePath;
+
+extern NSString	*kMBMAnimationBackgroundImageName;
 
 typedef enum {
 	kMBMStatusEnabled,

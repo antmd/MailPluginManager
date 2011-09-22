@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define kMBMInvalidStep	2112
+
 @interface MBMAnimatedListController : NSViewController
 @property	(nonatomic, copy)	NSArray		*subviewList;
 @property	(nonatomic, retain)	NSView		*animatorView;

@@ -25,6 +25,7 @@
 		D2730FE01429322A00EB5CB7 /* MBMInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */; };
 		D2730FE614293F6100EB5CB7 /* MBMAnimatedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */; };
 		D2730FF1142A1F4700EB5CB7 /* LKCGStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */; };
+		D2730FF3142B539300EB5CB7 /* InstallAnimationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */; };
 		D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMInstallationItem.m */; };
 		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
 		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
@@ -97,6 +98,7 @@
 		D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMAnimatedListController.m; sourceTree = "<group>"; };
 		D2730FEF142A1F4700EB5CB7 /* LKCGStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKCGStructs.h; path = ../../LKKit/Helpers/LKCGStructs.h; sourceTree = "<group>"; };
 		D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKCGStructs.m; path = ../../LKKit/Helpers/LKCGStructs.m; sourceTree = "<group>"; };
+		D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallAnimationBackground.png; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MBMInstallationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationItem.h; sourceTree = "<group>"; };
 		D28F77E914209D1D0015E42F /* MBMInstallationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationItem.m; sourceTree = "<group>"; };
 		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				D2D7BEEF14223B840059E153 /* InstallDocument.png */,
+				D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */,
 				D216B347141DFDE1003788DC /* InfoPlist.strings */,
 				D216B353141DFDE2003788DC /* MainMenu.xib */,
 				D216B34D141DFDE1003788DC /* Credits.rtf */,
@@ -371,6 +374,7 @@
 				D2E902A0141E643F0058618F /* lk-warnings.xcconfig in Resources */,
 				D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */,
 				D2730FE01429322A00EB5CB7 /* MBMInstallerWindow.xib in Resources */,
+				D2730FF3142B539300EB5CB7 /* InstallAnimationBackground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,10 +13,12 @@
 #import "MBMAnimatedListController.h"
 
 @interface MBMInstallerController : NSWindowController {
+	NSScrollView *_displayTextScrollView;
 }
 
 @property	(nonatomic, retain)	MBMInstallationModel		*installationModel;
 @property	(nonatomic, retain)	MBMAnimatedListController	*installListController;
+@property	(nonatomic, assign)	NSInteger					currentInstallStep;
 
 @property	(assign) IBOutlet NSImageView	*backgroundImageView;
 @property	(assign) IBOutlet NSView		*installStepsView;
@@ -25,6 +27,8 @@
 @property	(assign) IBOutlet NSButton		*previousStepButton;
 @property	(assign) IBOutlet NSButton		*actionButton;
 
+@property	(assign) IBOutlet NSText		*displayTextView;
+@property	(assign) IBOutlet NSScrollView	*displayTextScrollView;
+
 - (id)initWithInstallationModel:(MBMInstallationModel *)aModel;
-- (void)updateCurrentConfiguration;
 @end

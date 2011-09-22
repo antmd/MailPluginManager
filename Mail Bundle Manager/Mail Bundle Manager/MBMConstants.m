@@ -29,6 +29,7 @@ NSString	*kMBMNameKey = @"name";
 NSString	*kMBMDescriptionKey = @"description";
 NSString	*kMBMPermissionsKey = @"permissions-needed";
 NSString	*kMBMPathKey = @"path";
+NSString	*kMBMPathIsHTMLKey = @"path-is-html";
 NSString	*kMBMDestinationPathKey = @"destination-path";
 NSString	*kMBMMinOSVersionKey = @"min-os-major-version";
 NSString	*kMBMMaxOSVersionKey = @"max-os-major-version";
@@ -36,9 +37,11 @@ NSString	*kMBMMinMailVersionKey = @"min-mail-version";
 NSString	*kMBMIsBundleManagerKey = @"is-bundle-manager";
 
 NSString	*kMBMConfirmationStepsKey = @"confirmation-steps";
-NSString	*kMBMConfirmationTypeKey = @"type";
 NSString	*kMBMConfirmationTitleKey = @"title";
 NSString	*kMBMConfirmationBulletTitleKey = @"bullet-title";
+NSString	*kMBMConfirmationLocalizedTitleKey = @"localized-title";
+NSString	*kMBMConfirmationLocalizedBulletTitleKey = @"localized-bullet";
+NSString	*kMBMConfirmationTypeKey = @"type";
 NSString	*kMBMConfirmationTypeReleaseNotes = @"release-notes";
 NSString	*kMBMConfirmationTypeLicense = @"license";
 NSString	*kMBMConfirmationTypeConfirm = @"confirm";
@@ -50,3 +53,5 @@ NSString	*kMBMMailBundleUUIDKey = @"PluginCompatibilityUUID";
 NSString	*kMBMMailBundleUUIDListKey = @"SupportedPluginCompatibilityUUIDs";
 NSString	*kMBMMessageBundlePath = @"Frameworks/Message.framework";
 
+
+NSString	*kMBMAnimationBackgroundImageName = @"InstallAnimationBackground";

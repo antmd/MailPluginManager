@@ -12,6 +12,7 @@
 
 @interface MBMInstallationModel ()
 - (BOOL)installItem:(MBMInstallationItem *)anItem;
+- (NSString *)localizeString:(NSString *)inString forInstallFile:(NSString *)installFilePath;
 @end
 
 @implementation MBMInstallationModel
@@ -177,6 +178,17 @@
 }
 
 
+
+- (NSString *)localizeString:(NSString *)inString forInstallFile:(NSString *)installFilePath {
+	
+	NSBundle	*fileBundle = [NSBundle bundleWithPath:installFilePath];
+	
+	LKLog(@"Bundle for install file:%@", fileBundle);
+	
+	return NSLocalizedStringFromTableInBundle(inString, nil, fileBundle, @"");
+}
+
+
 #pragma mark - Memory Management
 
 - (id)initWithInstallPackageAtPath:(NSString *)installFilePath {
@@ -202,7 +214,37 @@
 		//	Create each of the items
 		newItems = [NSMutableArray arrayWithCapacity:[confirmationSteps count]];
 		for (NSDictionary *itemDict in confirmationSteps) {
-			[newItems addObject:itemDict];
+			
+			//	Update some contents of the dictionary for later use
+			NSMutableDictionary	*convertedDict = [itemDict mutableCopy];
+			
+			//	Set the flag for is the content of this part html
+			BOOL	isHTML = [[[itemDict valueForKey:kMBMPathKey] pathExtension] isEqualToString:@"html"];
+			[convertedDict setValue:[NSNumber numberWithBool:isHTML] forKey:kMBMPathIsHTMLKey];
+			
+			//	If it is html, ensure it has a full URL
+			if (isHTML) {
+				//	Update the path to include the installFilePath, and make it a full URL
+				if (![[convertedDict valueForKey:kMBMPathKey] hasPrefix:@"http"]) {
+					[convertedDict setValue:[NSString stringWithFormat:@"file://%@", [installFilePath stringByAppendingPathComponent:[convertedDict valueForKey:kMBMPathKey]]] forKey:kMBMPathKey];
+				}
+			}
+			//	Otherwise if there is a path just make it a full path
+			else if ([convertedDict valueForKey:kMBMPathKey]) {
+				[convertedDict setValue:[installFilePath stringByAppendingPathComponent:[convertedDict valueForKey:kMBMPathKey]] forKey:kMBMPathKey];
+			}
+			
+			//	Localized the two titles
+			NSString	*localizedTitle = [self localizeString:[convertedDict valueForKey:kMBMConfirmationTitleKey] forInstallFile:installFilePath];
+			[convertedDict setValue:localizedTitle forKey:kMBMConfirmationLocalizedTitleKey];
+			if ([convertedDict valueForKey:kMBMConfirmationBulletTitleKey]) {
+				[convertedDict setValue:[self localizeString:[convertedDict valueForKey:kMBMConfirmationBulletTitleKey] forInstallFile:installFilePath] forKey:kMBMConfirmationLocalizedBulletTitleKey];
+			}
+			else {
+				[convertedDict setValue:localizedTitle forKey:kMBMConfirmationLocalizedTitleKey];
+			}
+			[newItems addObject:[NSDictionary dictionaryWithDictionary:convertedDict]];
+			[convertedDict release];
 		}
 		
 		//	Set our confirmation list to the new array, but only if it is not nil
