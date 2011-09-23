@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  Mail Bundle Manager
+
+  Created by Scott Little on 23/09/2011.
+  Copyright 2011 Little Known Software. All rights reserved.
+*/
+//	License agreement description
+"Agreement Description" = "You must agree to the terms of the license before installing";
+//	Instructions for license agreement dialog
+"Dialog Instructions" = "Click \"Agree\" to accept and continue, \"Disagree\" to quit or \"Read License\" to show license again.";
+//	Text for button to agree with license
+"Agree" = "Agree";
+//	Text for button to close and read license
+"Read License" = "Read License";
+//	Text for button to disagree with license
+"Disagree" = "Disagree";
+

@@ -20,6 +20,8 @@
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
 		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
+		D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */; };
+		D24DA331142CD92300720631 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D24DA330142CD92300720631 /* Localizable.strings */; };
 		D2730FD9142921B200EB5CB7 /* MBMInstallationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMInstallationModel.m */; };
 		D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */; };
 		D2730FE01429322A00EB5CB7 /* MBMInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */; };
@@ -92,6 +94,8 @@
 		D231F44C1428ED5E002DB999 /* LKLogHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKLogHelper.m; path = ../../LKKit/Helpers/LKLogHelper.m; sourceTree = "<group>"; };
 		D231F44E1428EE7B002DB999 /* LKInclude.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKInclude.pch; path = ../../LKKit/LKInclude.pch; sourceTree = "<group>"; };
 		D231F44F1428F035002DB999 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.markdown; path = ../README.markdown; sourceTree = SOURCE_ROOT; };
+		D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBMAgreementWindow.xib; sourceTree = "<group>"; };
+		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D2730FD8142921B200EB5CB7 /* MBMInstallationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationModel.m; sourceTree = "<group>"; };
 		D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallerController.h; sourceTree = "<group>"; };
 		D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallerController.m; sourceTree = "<group>"; };
@@ -287,6 +291,8 @@
 				D216B353141DFDE2003788DC /* MainMenu.xib */,
 				D216B34D141DFDE1003788DC /* Credits.rtf */,
 				D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */,
+				D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */,
+				D24DA330142CD92300720631 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -392,6 +398,8 @@
 				D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */,
 				D2730FE01429322A00EB5CB7 /* MBMInstallerWindow.xib in Resources */,
 				D2730FF3142B539300EB5CB7 /* InstallAnimationBackground.png in Resources */,
+				D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */,
+				D24DA331142CD92300720631 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

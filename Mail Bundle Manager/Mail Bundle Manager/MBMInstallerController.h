@@ -42,8 +42,11 @@
 @property	(assign) IBOutlet NSTextField			*displayProgressLabel;
 @property	(assign) IBOutlet NSTableView			*installationSummaryTable;
 
+@property	(assign) IBOutlet NSWindow				*agreementDialog;
+
 - (id)initWithInstallationModel:(MBMInstallationModel *)aModel;
 
+- (IBAction)closeAgreementDialog:(id)sender;
 - (IBAction)moveToPreviousStep:(id)sender;
 - (IBAction)moveToNextStep:(id)sender;
 @end

@@ -39,8 +39,6 @@ NSString	*kMBMIsBundleManagerKey = @"is-bundle-manager";
 NSString	*kMBMConfirmationStepsKey = @"confirmation-steps";
 NSString	*kMBMConfirmationTitleKey = @"title";
 NSString	*kMBMConfirmationBulletTitleKey = @"bullet-title";
-NSString	*kMBMConfirmationLocalizedTitleKey = @"localized-title";
-NSString	*kMBMConfirmationLocalizedBulletTitleKey = @"localized-bullet";
 NSString	*kMBMConfirmationShouldAgreeToLicense = @"license-agreement-required";
 NSString	*kMBMConfirmationTypeKey = @"type";
 

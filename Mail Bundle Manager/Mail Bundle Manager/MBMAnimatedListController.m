@@ -8,6 +8,8 @@
 
 #import "MBMAnimatedListController.h"
 
+#import "MBMConfirmationStep.h"
+
 #import "LKCGStructs.h"
 
 #define TEXT_FIELD_X			10.0f
@@ -51,10 +53,9 @@
 		_animatorView = animatorBGView;
 		
 		//	Create the text subviews
-		NSArray			*titleArray = (NSArray *)[self representedObject];
-		NSMutableArray	*textList = [NSMutableArray arrayWithCapacity:[titleArray count]];
+		NSMutableArray	*textList = [NSMutableArray arrayWithCapacity:[aContentList count]];
 		NSRect			fieldFrame = NSMakeRect(TEXT_FIELD_X, (aView.frame.size.height - (TEXT_FIELD_TOP_OFFSET + TEXT_FIELD_HEIGHT)), TEXT_FIELD_WIDTH, TEXT_FIELD_HEIGHT);
-		for (NSDictionary *itemDict in titleArray) {
+		for (MBMConfirmationStep *aStep in aContentList) {
 			NSTextField		*aField = [[[NSTextField alloc] initWithFrame:fieldFrame] autorelease];
 			
 			/*
@@ -62,7 +63,7 @@
 			[aField setLayer:textLayer];
 			
 
-			textLayer.string = [itemDict valueForKey:kMBMConfirmationLocalizedTitleKey];
+			textLayer.string = aStep.bulletTitle;
 			textLayer.alignmentMode = NSLeftTextAlignment;
 			textLayer.fontSize = 16.0f;
 			textLayer.opaque = YES;
@@ -77,7 +78,7 @@
 			[aField setWantsLayer:YES];
 			*/
 
-			[aField setStringValue:[itemDict valueForKey:kMBMConfirmationLocalizedTitleKey]];
+			[aField setStringValue:aStep.bulletTitle];
 			[aField setAlignment:NSLeftTextAlignment];
 			[aField setTextColor:TEXT_UNSELECTED_COLOR];
 			[aField setFont:[NSFont systemFontOfSize:16.0f]];

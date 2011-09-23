@@ -52,6 +52,7 @@
 @synthesize displayTextScrollView = _displayTextScrollView;
 @synthesize displayProgressView = _displayProgressView;
 @synthesize progressBar = _progressBar;
+@synthesize agreementDialog = _agreementDialog;
 
 - (MBMConfirmationStep *)currentInstallationStep {
 	if (self.currentStep == kMBMInvalidStep) {
@@ -128,6 +129,11 @@
 		if (self.installationModel.confirmationStepCount <= aCurrentInstallStep) {
 			//	Call our display the installation progress method and return
 			[self startInstall];
+			return;
+		}
+		
+		//	Ensure that license agreements are agreed to, if necessary
+		if (![self checkForLicenseRequirement]) {
 			return;
 		}
 		
@@ -208,6 +214,27 @@
 - (IBAction)moveToPreviousStep:(id)sender {
 	self.currentStep = self.currentStep - 1;
 }
+
+- (IBAction)closeAgreementDialog:(id)sender {
+	[NSApp endSheet:self.agreementDialog];
+
+	switch ([sender tag]) {
+		case NSAlertDefaultReturn:
+			//	Continue
+			self.currentInstallationStep.agreementAccepted = YES;
+			[self moveToNextStep:self];
+			break;
+			
+		case NSAlertOtherReturn:
+			//	Quit
+			[NSApp terminate:self];
+			break;
+			
+		default:
+			break;
+	}
+}
+
 
 
 - (void)startInstall {
@@ -392,14 +419,40 @@
 }
 
 
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+	[sheet orderOut:self];
+}
+
+
 - (BOOL)checkForLicenseRequirement {
-	if (self.currentInstallationStep.requiresAgreement) {
-		//	Do the test
+	if (self.currentInstallationStep.requiresAgreement && !self.currentInstallationStep.agreementAccepted) {
+
+		//	Load the dialog window
+		if (!self.agreementDialog) {
+			[NSBundle loadNibNamed:@"MBMAgreementWindow" owner:self];
+			
+			//	Localize the labels and buttons
+			NSArray	*subviews = [[self.agreementDialog contentView] subviews];
+			for (NSView *aView in subviews) {
+				if ([aView isKindOfClass:[NSTextField class]]) {
+					//	Localize the stringValue
+					[(NSTextField *)aView setStringValue:NSLocalizedString([(NSTextField *)aView stringValue], @"don't localize")];
+				}
+				else if ([aView isKindOfClass:[NSButton class]]) {
+					//	Localize the title
+					[(NSButton *)aView setTitle:NSLocalizedString([(NSButton *)aView title], @"don't localize")];
+				}
+			}
+			
+		}
+		
+		//	Show the dialog
+		[NSApp beginSheet:self.agreementDialog modalForWindow:[self window] modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+		
 		return NO;
 	}
 	return YES;
 }
-
 
 #pragma mark - TableView DataSource & Delegate
 

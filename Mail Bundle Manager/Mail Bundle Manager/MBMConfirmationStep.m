@@ -66,22 +66,22 @@
 		if (_hasHTMLContent) {
 			//	Update the path to include the installFilePath, and make it a full URL
 			if (![[aDictionary valueForKey:kMBMPathKey] hasPrefix:@"http"]) {
-				_path = [NSString stringWithFormat:@"file://%@", [installFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]]];
+				_path = [[NSString stringWithFormat:@"file://%@", [installFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]]] copy];
 			}
 		}
 		//	Otherwise if there is a path just make it a full path
 		else if ([aDictionary valueForKey:kMBMPathKey]) {
-			_path = [installFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]];
+			_path = [[installFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]] copy];
 		}
 		
 		//	Localized the two titles
 		NSString	*localizedTitle = MBMLocalizedStringFromInstallFile([aDictionary valueForKey:kMBMConfirmationTitleKey], installFilePath);
-		_title = localizedTitle;
+		_title = [localizedTitle copy];
 		if ([aDictionary valueForKey:kMBMConfirmationBulletTitleKey]) {
-			_bulletTitle = MBMLocalizedStringFromInstallFile([aDictionary valueForKey:kMBMConfirmationBulletTitleKey], installFilePath);
+			_bulletTitle = [MBMLocalizedStringFromInstallFile([aDictionary valueForKey:kMBMConfirmationBulletTitleKey], installFilePath) copy];
 		}
 		else {
-			_bulletTitle = localizedTitle;
+			_bulletTitle = [localizedTitle copy];
 		}
 		
 		//	Agreement requirement
@@ -103,6 +103,21 @@
 	self.originalValues = nil;
 
 	[super dealloc];
+}
+
+
+- (NSString *)description {
+	NSMutableString	*result = [NSMutableString string];
+	
+	[result appendFormat:@">>MBMConfirmationStep [%p] (", self];
+	[result appendFormat:@"type:%d(%@)  ", self.type, (self.type == kMBMConfirmationTypeLicense?@"License":(self.type == kMBMConfirmationTypeReleaseNotes?@"Release Notes":@"Confirm"))];
+	[result appendFormat:@"title:%@  ", self.title];
+	[result appendFormat:@"bulletTitle:%@\n", self.bulletTitle];
+	[result appendFormat:@"requiresAgreement:%@  ", [NSString stringWithBool:self.requiresAgreement]];
+	[result appendFormat:@"hasHTMLContent:%@  ", [NSString stringWithBool:self.hasHTMLContent]];
+	[result appendFormat:@"agreementAccepted:%@\n)", [NSString stringWithBool:self.agreementAccepted]];
+	
+	return [NSString stringWithString:result];
 }
 
 @end

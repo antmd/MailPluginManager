@@ -37,8 +37,6 @@ extern NSString	*kMBMIsBundleManagerKey;
 extern NSString	*kMBMConfirmationStepsKey;
 extern NSString	*kMBMConfirmationTitleKey;
 extern NSString	*kMBMConfirmationBulletTitleKey;
-extern NSString	*kMBMConfirmationLocalizedTitleKey;
-extern NSString	*kMBMConfirmationLocalizedBulletTitleKey;
 extern NSString	*kMBMConfirmationShouldAgreeToLicense;
 extern NSString	*kMBMConfirmationTypeKey;
 
@@ -71,6 +69,6 @@ typedef enum {
 #define	kMBMNoVersionRequirement	-1.0
 
 
-#define	MBMLocalizedStringFromInstallFile(string, installFilePath)	return NSLocalizedStringFromTableInBundle(string, nil, [NSBundle bundleWithPath:installFilePath], @"")
+#define	MBMLocalizedStringFromInstallFile(string, installFilePath)	NSLocalizedStringFromTableInBundle(string, nil, [NSBundle bundleWithPath:installFilePath], @"")
 
 
