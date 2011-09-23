@@ -107,6 +107,9 @@
 	
 }
 
+
+#pragma mark - Step Management
+
 - (void)setCurrentInstallStep:(NSInteger)aCurrentInstallStep {
 	if (_currentInstallStep != aCurrentInstallStep) {
 		
@@ -190,6 +193,7 @@
 	self.animatedListController.selectedStep = toStep;
 }
 
+
 #pragma mark - Actions
 
 - (IBAction)moveToNextStep:(id)sender {
@@ -213,31 +217,22 @@
 	[self.progressBar setMaxValue:self.installationModel.totalInstallationItemCount];
 	
 	//	Set up some notification watches
-	self.notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMInstallationProgressNotification object:self.installationModel queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+	self.notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMInstallationProgressNotification object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 		//	Update the UI
 		NSDictionary	*info = [note userInfo];
 		if ([info valueForKey:kMBMInstallationProgressDescriptionKey]) {
 			[self.displayProgressTextView setStringValue:[info valueForKey:kMBMInstallationProgressDescriptionKey]];
 		}
 		if ([info valueForKey:kMBMInstallationProgressValueKey]) {
-			[self.progressBar setDoubleValue:[[info valueForKey:kMBMInstallationProgressValueKey] doubleValue]];
+			[self.progressBar incrementBy:[[info valueForKey:kMBMInstallationProgressValueKey] doubleValue]];
 		}
 	}];
 	
-	NSArray	*textList = [NSArray arrayWithObjects:@"A File.txt", @"My Big File.app", @"Bundle Manager.app", nil];
-
-	CGFloat	counter = 0.4f;
-	CGFloat	delayTime = 0.0f;
-	for (NSString *text in textList) {
-		NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:text, kMBMInstallationProgressDescriptionKey, 
-								   [NSNumber numberWithDouble:counter], kMBMInstallationProgressValueKey,
-								   nil];
-		NSNotification	*dumNote = [NSNotification notificationWithName:kMBMInstallationProgressNotification object:self.installationModel userInfo:myDict];
-		[[NSNotificationCenter defaultCenter] performSelector:@selector(postNotification:) withObject:dumNote afterDelay:delayTime];
-		counter = counter + 0.4f;
-		delayTime = delayTime + 1.0f;
-	}
-	
+	//	Do the installation on a dispatch queue
+	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+	dispatch_async(myQueue, ^(void) {
+		[self installAll];
+	});
 	
 }
 
@@ -382,22 +377,94 @@
 		ALog(@"ERROR:Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
 		return NO;
 	}
-	
+
+	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, 
+							   [NSNumber numberWithDouble:1.0f], kMBMInstallationProgressValueKey,
+							   nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+
 	return YES;
 }
 
 
 
-#pragma mark - TableView DataSource
+#pragma mark - TableView DataSource & Delegate
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return 1;
+	return self.installationModel.totalInstallationItemCount;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-	NSMutableAttributedString	*attrString = [[[NSMutableAttributedString alloc] initWithString:@"File To Install\nSome Description"] autorelease];
-	[attrString setAttributes:[NSDictionary dictionaryWithObject:[NSColor redColor] forKey:NSForegroundColorAttributeName] range:NSMakeRange(0, 16)];
-	return ([[tableColumn identifier] isEqualToString:@"icon"]?[NSImage imageNamed:@"InstallDocument"]:attrString);
+	
+	NSInteger			maxIndex = self.installationModel.totalInstallationItemCount - 1;
+	MBMInstallationItem	*theItem = nil;
+	
+	//	Get the correct item
+	if (row > maxIndex) {
+		return nil;
+	}
+	else if ((row == maxIndex) && self.installationModel.shouldInstallManager) {
+		theItem = self.installationModel.bundleManager;
+	}
+	else {
+		theItem = [self.installationModel.installationItemList objectAtIndex:row];
+	}
+	
+	//	If we need the icon, get that from the filemanager
+	if ([[tableColumn identifier] isEqualToString:@"icon"]) {
+		return [[NSWorkspace sharedWorkspace] iconForFile:theItem.path];
+	}
+	//	Otherwise format a description of the file to install
+	else {
+		//	Format each piece of the description
+		//	
+		NSColor	*mainColor = [NSColor colorWithDeviceRed:0.267 green:0.271 blue:0.278 alpha:1.000];
+		NSColor	*pathColor = [NSColor colorWithDeviceRed:0.433 green:0.438 blue:0.456 alpha:1.000];
+		NSColor	*labelColor = [NSColor colorWithDeviceRed:0.364 green:0.369 blue:0.385 alpha:1.000];
+		if ([tableView selectedRow] == row) {
+			mainColor = [NSColor colorWithDeviceWhite:1.000 alpha:1.000];
+			pathColor = [NSColor colorWithDeviceWhite:0.841 alpha:1.000];
+			labelColor = [NSColor colorWithDeviceWhite:0.900 alpha:1.000];
+		}
+		NSDictionary	*nameAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:16.0f] , NSFontAttributeName, 
+									  mainColor, NSForegroundColorAttributeName,
+									  nil];
+		NSDictionary	*filenameAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12.0f] , NSFontAttributeName, 
+										  pathColor, NSForegroundColorAttributeName,
+										  [NSNumber numberWithFloat:1.0f], NSBaselineOffsetAttributeName,
+										  nil];
+		NSDictionary	*destinationLabelAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12.0f] , NSFontAttributeName, 
+											 labelColor, NSForegroundColorAttributeName,
+											 nil];
+		NSDictionary	*destinationAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:11.0f] , NSFontAttributeName, 
+											 pathColor, NSForegroundColorAttributeName,
+											 [NSNumber numberWithFloat:0.2f], NSObliquenessAttributeName,
+											 nil];
+		NSDictionary	*descAttrs = [NSDictionary dictionaryWithObjectsAndKeys:mainColor, NSForegroundColorAttributeName,
+									  nil];
+		NSAttributedString	*nameString = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", theItem.name] attributes:nameAttrs] autorelease];
+		NSAttributedString	*filenameString = [[[NSAttributedString alloc] initWithString:[theItem.path lastPathComponent] attributes:filenameAttrs] autorelease];
+		NSAttributedString	*destinationLabelString = [[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Destination: ", @"Label for destination in installer summary lists.") attributes:destinationLabelAttrs] autorelease];
+		NSAttributedString	*destinationString = [[[NSAttributedString alloc] initWithString:[theItem.destinationPath stringByDeletingLastPathComponent] attributes:destinationAttrs] autorelease];
+		NSAttributedString	*descString = [[[NSAttributedString alloc] initWithString:((theItem.itemDescription != nil)?theItem.itemDescription:@"") attributes:descAttrs] autorelease];
+		
+		//	Then build them all together in the correct format
+		NSMutableAttributedString	*fullString = [[[NSMutableAttributedString alloc] initWithAttributedString:nameString] autorelease];
+		[fullString appendAttributedString:filenameString];
+		[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n\t"] autorelease]];
+		[fullString appendAttributedString:destinationLabelString];
+		[fullString appendAttributedString:destinationString];
+		[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n  "] autorelease]];
+		[fullString appendAttributedString:descString];
+		
+		return [[[NSAttributedString alloc] initWithAttributedString:fullString] autorelease];
+	}
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)notification {
+	[[notification object] reloadData];
 }
 
 @end
+
+

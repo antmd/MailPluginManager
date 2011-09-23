@@ -12,7 +12,7 @@
 #import "MBMInstallationModel.h"
 #import "MBMAnimatedListController.h"
 
-@interface MBMInstallerController : NSWindowController <NSTableViewDataSource> {
+@interface MBMInstallerController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
 	NSScrollView *_displayTextScrollView;
 	NSView *_displayProgressView;
 	NSProgressIndicator *_progressBar;
