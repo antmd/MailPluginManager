@@ -24,7 +24,7 @@
 
 @property	(nonatomic, retain)	MBMInstallationModel		*installationModel;
 @property	(nonatomic, retain)	MBMAnimatedListController	*animatedListController;
-@property	(nonatomic, assign)	NSInteger					currentInstallStep;
+@property	(nonatomic, assign)	NSUInteger					currentStep;
 
 @property	(assign) IBOutlet NSImageView	*backgroundImageView;
 @property	(assign) IBOutlet NSView		*installStepsView;

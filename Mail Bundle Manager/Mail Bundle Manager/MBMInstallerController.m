@@ -10,10 +10,13 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "MBMMailBundle.h"
+#import "MBMConfirmationStep.h"
 
 @interface MBMInstallerController ()
-@property	(nonatomic, assign)	id	notificationObserver;
-- (void)updateCurrentConfigurationToStep:(NSInteger)toStep;
+@property	(nonatomic, assign)				id					notificationObserver;
+@property	(nonatomic, retain, readonly)	MBMConfirmationStep	*currentInstallationStep;
+
+- (void)updateCurrentConfigurationToStep:(NSUInteger)toStep;
 - (void)showContentView:(NSView *)aView;
 - (void)startInstall;
 
@@ -21,6 +24,8 @@
 - (BOOL)installItems;
 - (BOOL)installBundleManager;
 - (BOOL)installItem:(MBMInstallationItem *)anItem;
+
+- (BOOL)checkForLicenseRequirement;
 @end
 
 @implementation MBMInstallerController
@@ -31,7 +36,7 @@
 
 @synthesize installationModel = _installationModel;
 @synthesize animatedListController = _animatedListController;
-@synthesize currentInstallStep = _currentInstallStep;
+@synthesize currentStep = _currentStep;
 
 @synthesize backgroundImageView = _backgroundImageView;
 @synthesize installStepsView = _installStepsView;
@@ -48,6 +53,12 @@
 @synthesize displayProgressView = _displayProgressView;
 @synthesize progressBar = _progressBar;
 
+- (MBMConfirmationStep *)currentInstallationStep {
+	if (self.currentStep == kMBMInvalidStep) {
+		return nil;
+	}
+	return [self.installationModel.confirmationStepList objectAtIndex:self.currentStep];
+}
 
 #pragma mark - Memory and Window Management
 
@@ -56,7 +67,7 @@
     if (self) {
         // Initialization code here.
 		_installationModel = [aModel retain];
-		_currentInstallStep = kMBMInvalidStep;
+		_currentStep = kMBMInvalidStep;
     }
     
     return self;
@@ -103,25 +114,25 @@
 	[self.previousStepButton setTitle:NSLocalizedString(@"Go Back", @"Go Back button text for installation")];
 	
 	//	Set the current step
-	self.currentInstallStep = 0;
+	self.currentStep = 0;
 	
 }
 
 
 #pragma mark - Step Management
 
-- (void)setCurrentInstallStep:(NSInteger)aCurrentInstallStep {
-	if (_currentInstallStep != aCurrentInstallStep) {
+- (void)setCurrentStep:(NSUInteger)aCurrentInstallStep {
+	if (_currentStep != aCurrentInstallStep) {
 		
 		//	Validate that we don't go beyond our range
-		if ([self.installationModel.confirmationStepList count] <= (NSUInteger)aCurrentInstallStep) {
+		if (self.installationModel.confirmationStepCount <= aCurrentInstallStep) {
 			//	Call our display the installation progress method and return
 			[self startInstall];
 			return;
 		}
 		
 		[self updateCurrentConfigurationToStep:aCurrentInstallStep];
-		_currentInstallStep = aCurrentInstallStep;
+		_currentStep = aCurrentInstallStep;
 	}
 }
 
@@ -144,30 +155,24 @@
 }
 
 
-- (void)updateCurrentConfigurationToStep:(NSInteger)toStep {
+- (void)updateCurrentConfigurationToStep:(NSUInteger)toStep {
 	
-	NSArray			*configItems = self.installationModel.confirmationStepList;
-	NSDictionary	*newStepDict = nil;
-	if ([configItems count] > (NSUInteger)toStep) {
-		newStepDict = [configItems objectAtIndex:toStep];
+	MBMConfirmationStep	*newStep = nil;
+	if (self.installationModel.confirmationStepCount > toStep) {
+		newStep = [self.installationModel.confirmationStepList objectAtIndex:toStep];
 	}
 	
 	//	Ensure that we have something to do
-	if (newStepDict == nil) {
+	if (newStep == nil) {
 		return;
 	}
 	
-	//	Get some values out
-	NSString	*type = [newStepDict valueForKey:kMBMConfirmationTypeKey];
-	NSString	*contentPath = [newStepDict valueForKey:kMBMPathKey];
-	BOOL		isConfirmed = [type isEqualToString:kMBMConfirmationTypeConfirm];
-	BOOL		isContentHTML = [[newStepDict valueForKey:kMBMPathIsHTMLKey] boolValue];
-	
+	BOOL	isConfirmed = newStep.type == kMBMConfirmationTypeConfirm;
 	//	Load the contents 
 	//	Is it html?
-	if (isContentHTML) {
+	if (newStep.hasHTMLContent) {
 		[self showContentView:self.displayWebView];
-		[self.displayWebView setMainFrameURL:contentPath];
+		[self.displayWebView setMainFrameURL:newStep.path];
 	}
 	else if (isConfirmed) {
 		//	Set the datasource for the installation summary tableview
@@ -176,11 +181,11 @@
 	}
 	else {
 		[self showContentView:self.displayTextScrollView];
-		[self.displayTextView readRTFDFromFile:contentPath];
+		[self.displayTextView readRTFDFromFile:newStep.path];
 	}
 	
 	//	Title above the webview (its layer is used to animate it)
-	((CATextLayer *)self.titleTextField.layer).string = [newStepDict valueForKey:kMBMConfirmationLocalizedTitleKey];
+	((CATextLayer *)self.titleTextField.layer).string = newStep.title;
 	
 	//	Configure the two buttons at the bottom
 	NSString	*actionTitle = NSLocalizedString(@"Continue", @"Continue button text for installation");
@@ -197,11 +202,11 @@
 #pragma mark - Actions
 
 - (IBAction)moveToNextStep:(id)sender {
-	self.currentInstallStep = self.currentInstallStep + 1;
+	self.currentStep = self.currentStep + 1;
 }
 
 - (IBAction)moveToPreviousStep:(id)sender {
-	self.currentInstallStep = self.currentInstallStep - 1;
+	self.currentStep = self.currentStep - 1;
 }
 
 
@@ -386,6 +391,14 @@
 	return YES;
 }
 
+
+- (BOOL)checkForLicenseRequirement {
+	if (self.currentInstallationStep.requiresAgreement) {
+		//	Do the test
+		return NO;
+	}
+	return YES;
+}
 
 
 #pragma mark - TableView DataSource & Delegate

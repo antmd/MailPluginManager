@@ -21,7 +21,8 @@
 @property	(nonatomic, retain, readonly)	MBMInstallationItem	*bundleManager;
 @property	(nonatomic, retain, readonly)	NSArray				*confirmationStepList;
 @property	(nonatomic, retain, readonly)	NSArray				*installationItemList;
-@property	(nonatomic, assign, readonly)	NSInteger			totalInstallationItemCount;
+@property	(nonatomic, assign, readonly)	NSUInteger			totalInstallationItemCount;
+@property	(nonatomic, assign, readonly)	NSUInteger			confirmationStepCount;
 
 - (id)initWithInstallPackageAtPath:(NSString *)installFilePath;
 

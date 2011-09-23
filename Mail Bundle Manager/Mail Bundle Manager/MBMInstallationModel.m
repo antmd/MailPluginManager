@@ -8,6 +8,7 @@
 
 #import "MBMInstallationModel.h"
 #import "MBMMailBundle.h"
+#import "MBMConfirmationStep.h"
 
 
 @interface MBMInstallationModel ()
@@ -16,8 +17,6 @@
 @property	(nonatomic, retain, readwrite)	MBMInstallationItem	*bundleManager;
 @property	(nonatomic, retain, readwrite)	NSArray				*confirmationStepList;
 @property	(nonatomic, retain, readwrite)	NSArray				*installationItemList;
-
-- (NSString *)localizeString:(NSString *)inString forInstallFile:(NSString *)installFilePath;
 @end
 
 @implementation MBMInstallationModel
@@ -33,6 +32,7 @@
 @synthesize confirmationStepList = _confirmationStepList;
 @synthesize installationItemList = _installationItemList;
 @synthesize totalInstallationItemCount = _totalInstallationItemCount;
+@synthesize confirmationStepCount = _confirmationStepCount;
 
 
 - (BOOL)shouldInstallManager {
@@ -65,43 +65,14 @@
 		//	Create each of the items
 		newItems = [NSMutableArray arrayWithCapacity:[confirmationSteps count]];
 		for (NSDictionary *itemDict in confirmationSteps) {
-			
-			//	Update some contents of the dictionary for later use
-			NSMutableDictionary	*convertedDict = [itemDict mutableCopy];
-			
-			//	Set the flag for is the content of this part html
-			BOOL	isHTML = [[[itemDict valueForKey:kMBMPathKey] pathExtension] isEqualToString:@"html"];
-			[convertedDict setValue:[NSNumber numberWithBool:isHTML] forKey:kMBMPathIsHTMLKey];
-			
-			//	If it is html, ensure it has a full URL
-			if (isHTML) {
-				//	Update the path to include the installFilePath, and make it a full URL
-				if (![[convertedDict valueForKey:kMBMPathKey] hasPrefix:@"http"]) {
-					[convertedDict setValue:[NSString stringWithFormat:@"file://%@", [installFilePath stringByAppendingPathComponent:[convertedDict valueForKey:kMBMPathKey]]] forKey:kMBMPathKey];
-				}
-			}
-			//	Otherwise if there is a path just make it a full path
-			else if ([convertedDict valueForKey:kMBMPathKey]) {
-				[convertedDict setValue:[installFilePath stringByAppendingPathComponent:[convertedDict valueForKey:kMBMPathKey]] forKey:kMBMPathKey];
-			}
-			
-			//	Localized the two titles
-			NSString	*localizedTitle = [self localizeString:[convertedDict valueForKey:kMBMConfirmationTitleKey] forInstallFile:installFilePath];
-			[convertedDict setValue:localizedTitle forKey:kMBMConfirmationLocalizedTitleKey];
-			if ([convertedDict valueForKey:kMBMConfirmationBulletTitleKey]) {
-				[convertedDict setValue:[self localizeString:[convertedDict valueForKey:kMBMConfirmationBulletTitleKey] forInstallFile:installFilePath] forKey:kMBMConfirmationLocalizedBulletTitleKey];
-			}
-			else {
-				[convertedDict setValue:localizedTitle forKey:kMBMConfirmationLocalizedTitleKey];
-			}
-			[newItems addObject:[NSDictionary dictionaryWithDictionary:convertedDict]];
-			[convertedDict release];
+			[newItems addObject:[[[MBMConfirmationStep alloc] initWithDictionary:itemDict andInstallPath:installFilePath] autorelease]];
 		}
 		
 		//	Set our confirmation list to the new array, but only if it is not nil
 		if (newItems) {
 			_confirmationStepList = [[NSArray arrayWithArray:newItems] retain];
 		}
+		_confirmationStepCount = [_confirmationStepList count];
 		
 		
 		//	Get the installation list
@@ -168,22 +139,26 @@
 
 #pragma mark - Helpful Methods
 
-- (NSString *)localizeString:(NSString *)inString forInstallFile:(NSString *)installFilePath {
-	return NSLocalizedStringFromTableInBundle(inString, nil, [NSBundle bundleWithPath:installFilePath], @"");
-}
-
 
 - (NSString *)description {
 	NSMutableString	*result = [NSMutableString string];
 	
 	[result appendFormat:@">>MBMInstallationModel [%p]  ", self];
+	[result appendFormat:@"displayName:%@  ", self.displayName];
+	[result appendFormat:@"backgroundImagePath:%@\n", self.backgroundImagePath];
 	[result appendFormat:@"minOSVersion:%3.2f  ", self.minOSVersion];
 	[result appendFormat:@"maxOSVersion:%3.2f  ", self.maxOSVersion];
 	[result appendFormat:@"minMailVersion:%3.2f  ", self.minMailVersion];
 	[result appendFormat:@"shouldInstallManager:%@\n", [NSString stringWithBool:self.shouldInstallManager]];
 	[result appendFormat:@"bundleManager:\n\t(%@)\n", self.bundleManager];
+	[result appendFormat:@"totalInstallCount:%d  ", self.totalInstallationItemCount];
 	[result appendString:@"installItems:{\n"];
 	for (MBMInstallationItem *anItem in self.installationItemList) {
+		[result appendFormat:@"\t[%@]\n", anItem];
+	}
+	[result appendString:@"}"];
+	[result appendString:@"confirmationStepList:{\n"];
+	for (MBMConfirmationStep *anItem in self.confirmationStepList) {
 		[result appendFormat:@"\t[%@]\n", anItem];
 	}
 	[result appendString:@"}"];
