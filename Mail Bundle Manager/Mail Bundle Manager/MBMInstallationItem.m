@@ -9,6 +9,15 @@
 #import "MBMInstallationItem.h"
 
 
+
+@interface MBMInstallationItem ()
+@property	(nonatomic, copy, readwrite)		NSString	*name;
+@property	(nonatomic, copy, readwrite)		NSString	*itemDescription;
+@property	(nonatomic, copy, readwrite)		NSArray		*permissions;
+@property	(nonatomic, copy, readwrite)		NSString	*path;
+@property	(nonatomic, copy, readwrite)		NSString	*destinationPath;
+@end
+
 @implementation MBMInstallationItem
 
 @synthesize name = _name;
@@ -66,16 +75,11 @@
 }
 
 - (void)dealloc {
-	[_name release];
-	_name = nil;
-	[_itemDescription release];
-	_itemDescription = nil;
-	[_permissions release];
-	_permissions = nil;
-	[_path release];
-	_path = nil;
-	[_destinationPath release];
-	_destinationPath = nil;
+	self.name = nil;
+	self.itemDescription = nil;
+	self.permissions = nil;
+	self.path = nil;
+	self.destinationPath = nil;
 	
 	[super dealloc];
 }

@@ -26,7 +26,7 @@
 
 
 @interface MBMAnimatedListController ()
-- (void)animateMarkerFromItem:(NSInteger)fromItem toItem:(NSInteger)toItem;
+- (void)animateMarkerFromItem:(NSUInteger)fromItem toItem:(NSUInteger)toItem;
 @end
 
 @implementation MBMAnimatedListController
@@ -104,20 +104,27 @@
     return self;
 }
 
+- (void)dealloc {
+	self.subviewList = nil;
+	self.animatorView = nil;
+	
+	[super dealloc];
+}
 
-- (void)setSelectedStep:(NSInteger)aSelectedStep {
+
+- (void)setSelectedStep:(NSUInteger)aSelectedStep {
 	if (_selectedStep != aSelectedStep) {
 		[self animateMarkerFromItem:_selectedStep toItem:aSelectedStep];
 		_selectedStep = aSelectedStep;
 	}
 }
 
-- (void)animateMarkerFromItem:(NSInteger)fromItem toItem:(NSInteger)toItem {
+- (void)animateMarkerFromItem:(NSUInteger)fromItem toItem:(NSUInteger)toItem {
 	
 	//	Try to get our respective views
 	NSTextField	*fromField = nil;
 	NSTextField	*toField = nil;
-	if ((fromItem != kMBMInvalidStep) && ([self.subviewList count] > (NSUInteger)fromItem)) {
+	if ((fromItem != kMBMInvalidStep) && ([self.subviewList count] > fromItem)) {
 		fromField = [self.subviewList objectAtIndex:fromItem];
 	}
 	if ([self.subviewList count] > (NSUInteger)toItem) {

@@ -54,11 +54,12 @@
 }
 
 - (void)dealloc {
-	self.bundle = nil;
+	self.name = nil;
 	self.path = nil;
 	self.version = nil;
-	self.name = nil;
 	self.icon = nil;
+	self.bundle = nil;
+	self.sparkleDelegate = nil;
 	[super dealloc];
 }
 

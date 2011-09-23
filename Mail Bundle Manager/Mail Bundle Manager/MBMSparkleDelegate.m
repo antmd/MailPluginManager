@@ -26,6 +26,12 @@
     return self;
 }
 
+- (void)dealloc {
+	self.relaunchPath = nil;
+	
+	[super dealloc];
+}
+
 // Sent immediately before installing the specified update.
 - (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update {
 	

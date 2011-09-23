@@ -46,6 +46,10 @@ NSString	*kMBMConfirmationTypeReleaseNotes = @"release-notes";
 NSString	*kMBMConfirmationTypeLicense = @"license";
 NSString	*kMBMConfirmationTypeConfirm = @"confirm";
 
+NSString	*kMBMInstallationProgressNotification = @"MBMInstallationProgressNotification";
+NSString	*kMBMInstallationProgressDescriptionKey = @"installation-description";
+NSString	*kMBMInstallationProgressValueKey = @"progress-value";
+
 
 NSString	*kMBMMailBundleIdentifier = @"com.apple.mail";
 NSString	*kMBMMailBundleExtension = @"mailbundle";

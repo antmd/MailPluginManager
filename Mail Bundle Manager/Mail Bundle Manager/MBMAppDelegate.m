@@ -17,6 +17,9 @@
 
 @implementation MBMAppDelegate
 
+
+#pragma mark - Accessors & Memeory
+
 @synthesize window = _window;
 @synthesize installing = _installing;
 @synthesize uninstalling = _uninstalling;
@@ -31,15 +34,16 @@
 @synthesize currentController = _currentController;
 
 - (void)dealloc {
-	[_executablePath release];
-	_executablePath = nil;
-	[_singleBundlePath release];
-	_singleBundlePath = nil;
-	[_installationModel release];
-	_installationModel = nil;
+	self.executablePath = nil;
+	self.singleBundlePath = nil;
+	self.installationModel = nil;
+	self.currentController = nil;
+	
     [super dealloc];
 }
 
+
+#pragma mark - App Delegate
 
 //	These are the methods in the order they are called...
 

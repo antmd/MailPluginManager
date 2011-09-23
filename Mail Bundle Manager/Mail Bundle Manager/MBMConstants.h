@@ -44,6 +44,10 @@ extern NSString	*kMBMConfirmationTypeReleaseNotes;
 extern NSString	*kMBMConfirmationTypeLicense;
 extern NSString	*kMBMConfirmationTypeConfirm;
 
+extern NSString	*kMBMInstallationProgressNotification;
+extern NSString	*kMBMInstallationProgressDescriptionKey;
+extern NSString	*kMBMInstallationProgressValueKey;
+
 extern NSString	*kMBMMailBundleIdentifier;
 extern NSString	*kMBMMailBundleExtension;
 extern NSString	*kMBMMailBundleUUIDKey;

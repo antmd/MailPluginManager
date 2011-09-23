@@ -8,12 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define kMBMInvalidStep	2112
+#define kMBMInvalidStep	((NSUInteger)-1)
 
 @interface MBMAnimatedListController : NSViewController
 @property	(nonatomic, copy)	NSArray		*subviewList;
 @property	(nonatomic, retain)	NSView		*animatorView;
-@property	(nonatomic, assign)	NSInteger	selectedStep;
+@property	(nonatomic, assign)	NSUInteger	selectedStep;
 
 - (id)initWithContentList:(NSArray *)aContentList inView:(NSView *)aView;
 @end

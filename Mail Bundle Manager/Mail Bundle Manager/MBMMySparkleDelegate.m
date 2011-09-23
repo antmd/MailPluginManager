@@ -22,4 +22,10 @@
     return self;
 }
 
+- (void)dealloc {
+	self.pathToReplace = nil;
+	
+	[super dealloc];
+}
+
 @end
