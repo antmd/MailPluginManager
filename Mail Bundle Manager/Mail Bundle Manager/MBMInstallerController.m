@@ -125,6 +125,8 @@
 - (void)setCurrentStep:(NSUInteger)aCurrentInstallStep {
 	if (_currentStep != aCurrentInstallStep) {
 		
+		BOOL	goingBackward = (aCurrentInstallStep < _currentStep);
+		
 		//	Validate that we don't go beyond our range
 		if (self.installationModel.confirmationStepCount <= aCurrentInstallStep) {
 			//	Call our display the installation progress method and return
@@ -133,7 +135,7 @@
 		}
 		
 		//	Ensure that license agreements are agreed to, if necessary
-		if (![self checkForLicenseRequirement]) {
+		if (!goingBackward && ![self checkForLicenseRequirement]) {
 			return;
 		}
 		
