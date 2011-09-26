@@ -1,0 +1,39 @@
+/* 
+  errors.strings
+  Mail Bundle Manager
+
+  Created by Scott Little on 25/09/2011.
+  Copyright 2011 Little Known Software. All rights reserved.
+*/
+
+"900-description" = "Installation failed because the file (%@) wasn't found.";
+"900-failure-reason" = "File (%@) wasn't found.";
+"900-recovery-suggestion" = "Look for the file and put it here: (%@)";
+
+"900-button-1" = "Found It";
+"900-button-2" = "Nevermind";
+"900-button-3" = "Show Me";
+
+
+//	Requirements
+"100-description" = "Minimum OS version (%@) requirement not met (%@)";
+"100-recovery-suggestion" = "You'll need to upgrade your OS first.";
+
+"101-description" = "Maximum OS version (%@) requirement not met (%@)";
+"101-recovery-suggestion" = "This plugin doesn't work in this OS.";
+
+"102-description" = "Minimum Mail version (%@) requirement not met (%@)";
+"102-recovery-suggestion" = "You'll need to upgrade your OS (and thus Mail) first.";
+
+
+"200-description" = "The source path for the item (%@) [%@] is invalid.";
+"201-description" = "The source path for the bundle manager (%@) is invalid.";
+"202-description" = "Trying to install a bundle manager (%@) with different BundleID [%@] over existing app (%@) [%@]";
+"203-description" = "Can't copy item '%@' to location that is actually a file:%@";
+
+"210-description" = "Couldn't create folder to copy item '%@' into:%@";
+"211-description" = "Unable to copy item '%@' to %@\n%@";
+
+"2001-description" = "Not actually copying the Bundle Manager since a recent version is already at destination";
+"2002-description" = "This Mail Plugin will not work with this version of Mail";
+

@@ -31,6 +31,9 @@
 		D273100E142BD52E00EB5CB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D273100D142BD52E00EB5CB7 /* QuartzCore.framework */; };
 		D2731011142CB1E500EB5CB7 /* MBMConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */; };
 		D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMInstallationItem.m */; };
+		D2D1E6C1142FD8B4002FF1B1 /* errors.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6C0142FD8B4002FF1B1 /* errors.strings */; };
+		D2D1E6C914307968002FF1B1 /* LKError.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6C814307968002FF1B1 /* LKError.m */; };
+		D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
 		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
 		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
 		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
@@ -110,6 +113,11 @@
 		D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConfirmationStep.m; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MBMInstallationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationItem.h; sourceTree = "<group>"; };
 		D28F77E914209D1D0015E42F /* MBMInstallationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationItem.m; sourceTree = "<group>"; };
+		D2D1E6C0142FD8B4002FF1B1 /* errors.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = errors.strings; sourceTree = "<group>"; };
+		D2D1E6C714307968002FF1B1 /* LKError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKError.h; path = ../../LKKit/Helpers/LKError.h; sourceTree = "<group>"; };
+		D2D1E6C814307968002FF1B1 /* LKError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKError.m; path = ../../LKKit/Helpers/LKError.m; sourceTree = "<group>"; };
+		D2D1E6CA1430827F002FF1B1 /* NSString+LKHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKHelper.h"; path = "../../LKKit/Categories/NSString+LKHelper.h"; sourceTree = "<group>"; };
+		D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKHelper.m"; path = "../../LKKit/Categories/NSString+LKHelper.m"; sourceTree = "<group>"; };
 		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
 		D2E90292141E36110058618F /* MBMMySparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMySparkleDelegate.h; sourceTree = "<group>"; };
 		D2E90293141E36110058618F /* MBMMySparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMySparkleDelegate.m; sourceTree = "<group>"; };
@@ -293,6 +301,7 @@
 				D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */,
 				D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */,
 				D24DA330142CD92300720631 /* Localizable.strings */,
+				D2D1E6C0142FD8B4002FF1B1 /* errors.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -311,10 +320,14 @@
 			children = (
 				D231F4471428ED4E002DB999 /* NSString+LKStructUtils.h */,
 				D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */,
+				D2D1E6CA1430827F002FF1B1 /* NSString+LKHelper.h */,
+				D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */,
 				D2730FEF142A1F4700EB5CB7 /* LKCGStructs.h */,
 				D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */,
 				D231F44B1428ED5E002DB999 /* LKLogHelper.h */,
 				D231F44C1428ED5E002DB999 /* LKLogHelper.m */,
+				D2D1E6C714307968002FF1B1 /* LKError.h */,
+				D2D1E6C814307968002FF1B1 /* LKError.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -400,6 +413,7 @@
 				D2730FF3142B539300EB5CB7 /* InstallAnimationBackground.png in Resources */,
 				D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */,
 				D24DA331142CD92300720631 /* Localizable.strings in Resources */,
+				D2D1E6C1142FD8B4002FF1B1 /* errors.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +463,8 @@
 				D2730FE614293F6100EB5CB7 /* MBMAnimatedListController.m in Sources */,
 				D2730FF1142A1F4700EB5CB7 /* LKCGStructs.m in Sources */,
 				D2731011142CB1E500EB5CB7 /* MBMConfirmationStep.m in Sources */,
+				D2D1E6C914307968002FF1B1 /* LKError.m in Sources */,
+				D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

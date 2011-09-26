@@ -11,6 +11,7 @@
 
 #import "MBMMailBundle.h"
 #import "MBMConfirmationStep.h"
+#import "LKError.h"
 
 @interface MBMInstallerController ()
 @property	(nonatomic, assign)				id					notificationObserver;
@@ -261,6 +262,7 @@
 			[self.progressBar incrementBy:[[info valueForKey:kMBMInstallationProgressValueKey] doubleValue]];
 		}
 	}];
+
 	
 	//	Do the installation on a dispatch queue
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -271,6 +273,53 @@
 }
 
 
+#pragma mark - Error Delegate Methods
+
+- (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
+	return @"MBMInstallErrorDomain";
+}
+
+- (NSArray *)recoveryOptionsForError:(LKError *)error {
+	NSMutableArray	*options = [NSMutableArray array];
+	
+	//	Loop to find all buttons
+	for (NSInteger i = 1;; i++) {
+		NSString	*format = [NSString stringWithFormat:@"%%d-button-%d", i];
+		NSString	*compareValue = [NSString stringWithFormat:format, [error code]];
+		NSString	*value = [error localizeWithFormat:format];
+		//	If it wasn't found, there are no more options
+		if ([compareValue isEqualToString:value]) {
+			break;
+		}
+		[options addObject:value];
+	}
+	
+	//	If the options are not empty, return them
+	return IsEmpty(options)?nil:[NSArray arrayWithArray:options];
+}
+
+- (NSArray *)formatDescriptionValuesForError:(LKError *)error {
+	NSMutableArray	*values = [NSMutableArray array];
+	switch ([error code]) {
+		case 100:
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.installationModel.minOSVersion]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
+			break;
+			
+		default:
+			break;
+	}
+	return IsEmpty(values)?nil:[NSArray arrayWithArray:values];
+}
+
+- (id)recoveryAttemptorForError:(LKError *)error {
+	return self;
+}
+
+- (BOOL)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex {
+	return recoveryOptionIndex==0?YES:NO;
+}
+
 #pragma mark - Installer Methods
 
 - (BOOL)installAll {
@@ -280,6 +329,10 @@
 	//	Ensure that the versions all check out
 	CGFloat	currentVersion = macOSXVersion();
 	if ((model.minOSVersion != kMBMNoVersionRequirement) && (currentVersion < model.minOSVersion)) {
+
+		NSDictionary	*dict = [NSDictionary dictionaryWithObject:@"Seen here" forKey:NSLocalizedRecoverySuggestionErrorKey];
+		LKPresentErrorCodeUsingDict(100, dict);
+		
 		LKLog(@"ERROR:Minimum OS version (%3.2f) requirement not met (%3.2f)", model.minOSVersion, currentVersion);
 		return NO;
 	}

@@ -36,7 +36,6 @@
 
 - (void)ensureRunningBestVersion;
 
-
 + (BOOL)isMailRunning;
 + (BOOL)quitMail;
 
