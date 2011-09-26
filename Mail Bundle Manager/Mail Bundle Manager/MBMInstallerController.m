@@ -13,6 +13,27 @@
 #import "MBMConfirmationStep.h"
 #import "LKError.h"
 
+typedef enum {
+	MBMMinOSInsufficientCode = 101,
+	MBMMaxOSInsufficientCode = 102,
+	MBMMinMailInsufficientCode = 103,
+	
+	MBMGenericFileCode = 200,
+	MBMInvalidSourcePath = 201,
+	MBMDifferentDestinationBundleManager = 202,
+	MBMTryingToInstallOverFile = 203,
+	
+	MBMCantCreateFolder = 210,
+	MBMCopyFailed = 211,
+	
+	MBMBundleManagerAlreadyUpToDate = 2001,
+	MBMPluginDoesNotWorkWithMailVersion = 2002,
+	
+	MBMUnknownInstallCode
+} MBMInstallErrorCodes;
+
+
+
 @interface MBMInstallerController ()
 @property	(nonatomic, assign)				id					notificationObserver;
 @property	(nonatomic, retain, readonly)	MBMConfirmationStep	*currentInstallationStep;
@@ -262,7 +283,6 @@
 			[self.progressBar incrementBy:[[info valueForKey:kMBMInstallationProgressValueKey] doubleValue]];
 		}
 	}];
-
 	
 	//	Do the installation on a dispatch queue
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -288,7 +308,7 @@
 		NSString	*compareValue = [NSString stringWithFormat:format, [error code]];
 		NSString	*value = [error localizeWithFormat:format];
 		//	If it wasn't found, there are no more options
-		if ([compareValue isEqualToString:value]) {
+		if ((value == nil) || [compareValue isEqualToString:value]) {
 			break;
 		}
 		[options addObject:value];
@@ -301,9 +321,22 @@
 - (NSArray *)formatDescriptionValuesForError:(LKError *)error {
 	NSMutableArray	*values = [NSMutableArray array];
 	switch ([error code]) {
-		case 100:
+		case MBMMinOSInsufficientCode:
+			[values addObject:self.installationModel.displayName];
 			[values addObject:[NSString stringWithFormat:@"%3.1f", self.installationModel.minOSVersion]];
 			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
+			break;
+			
+		case MBMMaxOSInsufficientCode:
+			[values addObject:self.installationModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.installationModel.maxOSVersion]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
+			break;
+			
+		case MBMMinMailInsufficientCode:
+			[values addObject:self.installationModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.installationModel.minMailVersion]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", mailVersion()]];
 			break;
 			
 		default:
@@ -329,21 +362,17 @@
 	//	Ensure that the versions all check out
 	CGFloat	currentVersion = macOSXVersion();
 	if ((model.minOSVersion != kMBMNoVersionRequirement) && (currentVersion < model.minOSVersion)) {
-
-		NSDictionary	*dict = [NSDictionary dictionaryWithObject:@"Seen here" forKey:NSLocalizedRecoverySuggestionErrorKey];
-		LKPresentErrorCodeUsingDict(100, dict);
-		
-		LKLog(@"ERROR:Minimum OS version (%3.2f) requirement not met (%3.2f)", model.minOSVersion, currentVersion);
+		LKPresentErrorCode(MBMMinOSInsufficientCode);
 		return NO;
 	}
 	if ((model.maxOSVersion != kMBMNoVersionRequirement) && (currentVersion > model.maxOSVersion)) {
-		LKLog(@"ERROR:Maximum OS version (%3.2f) requirement not met (%3.2f)", model.maxOSVersion, currentVersion);
+		LKPresentErrorCode(MBMMaxOSInsufficientCode);
 		return NO;
 	}
 	if (model.minMailVersion != kMBMNoVersionRequirement) {
 		currentVersion = mailVersion();
 		if (currentVersion > model.minMailVersion) {
-			LKLog(@"ERROR:Minimum Mail version (%3.2f) requirement not met (%3.2f)", model.minMailVersion, currentVersion);
+			LKPresentErrorCode(MBMMinMailInsufficientCode);
 			return NO;
 		}
 	}
@@ -362,7 +391,9 @@
 	//	First just ensure that the all items are there to copy
 	for (MBMInstallationItem *anItem in self.installationModel.installationItemList) {
 		if (![manager fileExistsAtPath:anItem.path]) {
-			ALog(@"ERROR:The source path for the item (%@) [%@] is invalid.", anItem.name, anItem.path);
+			NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.path, kMBMPathKey, nil];
+			LKPresentErrorCodeUsingDict(MBMInvalidSourcePath, dict);
+			LKErr(@"The source path for the item (%@) [%@] is invalid.", anItem.name, anItem.path);
 			return NO;
 		}
 	}
@@ -383,7 +414,8 @@
 	
 	//	Ensure that the source bundle is where we think it is
 	if (![manager fileExistsAtPath:model.bundleManager.path] || ![workspace isFilePackageAtPath:model.bundleManager.path]) {
-		ALog(@"ERROR:The source path for the bundle manager (%@) is invalid.", model.bundleManager.path);
+		LKPresentErrorCode(MBMGenericFileCode);
+		LKErr(@"The source path for the bundle manager (%@) is invalid.", model.bundleManager.path);
 		return NO;
 	}
 	
@@ -405,13 +437,14 @@
 		//	There is a serious problem if the bundle ids are different
 		if (!isSameBundleID) {
 			
-			ALog(@"ERROR:Trying to install a bundle manager (%@) with different BundleID [%@] over existing app (%@) [%@]", [[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [sourceBundle bundleIdentifier], [[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [destBundle bundleIdentifier]);
+			LKPresentErrorCode(MBMGenericFileCode);
+			LKErr(@"Trying to install a bundle manager (%@) with different BundleID [%@] over existing app (%@) [%@]", [[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [sourceBundle bundleIdentifier], [[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [destBundle bundleIdentifier]);
 			return NO;
 		}
 		
 		//	If the source version is not greater then just return yes and leave the existing one
 		if (!isSourceVersionGreater) {
-			LKLog(@"Not actually copying the Bundle Manager since a recent version is already at destination");
+			LKWarn(@"Not actually copying the Bundle Manager since a recent version is already at destination");
 			return YES;
 		}
 	}
@@ -438,7 +471,8 @@
 		
 		//	Test to ensure that the plugin list contains both the mail and message UUIDs
 		if (![supportedUUIDs containsObject:mailUUID] || ![supportedUUIDs containsObject:messageUUID]) {
-			LKLog(@"This Mail Plugin will not work with this version of Mail");
+			LKPresentErrorCode(MBMPluginDoesNotWorkWithMailVersion);
+			LKErr(@"This Mail Plugin will not work with this version of Mail:mailUUID:%@ messageUUID:%@", mailUUID, messageUUID);
 			return NO;
 		}
 	}
@@ -447,7 +481,8 @@
 	NSError	*error;
 	if (![manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent]]) {
 		if (![manager createDirectoryAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error]) {
-			ALog(@"ERROR:Couldn't create folder to copy item '%@' into:%@", anItem.name, error);
+			LKPresentErrorCode(MBMGenericFileCode);
+			LKErr(@"Couldn't create folder to copy item '%@' into:%@", anItem.name, error);
 			return NO;
 		}
 	}
@@ -455,13 +490,15 @@
 	BOOL	isFolder;
 	[manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] isDirectory:&isFolder];
 	if (!isFolder) {
-		ALog(@"ERROR:Can't copy item '%@' to location that is actually a file:%@", anItem.name, [anItem.destinationPath stringByDeletingLastPathComponent]);
+		LKPresentErrorCode(MBMGenericFileCode);
+		LKErr(@"Can't copy item '%@' to location that is actually a file:%@", anItem.name, [anItem.destinationPath stringByDeletingLastPathComponent]);
 		return NO;
 	}
 	
 	//	Now do the copy, replacing anything that is already there
 	if (![manager copyItemAtPath:anItem.path toPath:anItem.destinationPath error:&error]) {
-		ALog(@"ERROR:Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
+		LKPresentErrorCode(MBMGenericFileCode);
+		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
 		return NO;
 	}
 
@@ -587,5 +624,4 @@
 }
 
 @end
-
 
