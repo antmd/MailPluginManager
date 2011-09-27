@@ -65,7 +65,7 @@
 		//	Create each of the items
 		newItems = [NSMutableArray arrayWithCapacity:[confirmationSteps count]];
 		for (NSDictionary *itemDict in confirmationSteps) {
-			[newItems addObject:[[[MBMConfirmationStep alloc] initWithDictionary:itemDict andInstallPath:installFilePath] autorelease]];
+			[newItems addObject:[[[MBMConfirmationStep alloc] initWithDictionary:itemDict andInstallationFilePath:installFilePath] autorelease]];
 		}
 		
 		//	Set our confirmation list to the new array, but only if it is not nil

@@ -40,7 +40,7 @@
 
 #pragma mark - Memory Management
 
-- (id)initWithDictionary:(NSDictionary *)aDictionary andInstallPath:(NSString *)installFilePath {
+- (id)initWithDictionary:(NSDictionary *)aDictionary andInstallationFilePath:(NSString *)installFilePath {
     self = [super init];
     if (self) {
         // Initialization code here.
