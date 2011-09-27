@@ -43,6 +43,9 @@
 		
 		//	Get the localized name if there is one
 		self.name = [[self.bundle localizedInfoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
+		if (self.name == nil) {
+			self.name = [[self.bundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
+		}
 		
 		//	Get the image from the icons file
 		NSString	*iconFileName = [[self.bundle infoDictionary] valueForKey:@"CFBundleIconFile"];

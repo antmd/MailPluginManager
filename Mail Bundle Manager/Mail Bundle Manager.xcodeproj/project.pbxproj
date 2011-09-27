@@ -35,6 +35,10 @@
 		D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
 		D2D1E6D81431BC3C002FF1B1 /* InstallationModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */; };
 		D2D1E6DA1431C171002FF1B1 /* install-manifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6D91431C171002FF1B1 /* install-manifest.plist */; };
+		D2D1E6DD1431EC2A002FF1B1 /* MailBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */; };
+		D2D1E6DE1431EF69002FF1B1 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
+		D2D1E6E01431F00E002FF1B1 /* Sparkle.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
+		D2D1E73014320D1C002FF1B1 /* ExamplePlugin.mailbundle in Copy Test Data */ = {isa = PBXBuildFile; fileRef = D2D1E72F14320D1B002FF1B1 /* ExamplePlugin.mailbundle */; };
 		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
 		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
 		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
@@ -65,6 +69,28 @@
 				D2E902AA141E70290058618F /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2D1E6DF1431EFF7002FF1B1 /* Copy Framework */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D2D1E6E01431F00E002FF1B1 /* Sparkle.framework in Copy Framework */,
+			);
+			name = "Copy Framework";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2D1E70814320BA6002FF1B1 /* Copy Test Data */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Tests;
+			dstSubfolderSpec = 7;
+			files = (
+				D2D1E73014320D1C002FF1B1 /* ExamplePlugin.mailbundle in Copy Test Data */,
+			);
+			name = "Copy Test Data";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -120,6 +146,24 @@
 		D2D1E6D61431BC3C002FF1B1 /* InstallationModelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallationModelTests.h; sourceTree = "<group>"; };
 		D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallationModelTests.m; sourceTree = "<group>"; };
 		D2D1E6D91431C171002FF1B1 /* install-manifest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "install-manifest.plist"; sourceTree = "<group>"; };
+		D2D1E6DB1431EC29002FF1B1 /* MailBundleTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailBundleTests.h; sourceTree = "<group>"; };
+		D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailBundleTests.m; sourceTree = "<group>"; };
+		D2D1E70C14320C33002FF1B1 /* LKMailFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LKMailFramework.framework; sourceTree = "<group>"; };
+		D2D1E70D14320C33002FF1B1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2D1E70F14320C33002FF1B1 /* ExamplePlugin */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ExamplePlugin; sourceTree = "<group>"; };
+		D2D1E71114320C33002FF1B1 /* data.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = data.strings; sourceTree = "<group>"; };
+		D2D1E71214320C33002FF1B1 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		D2D1E71414320C33002FF1B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D2D1E71614320C33002FF1B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D2D1E71814320C33002FF1B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/OrderView.html; sourceTree = "<group>"; };
+		D2D1E71914320C33002FF1B1 /* Example.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Example.png; sourceTree = "<group>"; };
+		D2D1E71A14320C33002FF1B1 /* ExamplePrefsView.nib */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ExamplePrefsView.nib; sourceTree = "<group>"; };
+		D2D1E71B14320C33002FF1B1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/OrderView.html; sourceTree = "<group>"; };
+		D2D1E71C14320C33002FF1B1 /* jquery-1.4.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-1.4.2.js"; sourceTree = "<group>"; };
+		D2D1E71E14320C33002FF1B1 /* lklogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lklogo.png; sourceTree = "<group>"; };
+		D2D1E71F14320C33002FF1B1 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		D2D1E72014320C33002FF1B1 /* OrderView.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = OrderView.css; sourceTree = "<group>"; };
+		D2D1E72F14320D1B002FF1B1 /* ExamplePlugin.mailbundle */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ExamplePlugin.mailbundle; path = "Mail Bundle ManagerTests/TestData/ExamplePlugin.mailbundle"; sourceTree = "<group>"; };
 		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
 		D2E90292141E36110058618F /* MBMMySparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMySparkleDelegate.h; sourceTree = "<group>"; };
 		D2E90293141E36110058618F /* MBMMySparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMySparkleDelegate.m; sourceTree = "<group>"; };
@@ -150,6 +194,7 @@
 			files = (
 				D216B35D141DFDE2003788DC /* SenTestingKit.framework in Frameworks */,
 				D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */,
+				D2D1E6DE1431EF69002FF1B1 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +204,7 @@
 		D216B32F141DFDE1003788DC = {
 			isa = PBXGroup;
 			children = (
+				D2D1E72F14320D1B002FF1B1 /* ExamplePlugin.mailbundle */,
 				D273100D142BD52E00EB5CB7 /* QuartzCore.framework */,
 				D216B344141DFDE1003788DC /* Mail Bundle Manager */,
 				D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */,
@@ -225,6 +271,9 @@
 			children = (
 				D2D1E6D61431BC3C002FF1B1 /* InstallationModelTests.h */,
 				D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */,
+				D2D1E6DB1431EC29002FF1B1 /* MailBundleTests.h */,
+				D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */,
+				D2D1E6E114320B61002FF1B1 /* TestData */,
 				D216B362141DFDE2003788DC /* Supporting Files */,
 			);
 			path = "Mail Bundle ManagerTests";
@@ -261,6 +310,75 @@
 			children = (
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		D2D1E6E114320B61002FF1B1 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				D2D1E70914320C33002FF1B1 /* ExamplePlugin.mailbundle */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
+		D2D1E70914320C33002FF1B1 /* ExamplePlugin.mailbundle */ = {
+			isa = PBXGroup;
+			children = (
+				D2D1E70A14320C33002FF1B1 /* Contents */,
+			);
+			path = ExamplePlugin.mailbundle;
+			sourceTree = "<group>";
+		};
+		D2D1E70A14320C33002FF1B1 /* Contents */ = {
+			isa = PBXGroup;
+			children = (
+				D2D1E70B14320C33002FF1B1 /* Frameworks */,
+				D2D1E70D14320C33002FF1B1 /* Info.plist */,
+				D2D1E70E14320C33002FF1B1 /* MacOS */,
+				D2D1E71014320C33002FF1B1 /* Resources */,
+			);
+			path = Contents;
+			sourceTree = "<group>";
+		};
+		D2D1E70B14320C33002FF1B1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D2D1E70C14320C33002FF1B1 /* LKMailFramework.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		D2D1E70E14320C33002FF1B1 /* MacOS */ = {
+			isa = PBXGroup;
+			children = (
+				D2D1E70F14320C33002FF1B1 /* ExamplePlugin */,
+			);
+			path = MacOS;
+			sourceTree = "<group>";
+		};
+		D2D1E71014320C33002FF1B1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D2D1E71114320C33002FF1B1 /* data.strings */,
+				D2D1E71214320C33002FF1B1 /* dsa_pub.pem */,
+				D2D1E71314320C33002FF1B1 /* InfoPlist.strings */,
+				D2D1E71514320C33002FF1B1 /* Localizable.strings */,
+				D2D1E71714320C33002FF1B1 /* OrderView.html */,
+				D2D1E71914320C33002FF1B1 /* Example.png */,
+				D2D1E71A14320C33002FF1B1 /* ExamplePrefsView.nib */,
+				D2D1E71C14320C33002FF1B1 /* jquery-1.4.2.js */,
+				D2D1E71D14320C33002FF1B1 /* lkstore-style */,
+				D2D1E72014320C33002FF1B1 /* OrderView.css */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D2D1E71D14320C33002FF1B1 /* lkstore-style */ = {
+			isa = PBXGroup;
+			children = (
+				D2D1E71E14320C33002FF1B1 /* lklogo.png */,
+				D2D1E71F14320C33002FF1B1 /* style.css */,
+			);
+			path = "lkstore-style";
 			sourceTree = "<group>";
 		};
 		D2E9029B141E638B0058618F /* Project */ = {
@@ -362,8 +480,10 @@
 			buildPhases = (
 				D216B356141DFDE2003788DC /* Sources */,
 				D216B357141DFDE2003788DC /* Frameworks */,
+				D2D1E6DF1431EFF7002FF1B1 /* Copy Framework */,
 				D216B358141DFDE2003788DC /* Resources */,
-				D216B359141DFDE2003788DC /* ShellScript */,
+				D2D1E70814320BA6002FF1B1 /* Copy Test Data */,
+				D216B359141DFDE2003788DC /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -390,6 +510,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
 			);
 			mainGroup = D216B32F141DFDE1003788DC;
 			productRefGroup = D216B33B141DFDE1003788DC /* Products */;
@@ -432,13 +553,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		D216B359141DFDE2003788DC /* ShellScript */ = {
+		D216B359141DFDE2003788DC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -477,6 +599,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2D1E6D81431BC3C002FF1B1 /* InstallationModelTests.m in Sources */,
+				D2D1E6DD1431EC2A002FF1B1 /* MailBundleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +644,31 @@
 				D216B365141DFDE2003788DC /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D2D1E71314320C33002FF1B1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2D1E71414320C33002FF1B1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D2D1E71514320C33002FF1B1 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2D1E71614320C33002FF1B1 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		D2D1E71714320C33002FF1B1 /* OrderView.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2D1E71814320C33002FF1B1 /* en */,
+				D2D1E71B14320C33002FF1B1 /* fr */,
+			);
+			name = OrderView.html;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -607,7 +755,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Bundle Manager.app/Contents/MacOS/Mail Bundle Manager";
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SRCROOT)/Mail Bundle Manager\"",
+					"\"$(SRCROOT)/Mail Bundle ManagerTests/TestData/ExamplePlugin.mailbundle/Contents/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Bundle ManagerTests/Mail Bundle ManagerTests-Info.plist";
@@ -621,7 +773,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Bundle Manager.app/Contents/MacOS/Mail Bundle Manager";
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SRCROOT)/Mail Bundle Manager\"",
+					"\"$(SRCROOT)/Mail Bundle ManagerTests/TestData/ExamplePlugin.mailbundle/Contents/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Bundle ManagerTests/Mail Bundle ManagerTests-Info.plist";
