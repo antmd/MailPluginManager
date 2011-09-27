@@ -16,7 +16,6 @@
 		D216B35D141DFDE2003788DC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B35C141DFDE2003788DC /* SenTestingKit.framework */; };
 		D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
-		D216B369141DFDE2003788DC /* Mail_Bundle_ManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B368141DFDE2003788DC /* Mail_Bundle_ManagerTests.m */; };
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
 		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
@@ -34,6 +33,8 @@
 		D2D1E6C1142FD8B4002FF1B1 /* errors.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6C0142FD8B4002FF1B1 /* errors.strings */; };
 		D2D1E6C914307968002FF1B1 /* LKError.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6C814307968002FF1B1 /* LKError.m */; };
 		D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
+		D2D1E6D81431BC3C002FF1B1 /* InstallationModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */; };
+		D2D1E6DA1431C171002FF1B1 /* installationModel.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6D91431C171002FF1B1 /* installationModel.plist */; };
 		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
 		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
 		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
@@ -86,8 +87,6 @@
 		D216B35C141DFDE2003788DC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D216B363141DFDE2003788DC /* Mail Bundle ManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mail Bundle ManagerTests-Info.plist"; sourceTree = "<group>"; };
 		D216B365141DFDE2003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D216B367141DFDE2003788DC /* Mail_Bundle_ManagerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mail_Bundle_ManagerTests.h; sourceTree = "<group>"; };
-		D216B368141DFDE2003788DC /* Mail_Bundle_ManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mail_Bundle_ManagerTests.m; sourceTree = "<group>"; };
 		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMConstants.h; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMInstallationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationModel.h; sourceTree = "<group>"; };
@@ -118,6 +117,9 @@
 		D2D1E6C814307968002FF1B1 /* LKError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKError.m; path = ../../LKKit/Helpers/LKError.m; sourceTree = "<group>"; };
 		D2D1E6CA1430827F002FF1B1 /* NSString+LKHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKHelper.h"; path = "../../LKKit/Categories/NSString+LKHelper.h"; sourceTree = "<group>"; };
 		D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKHelper.m"; path = "../../LKKit/Categories/NSString+LKHelper.m"; sourceTree = "<group>"; };
+		D2D1E6D61431BC3C002FF1B1 /* InstallationModelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallationModelTests.h; sourceTree = "<group>"; };
+		D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallationModelTests.m; sourceTree = "<group>"; };
+		D2D1E6D91431C171002FF1B1 /* installationModel.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = installationModel.plist; sourceTree = "<group>"; };
 		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
 		D2E90292141E36110058618F /* MBMMySparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMySparkleDelegate.h; sourceTree = "<group>"; };
 		D2E90293141E36110058618F /* MBMMySparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMySparkleDelegate.m; sourceTree = "<group>"; };
@@ -221,8 +223,8 @@
 		D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */ = {
 			isa = PBXGroup;
 			children = (
-				D216B367141DFDE2003788DC /* Mail_Bundle_ManagerTests.h */,
-				D216B368141DFDE2003788DC /* Mail_Bundle_ManagerTests.m */,
+				D2D1E6D61431BC3C002FF1B1 /* InstallationModelTests.h */,
+				D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */,
 				D216B362141DFDE2003788DC /* Supporting Files */,
 			);
 			path = "Mail Bundle ManagerTests";
@@ -231,6 +233,7 @@
 		D216B362141DFDE2003788DC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D2D1E6D91431C171002FF1B1 /* installationModel.plist */,
 				D216B363141DFDE2003788DC /* Mail Bundle ManagerTests-Info.plist */,
 				D216B364141DFDE2003788DC /* InfoPlist.strings */,
 			);
@@ -422,6 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */,
+				D2D1E6DA1431C171002FF1B1 /* installationModel.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,7 +476,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D216B369141DFDE2003788DC /* Mail_Bundle_ManagerTests.m in Sources */,
+				D2D1E6D81431BC3C002FF1B1 /* InstallationModelTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,7 +578,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/BundleManager-hkiioppegywfxnfbleygmdtegopz/Build/Products/Debug\"",
 					"\"$(SRCROOT)/Mail Bundle Manager\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -590,7 +593,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/BundleManager-hkiioppegywfxnfbleygmdtegopz/Build/Products/Debug\"",
 					"\"$(SRCROOT)/Mail Bundle Manager\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
