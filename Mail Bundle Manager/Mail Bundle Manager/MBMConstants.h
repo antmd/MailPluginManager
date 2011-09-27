@@ -73,5 +73,5 @@ typedef enum {
 #define PerformOnAppDelegate1(aSelectorString, object)				[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString) withObject:object]
 #define PerformOnAppDelegate2(aSelectorString, object1, object2)	[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString) withObject:object1 withObject:object2]
 
-#define	MBMLocalizedStringFromInstallFile(string, installFilePath)	NSLocalizedStringFromTableInBundle(string, nil, [NSBundle bundleWithPath:installFilePath], @"")
+#define	MBMLocalizedStringFromInstallFile(string, installFilePath)	(([NSBundle bundleWithPath:installFilePath]==nil)?string:NSLocalizedStringFromTableInBundle(string, nil, [NSBundle bundleWithPath:installFilePath], @""))
 
