@@ -15,6 +15,7 @@
 
 #pragma mark - Accessors
 
+@synthesize bundleContentsPath;
 @synthesize userHomePath;
 @synthesize	filePath;
 @synthesize	fileContents;
@@ -27,6 +28,7 @@
 @synthesize	confirmStep1;
 @synthesize	confirmStep2;
 @synthesize	confirmStep3;
+@synthesize	confirmStep4;
 
 #pragma mark - InstallationItem
 
@@ -92,7 +94,7 @@
 
 #pragma mark - Confirmation Steps
 
-- (void)test_010_Step_Complete {
+- (void)test_010_Step_Complete_Notes {
 	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep1 andInstallationFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
@@ -106,6 +108,70 @@
 	STAssertFalse(aStep.agreementAccepted, nil);
 }
 
+- (void)test_011_Step_Complete_License {
+	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep2 andInstallationFilePath:@"/Short"] autorelease];
+	aStep.agreementAccepted = YES;
+	
+	//	Test the item
+	STAssertNotNil(aStep, nil);
+	STAssertEquals(aStep.type, kMBMConfirmationTypeLicense, nil);
+	STAssertEqualObjects(aStep.bulletTitle, @"License", nil);
+	STAssertEqualObjects(aStep.title, @"License", nil);
+	STAssertEqualObjects(aStep.path, @"/Short/MyLicense.rtf", nil);
+	STAssertTrue(aStep.requiresAgreement, nil);
+	STAssertFalse(aStep.hasHTMLContent, nil);
+	STAssertTrue(aStep.agreementAccepted, nil);
+}
+
+- (void)test_012_Step_Complete_License_2 {
+	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep3 andInstallationFilePath:@"/Short"] autorelease];
+	
+	//	Test the item
+	STAssertNotNil(aStep, nil);
+	STAssertEquals(aStep.type, kMBMConfirmationTypeLicense, nil);
+	STAssertEqualObjects(aStep.bulletTitle, @"License", nil);
+	STAssertEqualObjects(aStep.title, @"User License", nil);
+	STAssertEqualObjects(aStep.path, @"file:///Short/Second License.html", nil);
+	STAssertFalse(aStep.requiresAgreement, nil);
+	STAssertTrue(aStep.hasHTMLContent, nil);
+	STAssertFalse(aStep.agreementAccepted, nil);
+}
+
+- (void)test_013_Step_Complete_Confirm {
+	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep4 andInstallationFilePath:@"/Short"] autorelease];
+	
+	//	Test the item
+	STAssertNotNil(aStep, nil);
+	STAssertEquals(aStep.type, kMBMConfirmationTypeConfirm, nil);
+	STAssertEqualObjects(aStep.bulletTitle, @"Install", nil);
+	STAssertEqualObjects(aStep.title, @"Install Summary", nil);
+	STAssertNil(aStep.path, nil);
+	STAssertFalse(aStep.requiresAgreement, nil);
+	STAssertFalse(aStep.hasHTMLContent, nil);
+	STAssertFalse(aStep.agreementAccepted, nil);
+}
+
+
+#pragma mark - Full Model
+
+- (void)test_020_Model_Full {
+	MBMInstallationModel	*theModel = [[[MBMInstallationModel alloc] initWithInstallPackageAtPath:[self.filePath stringByDeletingLastPathComponent]] autorelease];
+
+	//	Test the item
+	STAssertNotNil(theModel, nil);
+	STAssertEqualObjects(theModel.displayName, @"ExamplePlugin", nil);
+	STAssertEqualObjects(theModel.backgroundImagePath, [self.bundleContentsPath stringByAppendingPathComponent:@"Resources/image.png"], nil);
+	STAssertNotNil(theModel.bundleManager, nil);
+	STAssertEqualsWithAccuracy(theModel.minOSVersion, 10.6, 0.01, nil);
+	STAssertEqualsWithAccuracy(theModel.maxOSVersion, 10.7, 0.01, nil);
+	STAssertEqualsWithAccuracy(theModel.minMailVersion, 4.2, 0.01, nil);
+	STAssertTrue(theModel.shouldInstallManager, nil);
+	STAssertEquals([theModel.confirmationStepList count], (NSUInteger)4, nil);
+	STAssertEquals([theModel.installationItemList count], (NSUInteger)3, nil);
+	STAssertEquals(theModel.totalInstallationItemCount, (NSUInteger)4, nil);
+	STAssertEquals(theModel.confirmationStepCount, (NSUInteger)4, nil);
+}
+
 
 
 #pragma mark - Admin
@@ -115,8 +181,9 @@
     [super setUp];
     
     // Set-up code here.
+	self.bundleContentsPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"/Contents"];
 	self.userHomePath = NSHomeDirectory();//[NSSearchPathForDirectoriesInDomains(NSUserDirectory, NSUserDomainMask, YES) lastObject];
-	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"installationModel" ofType:@"plist"];
+	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"install-manifest" ofType:@"plist"];
 	self.fileContents = [NSDictionary dictionaryWithContentsOfFile:self.filePath];
 	self.installItemContents = [self.fileContents valueForKey:kMBMInstallItemsKey];
 	for (NSUInteger i = 0; i < 4; i++) {
@@ -125,7 +192,7 @@
 		}
 	}
 	self.confirmStepContents = [self.fileContents valueForKey:kMBMConfirmationStepsKey];
-	for (NSUInteger i = 0; i < 3; i++) {
+	for (NSUInteger i = 0; i < 4; i++) {
 		if (i < [self.confirmStepContents count]) {
 			[self setValue:[self.confirmStepContents objectAtIndex:i] forKey:[NSString stringWithFormat:@"confirmStep%d", i+1]];
 		}
@@ -136,6 +203,7 @@
 - (void)tearDown
 {
     // Tear-down code here.
+	self.bundleContentsPath = nil;
 	self.userHomePath = nil;
 	self.filePath = nil;
 	self.fileContents = nil;
@@ -148,6 +216,7 @@
 	self.confirmStep1 = nil;
 	self.confirmStep2 = nil;
 	self.confirmStep3 = nil;
+	self.confirmStep4 = nil;
     
     [super tearDown];
 }

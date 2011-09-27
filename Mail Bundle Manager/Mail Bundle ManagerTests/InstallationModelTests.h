@@ -9,6 +9,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 @interface InstallationModelTests : SenTestCase
+@property	(nonatomic, retain)	NSString		*bundleContentsPath;
 @property	(nonatomic, retain)	NSString		*userHomePath;
 @property	(nonatomic, retain)	NSString		*filePath;
 @property	(nonatomic, retain)	NSDictionary	*fileContents;
@@ -21,4 +22,5 @@
 @property	(nonatomic, retain)	NSDictionary	*confirmStep1;
 @property	(nonatomic, retain)	NSDictionary	*confirmStep2;
 @property	(nonatomic, retain)	NSDictionary	*confirmStep3;
+@property	(nonatomic, retain)	NSDictionary	*confirmStep4;
 @end

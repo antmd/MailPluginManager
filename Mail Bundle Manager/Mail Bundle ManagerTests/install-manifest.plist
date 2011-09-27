@@ -25,6 +25,20 @@
 			<string>license</string>
 		</dict>
 		<dict>
+			<key>bullet-title</key>
+			<string>License</string>
+			<key>license-agreement-required</key>
+			<false/>
+			<key>path</key>
+			<string>Second License.html</string>
+			<key>title</key>
+			<string>User License</string>
+			<key>type</key>
+			<string>license</string>
+		</dict>
+		<dict>
+			<key>bullet-title</key>
+			<string>Install</string>
 			<key>title</key>
 			<string>Install Summary</string>
 			<key>type</key>
@@ -93,6 +107,10 @@
 			<string>Delivery/empty.txt</string>
 		</dict>
 	</array>
+	<key>max-os-major-version</key>
+	<real>10.699999999999999</real>
+	<key>min-mail-version</key>
+	<real>4.2000000000000002</real>
 	<key>min-os-major-version</key>
 	<real>10.6</real>
 </dict>

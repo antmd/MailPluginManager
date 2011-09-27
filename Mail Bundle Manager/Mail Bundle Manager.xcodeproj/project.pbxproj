@@ -34,7 +34,7 @@
 		D2D1E6C914307968002FF1B1 /* LKError.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6C814307968002FF1B1 /* LKError.m */; };
 		D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
 		D2D1E6D81431BC3C002FF1B1 /* InstallationModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */; };
-		D2D1E6DA1431C171002FF1B1 /* installationModel.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6D91431C171002FF1B1 /* installationModel.plist */; };
+		D2D1E6DA1431C171002FF1B1 /* install-manifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6D91431C171002FF1B1 /* install-manifest.plist */; };
 		D2D7BEF014223B840059E153 /* InstallDocument.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D7BEEF14223B840059E153 /* InstallDocument.png */; };
 		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
 		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
@@ -119,7 +119,7 @@
 		D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKHelper.m"; path = "../../LKKit/Categories/NSString+LKHelper.m"; sourceTree = "<group>"; };
 		D2D1E6D61431BC3C002FF1B1 /* InstallationModelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallationModelTests.h; sourceTree = "<group>"; };
 		D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallationModelTests.m; sourceTree = "<group>"; };
-		D2D1E6D91431C171002FF1B1 /* installationModel.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = installationModel.plist; sourceTree = "<group>"; };
+		D2D1E6D91431C171002FF1B1 /* install-manifest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "install-manifest.plist"; sourceTree = "<group>"; };
 		D2D7BEEF14223B840059E153 /* InstallDocument.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InstallDocument.png; sourceTree = "<group>"; };
 		D2E90292141E36110058618F /* MBMMySparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMySparkleDelegate.h; sourceTree = "<group>"; };
 		D2E90293141E36110058618F /* MBMMySparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMySparkleDelegate.m; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 		D216B362141DFDE2003788DC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D2D1E6D91431C171002FF1B1 /* installationModel.plist */,
+				D2D1E6D91431C171002FF1B1 /* install-manifest.plist */,
 				D216B363141DFDE2003788DC /* Mail Bundle ManagerTests-Info.plist */,
 				D216B364141DFDE2003788DC /* InfoPlist.strings */,
 			);
@@ -425,7 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */,
-				D2D1E6DA1431C171002FF1B1 /* installationModel.plist in Resources */,
+				D2D1E6DA1431C171002FF1B1 /* install-manifest.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
