@@ -25,6 +25,7 @@
 @synthesize name = _name;
 @synthesize icon = _icon;
 @synthesize bundle = _bundle;
+@synthesize usesBundleManager = _usesBundleManager;
 @synthesize status = _status;
 @synthesize sparkleDelegate = _sparkleDelegate;
 
@@ -111,17 +112,23 @@
     self = [super init];
     if (self) {
         // Initialization code here.
-		self.bundle = [NSBundle bundleWithPath:bundlePath];
+		_bundle = [[NSBundle bundleWithPath:bundlePath] retain];
 		
 		//	Get the localized name if there is one
-		self.name = [[self.bundle localizedInfoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
-		if (self.name == nil) {
-			self.name = [[self.bundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
+		NSString	*tempName = [[_bundle localizedInfoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
+		if (tempName == nil) {
+			tempName = [[_bundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
+		}
+		_name = [tempName copy];
+		
+		//	Look to see if it has the key indicating that it uses MBM
+		if ([[_bundle infoDictionary] valueForKey:kMBMBundleUsesMBMKey]) {
+			_usesBundleManager = [[[_bundle infoDictionary] valueForKey:kMBMBundleUsesMBMKey] boolValue];
 		}
 		
 		//	Get the image from the icons file
-		NSString	*iconFileName = [[self.bundle infoDictionary] valueForKey:@"CFBundleIconFile"];
-		self.icon = [[[NSImage alloc] initWithContentsOfFile:[self.bundle pathForImageResource:iconFileName]] autorelease];
+		NSString	*iconFileName = [[_bundle infoDictionary] valueForKey:@"CFBundleIconFile"];
+		_icon = [[NSImage alloc] initWithContentsOfFile:[_bundle pathForImageResource:iconFileName]];
 
     }
     

@@ -23,6 +23,7 @@ NSString	*kMBMUninstallerFileExtension = @"mbremove";
 NSString	*kMBMManifestName = @"mbm-manifest";
 NSString	*kMBMMailFolderName = @"Mail";
 NSString	*kMBMBundleFolderName = @"Bundles";
+NSString	*kMBMBundleUsesMBMKey = @"PluginUsesMailBundleManager";
 
 //	Keys for top level of manifest
 NSString	*kMBMManifestTypeKey = @"manifest-type";

@@ -21,6 +21,7 @@ extern NSString	*kMBMUninstallerFileExtension;
 extern NSString	*kMBMManifestName;
 extern NSString	*kMBMMailFolderName;
 extern NSString	*kMBMBundleFolderName;
+extern NSString	*kMBMBundleUsesMBMKey;
 
 //	Keys for top level of manifest
 extern NSString	*kMBMManifestTypeKey;

@@ -18,6 +18,7 @@
 @property	(nonatomic, copy, readonly)		NSString		*version;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
+@property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
 @property	(nonatomic, assign)				MBMBundleStatus	status;
 
 @property	(nonatomic, retain)				MBMSparkleDelegate	*sparkleDelegate;

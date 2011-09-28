@@ -576,30 +576,29 @@ typedef enum {
 - (BOOL)removeBundleManagerIfReasonable {
 	
 	MBMManifestModel	*model = self.manifestModel;
+	BOOL				shouldRemove = NO;
 	
 	//	Test the existing bundles first
-	
+	NSArray	*mailBundleList = [MBMMailBundle allMailBundles];
 	//	Test to ensure what rules we should use
-	if (model.canDeleteManagerIfNoBundlesLeft) {
-		
+	if ((model.canDeleteManagerIfNoBundlesLeft) && ([mailBundleList count] > 0)) {
+		shouldRemove = YES;
 	}
-
-	NSFileManager		*manager = [NSFileManager defaultManager];
-	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
-	
-	//	Ensure that we are deleting the bundle
-	NSBundle	*deleteBundle = nil;
-	if ([manager fileExistsAtPath:model.bundleManager.destinationPath]) {
-		//	Then ensure that it is a package
-		if ([workspace isFilePackageAtPath:model.bundleManager.destinationPath]) {
-			deleteBundle = [NSBundle bundleWithPath:model.bundleManager.destinationPath];
+	if (model.canDeleteManagerIfNotUsedByOthers) {
+		shouldRemove = YES;
+		for (MBMMailBundle *aMailBundle in mailBundleList) {
+			if (aMailBundle.usesBundleManager) {
+				shouldRemove = NO;
+			}
 		}
 	}
-	//	If there is a destination already, check it's bundle id matches and version is < installing one
-	if (deleteBundle) {
+
+	//	If we should remove, do it and return those results
+	if (shouldRemove) {
+		return [self removeItem:model.bundleManager];
 	}
 	
-	return YES;
+	return NO;
 }
 
 
