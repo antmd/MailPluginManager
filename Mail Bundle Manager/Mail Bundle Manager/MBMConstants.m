@@ -60,3 +60,81 @@ NSString	*kMBMMailBundleUUIDListKey = @"SupportedPluginCompatibilityUUIDs";
 //	Names for objects in MBM
 NSString	*kMBMAnimationBackgroundImageName = @"InstallAnimationBackground";
 
+
+
+#pragma mark - Global Functions
+
+BOOL IsMailRunning(void) {
+	BOOL mailIsRunning = NO;
+	NSArray *launchedApps = [[NSWorkspace sharedWorkspace] launchedApplications];
+	for (NSDictionary *app in launchedApps) {
+		if ([[app objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kMBMMailBundleIdentifier])
+			mailIsRunning = YES;
+	}
+	return mailIsRunning;
+}
+
+
+BOOL QuitMail(void) {
+	
+	//	If it's not running, just return success
+	if (!IsMailRunning()) {
+		return YES;
+	}
+	
+	NSString		*bundleID = kMBMMailBundleIdentifier;
+	OSStatus		result = noErr;
+	AEAddressDesc	target = {};
+	AEInitializeDesc(&target);
+	
+	const char	*bundleIDString = [bundleID UTF8String];
+	
+	result = AECreateDesc(typeApplicationBundleID, bundleIDString, strlen(bundleIDString), &target);
+	if (result == noErr) {
+		AppleEvent	event = {};
+		AEInitializeDesc(&event);
+		
+		result = AECreateAppleEvent( kCoreEventClass, kAEQuitApplication, &target, kAutoGenerateReturnID, kAnyTransactionID, &event );
+		if (result == noErr) {
+			AppleEvent	reply = {};
+			AEInitializeDesc(&reply);
+			
+			// Send the Apple event and Wait 10 seconds for it to quit  (before timing out)	
+			// if the wait is not here Bundle Manager quits and before Host Application does and the relaunch will relaunch an open application.
+			// then the Apple event will be processed and quit the open application and so it will seem that the application will not relaunch.
+			
+			result = AESendMessage(&event, &reply, kAEWaitReply, 600);
+			
+			AEDisposeDesc(&event);
+		}
+		
+		AEDisposeDesc(&target);
+	}
+	
+	return (result == noErr);
+}
+
+BOOL IsValidPackageFile(NSString *packageFilePath) {
+	
+	//	The extension should be our extension
+	if (![[packageFilePath pathExtension] isEqualToString:kMBMInstallerFileExtension]) {
+		ALog(@"Installation file (%@) does not have a proper file extension (%@).", packageFilePath, kMBMInstallerFileExtension);
+		return NO;
+	}
+	
+	//	Also ensure that the path is a folder and exists
+	BOOL	isFolder = NO;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:packageFilePath isDirectory:&isFolder] || !isFolder) {
+		ALog(@"Installation file (%@) either doesn't exist or is not a folder.", packageFilePath);
+		return NO;
+	}
+	
+	//	Ensure that the filename is a package
+	if (![[NSWorkspace sharedWorkspace] isFilePackageAtPath:packageFilePath]) {
+		ALog(@"Installation file (%@) is not a package.", packageFilePath);
+		return NO;
+	}
+	
+	return YES;
+}
+

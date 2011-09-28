@@ -37,7 +37,7 @@
 	
 	//	If the relaunchPath is for Mail, then quit it here
 	if (self.quitMail) {
-		[MBMAppDelegate quitMail];
+		QuitMail();
 	}
 }
 

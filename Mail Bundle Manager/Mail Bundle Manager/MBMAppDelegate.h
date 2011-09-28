@@ -17,9 +17,6 @@
 
 @property (assign)	BOOL		installing;
 @property (assign)	BOOL		uninstalling;
-@property (assign)	BOOL		updating;
-@property (assign)	BOOL		checkingCrashReports;
-@property (assign)	BOOL		validating;
 @property (assign)	BOOL		managing;
 
 @property (assign)				BOOL				runningFromInstallDisk;
@@ -29,14 +26,8 @@
 
 @property (nonatomic, retain)	NSWindowController	*currentController;
 
-- (void)validateAllBundles;
 - (void)showBundleManagerWindow;
-
-- (void)restartMail;
-
 - (void)ensureRunningBestVersion;
-
-+ (BOOL)isMailRunning;
-+ (BOOL)quitMail;
+- (void)restartMail;
 
 @end
