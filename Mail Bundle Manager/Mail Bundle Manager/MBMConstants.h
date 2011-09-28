@@ -53,10 +53,10 @@ extern NSString	*kMBMMessageBundlePath;
 extern NSString	*kMBMAnimationBackgroundImageName;
 
 typedef enum {
+	kMBMStatusUnknown,
 	kMBMStatusEnabled,
 	kMBMStatusDisabled,
-	kMBMStatusUninstalled,
-	kMBMStatusUnknown
+	kMBMStatusUninstalled
 } MBMBundleStatus;
 
 typedef enum {

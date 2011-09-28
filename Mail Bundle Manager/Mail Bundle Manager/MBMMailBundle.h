@@ -21,12 +21,13 @@
 
 @property	(nonatomic, retain)				MBMSparkleDelegate	*sparkleDelegate;
 
-+ (MBMMailBundle *)mailBundleForIdentifier:(NSString *)aBundleIdentifier;
 + (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath;
 + (NSString *)mailFolderPath;
 + (NSString *)bundlesPath;
 + (NSString *)latestDisabledBundlesPath;
++ (NSString *)latestDisabledBundlesPathShouldCreate:(BOOL)createNew;
 + (NSArray *)disabledBundlesPathList;
++ (NSString *)disabledBundleFolderName;
 + (NSComparisonResult)compareVersion:(NSString *)first toVersion:(NSString *)second;
 
 - (id)initWithBundleIdentifier:(NSString *)aBundleIdentifier andPath:(NSString *)bundlePath;

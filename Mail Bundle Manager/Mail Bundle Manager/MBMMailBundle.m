@@ -17,9 +17,15 @@
 @property	(nonatomic, copy, readwrite)		NSString		*version;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
+
+- (BOOL)isInActiveBundlesFolder;
+- (BOOL)isInDisabledBundlesFolder;
 @end
 
 @implementation MBMMailBundle
+
+
+#pragma mark - Accessors
 
 @synthesize name = _name;
 @synthesize path = _path;
@@ -29,10 +35,73 @@
 @synthesize status = _status;
 @synthesize sparkleDelegate = _sparkleDelegate;
 
+- (void)setStatus:(MBMBundleStatus)newStatus {
+	//	If there is no change, do nothing
+	if (newStatus == _status) {
+		return;
+	}
+	
+	//	Default is to *enable* it
+	NSString	*fromPath = self.path;
+	NSString	*toPath = nil;
 
-
-#pragma marl - Memory Management
+	//	Change the toPath it we are not enabling it
+	switch (newStatus) {
+		case kMBMStatusEnabled:
+			toPath = [[self class] bundlesPath];
+			break;
 			
+		case kMBMStatusDisabled:
+			toPath = [[self class] latestDisabledBundlesPathShouldCreate:YES];
+			break;
+			
+		case kMBMStatusUninstalled:
+			toPath = [NSHomeDirectory() stringByAppendingPathComponent:@".Trash"];
+			break;
+			
+			//	For these don't do anything
+		case kMBMStatusUnknown:
+		default:
+			return;
+			break;
+	}
+	
+	//	Make the toPath a complete one with the last path component
+	toPath = [toPath stringByAppendingPathComponent:[self.path lastPathComponent]];
+	
+	//	Now do the move
+	NSError	*error;
+	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
+		NSLog(@"Error moving bundle (enable/disable):%@", error);
+		return;
+	}
+	
+	//	Then update the path
+	self.path = toPath;
+	
+	//	Save the new status value
+	_status = newStatus;
+}
+
+- (MBMBundleStatus)status {
+	if (_status == kMBMStatusUnknown) {
+		//	Have to test disabled first, because the bundles matches as prefix for a disabled
+		if ([self isInDisabledBundlesFolder]) {
+			_status = kMBMStatusDisabled;
+		}
+		else if ([self isInActiveBundlesFolder]) {
+			_status = kMBMStatusEnabled;
+		}
+		else {
+			_status = kMBMStatusUninstalled;
+		}
+	}
+	return _status;
+}
+
+
+#pragma mark - Memory Management
+
 - (id)initWithBundleIdentifier:(NSString *)aBundleIdentifier andPath:(NSString *)bundlePath {
     self = [super init];
     if (self) {
@@ -56,6 +125,7 @@
     return self;
 }
 
+
 - (void)dealloc {
 	self.name = nil;
 	self.path = nil;
@@ -68,37 +138,20 @@
 
 
 
-#pragma mark - Accessors
+#pragma mark - Testing
 
-- (void)setStatus:(MBMBundleStatus)newStatus {
-	//	If there is no change, do nothing
-	if (newStatus == _status) {
-		return;
-	}
-	
-	//	If the new status is either enable or disable, then handle that change
-	if ((newStatus == kMBMStatusEnabled) || (newStatus == kMBMStatusDisabled)) {
-		//	Default is to *enable* it
-		NSString	*fromPath = [[self class] bundlesPath];
-		NSString	*toPath = self.path;
-		
-		//	If it is currently enabled, set to change that
-		if (_status == kMBMStatusEnabled) {
-			fromPath = self.path;
-			toPath = [[self class] latestDisabledBundlesPath];
-		}
-		
-		//	Now do the move
-		NSError	*error;
-		if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
-			NSLog(@"Error moving bundle (enable/disable):%@", error);
-		}
-	}
-	
-	//	Save the new status value
-	_status = newStatus;
+- (BOOL)isInActiveBundlesFolder {
+	return [self.path hasPrefix:[[self class] bundlesPath]];
 }
 
+- (BOOL)isInDisabledBundlesFolder {
+	for (NSString *disabledPath in [[self class] disabledBundlesPathList]) {
+		if ([self.path hasPrefix:disabledPath]) {
+			return YES;
+		}
+	}
+	return NO;
+}
 
 #pragma mark - Actions
 
@@ -173,64 +226,6 @@
 
 #pragma mark - Class Methods
 
-+ (MBMMailBundle *)mailBundleForIdentifier:(NSString *)aBundleIdentifier {
-	
-	NSError			*error;
-	NSMutableArray	*activeList = [NSMutableArray array];
-	NSMutableArray	*inactiveList = [NSMutableArray array];
-	
-	NSString		*mailPath = [self mailFolderPath];
-	NSString		*bundlesPath = [self bundlesPath];
-	NSFileManager	*manager = [NSFileManager defaultManager];
-	
-	//	Build a list of enabled and disabled bundles to look through afterward
-	NSArray			*mailFolders = [manager contentsOfDirectoryAtPath:mailPath error:&error];
-	for (NSString *subFolder in mailFolders) {
-		if ([subFolder isEqualToString:kMBMBundleFolderName]) {
-			[activeList addObjectsFromArray:[manager contentsOfDirectoryAtPath:bundlesPath error:&error]];
-		}
-		else if ([subFolder hasPrefix:kMBMDisabledBundleFolderPrefix]) {
-			NSString	*subFolderPath = [mailPath stringByAppendingPathComponent:subFolder];
-			for (NSString *disabledItem in [manager contentsOfDirectoryAtPath:[mailPath stringByAppendingPathComponent:subFolder] error:&error]) {
-				[inactiveList addObject:[subFolderPath stringByAppendingPathComponent:disabledItem]];
-			}
-		}
-	}
-	
-	//	Look through the "Mail" folder for all bundles and find either an active one *or* the most recent Disabled one
-	MBMMailBundle	*newBundle = nil;
-	if ([activeList count] > 0) {
-		for (NSString *bundleName in activeList) {
-			NSString	*fullBundlePath = [bundlesPath stringByAppendingPathComponent:bundleName];
-			NSBundle	*aBundle = [NSBundle bundleWithPath:fullBundlePath];
-			if ([[aBundle bundleIdentifier] isEqualToString:aBundleIdentifier]) {
-				newBundle = [[[MBMMailBundle alloc] initWithBundleIdentifier:aBundleIdentifier andPath:fullBundlePath] autorelease];
-				break;
-			}
-		}
-	}
-	
-	//	If there is still no bundle, look through disabled items...
-	if ((newBundle == nil) && ([inactiveList count] > 0)) {
-		NSBundle	*bestBundle = nil;
-		for (NSString *inactivePath in inactiveList) {
-			NSBundle	*aBundle = [NSBundle bundleWithPath:inactivePath];
-			//	Always getting the latest one
-			if ([[aBundle bundleIdentifier] isEqualToString:aBundleIdentifier]) {
-				if ([aBundle hasLaterVersionNumberThanBundle:bestBundle]) {
-					bestBundle = aBundle;
-				}
-			}
-		}
-		
-		//	If we found one, then use that to create a new instance
-		if (bestBundle) {
-			newBundle = [[[MBMMailBundle alloc] initWithBundleIdentifier:[bestBundle bundleIdentifier] andPath:[bestBundle bundlePath]] autorelease];
-		}
-	}
-	
-	return newBundle;
-}
 
 + (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath {
 	MBMMailBundle	*newBundle = nil;
@@ -254,6 +249,19 @@
 	return [[self disabledBundlesPathList] lastObject];
 }
 
++ (NSString *)latestDisabledBundlesPathShouldCreate:(BOOL)createNew {
+	NSString	*path = [self latestDisabledBundlesPath];
+	if (path == nil) {
+		NSError		*error;
+		if (![[NSFileManager defaultManager] createDirectoryAtPath:[[self mailFolderPath] stringByAppendingPathComponent:[self disabledBundleFolderName]] withIntermediateDirectories:YES attributes:nil error:&error]) {
+			LKErr(@"Couldn't create the Disabled Bundle folder:%@", error);
+			return nil;
+		}
+		path = [self latestDisabledBundlesPath];
+	}
+	return path;
+}
+
 + (NSArray *)disabledBundlesPathList {
 
 	NSError			*error;
@@ -267,12 +275,20 @@
 		}
 	}
 	
-	//	Sort the list descending
+	//	Sort the list ascending
 	[inactiveList sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-		return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
+		NSDate	*date1 = [[manager attributesOfItemAtPath:obj1 error:NULL] valueForKey:NSFileCreationDate]; 
+		NSDate	*date2 = [[manager attributesOfItemAtPath:obj2 error:NULL] valueForKey:NSFileCreationDate]; 
+		return [date1 compare:date2];
 	}];
 
 	return [NSArray arrayWithArray:inactiveList];
+}
+
++ (NSString *)disabledBundleFolderName {
+	NSString	*mailPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
+	NSString	*folderName = [[NSBundle bundleWithPath:mailPath] localizedStringForKey:@"DISABLED_PATH_FORMAT" value:@"Bundles (Disabled)" table:@"Alerts"];
+	return [NSString stringWithFormat:folderName, @"Bundles", @""];
 }
 
 

@@ -182,7 +182,7 @@
     
     // Set-up code here.
 	self.bundleContentsPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"/Contents"];
-	self.userHomePath = NSHomeDirectory();//[NSSearchPathForDirectoriesInDomains(NSUserDirectory, NSUserDomainMask, YES) lastObject];
+	self.userHomePath = NSHomeDirectory();
 	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"install-manifest" ofType:@"plist"];
 	self.fileContents = [NSDictionary dictionaryWithContentsOfFile:self.filePath];
 	self.installItemContents = [self.fileContents valueForKey:kMBMInstallItemsKey];

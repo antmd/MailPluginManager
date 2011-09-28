@@ -9,6 +9,7 @@
 
 	#import	"LKInclude.pch"
 	#import	"LKLogHelper.h"
+	#import	"LKError.h"
 
 	#import "MBMConstants.h"
 #endif

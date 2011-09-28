@@ -49,6 +49,59 @@
 	STAssertEqualObjects([pathList objectAtIndex:([pathList count] - 2)], disabledKnown1, nil);
 }
 
+- (void)test_005_Mail_Latest_Disabled_Bundle_Path_With_Creation {
+
+	//	Remove the disabled folders and ensure that we can continue
+	[self removeDisabledBundleFoldersIfCreated];
+	if ([MBMMailBundle latestDisabledBundlesPath] != nil) {
+		STFail(@"This test will not work properly when there are existing 'Bundles (Disabled X)' folders");
+		return;
+	}
+
+	//	Try to get the latestDisabled with creation
+	NSError		*error;
+	NSString	*disabledPath = [MBMMailBundle latestDisabledBundlesPathShouldCreate:YES];
+	STAssertNotNil(disabledPath, nil);
+	STAssertTrue([[disabledPath lastPathComponent] isEqualToString:[MBMMailBundle disabledBundleFolderName]], nil);
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:disabledPath error:&error], @"Removing folder after test failed:%@", error);
+	STAssertNil([MBMMailBundle latestDisabledBundlesPath], nil);
+}
+
+- (void)test_006_Mail_Latest_Disabled_Folder_Is_Numbered {
+
+	//	Remove the disabled folders and ensure that we can continue
+	[self removeDisabledBundleFoldersIfCreated];
+	if ([MBMMailBundle latestDisabledBundlesPath] != nil) {
+		STFail(@"This test will not work properly when there are existing 'Bundles (Disabled X)' folders");
+		return;
+	}
+	
+	//	Then create two disabled ones and ensure that we get the right one back (as latest)
+	//	First one sue the method and test that it was created
+	NSString	*disabledPath = [MBMMailBundle latestDisabledBundlesPathShouldCreate:YES];
+	STAssertNotNil(disabledPath, nil);
+	STAssertTrue([[disabledPath lastPathComponent] isEqualToString:[MBMMailBundle disabledBundleFolderName]], nil);
+	
+	//	Wait 2 seconds to give a difference in order for the two folders
+	NSTimeInterval theInterval = 0;
+    NSDate *date = [NSDate date];
+    while (theInterval <= 2.0) {
+        theInterval = [[NSDate date] timeIntervalSinceDate:date];
+    }
+	
+	//	Then manually create another
+	NSError		*error;
+	NSString	*secondPath = [[MBMMailBundle mailFolderPath] stringByAppendingPathComponent:@"Bundles (Disabled 1)"];
+	STAssertTrue([[NSFileManager defaultManager] createDirectoryAtPath:secondPath withIntermediateDirectories:NO attributes:NULL error:&error], @"Removing folder after test failed:%@", error);
+	
+	//	Then see what we get back as the latest
+	STAssertEqualObjects([[MBMMailBundle latestDisabledBundlesPath] lastPathComponent], @"Bundles (Disabled 1)", nil);
+	
+	//	Clean up
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:disabledPath error:&error], @"Removing 1st folder after test failed:%@", error);
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:secondPath error:&error], @"Removing 2nd folder after test failed:%@", error);
+	STAssertNil([MBMMailBundle latestDisabledBundlesPath], nil);
+}
 
 #pragma mark - Comparision Tests
 
@@ -69,13 +122,139 @@
 	MBMMailBundle	*bundle = [MBMMailBundle mailBundleForPath:self.testBundlePath];
 	
 	STAssertNotNil(bundle, nil);
-	STAssertEquals(bundle.status, kMBMStatusEnabled, nil);
+	STAssertEquals(bundle.status, kMBMStatusUninstalled, nil);
 	STAssertNotNil(bundle.bundle, nil);
 	STAssertEqualObjects([bundle.bundle class], [NSBundle class], nil);
 	STAssertNil(bundle.icon, nil);
 	STAssertEqualObjects(bundle.name, @"ExamplePlugin", nil);
 	STAssertEqualObjects(bundle.path, self.testBundlePath, nil);
 	STAssertEqualObjects(bundle.version, @"1", nil);
+}
+
+- (void)test_021_Bundle_Copied_Into_Active {
+
+	//	Use a UUID to create a unique filename
+	NSString	*bundleInPlacePath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the bundles folder failed:%@", error);
+
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	
+	STAssertNotNil(mailBundle, nil);
+	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
+	STAssertNotNil(mailBundle.bundle, nil);
+	STAssertEqualObjects([mailBundle.bundle class], [NSBundle class], nil);
+	STAssertNil(mailBundle.icon, nil);
+	STAssertEqualObjects(mailBundle.name, @"ExamplePlugin", nil);
+	STAssertEqualObjects(mailBundle.path, bundleInPlacePath, nil);
+	STAssertEqualObjects(mailBundle.version, @"1", nil);
+	
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:bundleInPlacePath error:&error], @"Removing bundle after test failed:%@", error);
+}
+
+- (void)test_022_Bundle_Copied_Into_Last_Disabled {
+	
+	//	Use a UUID to create a unique filename
+	NSString	*bundleInPlacePath = [[MBMMailBundle latestDisabledBundlesPath] stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	
+	STAssertNotNil(mailBundle, nil);
+	STAssertEquals(mailBundle.status, kMBMStatusDisabled, nil);
+	STAssertNotNil(mailBundle.bundle, nil);
+	STAssertEqualObjects([mailBundle.bundle class], [NSBundle class], nil);
+	STAssertNil(mailBundle.icon, nil);
+	STAssertEqualObjects(mailBundle.name, @"ExamplePlugin", nil);
+	STAssertEqualObjects(mailBundle.path, bundleInPlacePath, nil);
+	STAssertEqualObjects(mailBundle.version, @"1", nil);
+	
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:bundleInPlacePath error:&error], @"Removing bundle after test failed:%@", error);
+}
+
+- (void)test_023_Bundle_Copied_Into_Last_Disabled_Then_Enable {
+	
+	//	Use a UUID to create a unique filename
+	NSString	*guid = [[NSProcessInfo processInfo] globallyUniqueString];
+	NSString	*bundleInPlacePath = [[MBMMailBundle latestDisabledBundlesPath] stringByAppendingPathComponent:[guid stringByAppendingPathExtension:@"mailbundle"]];
+	NSString	*newPath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:[guid stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	mailBundle.status = kMBMStatusEnabled;
+	
+	STAssertNotNil(mailBundle, nil);
+	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
+	STAssertNotNil(mailBundle.bundle, nil);
+	STAssertEqualObjects([mailBundle.bundle class], [NSBundle class], nil);
+	STAssertNil(mailBundle.icon, nil);
+	STAssertEqualObjects(mailBundle.name, @"ExamplePlugin", nil);
+	STAssertEqualObjects(mailBundle.path, newPath, nil);
+	STAssertEqualObjects(mailBundle.version, @"1", nil);
+	
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:newPath error:&error], @"Removing bundle after test failed:%@", error);
+}
+
+- (void)test_024_Bundle_Copied_Into_Active_Then_Disable_Create_New {
+	
+	//	Use a UUID to create a unique filename
+	NSString	*guid = [[NSProcessInfo processInfo] globallyUniqueString];
+	NSString	*bundleInPlacePath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:[guid stringByAppendingPathExtension:@"mailbundle"]];
+	
+	//	Remove the disabled folders and ensure that we can continue
+	[self removeDisabledBundleFoldersIfCreated];
+	if ([MBMMailBundle latestDisabledBundlesPath] != nil) {
+		STFail(@"This test will not work properly when there are existing 'Bundles (Disabled X)' folders");
+		return;
+	}
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the enabled bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+
+	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
+	mailBundle.status = kMBMStatusDisabled;
+	STAssertEquals(mailBundle.status, kMBMStatusDisabled, nil);
+	
+	//	A new latestDisabled should have been created
+	STAssertNotNil([MBMMailBundle latestDisabledBundlesPath], nil);
+	NSString	*newPath = [[MBMMailBundle latestDisabledBundlesPath] stringByAppendingPathComponent:[guid stringByAppendingPathExtension:@"mailbundle"]];
+
+	//	Test that the path is updated as well
+	STAssertEqualObjects(mailBundle.path, newPath, nil);
+
+	//	Clean up created paths and files
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:newPath error:&error], @"Removing bundle after test failed:%@", error);
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:[MBMMailBundle latestDisabledBundlesPath] error:&error], @"Removing folder after test failed:%@", error);
+	STAssertNil([MBMMailBundle latestDisabledBundlesPath], nil);
+}
+
+- (void)test_025_Bundle_Copied_Into_Active_Then_Uninstalled {
+	
+	//	Use a UUID to create a unique filename
+	NSString	*guid = [[NSProcessInfo processInfo] globallyUniqueString];
+	NSString	*bundleInPlacePath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:[guid stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the enabled bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	
+	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
+	mailBundle.status = kMBMStatusUninstalled;
+	STAssertEquals(mailBundle.status, kMBMStatusUninstalled, nil);
+	
+	//	New path should be in the trash
+	NSString	*newPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[guid stringByAppendingPathExtension:@"mailbundle"]];
+	
+	//	Test that the paths are the same
+	STAssertEqualObjects(mailBundle.path, newPath, nil);
 }
 
 
@@ -103,7 +282,7 @@
 
 - (void)tearDown {
     // Tear-down code here.
-
+	
 	//	Remove any folders that were created
 	[self removeMailFolderIfCreated];
 	[self removeBundlesFolderIfCreated];
