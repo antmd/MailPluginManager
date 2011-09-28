@@ -17,9 +17,6 @@
 @property	(nonatomic, copy, readwrite)		NSString		*version;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
-
-- (BOOL)isInActiveBundlesFolder;
-- (BOOL)isInDisabledBundlesFolder;
 @end
 
 @implementation MBMMailBundle
@@ -44,7 +41,7 @@
 	//	Default is to *enable* it
 	NSString	*fromPath = self.path;
 	NSString	*toPath = nil;
-
+	
 	//	Change the toPath it we are not enabling it
 	switch (newStatus) {
 		case kMBMStatusEnabled:
@@ -141,12 +138,13 @@
 #pragma mark - Testing
 
 - (BOOL)isInActiveBundlesFolder {
-	return [self.path hasPrefix:[[self class] bundlesPath]];
+	return [[self.path stringByDeletingLastPathComponent] isEqualToString:[[self class] bundlesPath]];
 }
 
 - (BOOL)isInDisabledBundlesFolder {
+	NSString	*folderPath = [self.path stringByDeletingLastPathComponent];
 	for (NSString *disabledPath in [[self class] disabledBundlesPathList]) {
-		if ([self.path hasPrefix:disabledPath]) {
+		if ([folderPath isEqualToString:disabledPath]) {
 			return YES;
 		}
 	}
@@ -190,30 +188,12 @@
 	
 	//	Run the alert
 	NSInteger	result = [confirmAlert runModal];
-	if (result != NSAlertAlternateReturn) {
-		//	If this is the default button, do the remove
-		if (result == NSAlertDefaultReturn) {
-			
-			//	Quit mail
-			[MBMAppDelegate quitMail];
-			
-			//	Move the mailbundle to the trash
-			FSRef		bundleSpec;
-			OSStatus	specResult = FSPathMakeRef((const UInt8 *)[self.path UTF8String], &bundleSpec, NULL);
-			if (specResult == noErr) {
-				OSStatus	trashResult = FSMoveObjectToTrashSync(&bundleSpec, NULL, kFSFileOperationDefaultOptions);
-				if (trashResult != noErr) {
-					LKLog(@"There was an error moving the bundle to the trash, %d", trashResult);
-				}
-			}
-			else {
-				LKLog(@"There was an error creating the file spec for the bundle, %d", specResult);
-			}
-		}
-		//	Should diable the plugin
-		else {
-			self.status = kMBMStatusDisabled;
-		}
+	if (result == NSAlertDefaultReturn) {
+		self.status = kMBMStatusUninstalled;
+	}
+	//	Should diable the plugin
+	else {
+		self.status = kMBMStatusDisabled;
 	}
 	
 	//	Quit this app now

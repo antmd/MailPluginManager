@@ -32,6 +32,9 @@
 
 - (id)initWithBundleIdentifier:(NSString *)aBundleIdentifier andPath:(NSString *)bundlePath;
 
+- (BOOL)isInActiveBundlesFolder;
+- (BOOL)isInDisabledBundlesFolder;
+
 - (void)updateIfNecessary;
 - (void)uninstall;
 - (void)sendCrashReports;

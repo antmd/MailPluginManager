@@ -115,6 +115,61 @@
 	STAssertEquals([MBMMailBundle compareVersion:secondVersion toVersion:secondVersion], (NSInteger)NSOrderedSame, nil);
 }
 
+- (void)test_011_Location_Test_Active_Positive {
+	//	Use a UUID to create a unique filename
+	NSString	*bundleInPlacePath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the active bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+
+	STAssertTrue([mailBundle isInActiveBundlesFolder], nil);
+	
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:bundleInPlacePath error:&error], @"Removing bundle after test failed:%@", error);
+}
+
+- (void)test_012_Location_Test_Active_Negative {
+	//	Use a UUID to create a unique filename
+	NSString	*bundleInPlacePath = [[MBMMailBundle latestDisabledBundlesPath] stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	
+	STAssertFalse([mailBundle isInActiveBundlesFolder], nil);
+	
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:bundleInPlacePath error:&error], @"Removing bundle after test failed:%@", error);
+}
+
+- (void)test_013_Location_Test_Disabled_Positive {
+	//	Use a UUID to create a unique filename
+	NSString	*bundleInPlacePath = [[MBMMailBundle latestDisabledBundlesPath] stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	
+	STAssertTrue([mailBundle isInDisabledBundlesFolder], nil);
+	
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:bundleInPlacePath error:&error], @"Removing bundle after test failed:%@", error);
+}
+
+- (void)test_014_Location_Test_Disabled_Negative {
+	//	Use a UUID to create a unique filename
+	NSString	*bundleInPlacePath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"mailbundle"]];
+	
+	NSError		*error;
+	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the active bundles folder failed:%@", error);
+	
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	
+	STAssertFalse([mailBundle isInDisabledBundlesFolder], nil);
+	
+	STAssertTrue([[NSFileManager defaultManager] removeItemAtPath:bundleInPlacePath error:&error], @"Removing bundle after test failed:%@", error);
+}
 
 #pragma mark - Getting Bundles
 

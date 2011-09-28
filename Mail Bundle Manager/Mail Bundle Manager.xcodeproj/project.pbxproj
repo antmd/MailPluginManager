@@ -250,15 +250,12 @@
 				D216B351141DFDE1003788DC /* MBMAppDelegate.m */,
 				D2E90292141E36110058618F /* MBMMySparkleDelegate.h */,
 				D2E90293141E36110058618F /* MBMMySparkleDelegate.m */,
-				D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */,
-				D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */,
 				D2730FE214293EE600EB5CB7 /* Controllers */,
 				D2E9029C141E63990058618F /* Model */,
 				D2730FE114293ED100EB5CB7 /* Views */,
-				D2731012142CB82100EB5CB7 /* Categories */,
+				D2E9029E141E63F70058618F /* Categories */,
 				D2F38F14141E9E6D00E564FB /* Utils */,
 				D2E9029D141E63D10058618F /* Resources */,
-				D2E9029E141E63F70058618F /* Categories */,
 				D2E9029B141E638B0058618F /* Project */,
 				D216B37B141E1676003788DC /* MBMConstants.h */,
 				D216B37C141E1676003788DC /* MBMConstants.m */,
@@ -299,17 +296,12 @@
 		D2730FE214293EE600EB5CB7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */,
+				D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */,
 				D2730FE314293F6100EB5CB7 /* MBMAnimatedListController.h */,
 				D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */,
 			);
 			name = Controllers;
-			sourceTree = "<group>";
-		};
-		D2731012142CB82100EB5CB7 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Categories;
 			sourceTree = "<group>";
 		};
 		D2D1E6E114320B61002FF1B1 /* TestData */ = {
