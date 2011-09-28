@@ -7,7 +7,7 @@
 //
 
 #import "MBMActionItem.h"
-
+#import "MBMMailBundle.h"
 
 
 @interface MBMActionItem ()
@@ -31,16 +31,28 @@
 
 #pragma mark - Memory Management
 
-- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath {
+- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath manifestType:(MBMManifestType)type {
 
 	self = [super init];
     if (self) {
         // Initialization code here.
 		_name = [[itemDictionary valueForKey:kMBMNameKey] copy];
 		
-		//	Get the paths
-		NSString	*tempPath = nil;
-		tempPath = [packageFilePath stringByAppendingPathComponent:[itemDictionary valueForKey:kMBMPathKey]];
+		//	Get the path, ensuring to take into account the manifestType
+		NSString	*tempPath = [itemDictionary valueForKey:kMBMPathKey];
+		if (type == kMBMManifestTypeInstallation) {
+			tempPath = [packageFilePath stringByAppendingPathComponent:tempPath];
+		}
+		else {
+			//	if the is only one component and it ends with mailbundle, build full path to bundles folder
+			if (([[tempPath pathComponents] count] == 1) && [[tempPath pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+				tempPath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:tempPath];
+			}
+			else {
+				//	Expand any tildas
+				tempPath = [tempPath stringByExpandingTildeInPath];
+			}
+		}
 		_path = [tempPath copy];
 		
 		//	Ensure that the destination path includes the filename if one wasn't attached

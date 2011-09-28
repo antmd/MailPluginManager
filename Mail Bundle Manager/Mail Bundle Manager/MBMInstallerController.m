@@ -44,6 +44,8 @@ typedef enum {
 
 - (BOOL)processAllItems;
 - (BOOL)processItems;
+- (BOOL)processBundleManager;
+- (BOOL)validateRequirements;
 - (BOOL)installBundleManager;
 - (BOOL)installItem:(MBMActionItem *)anItem;
 - (BOOL)removeBundleManagerIfReasonable;
@@ -114,9 +116,16 @@ typedef enum {
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 	//	Create the install steps view
 	self.animatedListController = [[[MBMAnimatedListController alloc] initWithContentList:self.manifestModel.confirmationStepList inView:self.confirmationStepsView] autorelease];
+
+	//	Initialize some text and get the localization proper for the type (install/uninstall)
+	NSString	*localizedFormat = NSLocalizedString(@"Install %@", @"");
+	NSString	*progressText = NSLocalizedString(@"Please wait while I install your plugin…", @"Title description for progress view during installation");
+	if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
+		localizedFormat = NSLocalizedString(@"Uninstall %@", @"");
+		progressText = NSLocalizedString(@"Please wait while I remove your plugin…", @"Title description for progress view during UNinstallation");
+	}
 	
 	//	Set the window title from the installation Model
-	NSString	*localizedFormat = NSLocalizedString([[self window] title], @"");
 	[[self window] setTitle:[NSString stringWithFormat:localizedFormat, self.manifestModel.displayName]];
 	
 	//	Get the image for the background from the manifestModel
@@ -133,10 +142,10 @@ typedef enum {
 	CGColorRelease(aColor);
 	 
 	 //	Localize the progress label
-	[self.displayProgressLabel setStringValue:NSLocalizedString(@"Please wait while I install your plugin…", @"Title description for progress view during installation")];
+	[self.displayProgressLabel setStringValue:progressText];
 	
 	//	Localize the Go Back step as well
-	[self.previousStepButton setTitle:NSLocalizedString(@"Go Back", @"Go Back button text for installation")];
+	[self.previousStepButton setTitle:NSLocalizedString(@"Go Back", @"Go Back button text for installation/uninstallation window")];
 	
 	//	Set the current step
 	self.currentStep = 0;
@@ -220,9 +229,9 @@ typedef enum {
 	((CATextLayer *)self.titleTextField.layer).string = newStep.title;
 	
 	//	Configure the two buttons at the bottom
-	NSString	*actionTitle = NSLocalizedString(@"Continue", @"Continue button text for installation");
+	NSString	*actionTitle = NSLocalizedString(@"Continue", @"Continue button text for installation/uninstallation");
 	if (isConfirmed) {
-		actionTitle = NSLocalizedString(@"Install", @"Install button text for installation");
+		actionTitle = (self.manifestModel.manifestType==kMBMManifestTypeInstallation)?NSLocalizedString(@"Install", @"Install button text for installation"):NSLocalizedString(@"Uninstall", @"Remove button text for uninstallation");
 	}
 	[self.actionButton setTitle:actionTitle];
 	[self.previousStepButton setEnabled:(toStep != 0)];
@@ -298,7 +307,7 @@ typedef enum {
 #pragma mark - Error Delegate Methods
 
 - (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
-	return @"MBMInstallErrorDomain";
+	return (self.manifestModel.manifestType==kMBMManifestTypeInstallation)?@"MBMInstallErrorDomain":@"MBMUnInstallErrorDomain";
 }
 
 - (NSArray *)recoveryOptionsForError:(LKError *)error {
@@ -359,7 +368,26 @@ typedef enum {
 
 - (BOOL)processAllItems {
 	
+	//	Test installation requirements
+	if ((self.manifestModel.manifestType == kMBMManifestTypeInstallation) &&
+		![self validateRequirements]) {
+		return NO;
+	}
+
+	//	Try to process the items first
+	BOOL result = [self processItems];
+	//	If that worked, then try to process the bundle manager
+	if (result) {
+		result = [self processBundleManager];
+	}
+	return result;
+}
+
+- (BOOL)validateRequirements {
+	
 	MBMManifestModel	*model = self.manifestModel;
+	NSFileManager		*manager = [NSFileManager defaultManager];
+	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
 	
 	//	Ensure that the versions all check out
 	CGFloat	currentVersion = macOSXVersion();
@@ -379,17 +407,6 @@ typedef enum {
 		}
 	}
 	
-	BOOL	result = [self installBundleManager];
-	if (result) {
-		result = [self processItems];
-	}
-	return result;
-}
-
-- (BOOL)processItems {
-	
-	NSFileManager	*manager = [NSFileManager defaultManager];
-	
 	//	First just ensure that the all items are there to copy
 	for (MBMActionItem *anItem in self.manifestModel.actionItemList) {
 		if (![manager fileExistsAtPath:anItem.path]) {
@@ -399,27 +416,114 @@ typedef enum {
 			return NO;
 		}
 	}
-	
-	//	Then install each one
-	for (MBMActionItem *anItem in self.manifestModel.actionItemList) {
-		[self installItem:anItem];
-	}
-	
-	return YES;
-}
 
-- (BOOL)installBundleManager {
-	
-	MBMManifestModel	*model = self.manifestModel;
-	NSFileManager			*manager = [NSFileManager defaultManager];
-	NSWorkspace				*workspace = [NSWorkspace sharedWorkspace];
-	
 	//	Ensure that the source bundle is where we think it is
 	if (![manager fileExistsAtPath:model.bundleManager.path] || ![workspace isFilePackageAtPath:model.bundleManager.path]) {
 		LKPresentErrorCode(MBMGenericFileCode);
 		LKErr(@"The source path for the bundle manager (%@) is invalid.", model.bundleManager.path);
 		return NO;
 	}
+
+	return YES;
+}
+
+#pragma mark Items
+
+- (BOOL)processItems {
+	
+	//	Install each one
+	for (MBMActionItem *anItem in self.manifestModel.actionItemList) {
+		if (self.manifestModel.manifestType == kMBMManifestTypeInstallation) {
+			[self installItem:anItem];
+		}
+		else {
+			[self removeItem:anItem];
+		}
+	}
+	
+	return YES;
+}
+
+- (BOOL)installItem:(MBMActionItem *)anItem {
+	
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	
+	//	Before installing an actual mail bundle, ensure that the plugin is actaully update to date
+	if (anItem.isMailBundle) {
+		//	Get the values to test
+		NSBundle	*aBundle = [NSBundle bundleWithPath:anItem.path];
+		NSArray		*supportedUUIDs = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey];
+		aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
+		NSString	*mailUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
+		NSString	*messageBundlePath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject];
+		messageBundlePath = [messageBundlePath stringByAppendingPathComponent:kMBMMessageBundlePath];
+		aBundle = [NSBundle bundleWithPath:messageBundlePath];
+		NSString	*messageUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
+		
+		//	Test to ensure that the plugin list contains both the mail and message UUIDs
+		if (![supportedUUIDs containsObject:mailUUID] || ![supportedUUIDs containsObject:messageUUID]) {
+			LKPresentErrorCode(MBMPluginDoesNotWorkWithMailVersion);
+			LKErr(@"This Mail Plugin will not work with this version of Mail:mailUUID:%@ messageUUID:%@", mailUUID, messageUUID);
+			return NO;
+		}
+	}
+	
+	//	Notification for what we are copying
+	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+	
+	//	Make sure that the destination folder exists
+	NSError	*error;
+	if (![manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent]]) {
+		if (![manager createDirectoryAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error]) {
+			LKPresentErrorCode(MBMGenericFileCode);
+			LKErr(@"Couldn't create folder to copy item '%@' into:%@", anItem.name, error);
+			return NO;
+		}
+	}
+	
+	BOOL	isFolder;
+	[manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] isDirectory:&isFolder];
+	if (!isFolder) {
+		LKPresentErrorCode(MBMGenericFileCode);
+		LKErr(@"Can't copy item '%@' to location that is actually a file:%@", anItem.name, [anItem.destinationPath stringByDeletingLastPathComponent]);
+		return NO;
+	}
+	
+	//	Now do the copy, replacing anything that is already there
+	if (![manager copyItemAtPath:anItem.path toPath:anItem.destinationPath error:&error]) {
+		LKPresentErrorCode(MBMGenericFileCode);
+		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
+		return NO;
+	}
+
+	//	Notification for progress bar
+	myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1.0f], kMBMInstallationProgressValueKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+
+	return YES;
+}
+
+- (BOOL)removeItem:(MBMActionItem *)anItem {
+	return YES;
+}
+
+#pragma mark BundleManager
+
+- (BOOL)processBundleManager {
+	if (self.manifestModel.manifestType == kMBMManifestTypeInstallation) {
+		return [self installBundleManager];
+	}
+	else {
+		return [self removeBundleManagerIfReasonable];
+	}
+}
+
+- (BOOL)installBundleManager {
+	
+	MBMManifestModel	*model = self.manifestModel;
+	NSFileManager		*manager = [NSFileManager defaultManager];
+	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
 	
 	//	First get any existing bundle at the destination
 	NSBundle	*destBundle = nil;
@@ -455,76 +559,16 @@ typedef enum {
 	return [self installItem:model.bundleManager];
 }
 
-- (BOOL)installItem:(MBMActionItem *)anItem {
-	
-	NSFileManager	*manager = [NSFileManager defaultManager];
-	
-	//	Before installing an actual mail bundle, ensure that the plugin is actaully update to date
-	if (anItem.isMailBundle) {
-		//	Get the values to test
-		NSBundle	*aBundle = [NSBundle bundleWithPath:anItem.path];
-		NSArray		*supportedUUIDs = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey];
-		aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
-		NSString	*mailUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
-		NSString	*messageBundlePath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject];
-		messageBundlePath = [messageBundlePath stringByAppendingPathComponent:kMBMMessageBundlePath];
-		aBundle = [NSBundle bundleWithPath:messageBundlePath];
-		NSString	*messageUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
-		
-		//	Test to ensure that the plugin list contains both the mail and message UUIDs
-		if (![supportedUUIDs containsObject:mailUUID] || ![supportedUUIDs containsObject:messageUUID]) {
-			LKPresentErrorCode(MBMPluginDoesNotWorkWithMailVersion);
-			LKErr(@"This Mail Plugin will not work with this version of Mail:mailUUID:%@ messageUUID:%@", mailUUID, messageUUID);
-			return NO;
-		}
-	}
-	
-	//	Make sure that the destination folder exists
-	NSError	*error;
-	if (![manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent]]) {
-		if (![manager createDirectoryAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error]) {
-			LKPresentErrorCode(MBMGenericFileCode);
-			LKErr(@"Couldn't create folder to copy item '%@' into:%@", anItem.name, error);
-			return NO;
-		}
-	}
-	
-	BOOL	isFolder;
-	[manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] isDirectory:&isFolder];
-	if (!isFolder) {
-		LKPresentErrorCode(MBMGenericFileCode);
-		LKErr(@"Can't copy item '%@' to location that is actually a file:%@", anItem.name, [anItem.destinationPath stringByDeletingLastPathComponent]);
-		return NO;
-	}
-	
-	//	Now do the copy, replacing anything that is already there
-	if (![manager copyItemAtPath:anItem.path toPath:anItem.destinationPath error:&error]) {
-		LKPresentErrorCode(MBMGenericFileCode);
-		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
-		return NO;
-	}
-
-	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, 
-							   [NSNumber numberWithDouble:1.0f], kMBMInstallationProgressValueKey,
-							   nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
-
-	return YES;
-}
-
 - (BOOL)removeBundleManagerIfReasonable {
 	return YES;
 }
 
-- (BOOL)removeItem:(MBMActionItem *)anItem {
-	return YES;
-}
 
+#pragma mark - License Agreement Handling
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	[sheet orderOut:self];
 }
-
 
 - (BOOL)checkForLicenseRequirement {
 	if (self.currentInstallationStep.requiresAgreement && !self.currentInstallationStep.agreementAccepted) {

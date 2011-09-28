@@ -23,6 +23,7 @@
 
 #pragma mark - Accessors
 
+@synthesize manifestType = _manifestType;
 @synthesize displayName = _displayName;
 @synthesize backgroundImagePath = _backgroundImagePath;
 @synthesize minOSVersion = _minOSVersion;
@@ -61,6 +62,14 @@
 		NSArray			*confirmationSteps = [manifestDict valueForKey:kMBMConfirmationStepsKey];
 		NSMutableArray	*newItems = nil;
 		
+		//	Set the manifest type first
+		if ([[manifestDict valueForKey:kMBMManifestTypeKey] isEqualToString:kMBMManifestTypeInstallValue]) {
+			_manifestType = kMBMManifestTypeInstallation;
+		}
+		else if ([[manifestDict valueForKey:kMBMManifestTypeKey] isEqualToString:kMBMManifestTypeUninstallValue]) {
+			_manifestType = kMBMManifestTypeUninstallation;
+		}
+		
 		//	Get the confirmation steps
 		//	Create each of the items
 		newItems = [NSMutableArray arrayWithCapacity:[confirmationSteps count]];
@@ -79,7 +88,7 @@
 		//	Create each of the items
 		newItems = [NSMutableArray arrayWithCapacity:[actionItems count]];
 		for (NSDictionary *itemDict in actionItems) {
-			MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:itemDict fromPackageFilePath:packageFilePath] autorelease];
+			MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:itemDict fromPackageFilePath:packageFilePath manifestType:_manifestType] autorelease];
 			if (anItem.isBundleManager) {
 				_bundleManager = [anItem retain];
 			}

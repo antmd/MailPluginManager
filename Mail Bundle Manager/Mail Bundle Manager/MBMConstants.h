@@ -23,6 +23,9 @@ extern NSString	*kMBMMailFolderName;
 extern NSString	*kMBMBundleFolderName;
 
 //	Keys for top level of manifest
+extern NSString	*kMBMManifestTypeKey;
+extern NSString	*kMBMManifestTypeInstallValue;
+extern NSString	*kMBMManifestTypeUninstallValue;
 extern NSString	*kMBMBackgroundImagePathKey;
 extern NSString	*kMBMDisplayNameKey;
 extern NSString	*kMBMMinOSVersionKey;
@@ -70,6 +73,12 @@ typedef enum {
 	kMBMConfirmationTypeLicense,
 	kMBMConfirmationTypeConfirm
 } MBMConfirmationType;
+
+typedef enum {
+	kMBMManifestTypeUnknown,
+	kMBMManifestTypeInstallation,
+	kMBMManifestTypeUninstallation
+} MBMManifestType;
 
 
 #define	kMBMNoVersionRequirement	-1.0

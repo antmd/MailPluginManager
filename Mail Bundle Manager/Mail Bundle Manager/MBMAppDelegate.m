@@ -65,9 +65,17 @@
 		//	Determine the type (install/uninstall)
 		NSString	*extension = [filename pathExtension];
 		if ([extension isEqualToString:kMBMInstallerFileExtension]) {
+			if (self.manifestModel.manifestType != kMBMManifestTypeInstallation) {
+				LKPresentErrorCode(401);
+				return NO;
+			}
 			self.installing = YES;
 		}
 		else if ([extension isEqualToString:kMBMUninstallerFileExtension]) {
+			if (self.manifestModel.manifestType != kMBMManifestTypeUninstallation) {
+				LKPresentErrorCode(402);
+				return NO;
+			}
 			self.uninstalling = YES;
 		}
 		else {

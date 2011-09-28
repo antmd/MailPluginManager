@@ -107,6 +107,8 @@
 	</array>
 	<key>display-name</key>
 	<string>ExamplePlugin</string>
+	<key>manifest-type</key>
+	<string>install</string>
 	<key>max-os-major-version</key>
 	<real>10.699999999999999</real>
 	<key>min-mail-version</key>

@@ -25,6 +25,9 @@ NSString	*kMBMMailFolderName = @"Mail";
 NSString	*kMBMBundleFolderName = @"Bundles";
 
 //	Keys for top level of manifest
+NSString	*kMBMManifestTypeKey = @"manifest-type";
+NSString	*kMBMManifestTypeInstallValue = @"install";
+NSString	*kMBMManifestTypeUninstallValue = @"uninstall";
 NSString	*kMBMBackgroundImagePathKey = @"background-image-path";
 NSString	*kMBMDisplayNameKey = @"display-name";
 NSString	*kMBMMinOSVersionKey = @"min-os-major-version";

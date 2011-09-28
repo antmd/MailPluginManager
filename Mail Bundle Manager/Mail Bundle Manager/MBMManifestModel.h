@@ -12,6 +12,7 @@
 
 @interface MBMManifestModel : NSObject
 
+@property	(nonatomic, assign, readonly)	MBMManifestType	manifestType;
 @property	(nonatomic, copy, readonly)		NSString		*displayName;
 @property	(nonatomic, copy, readonly)		NSString		*backgroundImagePath;
 @property	(nonatomic, assign, readonly)	CGFloat			minOSVersion;

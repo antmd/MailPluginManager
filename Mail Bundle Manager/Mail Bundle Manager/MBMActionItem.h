@@ -18,7 +18,7 @@
 @property	(nonatomic, assign, readonly)	BOOL		isMailBundle;
 @property	(nonatomic, assign, readonly)	BOOL		isBundleManager;
 
-- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath;
+- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath manifestType:(MBMManifestType)type;
 
 @end
 

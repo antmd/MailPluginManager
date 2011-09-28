@@ -33,7 +33,7 @@
 #pragma mark - InstallationItem
 
 - (void)test_001_Item_Complete {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem1 fromPackageFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem1 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"user", @"system", nil];
 	
 	//	Test the item
@@ -48,7 +48,7 @@
 }
 
 - (void)test_002_Item_Mail_Bundle_Complete {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem2 fromPackageFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem2 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"user", nil];
 	
 	//	Test the item
@@ -63,7 +63,7 @@
 }
 
 - (void)test_003_Item_Bundle_Manager_Complete {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem3 fromPackageFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem3 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"admin", nil];
 	
 	//	Test the item
@@ -78,7 +78,7 @@
 }
 
 - (void)test_004_Item_Minimal_Item {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem4 fromPackageFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem4 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(anItem, nil);

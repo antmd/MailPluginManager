@@ -20,6 +20,20 @@
 			<key>LSTypeIsPackage</key>
 			<true/>
 		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>mbremove</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>UninstallDocument</string>
+			<key>CFBundleTypeName</key>
+			<string>Mail Bundle Uninstaller Package</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSTypeIsPackage</key>
+			<true/>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
@@ -69,6 +83,25 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>mbinstall</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.apple.package</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Mail Bundle Uninstaller document</string>
+			<key>UTTypeIconFile</key>
+			<string>UnstallDocument</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbremove</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>mbremove</string>
 				</array>
 			</dict>
 		</dict>

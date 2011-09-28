@@ -49,6 +49,14 @@
 		D2779BE71433665D003F7BE0 /* MBMActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMActionItem.m */; };
 		D2779BE81433665D003F7BE0 /* MBMConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */; };
 		D2779BE9143366CC003F7BE0 /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
+		D2779BEA14336DDC003F7BE0 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
+		D2779BEB14336DDC003F7BE0 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
+		D2779BEC14336DDC003F7BE0 /* LKCGStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */; };
+		D2779BED14336DDC003F7BE0 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
+		D2779BEE14336DDC003F7BE0 /* LKError.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6C814307968002FF1B1 /* LKError.m */; };
+		D2779BF014337364003F7BE0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
+		D2779BF114337369003F7BE0 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
+		D2779BF314337389003F7BE0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2779BF214337389003F7BE0 /* QuartzCore.framework */; };
 		D28F77EA14209D1D0015E42F /* MBMActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMActionItem.m */; };
 		D2D1E6C1142FD8B4002FF1B1 /* errors.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6C0142FD8B4002FF1B1 /* errors.strings */; };
 		D2D1E6C914307968002FF1B1 /* LKError.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6C814307968002FF1B1 /* LKError.m */; };
@@ -86,6 +94,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D2E902AA141E70290058618F /* Sparkle.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2779BEF14337344003F7BE0 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				D2779BF114337369003F7BE0 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,6 +182,7 @@
 		D2779BCF14336287003F7BE0 /* MBTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBTAppDelegate.h; sourceTree = "<group>"; };
 		D2779BD014336287003F7BE0 /* MBTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MBTAppDelegate.m; sourceTree = "<group>"; };
 		D2779BD314336287003F7BE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D2779BF214337389003F7BE0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D28F77E814209D1D0015E42F /* MBMActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMActionItem.h; sourceTree = "<group>"; };
 		D28F77E914209D1D0015E42F /* MBMActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMActionItem.m; sourceTree = "<group>"; };
 		D2D1E6C0142FD8B4002FF1B1 /* errors.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = errors.strings; path = "Mail Bundle Manager/errors.strings"; sourceTree = "<group>"; };
@@ -214,7 +234,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2779BF314337389003F7BE0 /* QuartzCore.framework in Frameworks */,
 				D2779BC214336287003F7BE0 /* Cocoa.framework in Frameworks */,
+				D2779BF014337364003F7BE0 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,8 +246,8 @@
 		D216B32F141DFDE1003788DC = {
 			isa = PBXGroup;
 			children = (
+				D2779BF214337389003F7BE0 /* QuartzCore.framework */,
 				D2779BD9143364C9003F7BE0 /* Common Source */,
-				D2F38F14141E9E6D00E564FB /* Utils */,
 				D216B344141DFDE1003788DC /* Mail Bundle Manager */,
 				D2779BC314336287003F7BE0 /* MailBundleTool */,
 				D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */,
@@ -350,6 +372,7 @@
 				D2730FE214293EE600EB5CB7 /* Controllers */,
 				D2E9029C141E63990058618F /* Model */,
 				D2E9029E141E63F70058618F /* Categories */,
+				D2F38F14141E9E6D00E564FB /* Utils */,
 				D2779BDA14336588003F7BE0 /* Resources */,
 				D2779BDB143365DB003F7BE0 /* Project */,
 				D216B37B141E1676003788DC /* MBMConstants.h */,
@@ -464,8 +487,8 @@
 			buildPhases = (
 				D216B336141DFDE1003788DC /* Sources */,
 				D216B337141DFDE1003788DC /* Frameworks */,
-				D216B338141DFDE1003788DC /* Resources */,
 				D216B379141E0071003788DC /* Copy Frameworks */,
+				D216B338141DFDE1003788DC /* Resources */,
 			);
 			buildRules = (
 			);
@@ -503,6 +526,7 @@
 			buildPhases = (
 				D2779BBC14336287003F7BE0 /* Sources */,
 				D2779BBD14336287003F7BE0 /* Frameworks */,
+				D2779BEF14337344003F7BE0 /* Copy Frameworks */,
 				D2779BBE14336287003F7BE0 /* Resources */,
 			);
 			buildRules = (
@@ -652,6 +676,11 @@
 				D2779BE71433665D003F7BE0 /* MBMActionItem.m in Sources */,
 				D2779BE81433665D003F7BE0 /* MBMConfirmationStep.m in Sources */,
 				D2779BE9143366CC003F7BE0 /* MBMMySparkleDelegate.m in Sources */,
+				D2779BEA14336DDC003F7BE0 /* NSString+LKStructUtils.m in Sources */,
+				D2779BEB14336DDC003F7BE0 /* NSString+LKHelper.m in Sources */,
+				D2779BEC14336DDC003F7BE0 /* LKCGStructs.m in Sources */,
+				D2779BED14336DDC003F7BE0 /* LKLogHelper.m in Sources */,
+				D2779BEE14336DDC003F7BE0 /* LKError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -841,8 +870,12 @@
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Mail Bundle Manager\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MailBundleTool/Mail Bundle Manager-Prefix.pch";
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
 				INFOPLIST_FILE = "MailBundleTool/MailBundleTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -852,8 +885,12 @@
 		D2779BD714336287003F7BE0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Mail Bundle Manager\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MailBundleTool/Mail Bundle Manager-Prefix.pch";
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
 				INFOPLIST_FILE = "MailBundleTool/MailBundleTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
