@@ -14,6 +14,7 @@
 
 @property	(nonatomic, copy, readonly)		NSString		*name;
 @property	(nonatomic, copy, readonly)		NSString		*path;
+@property	(nonatomic, copy, readonly)		NSString		*identifier;
 @property	(nonatomic, copy, readonly)		NSString		*version;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
@@ -29,12 +30,18 @@
 + (NSArray *)disabledBundlesPathList;
 + (NSString *)disabledBundleFolderName;
 + (NSString *)disabledBundleFolderPrefix;
+
++ (NSArray *)allMailBundles;
++ (NSArray *)allActiveMailBundles;
++ (NSArray *)allDisabledMailBundles;
+
 + (NSComparisonResult)compareVersion:(NSString *)first toVersion:(NSString *)second;
 
-- (id)initWithBundleIdentifier:(NSString *)aBundleIdentifier andPath:(NSString *)bundlePath;
+- (id)initWithPath:(NSString *)bundlePath;
 
 - (BOOL)isInActiveBundlesFolder;
 - (BOOL)isInDisabledBundlesFolder;
+- (BOOL)hasLaterVersionNumberThanBundle:(MBMMailBundle *)otherBundle;
 
 - (void)updateIfNecessary;
 - (void)uninstall;

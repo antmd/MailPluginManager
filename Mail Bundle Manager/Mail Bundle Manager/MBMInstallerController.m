@@ -119,7 +119,7 @@ typedef enum {
 
 	//	Initialize some text and get the localization proper for the type (install/uninstall)
 	NSString	*localizedFormat = NSLocalizedString(@"Install %@", @"");
-	NSString	*progressText = NSLocalizedString(@"Please wait while I install your plugin…", @"Title description for progress view during installation");
+	NSString	*progressText = NSLocalizedString(@"Please wait while I install the plugin…", @"Title description for progress view during installation");
 	if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
 		localizedFormat = NSLocalizedString(@"Uninstall %@", @"");
 		progressText = NSLocalizedString(@"Please wait while I remove your plugin…", @"Title description for progress view during UNinstallation");
@@ -505,8 +505,22 @@ typedef enum {
 }
 
 - (BOOL)removeItem:(MBMActionItem *)anItem {
+	
+	//	Default is to *enable* it
+	NSString	*fromPath = anItem.path;
+	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[anItem.path lastPathComponent]];
+	
+	//	Now do the move
+	NSError	*error;
+	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
+//		LKPresentErrorCode();
+		LKErr(@"Error moving bundle (enable/disable):%@", error);
+		return NO;
+	}
+
 	return YES;
 }
+
 
 #pragma mark BundleManager
 
@@ -560,6 +574,31 @@ typedef enum {
 }
 
 - (BOOL)removeBundleManagerIfReasonable {
+	
+	MBMManifestModel	*model = self.manifestModel;
+	
+	//	Test the existing bundles first
+	
+	//	Test to ensure what rules we should use
+	if (model.canDeleteManagerIfNoBundlesLeft) {
+		
+	}
+
+	NSFileManager		*manager = [NSFileManager defaultManager];
+	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
+	
+	//	Ensure that we are deleting the bundle
+	NSBundle	*deleteBundle = nil;
+	if ([manager fileExistsAtPath:model.bundleManager.destinationPath]) {
+		//	Then ensure that it is a package
+		if ([workspace isFilePackageAtPath:model.bundleManager.destinationPath]) {
+			deleteBundle = [NSBundle bundleWithPath:model.bundleManager.destinationPath];
+		}
+	}
+	//	If there is a destination already, check it's bundle id matches and version is < installing one
+	if (deleteBundle) {
+	}
+	
 	return YES;
 }
 

@@ -33,6 +33,8 @@ NSString	*kMBMDisplayNameKey = @"display-name";
 NSString	*kMBMMinOSVersionKey = @"min-os-major-version";
 NSString	*kMBMMaxOSVersionKey = @"max-os-major-version";
 NSString	*kMBMMinMailVersionKey = @"min-mail-version";
+NSString	*kMBMCanDeleteManagerIfNotUsedByOthersKey = @"can-delete-bundle-manager-if-no-other-plugins-use";
+NSString	*kMBMCanDeleteManagerIfNoBundlesKey = @"can-delete-bundle-manager-if-no-plugins-left";
 //	Keys for the action items and sub objects
 NSString	*kMBMActionItemsKey = @"action-items";
 NSString	*kMBMPathKey = @"path";

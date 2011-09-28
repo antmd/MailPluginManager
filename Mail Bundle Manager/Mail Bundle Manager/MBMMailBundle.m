@@ -13,8 +13,6 @@
 
 @interface MBMMailBundle ()
 @property	(nonatomic, copy, readwrite)		NSString		*name;
-@property	(nonatomic, copy, readwrite)		NSString		*path;
-@property	(nonatomic, copy, readwrite)		NSString		*version;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
 @end
@@ -25,12 +23,22 @@
 #pragma mark - Accessors
 
 @synthesize name = _name;
-@synthesize path = _path;
-@synthesize version = _version;
 @synthesize icon = _icon;
 @synthesize bundle = _bundle;
 @synthesize status = _status;
 @synthesize sparkleDelegate = _sparkleDelegate;
+
+- (NSString *)path {
+	return [self.bundle bundlePath];
+}
+
+- (NSString *)identifier {
+	return [self.bundle bundleIdentifier];
+}
+
+- (NSString *)version {
+	return [self.bundle versionString];
+}
 
 - (void)setStatus:(MBMBundleStatus)newStatus {
 	//	If there is no change, do nothing
@@ -73,8 +81,8 @@
 		return;
 	}
 	
-	//	Then update the path
-	self.path = toPath;
+	//	Then update the bundle
+	self.bundle = [NSBundle bundleWithPath:toPath];
 	
 	//	Save the new status value
 	_status = newStatus;
@@ -99,13 +107,11 @@
 
 #pragma mark - Memory Management
 
-- (id)initWithBundleIdentifier:(NSString *)aBundleIdentifier andPath:(NSString *)bundlePath {
+- (id)initWithPath:(NSString *)bundlePath {
     self = [super init];
     if (self) {
         // Initialization code here.
 		self.bundle = [NSBundle bundleWithPath:bundlePath];
-		self.path = bundlePath;
-		self.version = [self.bundle versionString];
 		
 		//	Get the localized name if there is one
 		self.name = [[self.bundle localizedInfoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
@@ -125,8 +131,6 @@
 
 - (void)dealloc {
 	self.name = nil;
-	self.path = nil;
-	self.version = nil;
 	self.icon = nil;
 	self.bundle = nil;
 	self.sparkleDelegate = nil;
@@ -149,6 +153,10 @@
 		}
 	}
 	return NO;
+}
+
+- (BOOL)hasLaterVersionNumberThanBundle:(MBMMailBundle *)otherBundle {
+	return [self.bundle hasLaterVersionNumberThanBundle:otherBundle.bundle];
 }
 
 #pragma mark - Actions
@@ -204,18 +212,21 @@
 	//	TODO: Put in the crash reporting
 }
 
-#pragma mark - Class Methods
 
+#pragma mark - Class Methods
 
 + (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath {
 	MBMMailBundle	*newBundle = nil;
-	NSBundle		*bundle = [NSBundle bundleWithPath:aBundlePath];
-	if (bundle) {
-		newBundle = [[[MBMMailBundle alloc] initWithBundleIdentifier:[bundle bundleIdentifier] andPath:[bundle bundlePath]] autorelease];
+	//	Only create a new one if we can load it as a bundle
+	if ([NSBundle bundleWithPath:aBundlePath]) {
+		newBundle = [[[MBMMailBundle alloc] initWithPath:aBundlePath] autorelease];
 	}
 	
 	return newBundle;
 }
+
+
+#pragma mark - Paths
 
 + (NSString *)mailFolderPath {
 	return [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:kMBMMailFolderName];
@@ -276,6 +287,66 @@
 	return [folderName substringToIndex:[folderName length] - 2];
 }
 
+#pragma mark - Getting Bundle Lists
+
++ (NSArray *)allMailBundles {
+	return [[self allActiveMailBundles] arrayByAddingObjectsFromArray:[self allDisabledMailBundles]];
+}
+
++ (NSArray *)allActiveMailBundles {
+	
+	NSMutableArray	*bundleList = [NSMutableArray array];
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	NSError			*error;
+	
+	//	Go through every item in the active bundles folder
+	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPath] error:&error]) {
+		//	If it is really a bundle, create an object and add it to our list
+		if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPath] stringByAppendingPathComponent:aBundleName]];
+			if (mailBundle) {
+				[bundleList addObject:mailBundle];
+			}
+		}
+	}
+	
+	return [NSArray arrayWithArray:bundleList];
+}
+
++ (NSArray *)allDisabledMailBundles {
+
+	NSMutableDictionary	*bundleDict = [NSMutableDictionary dictionary];
+	NSFileManager		*manager = [NSFileManager defaultManager];
+	NSError				*error;
+	
+	//	Go through every item in all the disabled bundle folders
+	for (NSString *aDisabledFolder in [self disabledBundlesPathList]) {
+		for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:aDisabledFolder error:&error]) {
+			//	If it is really a bundle, create an object and add it to our dictionary, if it is newer than one already in there, with the same id
+			if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+				MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPath] stringByAppendingPathComponent:aBundleName]];
+				//	If we got a mailBundle, see if we need to update or set
+				if (mailBundle) {
+					if ([bundleDict valueForKey:mailBundle.identifier]) {
+						if ([mailBundle hasLaterVersionNumberThanBundle:(MBMMailBundle *)[bundleDict valueForKey:mailBundle.identifier]]) {
+							[bundleDict setObject:mailBundle forKey:mailBundle.identifier];
+						}
+					}
+					else {
+						//	Just set it
+						[bundleDict setObject:mailBundle forKey:mailBundle.identifier];
+					}
+				}
+			}
+		}
+	}
+	
+	return [bundleDict allValues];
+}
+
+
+
+#pragma mark - Comparator
 
 + (NSComparisonResult)compareVersion:(NSString *)first toVersion:(NSString *)second {
 	

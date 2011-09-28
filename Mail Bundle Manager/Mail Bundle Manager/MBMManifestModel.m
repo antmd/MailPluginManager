@@ -34,6 +34,8 @@
 @synthesize actionItemList = _actionItemList;
 @synthesize totalActionItemCount = _totalActionItemCount;
 @synthesize confirmationStepCount = _confirmationStepCount;
+@synthesize canDeleteManagerIfNotUsedByOthers = _canDeleteManagerIfNotUsedByOthers;
+@synthesize canDeleteManagerIfNoBundlesLeft = _canDeleteManagerIfNoBundlesLeft;
 
 
 - (BOOL)shouldInstallManager {
@@ -129,6 +131,16 @@
 			count++;
 		}
 		_totalActionItemCount = count;
+		
+		//	Set manager deletion flags
+		_canDeleteManagerIfNotUsedByOthers = NO;
+		_canDeleteManagerIfNoBundlesLeft = YES;
+		if ([manifestDict valueForKey:kMBMCanDeleteManagerIfNotUsedByOthersKey]) {
+			_canDeleteManagerIfNotUsedByOthers = [[manifestDict valueForKey:kMBMCanDeleteManagerIfNotUsedByOthersKey] boolValue];
+		}
+		if ([manifestDict valueForKey:kMBMCanDeleteManagerIfNoBundlesKey]) {
+			_canDeleteManagerIfNoBundlesLeft = [[manifestDict valueForKey:kMBMCanDeleteManagerIfNoBundlesKey] boolValue];
+		}
 		
 	}
 	return self;

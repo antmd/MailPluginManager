@@ -24,6 +24,8 @@
 @property	(nonatomic, retain, readonly)	NSArray			*actionItemList;
 @property	(nonatomic, assign, readonly)	NSUInteger		totalActionItemCount;
 @property	(nonatomic, assign, readonly)	NSUInteger		confirmationStepCount;
+@property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNotUsedByOthers;	//	Default is NO
+@property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNoBundlesLeft;	//	Default is YES
 
 - (id)initWithPackageAtPath:(NSString *)packageFilePath;
 

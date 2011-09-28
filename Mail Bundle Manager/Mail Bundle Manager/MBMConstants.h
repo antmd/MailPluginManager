@@ -31,6 +31,8 @@ extern NSString	*kMBMDisplayNameKey;
 extern NSString	*kMBMMinOSVersionKey;
 extern NSString	*kMBMMaxOSVersionKey;
 extern NSString	*kMBMMinMailVersionKey;
+extern NSString	*kMBMCanDeleteManagerIfNotUsedByOthersKey;
+extern NSString	*kMBMCanDeleteManagerIfNoBundlesKey;
 //	Keys for the action items and sub objects
 extern NSString	*kMBMActionItemsKey;
 extern NSString	*kMBMPathKey;
