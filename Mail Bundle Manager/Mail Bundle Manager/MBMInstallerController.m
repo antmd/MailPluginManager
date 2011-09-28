@@ -40,12 +40,14 @@ typedef enum {
 
 - (void)updateCurrentConfigurationToStep:(NSUInteger)toStep;
 - (void)showContentView:(NSView *)aView;
-- (void)startInstall;
+- (void)startActions;
 
-- (BOOL)installAll;
-- (BOOL)installItems;
+- (BOOL)processAllItems;
+- (BOOL)processItems;
 - (BOOL)installBundleManager;
-- (BOOL)installItem:(MBMInstallationItem *)anItem;
+- (BOOL)installItem:(MBMActionItem *)anItem;
+- (BOOL)removeBundleManagerIfReasonable;
+- (BOOL)removeItem:(MBMActionItem *)anItem;
 
 - (BOOL)checkForLicenseRequirement;
 @end
@@ -56,18 +58,18 @@ typedef enum {
 
 @synthesize notificationObserver = _notificationObserver;
 
-@synthesize installationModel = _installationModel;
+@synthesize manifestModel = _manifestModel;
 @synthesize animatedListController = _animatedListController;
 @synthesize currentStep = _currentStep;
 
 @synthesize backgroundImageView = _backgroundImageView;
-@synthesize installStepsView = _installStepsView;
+@synthesize confirmationStepsView = _installStepsView;
 @synthesize titleTextField = _titleTextField;
 @synthesize displayWebView = _displayWebView;
 @synthesize displayProgressTextView = _displayProgressTextView;
 @synthesize displayProgressLabel = _displayProgressLabel;
-@synthesize installationSummaryTable = _installationSummaryTable;
-@synthesize installationSummaryView = _displayInstallationPreview;
+@synthesize actionSummaryTable = _actionSummaryTable;
+@synthesize actionSummaryView = _actionSummaryView;
 @synthesize previousStepButton = _previousStepButton;
 @synthesize actionButton = _actionButton;
 @synthesize displayTextView = _displayTextView;
@@ -80,16 +82,16 @@ typedef enum {
 	if (self.currentStep == kMBMInvalidStep) {
 		return nil;
 	}
-	return [self.installationModel.confirmationStepList objectAtIndex:self.currentStep];
+	return [self.manifestModel.confirmationStepList objectAtIndex:self.currentStep];
 }
 
 #pragma mark - Memory and Window Management
 
-- (id)initWithInstallationModel:(MBMInstallationModel *)aModel {
+- (id)initWithManifestModel:(MBMManifestModel *)aModel {
     self = [super initWithWindowNibName:@"MBMInstallerWindow"];
     if (self) {
         // Initialization code here.
-		_installationModel = [aModel retain];
+		_manifestModel = [aModel retain];
 		_currentStep = kMBMInvalidStep;
     }
     
@@ -100,7 +102,7 @@ typedef enum {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self.notificationObserver];
 	self.notificationObserver = nil;
-	self.installationModel = nil;
+	self.manifestModel = nil;
 	self.animatedListController = nil;
 	
 	[super dealloc];
@@ -111,14 +113,14 @@ typedef enum {
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 	//	Create the install steps view
-	self.animatedListController = [[[MBMAnimatedListController alloc] initWithContentList:self.installationModel.confirmationStepList inView:self.installStepsView] autorelease];
+	self.animatedListController = [[[MBMAnimatedListController alloc] initWithContentList:self.manifestModel.confirmationStepList inView:self.confirmationStepsView] autorelease];
 	
 	//	Set the window title from the installation Model
 	NSString	*localizedFormat = NSLocalizedString([[self window] title], @"");
-	[[self window] setTitle:[NSString stringWithFormat:localizedFormat, self.installationModel.displayName]];
+	[[self window] setTitle:[NSString stringWithFormat:localizedFormat, self.manifestModel.displayName]];
 	
-	//	Get the image for the background from the installationModel
-	NSImage	*bgImage = [[[NSImage alloc] initWithContentsOfFile:self.installationModel.backgroundImagePath] autorelease];
+	//	Get the image for the background from the manifestModel
+	NSImage	*bgImage = [[[NSImage alloc] initWithContentsOfFile:self.manifestModel.backgroundImagePath] autorelease];
 	[self.backgroundImageView setImage:bgImage];
 	
 	//	Set up the title label to be animatable
@@ -150,9 +152,9 @@ typedef enum {
 		BOOL	goingBackward = (aCurrentInstallStep < _currentStep);
 		
 		//	Validate that we don't go beyond our range
-		if (self.installationModel.confirmationStepCount <= aCurrentInstallStep) {
+		if (self.manifestModel.confirmationStepCount <= aCurrentInstallStep) {
 			//	Call our display the installation progress method and return
-			[self startInstall];
+			[self startActions];
 			return;
 		}
 		
@@ -175,12 +177,12 @@ typedef enum {
 		[self.displayWebView setHidden:(aView != self.displayWebView)];
 		[self.displayTextScrollView setHidden:(aView != self.displayTextScrollView)];
 		[self.displayProgressView setHidden:(aView != self.displayProgressView)];
-		[self.installationSummaryView setHidden:(aView != self.installationSummaryView)];
+		[self.actionSummaryView setHidden:(aView != self.actionSummaryView)];
 	}];
 	[[self.displayWebView animator] setAlphaValue:(aView == self.displayWebView)?1.0f:0.0f];
 	[[self.displayTextScrollView animator] setAlphaValue:(aView == self.displayTextScrollView)?1.0f:0.0f];
 	[[self.displayProgressView animator] setAlphaValue:(aView == self.displayProgressView)?1.0f:0.0f];
-	[[self.installationSummaryView animator] setAlphaValue:(aView == self.installationSummaryView)?1.0f:0.0f];
+	[[self.actionSummaryView animator] setAlphaValue:(aView == self.actionSummaryView)?1.0f:0.0f];
 	[NSAnimationContext endGrouping];
 }
 
@@ -188,8 +190,8 @@ typedef enum {
 - (void)updateCurrentConfigurationToStep:(NSUInteger)toStep {
 	
 	MBMConfirmationStep	*newStep = nil;
-	if (self.installationModel.confirmationStepCount > toStep) {
-		newStep = [self.installationModel.confirmationStepList objectAtIndex:toStep];
+	if (self.manifestModel.confirmationStepCount > toStep) {
+		newStep = [self.manifestModel.confirmationStepList objectAtIndex:toStep];
 	}
 	
 	//	Ensure that we have something to do
@@ -206,8 +208,8 @@ typedef enum {
 	}
 	else if (isConfirmed) {
 		//	Set the datasource for the installation summary tableview
-		[self.installationSummaryTable setDataSource:self];
-		[self showContentView:self.installationSummaryView];
+		[self.actionSummaryTable setDataSource:self];
+		[self showContentView:self.actionSummaryView];
 	}
 	else {
 		[self showContentView:self.displayTextScrollView];
@@ -261,7 +263,7 @@ typedef enum {
 
 
 
-- (void)startInstall {
+- (void)startActions {
 	//	Show the progress view
 	[self showContentView:self.displayProgressView];
 	
@@ -270,7 +272,7 @@ typedef enum {
 	[self.actionButton setEnabled:NO];
 	
 	//	Set the total value for the progress bar
-	[self.progressBar setMaxValue:self.installationModel.totalInstallationItemCount];
+	[self.progressBar setMaxValue:self.manifestModel.totalActionItemCount];
 	
 	//	Set up some notification watches
 	self.notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMInstallationProgressNotification object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -287,7 +289,7 @@ typedef enum {
 	//	Do the installation on a dispatch queue
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	dispatch_async(myQueue, ^(void) {
-		[self installAll];
+		[self processAllItems];
 	});
 	
 }
@@ -322,20 +324,20 @@ typedef enum {
 	NSMutableArray	*values = [NSMutableArray array];
 	switch ([error code]) {
 		case MBMMinOSInsufficientCode:
-			[values addObject:self.installationModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.installationModel.minOSVersion]];
+			[values addObject:self.manifestModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minOSVersion]];
 			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
 			break;
 			
 		case MBMMaxOSInsufficientCode:
-			[values addObject:self.installationModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.installationModel.maxOSVersion]];
+			[values addObject:self.manifestModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.maxOSVersion]];
 			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
 			break;
 			
 		case MBMMinMailInsufficientCode:
-			[values addObject:self.installationModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.installationModel.minMailVersion]];
+			[values addObject:self.manifestModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minMailVersion]];
 			[values addObject:[NSString stringWithFormat:@"%3.1f", mailVersion()]];
 			break;
 			
@@ -353,11 +355,11 @@ typedef enum {
 	return recoveryOptionIndex==0?YES:NO;
 }
 
-#pragma mark - Installer Methods
+#pragma mark - ActionItem Methods
 
-- (BOOL)installAll {
+- (BOOL)processAllItems {
 	
-	MBMInstallationModel	*model = self.installationModel;
+	MBMManifestModel	*model = self.manifestModel;
 	
 	//	Ensure that the versions all check out
 	CGFloat	currentVersion = macOSXVersion();
@@ -379,17 +381,17 @@ typedef enum {
 	
 	BOOL	result = [self installBundleManager];
 	if (result) {
-		result = [self installItems];
+		result = [self processItems];
 	}
 	return result;
 }
 
-- (BOOL)installItems {
+- (BOOL)processItems {
 	
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	
 	//	First just ensure that the all items are there to copy
-	for (MBMInstallationItem *anItem in self.installationModel.installationItemList) {
+	for (MBMActionItem *anItem in self.manifestModel.actionItemList) {
 		if (![manager fileExistsAtPath:anItem.path]) {
 			NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.path, kMBMPathKey, nil];
 			LKPresentErrorCodeUsingDict(MBMInvalidSourcePath, dict);
@@ -399,7 +401,7 @@ typedef enum {
 	}
 	
 	//	Then install each one
-	for (MBMInstallationItem *anItem in self.installationModel.installationItemList) {
+	for (MBMActionItem *anItem in self.manifestModel.actionItemList) {
 		[self installItem:anItem];
 	}
 	
@@ -408,7 +410,7 @@ typedef enum {
 
 - (BOOL)installBundleManager {
 	
-	MBMInstallationModel	*model = self.installationModel;
+	MBMManifestModel	*model = self.manifestModel;
 	NSFileManager			*manager = [NSFileManager defaultManager];
 	NSWorkspace				*workspace = [NSWorkspace sharedWorkspace];
 	
@@ -453,7 +455,7 @@ typedef enum {
 	return [self installItem:model.bundleManager];
 }
 
-- (BOOL)installItem:(MBMInstallationItem *)anItem {
+- (BOOL)installItem:(MBMActionItem *)anItem {
 	
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	
@@ -510,6 +512,14 @@ typedef enum {
 	return YES;
 }
 
+- (BOOL)removeBundleManagerIfReasonable {
+	return YES;
+}
+
+- (BOOL)removeItem:(MBMActionItem *)anItem {
+	return YES;
+}
+
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
 	[sheet orderOut:self];
@@ -549,23 +559,23 @@ typedef enum {
 #pragma mark - TableView DataSource & Delegate
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return self.installationModel.totalInstallationItemCount;
+	return self.manifestModel.totalActionItemCount;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 	
-	NSInteger			maxIndex = self.installationModel.totalInstallationItemCount - 1;
-	MBMInstallationItem	*theItem = nil;
+	NSInteger			maxIndex = self.manifestModel.totalActionItemCount - 1;
+	MBMActionItem	*theItem = nil;
 	
 	//	Get the correct item
 	if (row > maxIndex) {
 		return nil;
 	}
-	else if ((row == maxIndex) && self.installationModel.shouldInstallManager) {
-		theItem = self.installationModel.bundleManager;
+	else if ((row == maxIndex) && self.manifestModel.shouldInstallManager) {
+		theItem = self.manifestModel.bundleManager;
 	}
 	else {
-		theItem = [self.installationModel.installationItemList objectAtIndex:row];
+		theItem = [self.manifestModel.actionItemList objectAtIndex:row];
 	}
 	
 	//	If we need the icon, get that from the filemanager
@@ -602,7 +612,7 @@ typedef enum {
 									  nil];
 		NSAttributedString	*nameString = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", theItem.name] attributes:nameAttrs] autorelease];
 		NSAttributedString	*filenameString = [[[NSAttributedString alloc] initWithString:[theItem.path lastPathComponent] attributes:filenameAttrs] autorelease];
-		NSAttributedString	*destinationLabelString = [[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Destination: ", @"Label for destination in installer summary lists.") attributes:destinationLabelAttrs] autorelease];
+		NSAttributedString	*destinationLabelString = [[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Destination: ", @"Label for destination in action summary lists.") attributes:destinationLabelAttrs] autorelease];
 		NSAttributedString	*destinationString = [[[NSAttributedString alloc] initWithString:[theItem.destinationPath stringByDeletingLastPathComponent] attributes:destinationAttrs] autorelease];
 		NSAttributedString	*descString = [[[NSAttributedString alloc] initWithString:((theItem.itemDescription != nil)?theItem.itemDescription:@"") attributes:descAttrs] autorelease];
 		

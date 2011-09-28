@@ -1,5 +1,5 @@
 //
-//  MBMInstallationItem.h
+//  MBMActionItem.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 14/09/2011.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MBMInstallationItem : NSObject
+@interface MBMActionItem : NSObject
 
 @property	(nonatomic, copy, readonly)		NSString	*name;
 @property	(nonatomic, copy, readonly)		NSString	*itemDescription;
@@ -18,7 +18,7 @@
 @property	(nonatomic, assign, readonly)	BOOL		isMailBundle;
 @property	(nonatomic, assign, readonly)	BOOL		isBundleManager;
 
-- (id)initWithDictionary:(NSDictionary *)itemDictionary fromInstallationFilePath:(NSString *)installFilePath;
+- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath;
 
 @end
 

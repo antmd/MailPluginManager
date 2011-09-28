@@ -17,5 +17,5 @@
 @property	(nonatomic, assign, readonly)	BOOL				hasHTMLContent;
 @property	(nonatomic, assign)				BOOL				agreementAccepted;
 
-- (id)initWithDictionary:(NSDictionary *)aDictionary andInstallationFilePath:(NSString *)installFilePath;
+- (id)initWithDictionary:(NSDictionary *)aDictionary andPackageFilePath:(NSString *)packageFilePath;
 @end

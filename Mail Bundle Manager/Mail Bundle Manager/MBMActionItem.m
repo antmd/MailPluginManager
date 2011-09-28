@@ -1,16 +1,16 @@
 //
-//  MBMInstallationItem.m
+//  MBMActionItem.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 14/09/2011.
 //  Copyright 2011 Little Known Software. All rights reserved.
 //
 
-#import "MBMInstallationItem.h"
+#import "MBMActionItem.h"
 
 
 
-@interface MBMInstallationItem ()
+@interface MBMActionItem ()
 @property	(nonatomic, copy, readwrite)		NSString	*name;
 @property	(nonatomic, copy, readwrite)		NSString	*itemDescription;
 @property	(nonatomic, copy, readwrite)		NSArray		*permissions;
@@ -18,7 +18,7 @@
 @property	(nonatomic, copy, readwrite)		NSString	*destinationPath;
 @end
 
-@implementation MBMInstallationItem
+@implementation MBMActionItem
 
 @synthesize name = _name;
 @synthesize itemDescription = _itemDescription;
@@ -31,7 +31,7 @@
 
 #pragma mark - Memory Management
 
-- (id)initWithDictionary:(NSDictionary *)itemDictionary fromInstallationFilePath:(NSString *)installFilePath {
+- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath {
 
 	self = [super init];
     if (self) {
@@ -40,7 +40,7 @@
 		
 		//	Get the paths
 		NSString	*tempPath = nil;
-		tempPath = [installFilePath stringByAppendingPathComponent:[itemDictionary valueForKey:kMBMPathKey]];
+		tempPath = [packageFilePath stringByAppendingPathComponent:[itemDictionary valueForKey:kMBMPathKey]];
 		_path = [tempPath copy];
 		
 		//	Ensure that the destination path includes the filename if one wasn't attached
@@ -59,7 +59,7 @@
 			_itemDescription = [[itemDictionary valueForKey:kMBMDescriptionKey] copy];
 		}
 		
-		//	If there are permissions specific to this install, see what they will be
+		//	If there are permissions specific to this action, see what they will be
 		if ([itemDictionary valueForKey:kMBMPermissionsKey]) {
 			_permissions = [[itemDictionary valueForKey:kMBMPermissionsKey] copy];
 		}
@@ -88,7 +88,7 @@
 - (NSString *)description {
 	NSMutableString	*result = [NSMutableString string];
 	
-	[result appendFormat:@">>MBMInstallationItem [%p] (", self];
+	[result appendFormat:@">>%@ [%p] (", [self className], self];
 	[result appendFormat:@"name:%@  ", self.name];
 	[result appendFormat:@"itemDescription:%@  ", self.itemDescription];
 	[result appendFormat:@"isMailBundle:%@  ", [NSString stringWithBool:self.isMailBundle]];

@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-#import "MBMInstallationModel.h"
+#import "MBMManifestModel.h"
 #import "MBMAnimatedListController.h"
 
 @interface MBMInstallerController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
@@ -22,12 +22,12 @@
 	NSScrollView *_displayInstallationPreview;
 }
 
-@property	(nonatomic, retain)	MBMInstallationModel		*installationModel;
+@property	(nonatomic, retain)	MBMManifestModel			*manifestModel;
 @property	(nonatomic, retain)	MBMAnimatedListController	*animatedListController;
 @property	(nonatomic, assign)	NSUInteger					currentStep;
 
 @property	(assign) IBOutlet NSImageView	*backgroundImageView;
-@property	(assign) IBOutlet NSView		*installStepsView;
+@property	(assign) IBOutlet NSView		*confirmationStepsView;
 @property	(assign) IBOutlet NSTextField	*titleTextField;
 @property	(assign) IBOutlet WebView		*displayWebView;
 @property	(assign) IBOutlet NSButton		*previousStepButton;
@@ -36,15 +36,15 @@
 @property	(assign) IBOutlet NSText				*displayTextView;
 @property	(assign) IBOutlet NSScrollView			*displayTextScrollView;
 @property	(assign) IBOutlet NSView				*displayProgressView;
-@property	(assign) IBOutlet NSScrollView			*installationSummaryView;
+@property	(assign) IBOutlet NSScrollView			*actionSummaryView;
 @property	(assign) IBOutlet NSProgressIndicator	*progressBar;
 @property	(assign) IBOutlet NSTextField			*displayProgressTextView;
 @property	(assign) IBOutlet NSTextField			*displayProgressLabel;
-@property	(assign) IBOutlet NSTableView			*installationSummaryTable;
+@property	(assign) IBOutlet NSTableView			*actionSummaryTable;
 
 @property	(assign) IBOutlet NSWindow				*agreementDialog;
 
-- (id)initWithInstallationModel:(MBMInstallationModel *)aModel;
+- (id)initWithManifestModel:(MBMManifestModel *)aModel;
 
 - (IBAction)closeAgreementDialog:(id)sender;
 - (IBAction)moveToPreviousStep:(id)sender;

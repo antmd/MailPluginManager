@@ -1,25 +1,25 @@
 //
-//  MBMInstallationModel.m
+//  MBMManifestModel.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 12/09/2011.
 //  Copyright (c) 2011 Little Known Software. All rights reserved.
 //
 
-#import "MBMInstallationModel.h"
+#import "MBMManifestModel.h"
 #import "MBMMailBundle.h"
 #import "MBMConfirmationStep.h"
 
 
-@interface MBMInstallationModel ()
-@property	(nonatomic, copy, readwrite)	NSString			*displayName;
-@property	(nonatomic, copy, readwrite)	NSString			*backgroundImagePath;
-@property	(nonatomic, retain, readwrite)	MBMInstallationItem	*bundleManager;
-@property	(nonatomic, retain, readwrite)	NSArray				*confirmationStepList;
-@property	(nonatomic, retain, readwrite)	NSArray				*installationItemList;
+@interface MBMManifestModel ()
+@property	(nonatomic, copy, readwrite)	NSString		*displayName;
+@property	(nonatomic, copy, readwrite)	NSString		*backgroundImagePath;
+@property	(nonatomic, retain, readwrite)	MBMActionItem	*bundleManager;
+@property	(nonatomic, retain, readwrite)	NSArray			*confirmationStepList;
+@property	(nonatomic, retain, readwrite)	NSArray			*actionItemList;
 @end
 
-@implementation MBMInstallationModel
+@implementation MBMManifestModel
 
 #pragma mark - Accessors
 
@@ -30,8 +30,8 @@
 @synthesize minMailVersion = _minMailVersion;
 @synthesize bundleManager = _bundleManager;
 @synthesize confirmationStepList = _confirmationStepList;
-@synthesize installationItemList = _installationItemList;
-@synthesize totalInstallationItemCount = _totalInstallationItemCount;
+@synthesize actionItemList = _actionItemList;
+@synthesize totalActionItemCount = _totalActionItemCount;
 @synthesize confirmationStepCount = _confirmationStepCount;
 
 
@@ -42,12 +42,12 @@
 
 #pragma mark - Memory Management
 
-- (id)initWithInstallPackageAtPath:(NSString *)installFilePath {
+- (id)initWithPackageAtPath:(NSString *)packageFilePath {
 
-	//	If there is no installation manifest inside, return nil
-	NSString	*manifestPath = [[installFilePath stringByAppendingPathComponent:kMBMManifestName] stringByAppendingPathExtension:kMBMPlistExtension];
+	//	If there is no manifest inside, return nil
+	NSString	*manifestPath = [[packageFilePath stringByAppendingPathComponent:kMBMManifestName] stringByAppendingPathExtension:kMBMPlistExtension];
 	if (![[NSFileManager defaultManager] fileExistsAtPath:manifestPath]) {
-		ALog(@"Error: Installation File doesn't have a %@.%@ file.", kMBMManifestName, kMBMPlistExtension);
+		ALog(@"Error: Package doesn't have a %@.%@ file.", kMBMManifestName, kMBMPlistExtension);
 		return nil;
 	}
 
@@ -57,7 +57,7 @@
 		
 		//	Get the installation manifest contents and the items
 		NSDictionary	*manifestDict = [NSDictionary dictionaryWithContentsOfFile:manifestPath];
-		NSArray			*installItems = [manifestDict valueForKey:kMBMActionItemsKey];
+		NSArray			*actionItems = [manifestDict valueForKey:kMBMActionItemsKey];
 		NSArray			*confirmationSteps = [manifestDict valueForKey:kMBMConfirmationStepsKey];
 		NSMutableArray	*newItems = nil;
 		
@@ -65,7 +65,7 @@
 		//	Create each of the items
 		newItems = [NSMutableArray arrayWithCapacity:[confirmationSteps count]];
 		for (NSDictionary *itemDict in confirmationSteps) {
-			[newItems addObject:[[[MBMConfirmationStep alloc] initWithDictionary:itemDict andInstallationFilePath:installFilePath] autorelease]];
+			[newItems addObject:[[[MBMConfirmationStep alloc] initWithDictionary:itemDict andPackageFilePath:packageFilePath] autorelease]];
 		}
 		
 		//	Set our confirmation list to the new array, but only if it is not nil
@@ -77,9 +77,9 @@
 		
 		//	Get the installation list
 		//	Create each of the items
-		newItems = [NSMutableArray arrayWithCapacity:[installItems count]];
-		for (NSDictionary *itemDict in installItems) {
-			MBMInstallationItem	*anItem = [[[MBMInstallationItem alloc] initWithDictionary:itemDict fromInstallationFilePath:installFilePath] autorelease];
+		newItems = [NSMutableArray arrayWithCapacity:[actionItems count]];
+		for (NSDictionary *itemDict in actionItems) {
+			MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:itemDict fromPackageFilePath:packageFilePath] autorelease];
 			if (anItem.isBundleManager) {
 				_bundleManager = [anItem retain];
 			}
@@ -89,7 +89,7 @@
 		}
 		
 		//	Set our items list to the new array
-		_installationItemList = [[NSArray arrayWithArray:newItems] retain];
+		_actionItemList = [[NSArray arrayWithArray:newItems] retain];
 		
 		
 		//	See if there are any version requirements - set defaults first
@@ -106,20 +106,20 @@
 			_minMailVersion = [[manifestDict valueForKey:kMBMMinMailVersionKey] floatValue];
 		}
 		
-		//	set the installation display name and background if there is one
+		//	set the display name and background if there is one
 		if ([manifestDict valueForKey:kMBMDisplayNameKey]) {
 			_displayName = [[manifestDict valueForKey:kMBMDisplayNameKey] copy];
 		}
 		if ([manifestDict valueForKey:kMBMBackgroundImagePathKey]) {
-			_backgroundImagePath = [[installFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMBackgroundImagePathKey]] copy];
+			_backgroundImagePath = [[packageFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMBackgroundImagePathKey]] copy];
 		}
 		
-		//	Set the installation item total count
-		NSInteger	count = [_installationItemList count];
+		//	Set the action item total count
+		NSInteger	count = [_actionItemList count];
 		if (self.shouldInstallManager) {
 			count++;
 		}
-		_totalInstallationItemCount = count;
+		_totalActionItemCount = count;
 		
 	}
 	return self;
@@ -131,7 +131,7 @@
 	self.backgroundImagePath = nil;
 	self.bundleManager = nil;
 	self.confirmationStepList = nil;
-	self.installationItemList = nil;
+	self.actionItemList = nil;
 
 	[super dealloc];
 }
@@ -143,7 +143,7 @@
 - (NSString *)description {
 	NSMutableString	*result = [NSMutableString string];
 	
-	[result appendFormat:@">>MBMInstallationModel [%p]  ", self];
+	[result appendFormat:@">%@ [%p]  ", [self className], self];
 	[result appendFormat:@"displayName:%@  ", self.displayName];
 	[result appendFormat:@"backgroundImagePath:%@\n", self.backgroundImagePath];
 	[result appendFormat:@"minOSVersion:%3.2f  ", self.minOSVersion];
@@ -151,9 +151,9 @@
 	[result appendFormat:@"minMailVersion:%3.2f  ", self.minMailVersion];
 	[result appendFormat:@"shouldInstallManager:%@\n", [NSString stringWithBool:self.shouldInstallManager]];
 	[result appendFormat:@"bundleManager:\n\t(%@)\n", self.bundleManager];
-	[result appendFormat:@"totalInstallCount:%d  ", self.totalInstallationItemCount];
-	[result appendString:@"installItems:{\n"];
-	for (MBMInstallationItem *anItem in self.installationItemList) {
+	[result appendFormat:@"totalActionCount:%d  ", self.totalActionItemCount];
+	[result appendString:@"actionItems:{\n"];
+	for (MBMActionItem *anItem in self.actionItemList) {
 		[result appendFormat:@"\t[%@]\n", anItem];
 	}
 	[result appendString:@"}"];

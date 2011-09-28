@@ -8,7 +8,7 @@
 
 #import "MBMConfirmationStep.h"
 
-#define	kReleaseNotesTypeKey	@"information"
+#define	kInformationTypeKey		@"information"
 #define	kLicenseTypeKey			@"license"
 #define kConfirmTypeKey			@"confirm"
 
@@ -40,7 +40,7 @@
 
 #pragma mark - Memory Management
 
-- (id)initWithDictionary:(NSDictionary *)aDictionary andInstallationFilePath:(NSString *)installFilePath {
+- (id)initWithDictionary:(NSDictionary *)aDictionary andPackageFilePath:(NSString *)packageFilePath {
     self = [super init];
     if (self) {
         // Initialization code here.
@@ -51,8 +51,8 @@
 		if ([typeString isEqualToString:kLicenseTypeKey]) {
 			_type = kMBMConfirmationTypeLicense;
 		}
-		else if ([typeString isEqualToString:kReleaseNotesTypeKey]) {
-			_type = kMBMConfirmationTypeReleaseNotes;
+		else if ([typeString isEqualToString:kInformationTypeKey]) {
+			_type = kMBMConfirmationTypeInformation;
 		}
 		else if ([typeString isEqualToString:kConfirmTypeKey]) {
 			_type = kMBMConfirmationTypeConfirm;
@@ -64,21 +64,21 @@
 		//	Save the full path
 		//	If it is html, ensure it has a full URL
 		if (_hasHTMLContent) {
-			//	Update the path to include the installFilePath, and make it a full URL
+			//	Update the path to include the packageFilePath, and make it a full URL
 			if (![[aDictionary valueForKey:kMBMPathKey] hasPrefix:@"http"]) {
-				_path = [[NSString stringWithFormat:@"file://%@", [installFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]]] copy];
+				_path = [[NSString stringWithFormat:@"file://%@", [packageFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]]] copy];
 			}
 		}
 		//	Otherwise if there is a path just make it a full path
 		else if ([aDictionary valueForKey:kMBMPathKey]) {
-			_path = [[installFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]] copy];
+			_path = [[packageFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]] copy];
 		}
 		
 		//	Localized the two titles
-		NSString	*localizedTitle = MBMLocalizedStringFromInstallFile([aDictionary valueForKey:kMBMConfirmationTitleKey], installFilePath);
+		NSString	*localizedTitle = MBMLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationTitleKey], packageFilePath);
 		_title = [localizedTitle copy];
 		if ([aDictionary valueForKey:kMBMConfirmationBulletTitleKey]) {
-			_bulletTitle = [MBMLocalizedStringFromInstallFile([aDictionary valueForKey:kMBMConfirmationBulletTitleKey], installFilePath) copy];
+			_bulletTitle = [MBMLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationBulletTitleKey], packageFilePath) copy];
 		}
 		else {
 			_bulletTitle = [localizedTitle copy];
@@ -109,8 +109,8 @@
 - (NSString *)description {
 	NSMutableString	*result = [NSMutableString string];
 	
-	[result appendFormat:@">>MBMConfirmationStep [%p] (", self];
-	[result appendFormat:@"type:%d(%@)  ", self.type, (self.type == kMBMConfirmationTypeLicense?@"License":(self.type == kMBMConfirmationTypeReleaseNotes?@"Release Notes":@"Confirm"))];
+	[result appendFormat:@">>%@ [%p] (", [self className], self];
+	[result appendFormat:@"type:%d(%@)  ", self.type, (self.type == kMBMConfirmationTypeLicense?@"License":(self.type == kMBMConfirmationTypeInformation?@"Information":@"Confirm"))];
 	[result appendFormat:@"title:%@  ", self.title];
 	[result appendFormat:@"bulletTitle:%@\n", self.bulletTitle];
 	[result appendFormat:@"requiresAgreement:%@  ", [NSString stringWithBool:self.requiresAgreement]];

@@ -12,7 +12,7 @@
 #import "MBMInstallerController.h"
 
 @interface MBMAppDelegate ()
-+ (BOOL)validInstallFile:(NSString *)installFilePath;
++ (BOOL)validPackageFile:(NSString *)installFilePath;
 @end
 
 @implementation MBMAppDelegate
@@ -30,13 +30,13 @@
 @synthesize runningFromInstallDisk = _runningFromInstallDisk;
 @synthesize executablePath = _executablePath;
 @synthesize singleBundlePath = _singleBundlePath;
-@synthesize installationModel = _installationModel;
+@synthesize manifestModel = _manifestModel;
 @synthesize currentController = _currentController;
 
 - (void)dealloc {
 	self.executablePath = nil;
 	self.singleBundlePath = nil;
-	self.installationModel = nil;
+	self.manifestModel = nil;
 	self.currentController = nil;
 	
     [super dealloc];
@@ -99,8 +99,8 @@
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {
 	
 	//	If the file is a valid type..
-	if ([[self class] validInstallFile:filename]) {
-		self.installationModel = [[[MBMInstallationModel alloc] initWithInstallPackageAtPath:filename] autorelease];
+	if ([[self class] validPackageFile:filename]) {
+		self.manifestModel = [[[MBMManifestModel alloc] initWithPackageAtPath:filename] autorelease];
 		self.installing = YES;
 
 		//	Determine if the install is running from the installation volume
@@ -127,7 +127,7 @@
 	
 	//	Run the update handler for this application, if we are in any case except, running an install file that 
 	//		doesn't want to install the bundle manager
-	if (!(self.installationModel && !self.installationModel.shouldInstallManager)) {
+	if (!(self.manifestModel && !self.manifestModel.shouldInstallManager)) {
 		//	Run the Check Version Scenario
 //		[self ensureRunningBestVersion];
 	}
@@ -135,12 +135,12 @@
 	//	Then determine the process to continue down
 	if (self.installing) {
 		
-		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithInstallationModel:self.installationModel] autorelease];
+		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
 		[controller showWindow:self];
 		self.currentController = controller;
 		
 		//	Ask the model to install everything
-//		[self.installationModel installAll];
+//		[self.manifestModel processAllItems];
 //		//	Then quit
 //		[NSApp terminate:self];
 	}
@@ -280,24 +280,24 @@
 	return (result == noErr);
 }
 
-+ (BOOL)validInstallFile:(NSString *)installFilePath {
++ (BOOL)validPackageFile:(NSString *)packageFilePath {
 	
 	//	The extension should be our extension
-	if (![[installFilePath pathExtension] isEqualToString:kMBMInstallerFileExtension]) {
-		ALog(@"Installation file (%@) does not have a proper file extension (%@).", installFilePath, kMBMInstallerFileExtension);
+	if (![[packageFilePath pathExtension] isEqualToString:kMBMInstallerFileExtension]) {
+		ALog(@"Installation file (%@) does not have a proper file extension (%@).", packageFilePath, kMBMInstallerFileExtension);
 		return NO;
 	}
 	
 	//	Also ensure that the path is a folder and exists
 	BOOL	isFolder = NO;
-	if (![[NSFileManager defaultManager] fileExistsAtPath:installFilePath isDirectory:&isFolder] || !isFolder) {
-		ALog(@"Installation file (%@) either doesn't exist or is not a folder.", installFilePath);
+	if (![[NSFileManager defaultManager] fileExistsAtPath:packageFilePath isDirectory:&isFolder] || !isFolder) {
+		ALog(@"Installation file (%@) either doesn't exist or is not a folder.", packageFilePath);
 		return NO;
 	}
 
 	//	Ensure that the filename is a package
-	if (![[NSWorkspace sharedWorkspace] isFilePackageAtPath:installFilePath]) {
-		ALog(@"Installation file (%@) is not a package.", installFilePath);
+	if (![[NSWorkspace sharedWorkspace] isFilePackageAtPath:packageFilePath]) {
+		ALog(@"Installation file (%@) is not a package.", packageFilePath);
 		return NO;
 	}
 

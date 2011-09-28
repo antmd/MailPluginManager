@@ -21,7 +21,7 @@
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
 		D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */; };
 		D24DA331142CD92300720631 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D24DA330142CD92300720631 /* Localizable.strings */; };
-		D2730FD9142921B200EB5CB7 /* MBMInstallationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMInstallationModel.m */; };
+		D2730FD9142921B200EB5CB7 /* MBMManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */; };
 		D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */; };
 		D2730FE01429322A00EB5CB7 /* MBMInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */; };
 		D2730FE614293F6100EB5CB7 /* MBMAnimatedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */; };
@@ -29,11 +29,11 @@
 		D2730FF3142B539300EB5CB7 /* InstallAnimationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */; };
 		D273100E142BD52E00EB5CB7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D273100D142BD52E00EB5CB7 /* QuartzCore.framework */; };
 		D2731011142CB1E500EB5CB7 /* MBMConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */; };
-		D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMInstallationItem.m */; };
+		D28F77EA14209D1D0015E42F /* MBMActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMActionItem.m */; };
 		D2D1E6C1142FD8B4002FF1B1 /* errors.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6C0142FD8B4002FF1B1 /* errors.strings */; };
 		D2D1E6C914307968002FF1B1 /* LKError.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6C814307968002FF1B1 /* LKError.m */; };
 		D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
-		D2D1E6D81431BC3C002FF1B1 /* InstallationModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */; };
+		D2D1E6D81431BC3C002FF1B1 /* ManifestModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6D71431BC3C002FF1B1 /* ManifestModelTests.m */; };
 		D2D1E6DA1431C171002FF1B1 /* mbm-manifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6D91431C171002FF1B1 /* mbm-manifest.plist */; };
 		D2D1E6DD1431EC2A002FF1B1 /* MailBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */; };
 		D2D1E6DE1431EF69002FF1B1 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
@@ -115,7 +115,7 @@
 		D216B365141DFDE2003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMConstants.h; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConstants.m; sourceTree = "<group>"; };
-		D216B37E141E1C21003788DC /* MBMInstallationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationModel.h; sourceTree = "<group>"; };
+		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
 		D231F4471428ED4E002DB999 /* NSString+LKStructUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKStructUtils.h"; path = "../../LKKit/Categories/NSString+LKStructUtils.h"; sourceTree = "<group>"; };
 		D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKStructUtils.m"; path = "../../LKKit/Categories/NSString+LKStructUtils.m"; sourceTree = "<group>"; };
 		D231F44B1428ED5E002DB999 /* LKLogHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKLogHelper.h; path = ../../LKKit/Helpers/LKLogHelper.h; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 		D231F44F1428F035002DB999 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.markdown; path = ../README.markdown; sourceTree = SOURCE_ROOT; };
 		D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBMAgreementWindow.xib; sourceTree = "<group>"; };
 		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		D2730FD8142921B200EB5CB7 /* MBMInstallationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationModel.m; sourceTree = "<group>"; };
+		D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMManifestModel.m; sourceTree = "<group>"; };
 		D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallerController.h; sourceTree = "<group>"; };
 		D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallerController.m; sourceTree = "<group>"; };
 		D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBMInstallerWindow.xib; sourceTree = "<group>"; };
@@ -136,15 +136,15 @@
 		D273100D142BD52E00EB5CB7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D273100F142CB1E400EB5CB7 /* MBMConfirmationStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMConfirmationStep.h; sourceTree = "<group>"; };
 		D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConfirmationStep.m; sourceTree = "<group>"; };
-		D28F77E814209D1D0015E42F /* MBMInstallationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMInstallationItem.h; sourceTree = "<group>"; };
-		D28F77E914209D1D0015E42F /* MBMInstallationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMInstallationItem.m; sourceTree = "<group>"; };
+		D28F77E814209D1D0015E42F /* MBMActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMActionItem.h; sourceTree = "<group>"; };
+		D28F77E914209D1D0015E42F /* MBMActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMActionItem.m; sourceTree = "<group>"; };
 		D2D1E6C0142FD8B4002FF1B1 /* errors.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = errors.strings; sourceTree = "<group>"; };
 		D2D1E6C714307968002FF1B1 /* LKError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKError.h; path = ../../LKKit/Helpers/LKError.h; sourceTree = "<group>"; };
 		D2D1E6C814307968002FF1B1 /* LKError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKError.m; path = ../../LKKit/Helpers/LKError.m; sourceTree = "<group>"; };
 		D2D1E6CA1430827F002FF1B1 /* NSString+LKHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKHelper.h"; path = "../../LKKit/Categories/NSString+LKHelper.h"; sourceTree = "<group>"; };
 		D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKHelper.m"; path = "../../LKKit/Categories/NSString+LKHelper.m"; sourceTree = "<group>"; };
-		D2D1E6D61431BC3C002FF1B1 /* InstallationModelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallationModelTests.h; sourceTree = "<group>"; };
-		D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallationModelTests.m; sourceTree = "<group>"; };
+		D2D1E6D61431BC3C002FF1B1 /* ManifestModelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestModelTests.h; sourceTree = "<group>"; };
+		D2D1E6D71431BC3C002FF1B1 /* ManifestModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestModelTests.m; sourceTree = "<group>"; };
 		D2D1E6D91431C171002FF1B1 /* mbm-manifest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "mbm-manifest.plist"; sourceTree = "<group>"; };
 		D2D1E6DB1431EC29002FF1B1 /* MailBundleTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailBundleTests.h; sourceTree = "<group>"; };
 		D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailBundleTests.m; sourceTree = "<group>"; };
@@ -266,8 +266,8 @@
 		D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */ = {
 			isa = PBXGroup;
 			children = (
-				D2D1E6D61431BC3C002FF1B1 /* InstallationModelTests.h */,
-				D2D1E6D71431BC3C002FF1B1 /* InstallationModelTests.m */,
+				D2D1E6D61431BC3C002FF1B1 /* ManifestModelTests.h */,
+				D2D1E6D71431BC3C002FF1B1 /* ManifestModelTests.m */,
 				D2D1E6DB1431EC29002FF1B1 /* MailBundleTests.h */,
 				D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */,
 				D2D1E6E114320B61002FF1B1 /* TestData */,
@@ -393,10 +393,10 @@
 				D2E90296141E4C7F0058618F /* MBMMailBundle.m */,
 				D2E902AB141E72460058618F /* MBMSparkleDelegate.h */,
 				D2E902AC141E72470058618F /* MBMSparkleDelegate.m */,
-				D216B37E141E1C21003788DC /* MBMInstallationModel.h */,
-				D2730FD8142921B200EB5CB7 /* MBMInstallationModel.m */,
-				D28F77E814209D1D0015E42F /* MBMInstallationItem.h */,
-				D28F77E914209D1D0015E42F /* MBMInstallationItem.m */,
+				D216B37E141E1C21003788DC /* MBMManifestModel.h */,
+				D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */,
+				D28F77E814209D1D0015E42F /* MBMActionItem.h */,
+				D28F77E914209D1D0015E42F /* MBMActionItem.m */,
 				D273100F142CB1E400EB5CB7 /* MBMConfirmationStep.h */,
 				D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */,
 			);
@@ -573,10 +573,10 @@
 				D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */,
 				D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */,
 				D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */,
-				D28F77EA14209D1D0015E42F /* MBMInstallationItem.m in Sources */,
+				D28F77EA14209D1D0015E42F /* MBMActionItem.m in Sources */,
 				D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */,
 				D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */,
-				D2730FD9142921B200EB5CB7 /* MBMInstallationModel.m in Sources */,
+				D2730FD9142921B200EB5CB7 /* MBMManifestModel.m in Sources */,
 				D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */,
 				D2730FE614293F6100EB5CB7 /* MBMAnimatedListController.m in Sources */,
 				D2730FF1142A1F4700EB5CB7 /* LKCGStructs.m in Sources */,
@@ -590,7 +590,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2D1E6D81431BC3C002FF1B1 /* InstallationModelTests.m in Sources */,
+				D2D1E6D81431BC3C002FF1B1 /* ManifestModelTests.m in Sources */,
 				D2D1E6DD1431EC2A002FF1B1 /* MailBundleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

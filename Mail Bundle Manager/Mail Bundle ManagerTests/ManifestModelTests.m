@@ -1,17 +1,17 @@
 //
-//  InstallationModelTests.m
+//  ManifestModelTests.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 27/09/2011.
 //  Copyright 2011 Little Known Software. All rights reserved.
 //
 
-#import "InstallationModelTests.h"
-#import "MBMInstallationModel.h"
-#import "MBMInstallationItem.h"
+#import "ManifestModelTests.h"
+#import "MBMManifestModel.h"
+#import "MBMActionItem.h"
 #import "MBMConfirmationStep.h"
 
-@implementation InstallationModelTests
+@implementation ManifestModelTests
 
 #pragma mark - Accessors
 
@@ -19,11 +19,11 @@
 @synthesize userHomePath;
 @synthesize	filePath;
 @synthesize	fileContents;
-@synthesize	installItemContents;
-@synthesize	installItem1;
-@synthesize	installItem2;
-@synthesize	installItem3;
-@synthesize	installItem4;
+@synthesize	actionItemContents;
+@synthesize	actionItem1;
+@synthesize	actionItem2;
+@synthesize	actionItem3;
+@synthesize	actionItem4;
 @synthesize	confirmStepContents;
 @synthesize	confirmStep1;
 @synthesize	confirmStep2;
@@ -33,7 +33,7 @@
 #pragma mark - InstallationItem
 
 - (void)test_001_Item_Complete {
-	MBMInstallationItem	*anItem = [[[MBMInstallationItem alloc] initWithDictionary:self.installItem1 fromInstallationFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem1 fromPackageFilePath:@"/Short"] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"user", @"system", nil];
 	
 	//	Test the item
@@ -48,7 +48,7 @@
 }
 
 - (void)test_002_Item_Mail_Bundle_Complete {
-	MBMInstallationItem	*anItem = [[[MBMInstallationItem alloc] initWithDictionary:self.installItem2 fromInstallationFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem2 fromPackageFilePath:@"/Short"] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"user", nil];
 	
 	//	Test the item
@@ -63,7 +63,7 @@
 }
 
 - (void)test_003_Item_Bundle_Manager_Complete {
-	MBMInstallationItem	*anItem = [[[MBMInstallationItem alloc] initWithDictionary:self.installItem3 fromInstallationFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem3 fromPackageFilePath:@"/Short"] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"admin", nil];
 	
 	//	Test the item
@@ -78,7 +78,7 @@
 }
 
 - (void)test_004_Item_Minimal_Item {
-	MBMInstallationItem	*anItem = [[[MBMInstallationItem alloc] initWithDictionary:self.installItem4 fromInstallationFilePath:@"/Short"] autorelease];
+	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem4 fromPackageFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(anItem, nil);
@@ -94,12 +94,12 @@
 
 #pragma mark - Confirmation Steps
 
-- (void)test_010_Step_Complete_Notes {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep1 andInstallationFilePath:@"/Short"] autorelease];
+- (void)test_010_Step_Complete_Info {
+	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep1 andPackageFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
-	STAssertEquals(aStep.type, kMBMConfirmationTypeReleaseNotes, nil);
+	STAssertEquals(aStep.type, kMBMConfirmationTypeInformation, nil);
 	STAssertEqualObjects(aStep.bulletTitle, @"What's New", nil);
 	STAssertEqualObjects(aStep.title, @"Release Notes", nil);
 	STAssertEqualObjects(aStep.path, @"file:///Short/Something.html", nil);
@@ -109,7 +109,7 @@
 }
 
 - (void)test_011_Step_Complete_License {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep2 andInstallationFilePath:@"/Short"] autorelease];
+	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep2 andPackageFilePath:@"/Short"] autorelease];
 	aStep.agreementAccepted = YES;
 	
 	//	Test the item
@@ -124,7 +124,7 @@
 }
 
 - (void)test_012_Step_Complete_License_2 {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep3 andInstallationFilePath:@"/Short"] autorelease];
+	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep3 andPackageFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
@@ -138,7 +138,7 @@
 }
 
 - (void)test_013_Step_Complete_Confirm {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep4 andInstallationFilePath:@"/Short"] autorelease];
+	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep4 andPackageFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
@@ -155,7 +155,7 @@
 #pragma mark - Full Model
 
 - (void)test_020_Model_Full {
-	MBMInstallationModel	*theModel = [[[MBMInstallationModel alloc] initWithInstallPackageAtPath:[self.filePath stringByDeletingLastPathComponent]] autorelease];
+	MBMManifestModel	*theModel = [[[MBMManifestModel alloc] initWithPackageAtPath:[self.filePath stringByDeletingLastPathComponent]] autorelease];
 
 	//	Test the item
 	STAssertNotNil(theModel, nil);
@@ -167,8 +167,8 @@
 	STAssertEqualsWithAccuracy(theModel.minMailVersion, 4.2, 0.01, nil);
 	STAssertTrue(theModel.shouldInstallManager, nil);
 	STAssertEquals([theModel.confirmationStepList count], (NSUInteger)4, nil);
-	STAssertEquals([theModel.installationItemList count], (NSUInteger)3, nil);
-	STAssertEquals(theModel.totalInstallationItemCount, (NSUInteger)4, nil);
+	STAssertEquals([theModel.actionItemList count], (NSUInteger)3, nil);
+	STAssertEquals(theModel.totalActionItemCount, (NSUInteger)4, nil);
 	STAssertEquals(theModel.confirmationStepCount, (NSUInteger)4, nil);
 }
 
@@ -185,10 +185,10 @@
 	self.userHomePath = NSHomeDirectory();
 	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:kMBMManifestName ofType:kMBMPlistExtension];
 	self.fileContents = [NSDictionary dictionaryWithContentsOfFile:self.filePath];
-	self.installItemContents = [self.fileContents valueForKey:kMBMActionItemsKey];
+	self.actionItemContents = [self.fileContents valueForKey:kMBMActionItemsKey];
 	for (NSUInteger i = 0; i < 4; i++) {
-		if (i < [self.installItemContents count]) {
-			[self setValue:[self.installItemContents objectAtIndex:i] forKey:[NSString stringWithFormat:@"installItem%d", i+1]];
+		if (i < [self.actionItemContents count]) {
+			[self setValue:[self.actionItemContents objectAtIndex:i] forKey:[NSString stringWithFormat:@"actionItem%d", i+1]];
 		}
 	}
 	self.confirmStepContents = [self.fileContents valueForKey:kMBMConfirmationStepsKey];
@@ -207,11 +207,11 @@
 	self.userHomePath = nil;
 	self.filePath = nil;
 	self.fileContents = nil;
-	self.installItemContents = nil;
-	self.installItem1 = nil;
-	self.installItem2 = nil;
-	self.installItem3 = nil;
-	self.installItem4 = nil;
+	self.actionItemContents = nil;
+	self.actionItem1 = nil;
+	self.actionItem2 = nil;
+	self.actionItem3 = nil;
+	self.actionItem4 = nil;
 	self.confirmStepContents = nil;
 	self.confirmStep1 = nil;
 	self.confirmStep2 = nil;
