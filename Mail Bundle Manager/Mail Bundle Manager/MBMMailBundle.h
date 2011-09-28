@@ -28,6 +28,7 @@
 + (NSString *)latestDisabledBundlesPathShouldCreate:(BOOL)createNew;
 + (NSArray *)disabledBundlesPathList;
 + (NSString *)disabledBundleFolderName;
++ (NSString *)disabledBundleFolderPrefix;
 + (NSComparisonResult)compareVersion:(NSString *)first toVersion:(NSString *)second;
 
 - (id)initWithBundleIdentifier:(NSString *)aBundleIdentifier andPath:(NSString *)bundlePath;

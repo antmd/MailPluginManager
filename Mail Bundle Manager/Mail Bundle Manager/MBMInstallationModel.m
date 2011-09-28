@@ -45,9 +45,9 @@
 - (id)initWithInstallPackageAtPath:(NSString *)installFilePath {
 
 	//	If there is no installation manifest inside, return nil
-	NSString	*manifestPath = [[installFilePath stringByAppendingPathComponent:kMBMInstallManifestName] stringByAppendingPathExtension:kMBMPlistExtension];
+	NSString	*manifestPath = [[installFilePath stringByAppendingPathComponent:kMBMManifestName] stringByAppendingPathExtension:kMBMPlistExtension];
 	if (![[NSFileManager defaultManager] fileExistsAtPath:manifestPath]) {
-		ALog(@"Error: Installation File doesn't have a %@.%@ file.", kMBMInstallManifestName, kMBMPlistExtension);
+		ALog(@"Error: Installation File doesn't have a %@.%@ file.", kMBMManifestName, kMBMPlistExtension);
 		return nil;
 	}
 
@@ -57,7 +57,7 @@
 		
 		//	Get the installation manifest contents and the items
 		NSDictionary	*manifestDict = [NSDictionary dictionaryWithContentsOfFile:manifestPath];
-		NSArray			*installItems = [manifestDict valueForKey:kMBMInstallItemsKey];
+		NSArray			*installItems = [manifestDict valueForKey:kMBMActionItemsKey];
 		NSArray			*confirmationSteps = [manifestDict valueForKey:kMBMConfirmationStepsKey];
 		NSMutableArray	*newItems = nil;
 		
@@ -107,11 +107,11 @@
 		}
 		
 		//	set the installation display name and background if there is one
-		if ([manifestDict valueForKey:kMBMInstallDisplayNameKey]) {
-			_displayName = [[manifestDict valueForKey:kMBMInstallDisplayNameKey] copy];
+		if ([manifestDict valueForKey:kMBMDisplayNameKey]) {
+			_displayName = [[manifestDict valueForKey:kMBMDisplayNameKey] copy];
 		}
-		if ([manifestDict valueForKey:kMBMInstallBGImagePathKey]) {
-			_backgroundImagePath = [[installFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMInstallBGImagePathKey]] copy];
+		if ([manifestDict valueForKey:kMBMBackgroundImagePathKey]) {
+			_backgroundImagePath = [[installFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMBackgroundImagePathKey]] copy];
 		}
 		
 		//	Set the installation item total count

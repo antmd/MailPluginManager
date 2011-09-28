@@ -250,7 +250,7 @@
 	NSString		*mailPath = [self mailFolderPath];
 	NSArray			*mailFolders = [manager contentsOfDirectoryAtPath:mailPath error:&error];
 	for (NSString *subFolder in mailFolders) {
-		if ([subFolder hasPrefix:kMBMDisabledBundleFolderPrefix]) {
+		if ([subFolder hasPrefix:[self disabledBundleFolderPrefix]]) {
 			[inactiveList addObject:[mailPath stringByAppendingPathComponent:subFolder]];
 		}
 	}
@@ -268,7 +268,12 @@
 + (NSString *)disabledBundleFolderName {
 	NSString	*mailPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
 	NSString	*folderName = [[NSBundle bundleWithPath:mailPath] localizedStringForKey:@"DISABLED_PATH_FORMAT" value:@"Bundles (Disabled)" table:@"Alerts"];
-	return [NSString stringWithFormat:folderName, @"Bundles", @""];
+	return [NSString stringWithFormat:folderName, kMBMBundleFolderName, @""];
+}
+	 
++ (NSString *)disabledBundleFolderPrefix {
+	NSString	*folderName = [self disabledBundleFolderName];
+	return [folderName substringToIndex:[folderName length] - 2];
 }
 
 

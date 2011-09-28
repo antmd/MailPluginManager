@@ -183,9 +183,9 @@
     // Set-up code here.
 	self.bundleContentsPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"/Contents"];
 	self.userHomePath = NSHomeDirectory();
-	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"install-manifest" ofType:@"plist"];
+	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:kMBMManifestName ofType:kMBMPlistExtension];
 	self.fileContents = [NSDictionary dictionaryWithContentsOfFile:self.filePath];
-	self.installItemContents = [self.fileContents valueForKey:kMBMInstallItemsKey];
+	self.installItemContents = [self.fileContents valueForKey:kMBMActionItemsKey];
 	for (NSUInteger i = 0; i < 4; i++) {
 		if (i < [self.installItemContents count]) {
 			[self setValue:[self.installItemContents objectAtIndex:i] forKey:[NSString stringWithFormat:@"installItem%d", i+1]];

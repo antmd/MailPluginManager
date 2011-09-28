@@ -8,7 +8,7 @@
 
 #import "MBMConfirmationStep.h"
 
-#define	kReleaseNotesTypeKey	@"release-notes"
+#define	kReleaseNotesTypeKey	@"information"
 #define	kLicenseTypeKey			@"license"
 #define kConfirmTypeKey			@"confirm"
 
