@@ -127,6 +127,7 @@ typedef enum {
 	
 	//	Set the window title from the installation Model
 	[[self window] setTitle:[NSString stringWithFormat:localizedFormat, self.manifestModel.displayName]];
+	[[self window] center];
 	
 	//	Get the image for the background from the manifestModel
 	NSImage	*bgImage = [[[NSImage alloc] initWithContentsOfFile:self.manifestModel.backgroundImagePath] autorelease];
@@ -304,66 +305,6 @@ typedef enum {
 }
 
 
-#pragma mark - Error Delegate Methods
-
-- (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
-	return (self.manifestModel.manifestType==kMBMManifestTypeInstallation)?@"MBMInstallErrorDomain":@"MBMUnInstallErrorDomain";
-}
-
-- (NSArray *)recoveryOptionsForError:(LKError *)error {
-	NSMutableArray	*options = [NSMutableArray array];
-	
-	//	Loop to find all buttons
-	for (NSInteger i = 1;; i++) {
-		NSString	*format = [NSString stringWithFormat:@"%%d-button-%d", i];
-		NSString	*compareValue = [NSString stringWithFormat:format, [error code]];
-		NSString	*value = [error localizeWithFormat:format];
-		//	If it wasn't found, there are no more options
-		if ((value == nil) || [compareValue isEqualToString:value]) {
-			break;
-		}
-		[options addObject:value];
-	}
-	
-	//	If the options are not empty, return them
-	return IsEmpty(options)?nil:[NSArray arrayWithArray:options];
-}
-
-- (NSArray *)formatDescriptionValuesForError:(LKError *)error {
-	NSMutableArray	*values = [NSMutableArray array];
-	switch ([error code]) {
-		case MBMMinOSInsufficientCode:
-			[values addObject:self.manifestModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minOSVersion]];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
-			break;
-			
-		case MBMMaxOSInsufficientCode:
-			[values addObject:self.manifestModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.maxOSVersion]];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
-			break;
-			
-		case MBMMinMailInsufficientCode:
-			[values addObject:self.manifestModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minMailVersion]];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", mailVersion()]];
-			break;
-			
-		default:
-			break;
-	}
-	return IsEmpty(values)?nil:[NSArray arrayWithArray:values];
-}
-
-- (id)recoveryAttemptorForError:(LKError *)error {
-	return self;
-}
-
-- (BOOL)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex {
-	return recoveryOptionIndex==0?YES:NO;
-}
-
 #pragma mark - ActionItem Methods
 
 - (BOOL)processAllItems {
@@ -510,6 +451,10 @@ typedef enum {
 	NSString	*fromPath = anItem.path;
 	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[anItem.path lastPathComponent]];
 	
+	//	Notification for what we are copying
+	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+	
 	//	Now do the move
 	NSError	*error;
 	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
@@ -518,6 +463,10 @@ typedef enum {
 		return NO;
 	}
 
+	//	Notification for progress bar
+	myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1.0f], kMBMInstallationProgressValueKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+	
 	return YES;
 }
 
@@ -683,27 +632,36 @@ typedef enum {
 										  pathColor, NSForegroundColorAttributeName,
 										  [NSNumber numberWithFloat:1.0f], NSBaselineOffsetAttributeName,
 										  nil];
-		NSDictionary	*destinationLabelAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12.0f] , NSFontAttributeName, 
-											 labelColor, NSForegroundColorAttributeName,
-											 nil];
-		NSDictionary	*destinationAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:11.0f] , NSFontAttributeName, 
-											 pathColor, NSForegroundColorAttributeName,
-											 [NSNumber numberWithFloat:0.2f], NSObliquenessAttributeName,
-											 nil];
 		NSDictionary	*descAttrs = [NSDictionary dictionaryWithObjectsAndKeys:mainColor, NSForegroundColorAttributeName,
 									  nil];
 		NSAttributedString	*nameString = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", theItem.name] attributes:nameAttrs] autorelease];
 		NSAttributedString	*filenameString = [[[NSAttributedString alloc] initWithString:[theItem.path lastPathComponent] attributes:filenameAttrs] autorelease];
-		NSAttributedString	*destinationLabelString = [[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Destination: ", @"Label for destination in action summary lists.") attributes:destinationLabelAttrs] autorelease];
-		NSAttributedString	*destinationString = [[[NSAttributedString alloc] initWithString:[theItem.destinationPath stringByDeletingLastPathComponent] attributes:destinationAttrs] autorelease];
 		NSAttributedString	*descString = [[[NSAttributedString alloc] initWithString:((theItem.itemDescription != nil)?theItem.itemDescription:@"") attributes:descAttrs] autorelease];
+		
+		//	Test for destination info
+		NSAttributedString	*destinationLabelString = nil;
+		NSAttributedString	*destinationString = nil;
+		if (theItem.destinationPath != nil) {
+			NSDictionary	*destinationLabelAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12.0f] , NSFontAttributeName, 
+													  labelColor, NSForegroundColorAttributeName,
+													  nil];
+			NSDictionary	*destinationAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:11.0f] , NSFontAttributeName, 
+												 pathColor, NSForegroundColorAttributeName,
+												 [NSNumber numberWithFloat:0.2f], NSObliquenessAttributeName,
+												 nil];
+			
+			destinationLabelString = [[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Destination: ", @"Label for destination in action summary lists.") attributes:destinationLabelAttrs] autorelease];
+			destinationString = [[[NSAttributedString alloc] initWithString:[theItem.destinationPath stringByDeletingLastPathComponent] attributes:destinationAttrs] autorelease];
+		}
 		
 		//	Then build them all together in the correct format
 		NSMutableAttributedString	*fullString = [[[NSMutableAttributedString alloc] initWithAttributedString:nameString] autorelease];
 		[fullString appendAttributedString:filenameString];
-		[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n\t"] autorelease]];
-		[fullString appendAttributedString:destinationLabelString];
-		[fullString appendAttributedString:destinationString];
+		if (destinationString != nil) {
+			[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n\t"] autorelease]];
+			[fullString appendAttributedString:destinationLabelString];
+			[fullString appendAttributedString:destinationString];
+		}
 		[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n  "] autorelease]];
 		[fullString appendAttributedString:descString];
 		
@@ -714,6 +672,69 @@ typedef enum {
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
 	[[notification object] reloadData];
 }
+
+
+#pragma mark - Error Delegate Methods
+
+- (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
+	return (self.manifestModel.manifestType==kMBMManifestTypeInstallation)?@"MBMInstallErrorDomain":@"MBMUnInstallErrorDomain";
+}
+
+- (NSArray *)recoveryOptionsForError:(LKError *)error {
+	NSMutableArray	*options = [NSMutableArray array];
+	
+	//	Loop to find all buttons
+	for (NSInteger i = 1;; i++) {
+		NSString	*format = [NSString stringWithFormat:@"%%d-button-%d", i];
+		NSString	*compareValue = [NSString stringWithFormat:format, [error code]];
+		NSString	*value = [error localizeWithFormat:format];
+		//	If it wasn't found, there are no more options
+		if ((value == nil) || [compareValue isEqualToString:value]) {
+			break;
+		}
+		[options addObject:value];
+	}
+	
+	//	If the options are not empty, return them
+	return IsEmpty(options)?nil:[NSArray arrayWithArray:options];
+}
+
+- (NSArray *)formatDescriptionValuesForError:(LKError *)error {
+	NSMutableArray	*values = [NSMutableArray array];
+	switch ([error code]) {
+		case MBMMinOSInsufficientCode:
+			[values addObject:self.manifestModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minOSVersion]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
+			break;
+			
+		case MBMMaxOSInsufficientCode:
+			[values addObject:self.manifestModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.maxOSVersion]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
+			break;
+			
+		case MBMMinMailInsufficientCode:
+			[values addObject:self.manifestModel.displayName];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minMailVersion]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f", mailVersion()]];
+			break;
+			
+		default:
+			break;
+	}
+	return IsEmpty(values)?nil:[NSArray arrayWithArray:values];
+}
+
+- (id)recoveryAttemptorForError:(LKError *)error {
+	return self;
+}
+
+- (BOOL)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex {
+	return recoveryOptionIndex==0?YES:NO;
+}
+
+
 
 @end
 

@@ -123,7 +123,7 @@ BOOL QuitMail(void) {
 BOOL IsValidPackageFile(NSString *packageFilePath) {
 	
 	//	The extension should be our extension
-	if (![[packageFilePath pathExtension] isEqualToString:kMBMInstallerFileExtension]) {
+	if (![[packageFilePath pathExtension] isEqualToString:kMBMInstallerFileExtension] && ![[packageFilePath pathExtension] isEqualToString:kMBMUninstallerFileExtension]) {
 		ALog(@"Installation file (%@) does not have a proper file extension (%@).", packageFilePath, kMBMInstallerFileExtension);
 		return NO;
 	}

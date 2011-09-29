@@ -122,10 +122,10 @@
 //		[NSApp terminate:self];
 	}
 	else if (self.uninstalling) {
-		//	Get the mail bundle
-		MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:self.singleBundlePath];
-		//	Tell it to update itself
-		[mailBundle uninstall];
+		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
+		[controller showWindow:self];
+		self.currentController = controller;
+		
 	}
 
 	//	Then test to see if we should be showing the general management window
