@@ -178,9 +178,11 @@
 	
 	STAssertNotNil(bundle, nil);
 	STAssertEquals(bundle.status, kMBMStatusUninstalled, nil);
+	STAssertFalse(bundle.installed, nil);
+	STAssertFalse(bundle.enabled, nil);
 	STAssertNotNil(bundle.bundle, nil);
 	STAssertEqualObjects([bundle.bundle class], [NSBundle class], nil);
-	STAssertNil(bundle.icon, nil);
+	STAssertNotNil(bundle.icon, nil);
 	STAssertEqualObjects(bundle.name, @"ExamplePlugin", nil);
 	STAssertEqualObjects(bundle.path, self.testBundlePath, nil);
 	STAssertEqualObjects(bundle.version, @"1", nil);
@@ -198,9 +200,11 @@
 	
 	STAssertNotNil(mailBundle, nil);
 	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
+	STAssertTrue(mailBundle.installed, nil);
+	STAssertTrue(mailBundle.enabled, nil);
 	STAssertNotNil(mailBundle.bundle, nil);
 	STAssertEqualObjects([mailBundle.bundle class], [NSBundle class], nil);
-	STAssertNil(mailBundle.icon, nil);
+	STAssertNotNil(mailBundle.icon, nil);
 	STAssertEqualObjects(mailBundle.name, @"ExamplePlugin", nil);
 	STAssertEqualObjects(mailBundle.path, bundleInPlacePath, nil);
 	STAssertEqualObjects(mailBundle.version, @"1", nil);
@@ -220,9 +224,11 @@
 	
 	STAssertNotNil(mailBundle, nil);
 	STAssertEquals(mailBundle.status, kMBMStatusDisabled, nil);
+	STAssertTrue(mailBundle.installed, nil);
+	STAssertFalse(mailBundle.enabled, nil);
 	STAssertNotNil(mailBundle.bundle, nil);
 	STAssertEqualObjects([mailBundle.bundle class], [NSBundle class], nil);
-	STAssertNil(mailBundle.icon, nil);
+	STAssertNotNil(mailBundle.icon, nil);
 	STAssertEqualObjects(mailBundle.name, @"ExamplePlugin", nil);
 	STAssertEqualObjects(mailBundle.path, bundleInPlacePath, nil);
 	STAssertEqualObjects(mailBundle.version, @"1", nil);
@@ -241,13 +247,17 @@
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
 	
 	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
-	mailBundle.status = kMBMStatusEnabled;
+	STAssertTrue(mailBundle.installed, nil);
+	STAssertFalse(mailBundle.enabled, nil);
+	mailBundle.enabled = YES;
 	
 	STAssertNotNil(mailBundle, nil);
 	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
+	STAssertTrue(mailBundle.installed, nil);
+	STAssertTrue(mailBundle.enabled, nil);
 	STAssertNotNil(mailBundle.bundle, nil);
 	STAssertEqualObjects([mailBundle.bundle class], [NSBundle class], nil);
-	STAssertNil(mailBundle.icon, nil);
+	STAssertNotNil(mailBundle.icon, nil);
 	STAssertEqualObjects(mailBundle.name, @"ExamplePlugin", nil);
 	STAssertEqualObjects(mailBundle.path, newPath, nil);
 	STAssertEqualObjects(mailBundle.version, @"1", nil);
@@ -274,8 +284,12 @@
 	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
 
 	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
-	mailBundle.status = kMBMStatusDisabled;
+	STAssertTrue(mailBundle.installed, nil);
+	STAssertTrue(mailBundle.enabled, nil);
+	mailBundle.enabled = NO;
 	STAssertEquals(mailBundle.status, kMBMStatusDisabled, nil);
+	STAssertTrue(mailBundle.installed, nil);
+	STAssertFalse(mailBundle.enabled, nil);
 	
 	//	A new latestDisabled should have been created
 	STAssertNotNil([MBMMailBundle latestDisabledBundlesPath], nil);
@@ -302,8 +316,12 @@
 	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
 	
 	STAssertEquals(mailBundle.status, kMBMStatusEnabled, nil);
-	mailBundle.status = kMBMStatusUninstalled;
+	STAssertTrue(mailBundle.installed, nil);
+	STAssertTrue(mailBundle.enabled, nil);
+	mailBundle.installed = NO;
 	STAssertEquals(mailBundle.status, kMBMStatusUninstalled, nil);
+	STAssertFalse(mailBundle.installed, nil);
+	STAssertFalse(mailBundle.enabled, nil);
 	
 	//	New path should be in the trash
 	NSString	*newPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[guid stringByAppendingPathExtension:kMBMMailBundleExtension]];

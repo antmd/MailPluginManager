@@ -19,8 +19,7 @@
 @property	(nonatomic, copy, readwrite)		NSString		*iconPath;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
-@property	(nonatomic, assign, readwrite)		BOOL			*enabled;
-@property	(nonatomic, assign, readwrite)		BOOL			*inLocalDomain;
+@property	(nonatomic, assign, readwrite)		MBMBundleStatus	status;
 - (NSString *)companyFromIdentifier;
 @end
 
@@ -37,10 +36,11 @@
 @synthesize bundle = _bundle;
 @synthesize usesBundleManager = _usesBundleManager;
 @synthesize latestVersion = _latestVersion;
-@synthesize enabled = _enabled;
-@synthesize inLocalDomain = _inLocalDomain;
 @synthesize compatibleWithCurrentMail = _compatibleWithCurrentMail;
 @synthesize status = _status;
+@synthesize enabled = _enabled;
+@synthesize installed = _installed;
+@synthesize inLocalDomain = _inLocalDomain;
 @synthesize sparkleDelegate = _sparkleDelegate;
 
 - (NSString *)path {
@@ -120,10 +120,6 @@
 		}
 	}
 	return _status;
-}
-
-- (BOOL)canUninstall {
-	return (self.status != kMBMStatusUninstalled);
 }
 
 - (NSString *)company {

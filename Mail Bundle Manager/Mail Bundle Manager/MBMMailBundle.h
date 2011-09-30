@@ -23,12 +23,13 @@
 @property	(nonatomic, copy, readonly)		NSString		*incompatibleString;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
-@property	(nonatomic, assign, readonly)	BOOL			enabled;
-@property	(nonatomic, assign, readonly)	BOOL			canUninstall;
-@property	(nonatomic, assign, readonly)	BOOL			inLocalDomain;
 @property	(nonatomic, assign, readonly)	BOOL			compatibleWithCurrentMail;
 @property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
-@property	(nonatomic, assign)				MBMBundleStatus	status;
+@property	(nonatomic, assign, readonly)	MBMBundleStatus	status;
+
+@property	(nonatomic, assign)				BOOL			enabled;
+@property	(nonatomic, assign)				BOOL			installed;
+@property	(nonatomic, assign)				BOOL			inLocalDomain;
 
 @property	(nonatomic, retain)				MBMSparkleDelegate	*sparkleDelegate;
 
