@@ -22,6 +22,8 @@ extern NSString	*kMBMManifestName;
 extern NSString	*kMBMMailFolderName;
 extern NSString	*kMBMBundleFolderName;
 extern NSString	*kMBMBundleUsesMBMKey;
+extern NSString	*kMBMAppSupportFolderName;
+extern NSString	*kMBMGenericBundleIcon;
 
 //	Keys for top level of manifest
 extern NSString	*kMBMManifestTypeKey;
@@ -48,6 +50,15 @@ extern NSString	*kMBMConfirmationTitleKey;
 extern NSString	*kMBMConfirmationBulletTitleKey;
 extern NSString	*kMBMConfirmationShouldAgreeToLicense;
 extern NSString	*kMBMConfirmationTypeKey;
+
+//	Keys for historical UUID plist
+extern NSString	*kMBMUUIDTypeKey;
+extern NSString	*kMBMUUIDEarliestVersionKey;
+extern NSString	*kMBMUUIDLatestVersionKey;
+extern NSString	*kMBMUUIDLatestVersionTestKey;
+extern NSString	*kMBMUUIDTypeValueMail;
+extern NSString	*kMBMUUIDTypeValueMessage;
+extern NSString	*kMBMHistoricalUUIDFileName;
 
 //	Progress handling
 extern NSString	*kMBMInstallationProgressNotification;
@@ -90,6 +101,9 @@ typedef enum {
 //	Functions
 BOOL IsMailRunning(void);
 BOOL QuitMail(void);
+NSString *CurrentMailUUID(void);
+NSString *CurrentMessageUUID(void);
+NSDictionary *HistoricalUUIDInformation(void);
 BOOL IsValidPackageFile(NSString *packageFilePath);
 
 #define PerformOnAppDelegate(aSelectorString)						[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString)]

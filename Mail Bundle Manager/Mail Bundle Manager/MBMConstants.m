@@ -24,6 +24,8 @@ NSString	*kMBMManifestName = @"mbm-manifest";
 NSString	*kMBMMailFolderName = @"Mail";
 NSString	*kMBMBundleFolderName = @"Bundles";
 NSString	*kMBMBundleUsesMBMKey = @"PluginUsesMailBundleManager";
+NSString	*kMBMAppSupportFolderName = @"Mail Bundle Support";
+NSString	*kMBMGenericBundleIcon = @"GenericPlugin";
 
 //	Keys for top level of manifest
 NSString	*kMBMManifestTypeKey = @"manifest-type";
@@ -50,6 +52,15 @@ NSString	*kMBMConfirmationTitleKey = @"title";
 NSString	*kMBMConfirmationBulletTitleKey = @"bullet-title";
 NSString	*kMBMConfirmationShouldAgreeToLicense = @"license-agreement-required";
 NSString	*kMBMConfirmationTypeKey = @"type";
+
+//	Keys for historical UUID plist
+NSString	*kMBMUUIDTypeKey = @"type";
+NSString	*kMBMUUIDEarliestVersionKey = @"earliest-version";
+NSString	*kMBMUUIDLatestVersionKey = @"latest-version";
+NSString	*kMBMUUIDLatestVersionTestKey = @"latest-version-comparator";
+NSString	*kMBMUUIDTypeValueMail = @"mail";
+NSString	*kMBMUUIDTypeValueMessage = @"message";
+NSString	*kMBMHistoricalUUIDFileName = @"historicalUUIDs";
 
 //	Progress handling
 NSString	*kMBMInstallationProgressNotification = @"MBMInstallationProgressNotification";
@@ -118,6 +129,43 @@ BOOL QuitMail(void) {
 	}
 	
 	return (result == noErr);
+}
+
+NSString *CurrentMailUUID(void) {
+	static NSString	*mailUUID = nil;
+	if (mailUUID == nil) {
+		NSBundle	*aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
+		mailUUID = [[[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey] retain];
+	}
+	return mailUUID;
+}
+
+NSString *CurrentMessageUUID(void) {
+	static NSString	*messageUUID = nil;
+	if (messageUUID == nil) {
+		NSString	*messageBundlePath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject] stringByAppendingPathComponent:kMBMMessageBundlePath];
+		NSBundle	*aBundle = [NSBundle bundleWithPath:messageBundlePath];
+		messageUUID = [[[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey] retain];
+	}
+	return messageUUID;
+}
+
+NSDictionary *HistoricalUUIDInformation(void) {
+	static NSDictionary	*uuidList = nil;
+	if (uuidList == nil) {
+		//	Set the path to defaul tto our internal plist
+		NSString	*pathToUse = [[NSBundle mainBundle] pathForResource:kMBMHistoricalUUIDFileName ofType:kMBMPlistExtension];;
+		//	But try to load the file from the applications Support Folder
+		NSString	*aPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSLocalDomainMask, YES) lastObject];
+		if (aPath) {
+			aPath = [[[aPath stringByAppendingPathComponent:kMBMAppSupportFolderName] stringByAppendingPathComponent:kMBMHistoricalUUIDFileName] stringByAppendingPathExtension:kMBMPlistExtension];
+			if (aPath && [[NSFileManager defaultManager] fileExistsAtPath:aPath]) {
+				pathToUse = aPath;
+			}
+		}
+		uuidList = [[NSDictionary dictionaryWithContentsOfFile:pathToUse] retain];
+	}
+	return uuidList;
 }
 
 BOOL IsValidPackageFile(NSString *packageFilePath) {

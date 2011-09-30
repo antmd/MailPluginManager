@@ -39,6 +39,7 @@
 @synthesize latestVersion = _latestVersion;
 @synthesize enabled = _enabled;
 @synthesize inLocalDomain = _inLocalDomain;
+@synthesize compatibleWithCurrentMail = _compatibleWithCurrentMail;
 @synthesize status = _status;
 @synthesize sparkleDelegate = _sparkleDelegate;
 
@@ -121,6 +122,10 @@
 	return _status;
 }
 
+- (BOOL)canUninstall {
+	return (self.status != kMBMStatusUninstalled);
+}
+
 - (NSString *)company {
 
 	if ([_company isEqualToString:@"<MBMCompanyUnknown>"]) {
@@ -194,6 +199,9 @@
 	return theCompany;
 }
 
+- (NSString *)incompatibleString {
+	return [NSString stringWithFormat:NSLocalizedString(@"Always disabled in Mac OS X > %@", @"A string as short as possible describing that the plugin is only compatible with the OS until version X"), [self latestOSVersionSupported]];
+}
 
 #pragma mark - Memory Management
 
@@ -218,6 +226,9 @@
 		//	Get the image from the icons file
 		NSString	*iconFileName = [[_bundle infoDictionary] valueForKey:@"CFBundleIconFile"];
 		_iconPath = [[_bundle pathForImageResource:iconFileName] copy];
+		if (_iconPath == nil) {
+			_iconPath = [[[NSBundle mainBundle] pathForImageResource:kMBMGenericBundleIcon] copy];
+		}
 		_icon = [[NSImage alloc] initWithContentsOfFile:_iconPath];
 
 		//	Set the domain location
@@ -234,6 +245,17 @@
 		//	Set the status and enabled values
 		_status = [self isInActiveBundlesFolder]?kMBMStatusEnabled:([self isInDisabledBundlesFolder]?kMBMStatusDisabled:kMBMStatusUninstalled);
 		_enabled = (_status == kMBMStatusEnabled);
+		
+		//	Set the compatibility flag
+		//	Get the values to test
+		NSArray		*supportedUUIDs = [[_bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey];
+		NSString	*mailUUID = CurrentMailUUID();
+		NSString	*messageUUID = CurrentMessageUUID();
+		
+		//	Test to ensure that the plugin list contains both the mail and message UUIDs
+		if ([supportedUUIDs containsObject:mailUUID] && [supportedUUIDs containsObject:messageUUID]) {
+			_compatibleWithCurrentMail = YES;
+		}
 		
     }
     
@@ -272,6 +294,45 @@
 
 - (BOOL)hasLaterVersionNumberThanBundle:(MBMMailBundle *)otherBundle {
 	return [self.bundle hasLaterVersionNumberThanBundle:otherBundle.bundle];
+}
+
+- (NSString *)latestOSVersionSupported {
+	NSString		*latestSupported = NSLocalizedString(@"Unknown", @"Text indicating that we couldn't determine the latest version of the OS that this plugin supports");
+	NSDictionary	*mailDict = nil;
+	NSDictionary	*messageDict = nil;
+	NSDictionary	*historicalUUIDs = HistoricalUUIDInformation();
+	
+	//	Look through all supported values, each time saving the later one
+	for (NSString *aUUIDValue in [[[NSBundle bundleWithPath:self.path] infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]) {
+		NSDictionary	*anInfoDict = [historicalUUIDs valueForKey:aUUIDValue];
+		if ([[anInfoDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMail]) {
+			if ((mailDict == nil) || 
+				([[anInfoDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue])) {
+				mailDict = anInfoDict;
+			}
+		}
+		else if ([[anInfoDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMessage])  {
+			if ((messageDict == nil) || 
+				([[anInfoDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue])) {
+				messageDict = anInfoDict;
+			}
+		}
+	}
+	
+	//	If either is nil, we can't determine
+	if ((mailDict == nil) || (messageDict == nil)) {
+		return latestSupported;
+	}
+	
+	//	Then between the two of those, which is the earliest
+	if ([[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
+		latestSupported = [messageDict valueForKey:kMBMUUIDLatestVersionKey];
+	}
+	else {
+		latestSupported = [mailDict valueForKey:kMBMUUIDLatestVersionKey];
+	}
+	
+	return latestSupported;
 }
 
 #pragma mark - Actions

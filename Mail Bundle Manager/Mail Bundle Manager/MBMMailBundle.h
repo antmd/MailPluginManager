@@ -20,10 +20,13 @@
 @property	(nonatomic, copy, readonly)		NSString		*version;
 @property	(nonatomic, copy, readonly)		NSString		*latestVersion;
 @property	(nonatomic, copy, readonly)		NSString		*iconPath;
+@property	(nonatomic, copy, readonly)		NSString		*incompatibleString;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
 @property	(nonatomic, assign, readonly)	BOOL			enabled;
+@property	(nonatomic, assign, readonly)	BOOL			canUninstall;
 @property	(nonatomic, assign, readonly)	BOOL			inLocalDomain;
+@property	(nonatomic, assign, readonly)	BOOL			compatibleWithCurrentMail;
 @property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
 @property	(nonatomic, assign)				MBMBundleStatus	status;
 
@@ -49,6 +52,7 @@
 - (BOOL)isInActiveBundlesFolder;
 - (BOOL)isInDisabledBundlesFolder;
 - (BOOL)hasLaterVersionNumberThanBundle:(MBMMailBundle *)otherBundle;
+- (NSString *)latestOSVersionSupported;
 
 - (void)updateIfNecessary;
 - (void)uninstall;

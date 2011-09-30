@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		D20537B11434C06E002F0157 /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */; };
 		D20537B5143535E0002F0157 /* companies.strings in Resources */ = {isa = PBXBuildFile; fileRef = D20537B4143535E0002F0157 /* companies.strings */; };
+		D20537B714361EB6002F0157 /* GenericPlugin.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537B614361EB6002F0157 /* GenericPlugin.png */; };
+		D20537B814361F95002F0157 /* GenericPlugin.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537B614361EB6002F0157 /* GenericPlugin.png */; };
+		D20537BA1436223D002F0157 /* historicalUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = D20537B91436223D002F0157 /* historicalUUIDs.plist */; };
+		D20537BB1436223D002F0157 /* historicalUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = D20537B91436223D002F0157 /* historicalUUIDs.plist */; };
 		D20A3EDE1434B3520083B10A /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20A3EDD1434B3520083B10A /* MBMBundleView.xib */; };
 		D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B349141DFDE1003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B347141DFDE1003788DC /* InfoPlist.strings */; };
@@ -141,6 +145,8 @@
 		D20537AE1434C06E002F0157 /* NSViewController+LKCollectionItemFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSViewController+LKCollectionItemFix.h"; sourceTree = "<group>"; };
 		D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+LKCollectionItemFix.m"; sourceTree = "<group>"; };
 		D20537B4143535E0002F0157 /* companies.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = companies.strings; sourceTree = "<group>"; };
+		D20537B614361EB6002F0157 /* GenericPlugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GenericPlugin.png; path = "Mail Bundle Manager/GenericPlugin.png"; sourceTree = "<group>"; };
+		D20537B91436223D002F0157 /* historicalUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = historicalUUIDs.plist; path = "Mail Bundle Manager/historicalUUIDs.plist"; sourceTree = "<group>"; };
 		D20A3EDD1434B3520083B10A /* MBMBundleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBMBundleView.xib; sourceTree = "<group>"; };
 		D216B33A141DFDE1003788DC /* Mail Bundle Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mail Bundle Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D216B33E141DFDE1003788DC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -397,6 +403,8 @@
 				D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */,
 				D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */,
 				D2D1E6C0142FD8B4002FF1B1 /* errors.strings */,
+				D20537B91436223D002F0157 /* historicalUUIDs.plist */,
+				D20537B614361EB6002F0157 /* GenericPlugin.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -598,6 +606,8 @@
 				D2779BF51434601B003F7BE0 /* UninstallDocument.png in Resources */,
 				D20A3EDE1434B3520083B10A /* MBMBundleView.xib in Resources */,
 				D20537B5143535E0002F0157 /* companies.strings in Resources */,
+				D20537B714361EB6002F0157 /* GenericPlugin.png in Resources */,
+				D20537BA1436223D002F0157 /* historicalUUIDs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,6 +631,8 @@
 				D2779BDE14336641003F7BE0 /* MBMInstallerWindow.xib in Resources */,
 				D2779BDF14336641003F7BE0 /* MBMAgreementWindow.xib in Resources */,
 				D2779BE014336641003F7BE0 /* errors.strings in Resources */,
+				D20537B814361F95002F0157 /* GenericPlugin.png in Resources */,
+				D20537BB1436223D002F0157 /* historicalUUIDs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
