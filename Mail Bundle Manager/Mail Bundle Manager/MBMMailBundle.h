@@ -15,9 +15,15 @@
 @property	(nonatomic, copy, readonly)		NSString		*name;
 @property	(nonatomic, copy, readonly)		NSString		*path;
 @property	(nonatomic, copy, readonly)		NSString		*identifier;
+@property	(nonatomic, copy, readonly)		NSString		*company;
+@property	(nonatomic, copy, readonly)		NSString		*companyURL;
 @property	(nonatomic, copy, readonly)		NSString		*version;
+@property	(nonatomic, copy, readonly)		NSString		*latestVersion;
+@property	(nonatomic, copy, readonly)		NSString		*iconPath;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
+@property	(nonatomic, assign, readonly)	BOOL			enabled;
+@property	(nonatomic, assign, readonly)	BOOL			inLocalDomain;
 @property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
 @property	(nonatomic, assign)				MBMBundleStatus	status;
 

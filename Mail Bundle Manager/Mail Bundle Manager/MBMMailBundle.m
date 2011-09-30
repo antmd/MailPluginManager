@@ -13,8 +13,15 @@
 
 @interface MBMMailBundle ()
 @property	(nonatomic, copy, readwrite)		NSString		*name;
+@property	(nonatomic, copy, readwrite)		NSString		*company;
+@property	(nonatomic, copy, readwrite)		NSString		*companyURL;
+@property	(nonatomic, copy, readwrite)		NSString		*latestVersion;
+@property	(nonatomic, copy, readwrite)		NSString		*iconPath;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
+@property	(nonatomic, assign, readwrite)		BOOL			*enabled;
+@property	(nonatomic, assign, readwrite)		BOOL			*inLocalDomain;
+- (NSString *)companyFromIdentifier;
 @end
 
 @implementation MBMMailBundle
@@ -23,9 +30,15 @@
 #pragma mark - Accessors
 
 @synthesize name = _name;
+@synthesize company = _company;
+@synthesize companyURL = _companyURL;
 @synthesize icon = _icon;
+@synthesize iconPath = _iconPath;
 @synthesize bundle = _bundle;
 @synthesize usesBundleManager = _usesBundleManager;
+@synthesize latestVersion = _latestVersion;
+@synthesize enabled = _enabled;
+@synthesize inLocalDomain = _inLocalDomain;
 @synthesize status = _status;
 @synthesize sparkleDelegate = _sparkleDelegate;
 
@@ -87,6 +100,9 @@
 	
 	//	Save the new status value
 	_status = newStatus;
+	
+	//	And set enabled
+	self.enabled = (_status == kMBMStatusEnabled);
 }
 
 - (MBMBundleStatus)status {
@@ -103,6 +119,79 @@
 		}
 	}
 	return _status;
+}
+
+- (NSString *)company {
+
+	if ([_company isEqualToString:@"<MBMCompanyUnknown>"]) {
+		//	First look for our key
+		NSString	*aCompany = [[self.bundle infoDictionary] valueForKey:@"MBMCompanyName"];
+		if (aCompany == nil) {
+			
+			//	Try our database using the bundleIdentifier
+			aCompany = [self companyFromIdentifier];
+			
+			if (aCompany == nil) {
+				aCompany = self.companyURL;
+			}
+			
+			//	If not found parse the Get Info string?
+			//			aCompany = [[_bundle infoDictionary] valueForKey:@"CFBundleGetInfoString"];
+			
+			/*
+			 
+			 <key>CFBundleGetInfoString</key>
+			 <string>1.5.2, ©2002–2011 C-Command Software</string>
+			 
+			 <key>CFBundleGetInfoString</key>
+			 <string>MailTags 3.0 Preview 1(build 1386), Copyright (c) 2006-11 Indev Software</string>
+			 
+			 
+			 */
+		}
+		
+		//	Release the previous value and copy the new one
+		[_company release];
+		_company = [aCompany copy];
+	}
+	
+	return [[_company retain] autorelease];
+}
+
+- (NSString *)companyURL {
+	
+	if (_companyURL == nil) {
+		//	First look for our key
+		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:@"MBMCompanyURL"];
+		if (aURL == nil) {
+			
+			//	Get the identifier parts and make the URL
+			NSArray		*parts = [self.identifier componentsSeparatedByString:@"."];
+			
+			NSString	*companyRDN = [NSString stringWithFormat:@"[url]%@.%@", [parts objectAtIndex:0], [parts objectAtIndex:1]];
+			aURL = NSLocalizedStringFromTable(companyRDN, @"companies", @"");
+			if ([aURL isEqualToString:companyRDN]) {
+				aURL = [NSString stringWithFormat:@"http://www.%@.%@", [parts objectAtIndex:1], [parts objectAtIndex:0]];
+			}
+			
+		}
+		
+		//	Release the previous value and copy the new one
+		[_companyURL release];
+		_companyURL = [aURL copy];
+	}
+	
+	return [[_companyURL retain] autorelease];
+}
+
+- (NSString *)companyFromIdentifier {
+	NSArray		*parts = [self.identifier componentsSeparatedByString:@"."];
+	NSString	*companyRDN = [NSString stringWithFormat:@"%@.%@", [parts objectAtIndex:0], [parts objectAtIndex:1]];
+	NSString	*theCompany = NSLocalizedStringFromTable(companyRDN, @"companies", @"");
+	if ([theCompany isEqualToString:companyRDN]) {
+		theCompany = nil;
+	}
+	return theCompany;
 }
 
 
@@ -128,8 +217,24 @@
 		
 		//	Get the image from the icons file
 		NSString	*iconFileName = [[_bundle infoDictionary] valueForKey:@"CFBundleIconFile"];
-		_icon = [[NSImage alloc] initWithContentsOfFile:[_bundle pathForImageResource:iconFileName]];
+		_iconPath = [[_bundle pathForImageResource:iconFileName] copy];
+		_icon = [[NSImage alloc] initWithContentsOfFile:_iconPath];
 
+		//	Set the domain location
+		if ([bundlePath hasPrefix:@"/Library"]) {
+			_inLocalDomain = YES;
+		}
+		
+		//	Current Dummy value for latestVersion
+		_latestVersion = [[NSString alloc] initWithString:@"12.5.8"];
+		
+		//	Set a fake company name to know when to try and load it
+		_company = [[NSString alloc] initWithString:@"<MBMCompanyUnknown>"];
+		
+		//	Set the status and enabled values
+		_status = [self isInActiveBundlesFolder]?kMBMStatusEnabled:([self isInDisabledBundlesFolder]?kMBMStatusDisabled:kMBMStatusUninstalled);
+		_enabled = (_status == kMBMStatusEnabled);
+		
     }
     
     return self;
@@ -138,7 +243,10 @@
 
 - (void)dealloc {
 	self.name = nil;
+	self.company = nil;
+	self.companyURL = nil;
 	self.icon = nil;
+	self.iconPath = nil;
 	self.bundle = nil;
 	self.sparkleDelegate = nil;
 	[super dealloc];
@@ -331,7 +439,7 @@
 		for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:aDisabledFolder error:&error]) {
 			//	If it is really a bundle, create an object and add it to our dictionary, if it is newer than one already in there, with the same id
 			if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
-				MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPath] stringByAppendingPathComponent:aBundleName]];
+				MBMMailBundle	*mailBundle = [self mailBundleForPath:[aDisabledFolder stringByAppendingPathComponent:aBundleName]];
 				//	If we got a mailBundle, see if we need to update or set
 				if (mailBundle) {
 					if ([bundleDict valueForKey:mailBundle.identifier]) {

@@ -11,9 +11,17 @@
 #import "MBMManifestModel.h"
 #import "MBMMySparkleDelegate.h"
 
-@interface MBMAppDelegate : NSObject <NSApplicationDelegate>
+@interface MBMAppDelegate : NSObject <NSApplicationDelegate> {
+	NSCollectionViewItem *_collectionItem;
+}
+
 
 @property (assign)	IBOutlet	NSWindow	*window;
+
+@property (retain)	NSViewController		*bundleViewController;
+
+@property (assign) IBOutlet NSCollectionViewItem *collectionItem;
+
 
 @property (assign)	BOOL		installing;
 @property (assign)	BOOL		uninstalling;
@@ -25,6 +33,9 @@
 @property (nonatomic, retain)	MBMManifestModel	*manifestModel;
 
 @property (nonatomic, retain)	NSWindowController	*currentController;
+
+@property (nonatomic, retain)	NSArray				*mailBundleList;
+
 
 - (void)showBundleManagerWindow;
 - (void)ensureRunningBestVersion;

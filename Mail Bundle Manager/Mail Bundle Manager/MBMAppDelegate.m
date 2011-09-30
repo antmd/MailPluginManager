@@ -10,6 +10,7 @@
 
 #import "MBMMailBundle.h"
 #import "MBMInstallerController.h"
+#import "NSViewController+LKCollectionItemFix.h"
 
 
 @implementation MBMAppDelegate
@@ -17,6 +18,9 @@
 #pragma mark - Accessors & Memeory
 
 @synthesize window = _window;
+@synthesize bundleViewController = _bundleViewController;
+@synthesize collectionItem = _collectionItem;
+
 @synthesize installing = _installing;
 @synthesize uninstalling = _uninstalling;
 @synthesize managing = _managing;
@@ -25,12 +29,17 @@
 @synthesize singleBundlePath = _singleBundlePath;
 @synthesize manifestModel = _manifestModel;
 @synthesize currentController = _currentController;
+@synthesize mailBundleList = _mailBundleList;
 
 - (void)dealloc {
+	
+	self.bundleViewController = nil;
+	
 	self.executablePath = nil;
 	self.singleBundlePath = nil;
 	self.manifestModel = nil;
 	self.currentController = nil;
+	self.mailBundleList = nil;
 	
     [super dealloc];
 }
@@ -127,7 +136,7 @@
 		self.currentController = controller;
 		
 	}
-
+	
 	//	Then test to see if we should be showing the general management window
 	if (self.managing) {
 		[self showBundleManagerWindow];
@@ -136,14 +145,30 @@
 }
 
 
-#pragma mark - Entry Methods
+#pragma mark - Action Methods
 
 - (void)showBundleManagerWindow {
 	
+	self.bundleViewController = [[[NSViewController alloc] initWithNibName:@"MBMBundleView" bundle:nil] autorelease];
+	[self.bundleViewController configureForCollectionItem:self.collectionItem];
+
+	self.mailBundleList = [MBMMailBundle allMailBundles];
+
+	[[self window] center];
+	[[self window] makeKeyAndOrderFront:self];
 }
 
 - (void)restartMail {
 	
+}
+
+- (IBAction)showURL:(id)sender {
+	if ([sender respondsToSelector:@selector(toolTip)]) {
+		NSURL	*aURL = [NSURL URLWithString:[sender toolTip]];
+		if (aURL) {
+			[[NSWorkspace sharedWorkspace] openURL:aURL];
+		}
+	}
 }
 
 #pragma mark - This App Update Methods
