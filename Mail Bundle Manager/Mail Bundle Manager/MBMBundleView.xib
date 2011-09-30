@@ -62,7 +62,7 @@
 						<object class="NSButtonCell" key="NSCell" id="596984857">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">134217728</int>
-							<string key="NSContents">Little Known Software, Inc.</string>
+							<string key="NSContents">Company Name</string>
 							<object class="NSFont" key="NSSupport">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">9</double>
@@ -90,7 +90,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="193872628">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">138413056</int>
-							<string key="NSContents">Incompatible with current Mail version</string>
+							<string key="NSContents">incompatible text</string>
 							<object class="NSFont" key="NSSupport">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">11</double>
@@ -144,7 +144,7 @@
 					<object class="NSButton" id="208146219">
 						<reference key="NSNextResponder" ref="696709593"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{14, 33}, {95, 32}}</string>
+						<string key="NSFrame">{{17, 33}, {90, 32}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="307513451"/>
@@ -153,7 +153,7 @@
 						<object class="NSButtonCell" key="NSCell" id="789575438">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">134217728</int>
-							<string key="NSContents">Uninstall</string>
+							<string key="NSContents">Remove</string>
 							<reference key="NSSupport" ref="923130715"/>
 							<string key="NSCellIdentifier">_NS:161</string>
 							<reference key="NSControlView" ref="208146219"/>
@@ -177,7 +177,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="1052945863">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">4195328</int>
-							<string key="NSContents">4.9.10</string>
+							<string key="NSContents">text</string>
 							<reference key="NSSupport" ref="923130715"/>
 							<string key="NSCellIdentifier">_NS:3936</string>
 							<reference key="NSControlView" ref="523998315"/>
@@ -225,7 +225,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="121203572">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">4195328</int>
-							<string key="NSContents">1.6.4</string>
+							<string key="NSContents">text</string>
 							<reference key="NSSupport" ref="923130715"/>
 							<string key="NSCellIdentifier">_NS:3936</string>
 							<reference key="NSControlView" ref="775824527"/>
@@ -358,7 +358,7 @@
 						<object class="NSButtonCell" key="NSCell" id="1022163545">
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">134217728</int>
-							<string key="NSContents">SignatureProfiler</string>
+							<string key="NSContents">Plugin Name</string>
 							<object class="NSFont" key="NSSupport">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">16</double>
@@ -374,16 +374,16 @@
 							<int key="NSPeriodicInterval">75</int>
 						</object>
 					</object>
-					<object class="NSBox" id="1046639929">
+					<object class="NSBox" id="933036243">
 						<reference key="NSNextResponder" ref="696709593"/>
 						<int key="NSvFlags">12</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="NSView" id="1037711621">
-								<reference key="NSNextResponder" ref="1046639929"/>
+							<object class="NSView" id="172162892">
+								<reference key="NSNextResponder" ref="933036243"/>
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{1, 1}, {248, 228}}</string>
-								<reference key="NSSuperview" ref="1046639929"/>
+								<reference key="NSSuperview" ref="933036243"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="179296049"/>
 								<string key="NSReuseIdentifierKey">_NS:632</string>
@@ -392,7 +392,7 @@
 						<string key="NSFrameSize">{250, 230}</string>
 						<reference key="NSSuperview" ref="696709593"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1037711621"/>
+						<reference key="NSNextKeyView" ref="172162892"/>
 						<string key="NSReuseIdentifierKey">_NS:630</string>
 						<string key="NSOffsets">{0, 0}</string>
 						<object class="NSTextFieldCell" key="NSTitleCell">
@@ -418,7 +418,7 @@
 								<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
 							</object>
 						</object>
-						<reference key="NSContentView" ref="1037711621"/>
+						<reference key="NSContentView" ref="172162892"/>
 						<int key="NSBorderType">1</int>
 						<int key="NSBoxType">4</int>
 						<int key="NSTitlePosition">0</int>
@@ -429,11 +429,11 @@
 				<string key="NSFrameSize">{250, 230}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="1046639929"/>
+				<reference key="NSNextKeyView" ref="933036243"/>
 				<string key="NSReuseIdentifierKey">_NS:499</string>
 				<string key="NSClassName">NSView</string>
 			</object>
-			<object class="NSUserDefaultsController" id="110128566">
+			<object class="NSUserDefaultsController" id="761548962">
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -517,7 +517,7 @@
 						<string key="label">title: lkCVI.representedObject.company</string>
 						<reference key="source" ref="728623758"/>
 						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector" id="64774110">
+						<object class="NSNibBindingConnector" key="connector" id="563535058">
 							<reference key="NSSource" ref="728623758"/>
 							<reference key="NSDestination" ref="1001"/>
 							<string key="NSLabel">title: lkCVI.representedObject.company</string>
@@ -571,7 +571,7 @@
 							<string key="NSLabel">toolTip: lkCVI.representedObject.companyURL</string>
 							<string key="NSBinding">toolTip</string>
 							<string key="NSKeyPath">lkCVI.representedObject.companyURL</string>
-							<reference key="NSPreviousConnector" ref="64774110"/>
+							<reference key="NSPreviousConnector" ref="563535058"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -633,22 +633,6 @@
 					</object>
 					<int key="connectionID">118</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.canUninstall</string>
-						<reference key="source" ref="208146219"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="208146219"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.canUninstall</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.canUninstall</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">121</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -694,7 +678,7 @@
 							<reference ref="633232755"/>
 							<reference ref="643855897"/>
 							<reference ref="354495586"/>
-							<reference ref="1046639929"/>
+							<reference ref="933036243"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Mail Bundle View</string>
@@ -855,8 +839,13 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">28</int>
-						<reference key="object" ref="110128566"/>
+						<reference key="object" ref="761548962"/>
 						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">109</int>
+						<reference key="object" ref="933036243"/>
+						<reference key="parent" ref="696709593"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
@@ -871,11 +860,6 @@
 						<int key="objectID">26</int>
 						<reference key="object" ref="596984857"/>
 						<reference key="parent" ref="728623758"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">109</int>
-						<reference key="object" ref="1046639929"/>
-						<reference key="parent" ref="696709593"/>
 					</object>
 				</object>
 			</object>
