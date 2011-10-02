@@ -23,7 +23,6 @@ NSString	*kMBMUninstallerFileExtension = @"mbremove";
 NSString	*kMBMManifestName = @"mbm-manifest";
 NSString	*kMBMMailFolderName = @"Mail";
 NSString	*kMBMBundleFolderName = @"Bundles";
-NSString	*kMBMBundleUsesMBMKey = @"PluginUsesMailBundleManager";
 NSString	*kMBMAppSupportFolderName = @"Mail Bundle Support";
 NSString	*kMBMGenericBundleIcon = @"GenericPlugin";
 
@@ -73,6 +72,13 @@ NSString	*kMBMMailBundleIdentifier = @"com.apple.mail";
 NSString	*kMBMMailBundleExtension = @"mailbundle";
 NSString	*kMBMMailBundleUUIDKey = @"PluginCompatibilityUUID";
 NSString	*kMBMMailBundleUUIDListKey = @"SupportedPluginCompatibilityUUIDs";
+//	Other info.plist keys and values
+NSString	*kMBMBundleUsesMBMKey = @"PluginUsesMailBundleManager";
+NSString	*kMBMCompanyNameKey = @"MBMCompanyName";
+NSString	*kMBMCompanyURLKey = @"MBMCompanyURL";
+NSString	*kMBMUnknownCompanyValue = @"<MBMCompanyUnknown>";
+
+NSString	*kMBMCompaniesInfoFileName = @"companies";
 
 //	Names for objects in MBM
 NSString	*kMBMAnimationBackgroundImageName = @"InstallAnimationBackground";

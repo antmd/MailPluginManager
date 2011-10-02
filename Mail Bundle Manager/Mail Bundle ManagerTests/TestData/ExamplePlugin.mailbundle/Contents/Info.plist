@@ -36,6 +36,8 @@
 	<string>0410</string>
 	<key>DTXcodeBuild</key>
 	<string>4B110</string>
+	<key>MBMCompanyName</key>
+	<string>Little Known</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2011 Little Known Software. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
@@ -59,12 +61,15 @@
 		<string>1C58722D-AFBD-464E-81BB-0E05C108BE06</string>
 		<string>9049EF7D-5873-4F54-A447-51D722009310</string>
 		<string>36555EB0-53A7-4B29-9B84-6C0C6BACFC23</string>
+	</array>
+	<key>tempHolder</key>
+	<array>
 		<string># Lion Keys (GM)</string>
-		<string>1146A009-E373-4DB6-AB4D-47E59A7E50FD</string>
 		<string>2DE49D65-B49E-4303-A280-8448872EFE87</string>
+		<string>1146A009-E373-4DB6-AB4D-47E59A7E50FD</string>
 		<string># Keys for 10.7.2</string>
-		<string>6E7970A3-E5F1-4C41-A904-B18D3D8FAA7D</string>
 		<string>EF59EC5E-EFCD-4EA7-B617-6C5708397D24</string>
+		<string>6E7970A3-E5F1-4C41-A904-B18D3D8FAA7D</string>
 	</array>
 </dict>
 </plist>

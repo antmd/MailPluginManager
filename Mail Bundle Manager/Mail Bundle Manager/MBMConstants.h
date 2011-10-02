@@ -21,7 +21,6 @@ extern NSString	*kMBMUninstallerFileExtension;
 extern NSString	*kMBMManifestName;
 extern NSString	*kMBMMailFolderName;
 extern NSString	*kMBMBundleFolderName;
-extern NSString	*kMBMBundleUsesMBMKey;
 extern NSString	*kMBMAppSupportFolderName;
 extern NSString	*kMBMGenericBundleIcon;
 
@@ -71,6 +70,13 @@ extern NSString	*kMBMMailBundleIdentifier;
 extern NSString	*kMBMMailBundleExtension;
 extern NSString	*kMBMMailBundleUUIDKey;
 extern NSString	*kMBMMailBundleUUIDListKey;
+//	Other info.plist keys and values
+extern NSString	*kMBMBundleUsesMBMKey;
+extern NSString	*kMBMCompanyNameKey;
+extern NSString	*kMBMCompanyURLKey;
+extern NSString	*kMBMUnknownCompanyValue;
+
+extern NSString	*kMBMCompaniesInfoFileName;
 
 //	Names for objects in MBM
 extern NSString	*kMBMAnimationBackgroundImageName;
