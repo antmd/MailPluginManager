@@ -43,10 +43,10 @@
 		if (type == kMBMManifestTypeInstallation) {
 			tempPath = [packageFilePath stringByAppendingPathComponent:tempPath];
 		}
-		else {
+		else {	//	Uninstall package
 			//	if the is only one component and it ends with mailbundle, build full path to bundles folder
 			if (([[tempPath pathComponents] count] == 1) && [[tempPath pathExtension] isEqualToString:kMBMMailBundleExtension]) {
-				tempPath = [[MBMMailBundle bundlesPath] stringByAppendingPathComponent:tempPath];
+				tempPath = [MBMMailBundle pathForActiveBundleWithName:tempPath];
 			}
 			else {
 				//	Expand any tildas

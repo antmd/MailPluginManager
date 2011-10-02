@@ -25,7 +25,6 @@
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
 @property	(nonatomic, assign, readonly)	BOOL			compatibleWithCurrentMail;
 @property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
-@property	(nonatomic, assign, readonly)	MBMBundleStatus	status;
 
 @property	(nonatomic, assign)				BOOL			enabled;
 @property	(nonatomic, assign)				BOOL			installed;
@@ -34,11 +33,19 @@
 @property	(nonatomic, retain)				MBMSparkleDelegate	*sparkleDelegate;
 
 + (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath;
+
++ (NSString *)pathForActiveBundleWithName:(NSString *)aBundleName;
+
++ (NSString *)mailFolderPathLocal;
++ (NSString *)bundlesPathLocalShouldCreate:(BOOL)createNew;
++ (NSString *)latestDisabledBundlesPathLocalShouldCreate:(BOOL)createNew;
++ (NSArray *)disabledBundlesPathLocalList;
+
 + (NSString *)mailFolderPath;
-+ (NSString *)bundlesPath;
-+ (NSString *)latestDisabledBundlesPath;
++ (NSString *)bundlesPathShouldCreate:(BOOL)createNew;
 + (NSString *)latestDisabledBundlesPathShouldCreate:(BOOL)createNew;
 + (NSArray *)disabledBundlesPathList;
+
 + (NSString *)disabledBundleFolderName;
 + (NSString *)disabledBundleFolderPrefix;
 

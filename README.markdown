@@ -24,6 +24,7 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 	2 Set color of latest version text to green (?) if there is an update & enable button
 	3 Change color of text for company to blue to indicate link (too many colors?)
 * Add a link directly to product for Name & Icon.
+* Setup actions to watch changes of files to note when Plugins become active, disabled, domain change
 
 ### How to use
 

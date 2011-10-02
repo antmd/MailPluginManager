@@ -82,13 +82,6 @@ extern NSString	*kMBMCompaniesInfoFileName;
 extern NSString	*kMBMAnimationBackgroundImageName;
 
 typedef enum {
-	kMBMStatusUnknown,
-	kMBMStatusEnabled,
-	kMBMStatusDisabled,
-	kMBMStatusUninstalled
-} MBMBundleStatus;
-
-typedef enum {
 	kMBMConfirmationTypeInformation,
 	kMBMConfirmationTypeLicense,
 	kMBMConfirmationTypeConfirm

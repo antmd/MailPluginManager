@@ -19,8 +19,11 @@
 @property	(nonatomic, copy, readwrite)		NSString		*iconPath;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
-@property	(nonatomic, assign, readwrite)		MBMBundleStatus	status;
+- (void)updateState;
 - (NSString *)companyFromIdentifier;
++ (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
++ (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath;
++ (NSArray *)disabledBundlesPathListForDomain:(NSSearchPathDomainMask)domain;
 @end
 
 @implementation MBMMailBundle
@@ -37,7 +40,6 @@
 @synthesize usesBundleManager = _usesBundleManager;
 @synthesize latestVersion = _latestVersion;
 @synthesize compatibleWithCurrentMail = _compatibleWithCurrentMail;
-@synthesize status = _status;
 @synthesize enabled = _enabled;
 @synthesize installed = _installed;
 @synthesize inLocalDomain = _inLocalDomain;
@@ -55,39 +57,16 @@
 	return [self.bundle versionString];
 }
 
-- (void)setStatus:(MBMBundleStatus)newStatus {
+- (void)setEnabled:(BOOL)enabled {
 	//	If there is no change, do nothing
-	if (newStatus == _status) {
+	if (enabled == _enabled) {
 		return;
 	}
 	
 	//	Default is to *enable* it
+	NSSearchPathDomainMask	domain = self.inLocalDomain?NSLocalDomainMask:NSUserDomainMask;
 	NSString	*fromPath = self.path;
-	NSString	*toPath = nil;
-	
-	//	Change the toPath it we are not enabling it
-	switch (newStatus) {
-		case kMBMStatusEnabled:
-			toPath = [[self class] bundlesPath];
-			break;
-			
-		case kMBMStatusDisabled:
-			toPath = [[self class] latestDisabledBundlesPathShouldCreate:YES];
-			break;
-			
-		case kMBMStatusUninstalled:
-			toPath = [NSHomeDirectory() stringByAppendingPathComponent:@".Trash"];
-			break;
-			
-			//	For these don't do anything
-		case kMBMStatusUnknown:
-		default:
-			return;
-			break;
-	}
-	
-	//	Make the toPath a complete one with the last path component
-	toPath = [toPath stringByAppendingPathComponent:[self.path lastPathComponent]];
+	NSString	*toPath = [[[self class] pathForDomain:domain shouldCreate:YES disabled:!enabled] stringByAppendingPathComponent:[self.path lastPathComponent]];
 	
 	//	Now do the move
 	NSError	*error;
@@ -99,34 +78,70 @@
 	//	Then update the bundle
 	self.bundle = [NSBundle bundleWithPath:toPath];
 	
-	//	Save the new status value
-	_status = newStatus;
-	
-	//	And set enabled
-	self.enabled = (_status == kMBMStatusEnabled);
+	//	Update all the state
+	[self updateState];
 }
 
-- (MBMBundleStatus)status {
-	if (_status == kMBMStatusUnknown) {
-		//	Have to test disabled first, because the bundles matches as prefix for a disabled
-		if ([self isInDisabledBundlesFolder]) {
-			_status = kMBMStatusDisabled;
-		}
-		else if ([self isInActiveBundlesFolder]) {
-			_status = kMBMStatusEnabled;
-		}
-		else {
-			_status = kMBMStatusUninstalled;
-		}
+- (void)setInstalled:(BOOL)installed {
+	//	If there is no change, do nothing
+	if (installed == _installed) {
+		return;
 	}
-	return _status;
+	
+	//	Only allow a direct uninstall
+	if (installed == YES) {
+		ALog(@"Don't use the setter on installed to \"install\" only \"uninstall\"");
+		return;
+	}
+	
+	//	Default is to *install* it
+	NSString	*fromPath = self.path;
+	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[self.path lastPathComponent]];
+	
+	//	Now do the move
+	NSError	*error;
+	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
+		NSLog(@"Error moving bundle (install/trash):%@", error);
+		return;
+	}
+	
+	//	Then update the bundle
+	self.bundle = [NSBundle bundleWithPath:toPath];
+	
+	//	Update all the state
+	[self updateState];
+}
+
+- (void)setInLocalDomain:(BOOL)inLocalDomain {
+	//	If there is no change or it is installed and not enabled, do nothing
+	if ((inLocalDomain == _inLocalDomain) || (_installed && !_enabled)) {
+		return;
+	}
+	
+	//	Always putting it into the active bundles for domain
+	NSSearchPathDomainMask	domain = inLocalDomain?NSLocalDomainMask:NSUserDomainMask;
+	NSString	*fromPath = self.path;
+	NSString	*toPath = [[[self class] pathForDomain:domain shouldCreate:YES disabled:NO] stringByAppendingPathComponent:[self.path lastPathComponent]];
+	
+	//	Now do the move
+	NSError	*error;
+	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
+		NSLog(@"Error moving bundle (domain change):%@", error);
+		return;
+	}
+	
+	//	Then update the bundle
+	self.bundle = [NSBundle bundleWithPath:toPath];
+	
+	//	Update all the state
+	[self updateState];
 }
 
 - (NSString *)company {
 
-	if ([_company isEqualToString:@"<MBMCompanyUnknown>"]) {
+	if ([_company isEqualToString:kMBMUnknownCompanyValue]) {
 		//	First look for our key
-		NSString	*aCompany = [[self.bundle infoDictionary] valueForKey:@"MBMCompanyName"];
+		NSString	*aCompany = [[self.bundle infoDictionary] valueForKey:kMBMCompanyNameKey];
 		if (aCompany == nil) {
 			
 			//	Try our database using the bundleIdentifier
@@ -163,14 +178,14 @@
 	
 	if (_companyURL == nil) {
 		//	First look for our key
-		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:@"MBMCompanyURL"];
+		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMBMCompanyURLKey];
 		if (aURL == nil) {
 			
 			//	Get the identifier parts and make the URL
 			NSArray		*parts = [self.identifier componentsSeparatedByString:@"."];
 			
 			NSString	*companyRDN = [NSString stringWithFormat:@"[url]%@.%@", [parts objectAtIndex:0], [parts objectAtIndex:1]];
-			aURL = NSLocalizedStringFromTable(companyRDN, @"companies", @"");
+			aURL = NSLocalizedStringFromTable(companyRDN, kMBMCompaniesInfoFileName, @"");
 			if ([aURL isEqualToString:companyRDN]) {
 				aURL = [NSString stringWithFormat:@"http://www.%@.%@", [parts objectAtIndex:1], [parts objectAtIndex:0]];
 			}
@@ -188,7 +203,7 @@
 - (NSString *)companyFromIdentifier {
 	NSArray		*parts = [self.identifier componentsSeparatedByString:@"."];
 	NSString	*companyRDN = [NSString stringWithFormat:@"%@.%@", [parts objectAtIndex:0], [parts objectAtIndex:1]];
-	NSString	*theCompany = NSLocalizedStringFromTable(companyRDN, @"companies", @"");
+	NSString	*theCompany = NSLocalizedStringFromTable(companyRDN, kMBMCompaniesInfoFileName, @"");
 	if ([theCompany isEqualToString:companyRDN]) {
 		theCompany = nil;
 	}
@@ -227,20 +242,14 @@
 		}
 		_icon = [[NSImage alloc] initWithContentsOfFile:_iconPath];
 
-		//	Set the domain location
-		if ([bundlePath hasPrefix:@"/Library"]) {
-			_inLocalDomain = YES;
-		}
-		
 		//	Current Dummy value for latestVersion
 		_latestVersion = [[NSString alloc] initWithString:@"12.5.8"];
 		
 		//	Set a fake company name to know when to try and load it
-		_company = [[NSString alloc] initWithString:@"<MBMCompanyUnknown>"];
+		_company = [[NSString alloc] initWithString:kMBMUnknownCompanyValue];
 		
-		//	Set the status and enabled values
-		_status = [self isInActiveBundlesFolder]?kMBMStatusEnabled:([self isInDisabledBundlesFolder]?kMBMStatusDisabled:kMBMStatusUninstalled);
-		_enabled = (_status == kMBMStatusEnabled);
+		//	Set the state values
+		[self updateState];
 		
 		//	Set the compatibility flag
 		//	Get the values to test
@@ -274,13 +283,36 @@
 
 #pragma mark - Testing
 
+- (void)updateState {
+	
+	//	Set the state values
+	[self willChangeValueForKey:@"enabled"];
+	_enabled = [self isInActiveBundlesFolder];
+	[self didChangeValueForKey:@"enabled"];
+	[self willChangeValueForKey:@"installed"];
+	_installed = [self isInActiveBundlesFolder] || [self isInDisabledBundlesFolder];
+	[self didChangeValueForKey:@"installed"];
+	[self willChangeValueForKey:@"inLocalDomain"];
+	_inLocalDomain = [self.path hasPrefix:[[self class] mailFolderPathLocal]];
+	[self didChangeValueForKey:@"inLocalDomain"];
+	
+}
+
 - (BOOL)isInActiveBundlesFolder {
-	return [[self.path stringByDeletingLastPathComponent] isEqualToString:[[self class] bundlesPath]];
+	NSString	*folderPath = [self.path stringByDeletingLastPathComponent];
+	return ([folderPath isEqualToString:[[self class] bundlesPathShouldCreate:NO]] || [folderPath isEqualToString:[[self class] bundlesPathLocalShouldCreate:NO]]);
 }
 
 - (BOOL)isInDisabledBundlesFolder {
 	NSString	*folderPath = [self.path stringByDeletingLastPathComponent];
+	//	Check all of the user paths
 	for (NSString *disabledPath in [[self class] disabledBundlesPathList]) {
+		if ([folderPath isEqualToString:disabledPath]) {
+			return YES;
+		}
+	}
+	//	Then check all of the local paths
+	for (NSString *disabledPath in [[self class] disabledBundlesPathLocalList]) {
 		if ([folderPath isEqualToString:disabledPath]) {
 			return YES;
 		}
@@ -369,11 +401,11 @@
 	//	Run the alert
 	NSInteger	result = [confirmAlert runModal];
 	if (result == NSAlertDefaultReturn) {
-		self.status = kMBMStatusUninstalled;
+		self.installed = NO;
 	}
 	//	Should diable the plugin
 	else {
-		self.status = kMBMStatusDisabled;
+		self.enabled = NO;
 	}
 	
 	//	Quit this app now
@@ -397,40 +429,64 @@
 	return newBundle;
 }
 
-
 #pragma mark - Paths
 
-+ (NSString *)mailFolderPath {
-	return [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:kMBMMailFolderName];
++ (NSString *)pathForActiveBundleWithName:(NSString *)aBundleName {
+	for (NSString *activeBundlePath in [self allActiveMailBundles]) {
+		if ([[activeBundlePath lastPathComponent] isEqualToString:aBundleName]) {
+			return activeBundlePath;
+		}
+	}
+	return nil;
 }
 
-+ (NSString *)bundlesPath {
-	return [[self mailFolderPath] stringByAppendingPathComponent:kMBMBundleFolderName];;
+#pragma mark Generic Methods
+
++ (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain {
+	return [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, domain, YES) lastObject] stringByAppendingPathComponent:kMBMMailFolderName];
 }
 
-+ (NSString *)latestDisabledBundlesPath {
-	return [[self disabledBundlesPathList] lastObject];
-}
++ (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath {
 
-+ (NSString *)latestDisabledBundlesPathShouldCreate:(BOOL)createNew {
-	NSString	*path = [self latestDisabledBundlesPath];
-	if (path == nil) {
+	//	Designate which path to use
+	NSString	*path = [[self mailFolderPathForDomain:domain] stringByAppendingPathComponent:kMBMBundleFolderName];
+	if (disabledPath) {
+		path = [[self disabledBundlesPathListForDomain:domain] lastObject];
+	}
+	
+	//	Test to see if we need to do anything
+	//	If we should create
+	if (createNew) {
+		
+		NSFileManager	*manager = [NSFileManager defaultManager];
+		BOOL			shouldCreate = NO;
+		
+		//	AND either, we're looking for a disabled folder and we have nil
+		if (disabledPath && (path == nil)) {
+			shouldCreate = YES;
+			path = [[self mailFolderPathForDomain:domain] stringByAppendingPathComponent:[self disabledBundleFolderName]];
+		}
+		//	OR looking for enabled and it doesn't exist
+		else if (!disabledPath && ![manager fileExistsAtPath:path]) {
+			shouldCreate = YES;
+			//	Uses current path
+		}
+		
 		NSError		*error;
-		if (![[NSFileManager defaultManager] createDirectoryAtPath:[[self mailFolderPath] stringByAppendingPathComponent:[self disabledBundleFolderName]] withIntermediateDirectories:YES attributes:nil error:&error]) {
+		if (shouldCreate && ![manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
 			LKErr(@"Couldn't create the Disabled Bundle folder:%@", error);
 			return nil;
 		}
-		path = [self latestDisabledBundlesPath];
 	}
 	return path;
 }
 
-+ (NSArray *)disabledBundlesPathList {
-
++ (NSArray *)disabledBundlesPathListForDomain:(NSSearchPathDomainMask)domain {
+	
 	NSError			*error;
 	NSMutableArray	*inactiveList = [NSMutableArray array];
 	NSFileManager	*manager = [NSFileManager defaultManager];
-	NSString		*mailPath = [self mailFolderPath];
+	NSString		*mailPath = [self mailFolderPathForDomain:domain];
 	NSArray			*mailFolders = [manager contentsOfDirectoryAtPath:mailPath error:&error];
 	for (NSString *subFolder in mailFolders) {
 		if ([subFolder hasPrefix:[self disabledBundleFolderPrefix]]) {
@@ -444,9 +500,47 @@
 		NSDate	*date2 = [[manager attributesOfItemAtPath:obj2 error:NULL] valueForKey:NSFileCreationDate]; 
 		return [date1 compare:date2];
 	}];
-
+	
 	return [NSArray arrayWithArray:inactiveList];
 }
+
+#pragma mark Local Domain
+
++ (NSString *)mailFolderPathLocal {
+	return [self mailFolderPathForDomain:NSLocalDomainMask];
+}
+
++ (NSString *)bundlesPathLocalShouldCreate:(BOOL)createNew {
+	return [self pathForDomain:NSLocalDomainMask shouldCreate:createNew disabled:NO];
+}
+
++ (NSString *)latestDisabledBundlesPathLocalShouldCreate:(BOOL)createNew {
+	return [self pathForDomain:NSLocalDomainMask shouldCreate:createNew disabled:YES];
+}
+
++ (NSArray *)disabledBundlesPathLocalList {
+	return [self disabledBundlesPathListForDomain:NSLocalDomainMask];
+}
+
+#pragma mark User Domain
+
++ (NSString *)mailFolderPath {
+	return [self mailFolderPathForDomain:NSUserDomainMask];
+}
+
++ (NSString *)bundlesPathShouldCreate:(BOOL)createNew {
+	return [self pathForDomain:NSUserDomainMask shouldCreate:createNew disabled:NO];
+}
+
++ (NSString *)latestDisabledBundlesPathShouldCreate:(BOOL)createNew {
+	return [self pathForDomain:NSUserDomainMask shouldCreate:createNew disabled:YES];
+}
+
++ (NSArray *)disabledBundlesPathList {
+	return [self disabledBundlesPathListForDomain:NSUserDomainMask];
+}
+
+#pragma mark Localized Values
 
 + (NSString *)disabledBundleFolderName {
 	NSString	*mailPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
@@ -471,11 +565,22 @@
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSError			*error;
 	
-	//	Go through every item in the active bundles folder
-	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPath] error:&error]) {
+	//	Go through every item in the active bundles folder for user
+	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPathShouldCreate:NO] error:&error]) {
 		//	If it is really a bundle, create an object and add it to our list
 		if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
-			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPath] stringByAppendingPathComponent:aBundleName]];
+			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathShouldCreate:NO] stringByAppendingPathComponent:aBundleName]];
+			if (mailBundle) {
+				[bundleList addObject:mailBundle];
+			}
+		}
+	}
+	
+	//	Go through every item in the active bundles folder for local domain
+	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPathLocalShouldCreate:NO] error:&error]) {
+		//	If it is really a bundle, create an object and add it to our list
+		if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathLocalShouldCreate:NO] stringByAppendingPathComponent:aBundleName]];
 			if (mailBundle) {
 				[bundleList addObject:mailBundle];
 			}
@@ -491,8 +596,9 @@
 	NSFileManager		*manager = [NSFileManager defaultManager];
 	NSError				*error;
 	
-	//	Go through every item in all the disabled bundle folders
-	for (NSString *aDisabledFolder in [self disabledBundlesPathList]) {
+	//	Go through every item in all the disabled bundle folders for both domains
+	NSArray	*allDisabledPaths = [[self disabledBundlesPathList] arrayByAddingObjectsFromArray:[self disabledBundlesPathLocalList]];
+	for (NSString *aDisabledFolder in allDisabledPaths) {
 		for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:aDisabledFolder error:&error]) {
 			//	If it is really a bundle, create an object and add it to our dictionary, if it is newer than one already in there, with the same id
 			if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
@@ -539,6 +645,21 @@
 	
 	return ((firstValue < secondValue) ? NSOrderedAscending: NSOrderedDescending);
 	
+}
+
+
+#pragma mark - KVO Dependence
+
++ (NSSet *)keyPathsForValuesAffectingPath {
+	return [NSSet setWithObject:@"bundle"];
+}
+
++ (NSSet *)keyPathsForValuesAffectingBundleIdentifier {
+	return [NSSet setWithObject:@"bundle"];
+}
+
++ (NSSet *)keyPathsForValuesAffectingVersion {
+	return [NSSet setWithObject:@"bundle"];
 }
 
 @end
