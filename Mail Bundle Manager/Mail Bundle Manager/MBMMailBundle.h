@@ -63,7 +63,6 @@
 - (BOOL)hasLaterVersionNumberThanBundle:(MBMMailBundle *)otherBundle;
 - (NSString *)latestOSVersionSupported;
 
-- (void)loadUpdateInformation;
 - (void)updateIfNecessary;
 - (void)uninstall;
 - (void)sendCrashReports;

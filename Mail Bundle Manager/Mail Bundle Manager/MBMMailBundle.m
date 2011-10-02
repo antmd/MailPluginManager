@@ -24,6 +24,8 @@
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
 + (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath;
 + (NSArray *)disabledBundlesPathListForDomain:(NSSearchPathDomainMask)domain;
+- (BOOL)supportsSparkleUpdates;
+- (void)loadUpdateInformation;
 @end
 
 @implementation MBMMailBundle
@@ -371,28 +373,6 @@
 #pragma mark - Actions
 
 
-- (BOOL)supportsSparkleUpdates {
-
-	NSString	*infoKey = [[self.bundle infoDictionary] valueForKey:@"SUFeedURL"];
-	NSString	*defaultsKey = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:self.identifier] valueForKey:@"SUFeedURL"];
-	
-	return ((infoKey != nil) || (defaultsKey != nil));
-}
-
-
-- (void)loadUpdateInformation {
-
-	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
-	SUUpdater	*updater = nil;
-	if ([self supportsSparkleUpdates] && (updater = [SUUpdater updaterForBundle:self.bundle])) {
-		[updater setDelegate:self];
-		[updater checkForUpdateInformation];
-	}
-	else {
-		self.latestVersion = NSLocalizedString(@"???", @"String indicating that the latest version is not known");
-	}
-}
-
 - (void)updateIfNecessary {
 	
 	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
@@ -442,8 +422,33 @@
 }
 
 
-#pragma mark - Sparkle Delegate Methods
+#pragma mark - Sparkle Methods
 
+#pragma mark Internal
+
+- (BOOL)supportsSparkleUpdates {
+	
+	NSString	*infoKey = [[self.bundle infoDictionary] valueForKey:@"SUFeedURL"];
+	NSString	*defaultsKey = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:self.identifier] valueForKey:@"SUFeedURL"];
+	
+	return ((infoKey != nil) || (defaultsKey != nil));
+}
+
+
+- (void)loadUpdateInformation {
+	
+	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
+	SUUpdater	*updater = nil;
+	if ([self supportsSparkleUpdates] && (updater = [SUUpdater updaterForBundle:self.bundle])) {
+		[updater setDelegate:self];
+		[updater checkForUpdateInformation];
+	}
+	else {
+		self.latestVersion = NSLocalizedString(@"???", @"String indicating that the latest version is not known");
+	}
+}
+
+#pragma mark Delegate
 
 // Sent when a valid update is found by the update driver.
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)appcastItem {
