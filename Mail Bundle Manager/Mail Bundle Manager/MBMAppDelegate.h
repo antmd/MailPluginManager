@@ -38,7 +38,8 @@
 
 
 - (void)showBundleManagerWindow;
-- (void)ensureRunningBestVersion;
 - (void)restartMail;
+
+- (void)ensureRunningBestVersion;
 
 @end

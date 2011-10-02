@@ -24,6 +24,7 @@
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
 @property	(nonatomic, assign, readonly)	BOOL			compatibleWithCurrentMail;
+@property	(nonatomic, assign, readonly)	BOOL			hasUpdate;
 @property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
 
 @property	(nonatomic, assign)				BOOL			enabled;
@@ -62,6 +63,7 @@
 - (BOOL)hasLaterVersionNumberThanBundle:(MBMMailBundle *)otherBundle;
 - (NSString *)latestOSVersionSupported;
 
+- (void)loadUpdateInformation;
 - (void)updateIfNecessary;
 - (void)uninstall;
 - (void)sendCrashReports;

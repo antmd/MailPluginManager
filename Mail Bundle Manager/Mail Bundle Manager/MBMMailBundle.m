@@ -40,6 +40,7 @@
 @synthesize usesBundleManager = _usesBundleManager;
 @synthesize latestVersion = _latestVersion;
 @synthesize compatibleWithCurrentMail = _compatibleWithCurrentMail;
+@synthesize hasUpdate = _hasUpdate;
 @synthesize enabled = _enabled;
 @synthesize installed = _installed;
 @synthesize inLocalDomain = _inLocalDomain;
@@ -234,6 +235,10 @@
 			_usesBundleManager = [[[_bundle infoDictionary] valueForKey:kMBMBundleUsesMBMKey] boolValue];
 		}
 		
+		//	Set hasUpdate to false and launch the background thread to see if we can get info
+		_hasUpdate = NO;
+		[self performSelector:@selector(loadUpdateInformation) withObject:nil afterDelay:0.1f];
+		
 		//	Get the image from the icons file
 		NSString	*iconFileName = [[_bundle infoDictionary] valueForKey:@"CFBundleIconFile"];
 		_iconPath = [[_bundle pathForImageResource:iconFileName] copy];
@@ -365,6 +370,29 @@
 
 #pragma mark - Actions
 
+
+- (BOOL)supportsSparkleUpdates {
+
+	NSString	*infoKey = [[self.bundle infoDictionary] valueForKey:@"SUFeedURL"];
+	NSString	*defaultsKey = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:self.identifier] valueForKey:@"SUFeedURL"];
+	
+	return ((infoKey != nil) || (defaultsKey != nil));
+}
+
+
+- (void)loadUpdateInformation {
+
+	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
+	SUUpdater	*updater = nil;
+	if ([self supportsSparkleUpdates] && (updater = [SUUpdater updaterForBundle:self.bundle])) {
+		[updater setDelegate:self];
+		[updater checkForUpdateInformation];
+	}
+	else {
+		self.latestVersion = NSLocalizedString(@"???", @"String indicating that the latest version is not known");
+	}
+}
+
 - (void)updateIfNecessary {
 	
 	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
@@ -403,18 +431,36 @@
 	if (result == NSAlertDefaultReturn) {
 		self.installed = NO;
 	}
-	//	Should diable the plugin
+	//	Should disable the plugin, instead
 	else {
 		self.enabled = NO;
 	}
-	
-	//	Quit this app now
-	[NSApp terminate:self];
 }
 
 - (void)sendCrashReports {
 	//	TODO: Put in the crash reporting
 }
+
+
+#pragma mark - Sparkle Delegate Methods
+
+
+// Sent when a valid update is found by the update driver.
+- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)appcastItem {
+	self.latestVersion = [appcastItem displayVersionString];
+	[self willChangeValueForKey:@"hasUpdate"];
+	_hasUpdate = YES;
+	[self didChangeValueForKey:@"hasUpdate"];
+}
+
+// Sent when a valid update is not found.
+- (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
+	self.latestVersion = self.version;
+	[self willChangeValueForKey:@"hasUpdate"];
+	_hasUpdate = NO;
+	[self didChangeValueForKey:@"hasUpdate"];
+}
+
 
 
 #pragma mark - Class Methods
