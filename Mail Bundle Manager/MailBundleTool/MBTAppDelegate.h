@@ -17,6 +17,7 @@
 
 @property (nonatomic, retain)	NSWindowController	*currentController;
 @property (nonatomic, assign)	BOOL				canQuitAccordingToMaintenance;
+@property (nonatomic, assign)	BOOL				isMailRunning;
 
 - (void)validateAllBundles;
 - (void)quittingNowIsReasonable;

@@ -30,11 +30,29 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 #### Tool
 
 * Boot time plugin compatibility checking
-  1. Create views for single item and multiple items
-  2. Define states that are relevant (i.e. update available, not compatible, etc)
-  3. Define actions that can be taken
+  1. Define states that are relevant (i.e. update available, not compatible, etc)
+   * Update Available
+   * Not compatible with current OS
+   * Not compatible with future known OS
+  2. Define actions that can be taken
+   * Perform the update
+   * Disable Plugin (if enabled)
+   * Delete Plugin
+   * Visit website (if we have one)
+  3. Create views for single item and multiple items
 * Crash Reporting
 * Allowing access to Latest OS Support info
+
+##### launchd values of interest
+
+* LaunchOnlyOnce = YES (nope)
+* RunAtLoad = YES
+* SuccessfulExit = NO (won't be rerun if exit 0;)
+* WatchPaths = Array
+* StartCalendarInterval = dict (run once a week perhaps in order to update plists)
+* StandardOutPath = path
+* [man page][launchd]
+
 
 #### Other
 
@@ -54,3 +72,5 @@ any plugins about to be disabled can be handled more gracefully? Unlikely, but t
 © Copyright 2011 Little Known Software
 
 You can use this software any way that you like, as long as you don't blame me for anything ;-)
+
+[launchd]: http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man5/launchd.plist.5.html#//apple_ref/doc/man/5/launchd.plist
