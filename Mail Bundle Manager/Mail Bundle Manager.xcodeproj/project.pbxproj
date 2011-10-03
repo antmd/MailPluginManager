@@ -15,6 +15,7 @@
 		D20537BB1436223D002F0157 /* historicalUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = D20537B91436223D002F0157 /* historicalUUIDs.plist */; };
 		D20537C41439C9BB002F0157 /* BundleBackgroundRed.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */; };
 		D20537C61439CD3E002F0157 /* BundleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C51439CD3E002F0157 /* BundleBackground.png */; };
+		D20537C71439D515002F0157 /* companies.strings in Resources */ = {isa = PBXBuildFile; fileRef = D20537B4143535E0002F0157 /* companies.strings */; };
 		D20A3EDE1434B3520083B10A /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20A3EDD1434B3520083B10A /* MBMBundleView.xib */; };
 		D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B349141DFDE1003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B347141DFDE1003788DC /* InfoPlist.strings */; };
@@ -146,7 +147,7 @@
 /* Begin PBXFileReference section */
 		D20537AE1434C06E002F0157 /* NSViewController+LKCollectionItemFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSViewController+LKCollectionItemFix.h"; sourceTree = "<group>"; };
 		D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+LKCollectionItemFix.m"; sourceTree = "<group>"; };
-		D20537B4143535E0002F0157 /* companies.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = companies.strings; sourceTree = "<group>"; };
+		D20537B4143535E0002F0157 /* companies.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = companies.strings; path = "Mail Bundle Manager/companies.strings"; sourceTree = "<group>"; };
 		D20537B614361EB6002F0157 /* GenericPlugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GenericPlugin.png; path = "Mail Bundle Manager/GenericPlugin.png"; sourceTree = "<group>"; };
 		D20537B91436223D002F0157 /* historicalUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = historicalUUIDs.plist; path = "Mail Bundle Manager/historicalUUIDs.plist"; sourceTree = "<group>"; };
 		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BundleBackgroundRed.png; sourceTree = "<group>"; };
@@ -408,6 +409,7 @@
 				D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */,
 				D2D1E6C0142FD8B4002FF1B1 /* errors.strings */,
 				D20537B91436223D002F0157 /* historicalUUIDs.plist */,
+				D20537B4143535E0002F0157 /* companies.strings */,
 				D20537B614361EB6002F0157 /* GenericPlugin.png */,
 			);
 			name = Resources;
@@ -465,7 +467,6 @@
 				D216B353141DFDE2003788DC /* MainMenu.xib */,
 				D20A3EDD1434B3520083B10A /* MBMBundleView.xib */,
 				D24DA330142CD92300720631 /* Localizable.strings */,
-				D20537B4143535E0002F0157 /* companies.strings */,
 				D2D7BEEF14223B840059E153 /* InstallDocument.png */,
 				D2779BF41434601B003F7BE0 /* UninstallDocument.png */,
 				D20537C51439CD3E002F0157 /* BundleBackground.png */,
@@ -641,6 +642,7 @@
 				D2779BE014336641003F7BE0 /* errors.strings in Resources */,
 				D20537B814361F95002F0157 /* GenericPlugin.png in Resources */,
 				D20537BB1436223D002F0157 /* historicalUUIDs.plist in Resources */,
+				D20537C71439D515002F0157 /* companies.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
