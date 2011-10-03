@@ -17,8 +17,8 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 
 #### Common Pieces
 
-* Keep Sparkle Bundle Delegate and use notifications to let parts know what to do
 * Determining relevant info about system
+* Change companies.strings to a companies.plist that gets updated
 * Load historicalUUIDs file from remote server on launch (MBM & MBT)
 * Use synchronized file features in Lion when we can for historicalUUIDs
 * Setup system to report system setup when requested by user/developer.
@@ -26,17 +26,12 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 
 #### Manager Interface
 
-* Update drawing of background in MailBundleView
-	1. Draw Border in the MailBundleView based on status and compatibility (green, light grey, red)
-	2. Set color of latest version text to green (?) if there is an update & enable button
-	3. Change color of text for company to blue to indicate link (too many colors?)
-* Add a link directly to product for Name & Icon.
 
 #### Tool
 
-* Crash Reporting
 * Boot time plugin compatibility checking
 * Allowing access to Latest OS Support info
+* Crash Reporting
 
 #### Other
 
