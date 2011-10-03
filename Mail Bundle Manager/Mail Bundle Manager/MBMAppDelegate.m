@@ -153,6 +153,13 @@
 	[self.bundleViewController configureForCollectionItem:self.collectionItem];
 
 	self.mailBundleList = [MBMMailBundle allMailBundles];
+	
+	//	Add a notification watcher to handle uninstalls
+	[[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
+			self.mailBundleList = [MBMMailBundle allMailBundles];
+		}
+	}];
 
 	[[self window] center];
 	[[self window] makeKeyAndOrderFront:self];

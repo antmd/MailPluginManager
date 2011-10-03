@@ -76,6 +76,9 @@ extern NSString	*kMBMCompanyNameKey;
 extern NSString	*kMBMCompanyURLKey;
 extern NSString	*kMBMUnknownCompanyValue;
 
+//	Notifications
+extern NSString	*kMBMMailBundleUninstalledNotification;
+
 extern NSString	*kMBMCompaniesInfoFileName;
 
 //	Names for objects in MBM

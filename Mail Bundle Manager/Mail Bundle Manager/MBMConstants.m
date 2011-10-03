@@ -78,6 +78,9 @@ NSString	*kMBMCompanyNameKey = @"MBMCompanyName";
 NSString	*kMBMCompanyURLKey = @"MBMCompanyURL";
 NSString	*kMBMUnknownCompanyValue = @"<MBMCompanyUnknown>";
 
+//	Notifications
+NSString	*kMBMMailBundleUninstalledNotification = @"MBMMailBundleUninstalledNotification";
+
 NSString	*kMBMCompaniesInfoFileName = @"companies";
 
 //	Names for objects in MBM

@@ -19,6 +19,7 @@
 @property	(nonatomic, copy, readwrite)		NSString		*iconPath;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
+@property	(nonatomic, assign, readwrite)		BOOL			hasUpdate;
 - (void)updateState;
 - (NSString *)companyFromIdentifier;
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
@@ -107,6 +108,9 @@
 		NSLog(@"Error moving bundle (install/trash):%@", error);
 		return;
 	}
+	
+	//	Send a notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleUninstalledNotification object:self];
 	
 	//	Then update the bundle
 	self.bundle = [NSBundle bundleWithPath:toPath];
@@ -453,17 +457,13 @@
 // Sent when a valid update is found by the update driver.
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)appcastItem {
 	self.latestVersion = [appcastItem displayVersionString];
-	[self willChangeValueForKey:@"hasUpdate"];
-	_hasUpdate = YES;
-	[self didChangeValueForKey:@"hasUpdate"];
+	self.hasUpdate = YES;
 }
 
 // Sent when a valid update is not found.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
 	self.latestVersion = self.version;
-	[self willChangeValueForKey:@"hasUpdate"];
-	_hasUpdate = NO;
-	[self didChangeValueForKey:@"hasUpdate"];
+	self.hasUpdate = NO;
 }
 
 
