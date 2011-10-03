@@ -17,17 +17,11 @@
 @synthesize isMailRunning;
 
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if ([keyPath isEqualToString:@"runningApplications"]) {
-		//	See if mail is in the list
-		NSRunningApplication	*mailApp = [[NSRunningApplication runningApplicationsWithBundleIdentifier:kMBMMailBundleIdentifier] lastObject];
-		BOOL					wasMailRunningBefore = self.isMailRunning;
-		self.isMailRunning = (mailApp != nil);
-		
-		//	If the state of mail changed, send a notification
-		if (wasMailRunningBefore != self.isMailRunning) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"MBMMailHasChangedStatusAndIsNowRunning" object:[NSNumber numberWithBool:self.isMailRunning]];
-		}
+- (void)applicationChangeForNotification:(NSNotification *)note {
+	//	If this is Mail
+	if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+		//	See if it launched or terminated
+		self.isMailRunning = [[note name] isEqualToString:NSWorkspaceDidLaunchApplicationNotification];
 	}
 }
 
@@ -35,7 +29,8 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	//	Set a key-value observation on the running apps for "Mail"
-	[[NSWorkspace sharedWorkspace] addObserver:self forKeyPath:@"runningApplications" options:0 context:NULL];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidTerminateApplicationNotification object:nil];
 	
 	//	Use a group to associate tasks that I am going to throw onto queues
 	dispatch_group_t	maintenanceTaskGroup = dispatch_group_create();
@@ -99,6 +94,16 @@
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
 		[self validateAllBundles];
 	}
+}
+
+- (void)dealloc {
+	//	Remove the observations this class is doing.
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	//	Release our controller
+	self.currentController = nil;
+	
+	[super dealloc];
 }
 
 - (void)validateAllBundles {
