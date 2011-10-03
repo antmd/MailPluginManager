@@ -94,26 +94,30 @@
 	
 	//	Only allow a direct uninstall
 	if (installed == YES) {
-		ALog(@"Don't use the setter on installed to \"install\" only \"uninstall\"");
+		ALog(@"Don't use the setter on installed to \"install\" - only \"uninstall\"");
 		return;
 	}
 	
 	//	Default is to *install* it
 	NSString	*fromPath = self.path;
-	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[self.path lastPathComponent]];
+	NSString	*toPath = nil;
+	char		*trashedPath;
+	
+	//[[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[self.path lastPathComponent]];
+	OSErr anError = FSPathMoveObjectToTrashSync([fromPath UTF8String], &trashedPath, kFSFileOperationDefaultOptions);
 	
 	//	Now do the move
-	NSError	*error;
-	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
-		NSLog(@"Error moving bundle (install/trash):%@", error);
+	if (anError != noErr) {
+		LKLog(@"Error moving bundle to the trash:%d", anError);
 		return;
 	}
 	
+	//	Then update the bundle
+	toPath = [NSString stringWithUTF8String:trashedPath];
+	self.bundle = [NSBundle bundleWithPath:toPath];
+	
 	//	Send a notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleUninstalledNotification object:self];
-	
-	//	Then update the bundle
-	self.bundle = [NSBundle bundleWithPath:toPath];
 	
 	//	Update all the state
 	[self updateState];
@@ -249,6 +253,10 @@
 #pragma mark - Memory Management
 
 - (id)initWithPath:(NSString *)bundlePath {
+	return [self initWithPath:bundlePath shouldLoadUpdateInfo:YES];
+}
+
+- (id)initWithPath:(NSString *)bundlePath shouldLoadUpdateInfo:(BOOL)loadInfo {
     self = [super init];
     if (self) {
         // Initialization code here.
@@ -268,7 +276,9 @@
 		
 		//	Set hasUpdate to false and launch the background thread to see if we can get info
 		_hasUpdate = NO;
-		[self performSelector:@selector(loadUpdateInformation) withObject:nil afterDelay:0.1f];
+		if (loadInfo) {
+			[self performSelector:@selector(loadUpdateInformation) withObject:nil afterDelay:0.1f];
+		}
 		
 		//	Get the image from the icons file
 		NSString	*iconFileName = [[_bundle infoDictionary] valueForKey:@"CFBundleIconFile"];
@@ -473,7 +483,7 @@
 		self.installed = NO;
 	}
 	//	Should disable the plugin, instead
-	else {
+	else if (result == NSAlertOtherReturn) {
 		self.enabled = NO;
 	}
 }

@@ -59,6 +59,7 @@
 + (NSComparisonResult)compareVersion:(NSString *)first toVersion:(NSString *)second;
 
 - (id)initWithPath:(NSString *)bundlePath;
+- (id)initWithPath:(NSString *)bundlePath shouldLoadUpdateInfo:(BOOL)loadInfo;
 
 - (NSColor *)nameColor;
 - (NSString *)backgroundImagePath;

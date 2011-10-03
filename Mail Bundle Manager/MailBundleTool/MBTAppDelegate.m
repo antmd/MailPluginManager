@@ -7,16 +7,12 @@
 //
 
 #import "MBTAppDelegate.h"
+#import "MBMMailBundle.h"
 
 @implementation MBTAppDelegate
 
 @synthesize window = _window;
-@synthesize uninstalling = _uninstalling;
-@synthesize updating = _updating;
-@synthesize checkingCrashReports = _checkingCrashReports;
-@synthesize validating = _validating;
-@synthesize singleBundlePath = _singleBundlePath;
-@synthesize manifestModel = _manifestModel;
+//@synthesize manifestModel = _manifestModel;
 @synthesize currentController = _currentController;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -24,36 +20,43 @@
 	NSArray	*arguments = [[NSProcessInfo processInfo] arguments];
 	
 	//	See if there are more arguments
-	NSString	*firstArg = nil;
-	NSString	*secondArg = nil;
+	NSString	*action = nil;
+	NSString	*bundlePath = nil;
 	
 	if ([arguments count] > 1) {
-		firstArg = [arguments objectAtIndex:1];
+		action = [arguments objectAtIndex:1];
 	}
 	if ([arguments count] > 2) {
-		secondArg = [arguments objectAtIndex:2];
+		bundlePath = [arguments objectAtIndex:2];
 	}
 	
+	//	Get the mail bundle, if there
+	MBMMailBundle	*mailBundle = nil;
+	if (bundlePath) {
+		mailBundle = [[[MBMMailBundle alloc] initWithPath:bundlePath shouldLoadUpdateInfo:NO] autorelease];
+	}
+
 	//	Look at the first argument (after executable name) and test for one of our types
-	if ([kMBMCommandLineUninstallKey isEqualToString:firstArg]) {
-		self.uninstalling = YES;
-		self.singleBundlePath = secondArg;
+	if ([kMBMCommandLineUninstallKey isEqualToString:action]) {
+		//	Tell it to uninstall itself
+		[mailBundle uninstall];
 	}
-	else if ([kMBMCommandLineUpdateKey isEqualToString:firstArg]) {
-		self.updating = YES;
-		self.singleBundlePath = secondArg;
+	else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
+		//	Tell it to update itself
+		[mailBundle updateIfNecessary];
 	}
-	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:firstArg]) {
-		self.checkingCrashReports = YES;
-		self.singleBundlePath = secondArg;
+	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
+		//	Tell it to check its crash reports
+		[mailBundle sendCrashReports];
 	}
-	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:firstArg]) {
-		self.updating = YES;
-		self.checkingCrashReports = YES;
-		self.singleBundlePath = secondArg;
+	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
+		//	Tell it to check its crash reports
+		[mailBundle sendCrashReports];
+		//	And update itself
+		[mailBundle updateIfNecessary];
 	}
-	else if ([kMBMCommandLineValidateAllKey isEqualToString:firstArg]) {
-		self.validating = YES;
+	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
+		[self validateAllBundles];
 	}
 }
 

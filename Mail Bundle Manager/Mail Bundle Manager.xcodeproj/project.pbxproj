@@ -113,7 +113,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 7;
+			dstSubfolderSpec = 10;
 			files = (
 				D2779BF114337369003F7BE0 /* Sparkle.framework in Copy Frameworks */,
 			);

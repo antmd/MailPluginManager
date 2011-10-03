@@ -7,7 +7,6 @@
 //
 
 //	Command line keys
-extern NSString	*kMBMCommandLineInstallKey;
 extern NSString	*kMBMCommandLineUninstallKey;
 extern NSString	*kMBMCommandLineUpdateKey;
 extern NSString	*kMBMCommandLineCheckCrashReportsKey;

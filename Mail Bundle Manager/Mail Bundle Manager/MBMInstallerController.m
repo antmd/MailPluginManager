@@ -449,17 +449,16 @@ typedef enum {
 	
 	//	Default is to *enable* it
 	NSString	*fromPath = anItem.path;
-	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[anItem.path lastPathComponent]];
-	
+		
 	//	Notification for what we are copying
 	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
 	
+	OSErr		anError = FSPathMoveObjectToTrashSync([fromPath UTF8String], NULL, kFSFileOperationDefaultOptions);
+	
 	//	Now do the move
-	NSError	*error;
-	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
-//		LKPresentErrorCode();
-		LKErr(@"Error moving bundle (enable/disable):%@", error);
+	if (anError != noErr) {
+		LKLog(@"Error removing an item to the trash:%d", anError);
 		return NO;
 	}
 

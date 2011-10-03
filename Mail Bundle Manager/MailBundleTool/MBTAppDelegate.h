@@ -15,13 +15,7 @@
 
 @property (assign) IBOutlet NSWindow *window;
 
-@property (assign)	BOOL		uninstalling;
-@property (assign)	BOOL		updating;
-@property (assign)	BOOL		checkingCrashReports;
-@property (assign)	BOOL		validating;
-
-@property (nonatomic, copy)		NSString			*singleBundlePath;
-@property (nonatomic, retain)	MBMManifestModel	*manifestModel;
+//@property (nonatomic, retain)	MBMManifestModel	*manifestModel;
 @property (nonatomic, retain)	NSWindowController	*currentController;
 
 - (void)validateAllBundles;

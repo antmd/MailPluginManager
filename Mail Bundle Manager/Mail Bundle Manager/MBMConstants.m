@@ -9,7 +9,6 @@
 #import "MBMConstants.h"
 
 //	Command line keys
-NSString	*kMBMCommandLineInstallKey = @"-install";
 NSString	*kMBMCommandLineUninstallKey = @"-uninstall";
 NSString	*kMBMCommandLineUpdateKey = @"-update";
 NSString	*kMBMCommandLineCheckCrashReportsKey = @"-check-crash-reports";
