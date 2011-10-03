@@ -74,6 +74,7 @@ extern NSString	*kMBMMailBundleUUIDListKey;
 extern NSString	*kMBMBundleUsesMBMKey;
 extern NSString	*kMBMCompanyNameKey;
 extern NSString	*kMBMCompanyURLKey;
+extern NSString	*kMBMProductURLKey;
 extern NSString	*kMBMUnknownCompanyValue;
 
 //	Notifications
@@ -103,6 +104,7 @@ typedef enum {
 //	Functions
 BOOL IsMailRunning(void);
 BOOL QuitMail(void);
+BOOL RestartMail(void);
 NSString *CurrentMailUUID(void);
 NSString *CurrentMessageUUID(void);
 NSDictionary *HistoricalUUIDInformation(void);

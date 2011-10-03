@@ -26,7 +26,6 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 
 #### Manager Interface
 
-* Uninstall of a MBMMailBundle should send notification to update mailBundleList on AppDelegate.
 * Update drawing of background in MailBundleView
 	1. Draw Border in the MailBundleView based on status and compatibility (green, light grey, red)
 	2. Set color of latest version text to green (?) if there is an update & enable button
@@ -38,6 +37,12 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 * Crash Reporting
 * Boot time plugin compatibility checking
 * Allowing access to Latest OS Support info
+
+#### Other
+
+* Add support for .mbinstall install through sparkle updater.
+
+---
 
 ### How to use
 

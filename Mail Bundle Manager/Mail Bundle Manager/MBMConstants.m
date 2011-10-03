@@ -76,6 +76,7 @@ NSString	*kMBMMailBundleUUIDListKey = @"SupportedPluginCompatibilityUUIDs";
 NSString	*kMBMBundleUsesMBMKey = @"PluginUsesMailBundleManager";
 NSString	*kMBMCompanyNameKey = @"MBMCompanyName";
 NSString	*kMBMCompanyURLKey = @"MBMCompanyURL";
+NSString	*kMBMProductURLKey = @"MBMProductURL";
 NSString	*kMBMUnknownCompanyValue = @"<MBMCompanyUnknown>";
 
 //	Notifications
@@ -138,6 +139,18 @@ BOOL QuitMail(void) {
 	}
 	
 	return (result == noErr);
+}
+
+BOOL RestartMail(void) {
+	BOOL	wasRunning = IsMailRunning();
+	//	Quit it and if that was successful and it was running before, restart it.
+	if (QuitMail() && wasRunning) {
+		
+		return YES;
+	}
+	else {
+		return NO;
+	}
 }
 
 NSString *CurrentMailUUID(void) {

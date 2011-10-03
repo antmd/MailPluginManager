@@ -16,16 +16,16 @@
 }
 
 
-@property (assign)	IBOutlet	NSWindow	*window;
+@property (assign)	IBOutlet	NSWindow				*window;
+@property (assign)	IBOutlet	NSCollectionViewItem	*collectionItem;
 
-@property (retain)	NSViewController		*bundleViewController;
-
-@property (assign) IBOutlet NSCollectionViewItem *collectionItem;
-
+@property (retain)				NSViewController		*bundleViewController;
 
 @property (assign)	BOOL		installing;
 @property (assign)	BOOL		uninstalling;
 @property (assign)	BOOL		managing;
+
+@property (assign, readonly)	BOOL		isMailRunning;
 
 @property (assign)				BOOL				runningFromInstallDisk;
 @property (nonatomic, copy)		NSString			*executablePath;
@@ -38,8 +38,9 @@
 
 
 - (void)showBundleManagerWindow;
-- (void)restartMail;
 
 - (void)ensureRunningBestVersion;
+
+- (IBAction)restartMail:(id)sender;
 
 @end

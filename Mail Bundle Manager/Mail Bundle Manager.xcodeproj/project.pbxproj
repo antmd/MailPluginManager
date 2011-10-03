@@ -13,6 +13,8 @@
 		D20537B814361F95002F0157 /* GenericPlugin.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537B614361EB6002F0157 /* GenericPlugin.png */; };
 		D20537BA1436223D002F0157 /* historicalUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = D20537B91436223D002F0157 /* historicalUUIDs.plist */; };
 		D20537BB1436223D002F0157 /* historicalUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = D20537B91436223D002F0157 /* historicalUUIDs.plist */; };
+		D20537C41439C9BB002F0157 /* BundleBackgroundRed.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */; };
+		D20537C61439CD3E002F0157 /* BundleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C51439CD3E002F0157 /* BundleBackground.png */; };
 		D20A3EDE1434B3520083B10A /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20A3EDD1434B3520083B10A /* MBMBundleView.xib */; };
 		D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B349141DFDE1003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B347141DFDE1003788DC /* InfoPlist.strings */; };
@@ -147,6 +149,8 @@
 		D20537B4143535E0002F0157 /* companies.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = companies.strings; sourceTree = "<group>"; };
 		D20537B614361EB6002F0157 /* GenericPlugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GenericPlugin.png; path = "Mail Bundle Manager/GenericPlugin.png"; sourceTree = "<group>"; };
 		D20537B91436223D002F0157 /* historicalUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = historicalUUIDs.plist; path = "Mail Bundle Manager/historicalUUIDs.plist"; sourceTree = "<group>"; };
+		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BundleBackgroundRed.png; sourceTree = "<group>"; };
+		D20537C51439CD3E002F0157 /* BundleBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BundleBackground.png; sourceTree = "<group>"; };
 		D20A3EDD1434B3520083B10A /* MBMBundleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBMBundleView.xib; sourceTree = "<group>"; };
 		D216B33A141DFDE1003788DC /* Mail Bundle Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mail Bundle Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D216B33E141DFDE1003788DC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -464,6 +468,8 @@
 				D20537B4143535E0002F0157 /* companies.strings */,
 				D2D7BEEF14223B840059E153 /* InstallDocument.png */,
 				D2779BF41434601B003F7BE0 /* UninstallDocument.png */,
+				D20537C51439CD3E002F0157 /* BundleBackground.png */,
+				D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */,
 				D216B347141DFDE1003788DC /* InfoPlist.strings */,
 				D216B34D141DFDE1003788DC /* Credits.rtf */,
 			);
@@ -608,6 +614,8 @@
 				D20537B5143535E0002F0157 /* companies.strings in Resources */,
 				D20537B714361EB6002F0157 /* GenericPlugin.png in Resources */,
 				D20537BA1436223D002F0157 /* historicalUUIDs.plist in Resources */,
+				D20537C41439C9BB002F0157 /* BundleBackgroundRed.png in Resources */,
+				D20537C61439CD3E002F0157 /* BundleBackground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

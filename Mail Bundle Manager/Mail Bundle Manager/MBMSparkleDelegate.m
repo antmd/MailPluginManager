@@ -8,19 +8,23 @@
 
 #import "MBMSparkleDelegate.h"
 
-#import "MBMAppDelegate.h"
+//#import "MBMAppDelegate.h"
+
+@interface MBMSparkleDelegate ()
+@end
 
 @implementation MBMSparkleDelegate
 
+//@synthesize mailBundle = _mailBundle;
 @synthesize relaunchPath = _relaunchPath;
 @synthesize quitMail = _quitMail;
 @synthesize quitManager = _quitManager;
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
         // Initialization code here.
+//		_mailBundle = [aMailBundle retain];
     }
     
     return self;
@@ -31,6 +35,7 @@
 	
 	[super dealloc];
 }
+
 
 // Sent immediately before installing the specified update.
 - (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update {

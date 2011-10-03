@@ -15,11 +15,10 @@
 @property	(nonatomic, copy, readwrite)		NSString		*name;
 @property	(nonatomic, copy, readwrite)		NSString		*company;
 @property	(nonatomic, copy, readwrite)		NSString		*companyURL;
-@property	(nonatomic, copy, readwrite)		NSString		*latestVersion;
+@property	(nonatomic, copy, readwrite)		NSString		*productURL;
 @property	(nonatomic, copy, readwrite)		NSString		*iconPath;
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
-@property	(nonatomic, assign, readwrite)		BOOL			hasUpdate;
 - (void)updateState;
 - (NSString *)companyFromIdentifier;
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
@@ -37,13 +36,14 @@
 @synthesize name = _name;
 @synthesize company = _company;
 @synthesize companyURL = _companyURL;
+@synthesize productURL = _productURL;
 @synthesize icon = _icon;
 @synthesize iconPath = _iconPath;
 @synthesize bundle = _bundle;
 @synthesize usesBundleManager = _usesBundleManager;
-@synthesize latestVersion = _latestVersion;
 @synthesize compatibleWithCurrentMail = _compatibleWithCurrentMail;
 @synthesize hasUpdate = _hasUpdate;
+@synthesize latestVersion = _latestVersion;
 @synthesize enabled = _enabled;
 @synthesize installed = _installed;
 @synthesize inLocalDomain = _inLocalDomain;
@@ -207,6 +207,31 @@
 	return [[_companyURL retain] autorelease];
 }
 
+- (NSString *)productURL {
+	
+	if (_productURL == nil) {
+		//	First look for our key
+		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMBMProductURLKey];
+		if (aURL == nil) {
+			
+			//	Make a url from the identifier and lookup in the companies file
+			NSString	*productLookup = [NSString stringWithFormat:@"[url]%@", self.identifier];
+			aURL = NSLocalizedStringFromTable(productLookup, kMBMCompaniesInfoFileName, @"");
+			//	If we don't find it, give up
+			if ([aURL isEqualToString:productLookup]) {
+				aURL = nil;
+			}
+			
+		}
+		
+		//	Release the previous value and copy the new one
+		[_productURL release];
+		_productURL = [aURL copy];
+	}
+	
+	return [[_productURL retain] autorelease];
+}
+
 - (NSString *)companyFromIdentifier {
 	NSArray		*parts = [self.identifier componentsSeparatedByString:@"."];
 	NSString	*companyRDN = [NSString stringWithFormat:@"%@.%@", [parts objectAtIndex:0], [parts objectAtIndex:1]];
@@ -283,13 +308,35 @@
 	self.name = nil;
 	self.company = nil;
 	self.companyURL = nil;
+	self.productURL = nil;
 	self.icon = nil;
 	self.iconPath = nil;
 	self.bundle = nil;
+	self.latestVersion = nil;
 	self.sparkleDelegate = nil;
 	[super dealloc];
 }
 
+#pragma mark - Binding Properties
+
+- (NSColor *)nameColor {
+	NSColor	*aColor	= [NSColor grayColor];
+	if (self.enabled) {
+		aColor = [NSColor colorWithDeviceRed:0.290 green:0.459 blue:0.224 alpha:1.000];
+	}
+	else if (!self.compatibleWithCurrentMail) {
+		aColor = [NSColor colorWithDeviceRed:0.654 green:0.099 blue:0.046 alpha:1.000];
+	}
+	return aColor;
+}
+
+- (NSString *)backgroundImagePath {
+	NSString	*aPath	= @"";
+	if (!self.compatibleWithCurrentMail) {
+		aPath = @"Red";
+	}
+	return [[NSBundle mainBundle] pathForImageResource:[NSString stringWithFormat:@"BundleBackground%@", aPath]];
+}
 
 
 #pragma mark - Testing
@@ -375,6 +422,16 @@
 }
 
 #pragma mark - Actions
+
+- (void)updateInteractive {
+	
+	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
+	SUUpdater	*updater = [SUUpdater updaterForBundle:self.bundle];
+	if (updater) {
+		[updater setDelegate:self];
+		[updater checkForUpdates:nil];
+	}
+}
 
 
 - (void)updateIfNecessary {

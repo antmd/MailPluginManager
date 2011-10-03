@@ -31,6 +31,11 @@
 @synthesize currentController = _currentController;
 @synthesize mailBundleList = _mailBundleList;
 
+
+- (BOOL)isMailRunning {
+	return IsMailRunning();
+}
+
 - (void)dealloc {
 	
 	self.bundleViewController = nil;
@@ -165,7 +170,7 @@
 	[[self window] makeKeyAndOrderFront:self];
 }
 
-- (void)restartMail {
+- (IBAction)restartMail:(id)sender {
 	
 }
 
