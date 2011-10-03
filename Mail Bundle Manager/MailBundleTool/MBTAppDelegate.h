@@ -15,9 +15,10 @@
 
 @property (assign) IBOutlet NSWindow *window;
 
-//@property (nonatomic, retain)	MBMManifestModel	*manifestModel;
 @property (nonatomic, retain)	NSWindowController	*currentController;
+@property (nonatomic, assign)	BOOL				canQuitAccordingToMaintenance;
 
 - (void)validateAllBundles;
+- (void)quittingNowIsReasonable;
 
 @end

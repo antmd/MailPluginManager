@@ -12,10 +12,31 @@
 @implementation MBTAppDelegate
 
 @synthesize window = _window;
-//@synthesize manifestModel = _manifestModel;
 @synthesize currentController = _currentController;
+@synthesize canQuitAccordingToMaintenance;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	
+	//	Use a group to associate tasks that I am going to throw onto queues
+	dispatch_group_t	maintenanceTaskGroup = dispatch_group_create();
+	dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+	
+	//	Dispatch a task
+	/*
+	dispatch_group_async(maintenanceTaskGroup, globalQueue, ^(void) {
+		//	My Code
+	});
+	*/
+	
+	//	Finally setup our cleanup code after all maintenance is completed
+	dispatch_group_notify(maintenanceTaskGroup, globalQueue, ^(void) {
+		//	What I want to do when all is complete
+		self.canQuitAccordingToMaintenance = YES;
+	});
+	dispatch_release(maintenanceTaskGroup);
+	
+	
+	//	Decide what actions to take
 	//	Read in any command line parameters and set instance variables accordingly
 	NSArray	*arguments = [[NSProcessInfo processInfo] arguments];
 	
@@ -62,6 +83,51 @@
 
 - (void)validateAllBundles {
 	
+	//	Look through all of the bundles
+	NSArray			*allBundles = [MBMMailBundle allMailBundles];
+	NSMutableArray	*invalidBundles = [NSMutableArray array];
+	for (MBMMailBundle *aBundle in allBundles) {
+		//	Add any that are invalid
+		if (![aBundle compatibleWithCurrentMail]) {
+			[invalidBundles addObject:aBundle];
+			//	Get that bundle to load up any update info
+			[aBundle loadUpdateInformation];
+		}
+	}
+	
+	//	Process the invalid bundles
+	//	If there is just one, special case to show a nicer presentation
+	if ([invalidBundles count] == 1) {
+		//	Show a view for a single item
+	}
+	else {
+		for (MBMMailBundle *badBundle in invalidBundles) {
+			//	Show a view for multiples
+		}
+	}
 }
+
+- (void)quittingNowIsReasonable {
+	if (self.canQuitAccordingToMaintenance) {
+		[NSApp terminate:nil];
+	}
+	else {
+
+		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
+		dispatch_time_t		now = dispatch_walltime(DISPATCH_TIME_NOW, 0);
+		
+		//	Create the timer and set it to repeat every second
+		dispatch_source_set_timer(timer, now, 1ull*NSEC_PER_SEC, 5000ull);
+		dispatch_source_set_event_handler(timer, ^{
+			if (self.canQuitAccordingToMaintenance) {
+				dispatch_suspend(timer);
+				[NSApp terminate:nil];
+				dispatch_release(timer);
+			}
+		});
+	}
+}
+
 
 @end

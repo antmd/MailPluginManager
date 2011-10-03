@@ -433,6 +433,19 @@
 
 #pragma mark - Actions
 
+- (void)loadUpdateInformation {
+	
+	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
+	SUUpdater	*updater = nil;
+	if ([self supportsSparkleUpdates] && (updater = [SUUpdater updaterForBundle:self.bundle])) {
+		[updater setDelegate:self];
+		[updater checkForUpdateInformation];
+	}
+	else {
+		self.latestVersion = NSLocalizedString(@"???", @"String indicating that the latest version is not known");
+	}
+}
+
 - (void)updateInteractive {
 	
 	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
@@ -505,19 +518,6 @@
 	return ((infoKey != nil) || (defaultsKey != nil));
 }
 
-
-- (void)loadUpdateInformation {
-	
-	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
-	SUUpdater	*updater = nil;
-	if ([self supportsSparkleUpdates] && (updater = [SUUpdater updaterForBundle:self.bundle])) {
-		[updater setDelegate:self];
-		[updater checkForUpdateInformation];
-	}
-	else {
-		self.latestVersion = NSLocalizedString(@"???", @"String indicating that the latest version is not known");
-	}
-}
 
 #pragma mark Delegate
 

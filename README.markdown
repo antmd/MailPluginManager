@@ -30,8 +30,11 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 #### Tool
 
 * Boot time plugin compatibility checking
-* Allowing access to Latest OS Support info
+  1. Create views for single item and multiple items
+  2. Define states that are relevant (i.e. update available, not compatible, etc)
+  3. Define actions that can be taken
 * Crash Reporting
+* Allowing access to Latest OS Support info
 
 #### Other
 
