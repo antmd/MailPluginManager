@@ -17,6 +17,8 @@
 @synthesize canQuitAccordingToMaintenance;
 @synthesize isMailRunning;
 
+@synthesize observerHolder;
+
 
 - (void)applicationChangeForNotification:(NSNotification *)note {
 	//	If this is Mail
@@ -124,10 +126,21 @@
 	//	Process the invalid bundles
 	//	If there is just one, special case to show a nicer presentation
 	if ([invalidBundles count] == 1) {
-		//	Show a view for a single item
-		self.currentController = [[[MBTSinglePluginController alloc] initWithMailBundle:[invalidBundles lastObject]] autorelease];
-		[[self.currentController window] center];
-		[self.currentController showWindow:self];
+
+		self.observerHolder = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneLoadingSparkleNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+			
+			//	Perform our action if it is the right object
+			if ([note object] == [invalidBundles lastObject]) {
+				//	Show a view for a single item
+				self.currentController = [[[MBTSinglePluginController alloc] initWithMailBundle:[invalidBundles lastObject]] autorelease];
+				[[self.currentController window] center];
+				[self.currentController showWindow:self];
+				
+				//	Then remove the observer
+				[[NSNotificationCenter defaultCenter] removeObserver:self.observerHolder];
+			}
+		}];
+		
 	}
 	else {
 		for (MBMMailBundle *badBundle in invalidBundles) {

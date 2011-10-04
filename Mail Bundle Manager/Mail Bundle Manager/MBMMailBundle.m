@@ -529,12 +529,14 @@
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)appcastItem {
 	self.latestVersion = [appcastItem displayVersionString];
 	self.hasUpdate = YES;
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneLoadingSparkleNotification object:self];
 }
 
 // Sent when a valid update is not found.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
 	self.latestVersion = self.version;
 	self.hasUpdate = NO;
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneLoadingSparkleNotification object:self];
 }
 
 

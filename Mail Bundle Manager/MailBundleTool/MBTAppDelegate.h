@@ -19,6 +19,8 @@
 @property (nonatomic, assign)	BOOL				canQuitAccordingToMaintenance;
 @property (nonatomic, assign)	BOOL				isMailRunning;
 
+@property (nonatomic, retain)	id					observerHolder;
+
 - (void)validateAllBundles;
 - (void)quittingNowIsReasonable;
 
