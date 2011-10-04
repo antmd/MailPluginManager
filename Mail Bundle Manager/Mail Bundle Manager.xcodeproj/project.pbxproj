@@ -16,6 +16,8 @@
 		D20537C41439C9BB002F0157 /* BundleBackgroundRed.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */; };
 		D20537C61439CD3E002F0157 /* BundleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C51439CD3E002F0157 /* BundleBackground.png */; };
 		D20537C71439D515002F0157 /* companies.strings in Resources */ = {isa = PBXBuildFile; fileRef = D20537B4143535E0002F0157 /* companies.strings */; };
+		D20537F3143B15ED002F0157 /* MBTSinglePluginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */; };
+		D20537F5143B161C002F0157 /* MBTSinglePluginWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20537F4143B161C002F0157 /* MBTSinglePluginWindow.xib */; };
 		D20A3EDE1434B3520083B10A /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20A3EDD1434B3520083B10A /* MBMBundleView.xib */; };
 		D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B349141DFDE1003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B347141DFDE1003788DC /* InfoPlist.strings */; };
@@ -152,6 +154,9 @@
 		D20537B91436223D002F0157 /* historicalUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = historicalUUIDs.plist; path = "Mail Bundle Manager/historicalUUIDs.plist"; sourceTree = "<group>"; };
 		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BundleBackgroundRed.png; sourceTree = "<group>"; };
 		D20537C51439CD3E002F0157 /* BundleBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BundleBackground.png; sourceTree = "<group>"; };
+		D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSinglePluginController.h; sourceTree = "<group>"; };
+		D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSinglePluginController.m; sourceTree = "<group>"; };
+		D20537F4143B161C002F0157 /* MBTSinglePluginWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBTSinglePluginWindow.xib; sourceTree = "<group>"; };
 		D20A3EDD1434B3520083B10A /* MBMBundleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBMBundleView.xib; sourceTree = "<group>"; };
 		D216B33A141DFDE1003788DC /* Mail Bundle Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mail Bundle Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D216B33E141DFDE1003788DC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -359,6 +364,8 @@
 			children = (
 				D2779BCF14336287003F7BE0 /* MBTAppDelegate.h */,
 				D2779BD014336287003F7BE0 /* MBTAppDelegate.m */,
+				D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */,
+				D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */,
 				D2779BD8143363DF003F7BE0 /* Resources */,
 				D2779BC414336287003F7BE0 /* Project */,
 			);
@@ -378,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				D2779BD214336287003F7BE0 /* MainMenu.xib */,
+				D20537F4143B161C002F0157 /* MBTSinglePluginWindow.xib */,
 				D2779BCC14336287003F7BE0 /* Credits.rtf */,
 				D2779BC614336287003F7BE0 /* InfoPlist.strings */,
 			);
@@ -643,6 +651,7 @@
 				D20537B814361F95002F0157 /* GenericPlugin.png in Resources */,
 				D20537BB1436223D002F0157 /* historicalUUIDs.plist in Resources */,
 				D20537C71439D515002F0157 /* companies.strings in Resources */,
+				D20537F5143B161C002F0157 /* MBTSinglePluginWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +730,7 @@
 				D2779BEC14336DDC003F7BE0 /* LKCGStructs.m in Sources */,
 				D2779BED14336DDC003F7BE0 /* LKLogHelper.m in Sources */,
 				D2779BEE14336DDC003F7BE0 /* LKError.m in Sources */,
+				D20537F3143B15ED002F0157 /* MBTSinglePluginController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

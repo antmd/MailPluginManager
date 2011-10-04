@@ -575,22 +575,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">hidden: lkCVI.representedObject.compatibleWithCurrentMail</string>
-						<reference key="source" ref="829670092"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="829670092"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">hidden: lkCVI.representedObject.compatibleWithCurrentMail</string>
-							<string key="NSBinding">hidden</string>
-							<string key="NSKeyPath">lkCVI.representedObject.compatibleWithCurrentMail</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">113</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: lkCVI.representedObject.incompatibleString</string>
 						<reference key="source" ref="829670092"/>
 						<reference key="destination" ref="1001"/>
@@ -780,6 +764,26 @@
 						<reference key="destination" ref="179296049"/>
 					</object>
 					<int key="connectionID">159</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<reference key="source" ref="829670092"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="829670092"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">161</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1125,7 +1129,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">159</int>
+			<int key="maxID">161</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

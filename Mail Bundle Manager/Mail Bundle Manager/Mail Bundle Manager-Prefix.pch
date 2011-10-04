@@ -6,6 +6,7 @@
 	#import <Cocoa/Cocoa.h>
 
 	#import "NSString+LKStructUtils.h"
+	#import "LKCGStructs.h"
 
 	#import	"LKInclude.pch"
 	#import	"LKLogHelper.h"

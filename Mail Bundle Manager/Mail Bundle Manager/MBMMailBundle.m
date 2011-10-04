@@ -41,7 +41,8 @@
 @synthesize iconPath = _iconPath;
 @synthesize bundle = _bundle;
 @synthesize usesBundleManager = _usesBundleManager;
-@synthesize compatibleWithCurrentMail = _compatibleWithCurrentMail;
+@synthesize incompatibleWithCurrentMail = _incompatibleWithCurrentMail;
+@synthesize incompatibleWithFutureMail = _incompatibleWithFutureMail;
 @synthesize hasUpdate = _hasUpdate;
 @synthesize latestVersion = _latestVersion;
 @synthesize enabled = _enabled;
@@ -304,9 +305,12 @@
 		NSString	*messageUUID = CurrentMessageUUID();
 		
 		//	Test to ensure that the plugin list contains both the mail and message UUIDs
-		if ([supportedUUIDs containsObject:mailUUID] && [supportedUUIDs containsObject:messageUUID]) {
-			_compatibleWithCurrentMail = YES;
+		if (![supportedUUIDs containsObject:mailUUID] || ![supportedUUIDs containsObject:messageUUID]) {
+			_incompatibleWithCurrentMail = YES;
 		}
+		
+		//	See if there is a future incompatibility known
+		//	TODO: After implementing historicalUUIDs completely
 		
     }
     
@@ -334,7 +338,7 @@
 	if (self.enabled) {
 		aColor = [NSColor colorWithDeviceRed:0.290 green:0.459 blue:0.224 alpha:1.000];
 	}
-	else if (!self.compatibleWithCurrentMail) {
+	else if (self.incompatibleWithCurrentMail) {
 		aColor = [NSColor colorWithDeviceRed:0.654 green:0.099 blue:0.046 alpha:1.000];
 	}
 	return aColor;
@@ -342,7 +346,7 @@
 
 - (NSString *)backgroundImagePath {
 	NSString	*aPath	= @"";
-	if (!self.compatibleWithCurrentMail) {
+	if (self.incompatibleWithCurrentMail) {
 		aPath = @"Red";
 	}
 	return [[NSBundle mainBundle] pathForImageResource:[NSString stringWithFormat:@"BundleBackground%@", aPath]];
@@ -537,11 +541,11 @@
 
 #pragma mark - Class Methods
 
-+ (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath {
++ (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath shouldLoadInfo:(BOOL)loadInfo {
 	MBMMailBundle	*newBundle = nil;
 	//	Only create a new one if we can load it as a bundle
 	if ([NSBundle bundleWithPath:aBundlePath]) {
-		newBundle = [[[MBMMailBundle alloc] initWithPath:aBundlePath] autorelease];
+		newBundle = [[[MBMMailBundle alloc] initWithPath:aBundlePath shouldLoadUpdateInfo:loadInfo] autorelease];
 	}
 	
 	return newBundle;
@@ -550,7 +554,7 @@
 #pragma mark - Paths
 
 + (NSString *)pathForActiveBundleWithName:(NSString *)aBundleName {
-	for (NSString *activeBundlePath in [self allActiveMailBundles]) {
+	for (NSString *activeBundlePath in [self allActiveMailBundlesShouldLoadInfo:NO]) {
 		if ([[activeBundlePath lastPathComponent] isEqualToString:aBundleName]) {
 			return activeBundlePath;
 		}
@@ -674,10 +678,14 @@
 #pragma mark - Getting Bundle Lists
 
 + (NSArray *)allMailBundles {
-	return [[self allActiveMailBundles] arrayByAddingObjectsFromArray:[self allDisabledMailBundles]];
+	return [[self allActiveMailBundlesShouldLoadInfo:NO] arrayByAddingObjectsFromArray:[self allDisabledMailBundlesShouldLoadInfo:NO]];
 }
 
-+ (NSArray *)allActiveMailBundles {
++ (NSArray *)allMailBundlesLoadInfo {
+	return [[self allActiveMailBundlesShouldLoadInfo:YES] arrayByAddingObjectsFromArray:[self allDisabledMailBundlesShouldLoadInfo:YES]];
+}
+
++ (NSArray *)allActiveMailBundlesShouldLoadInfo:(BOOL)loadInfo {
 	
 	NSMutableArray	*bundleList = [NSMutableArray array];
 	NSFileManager	*manager = [NSFileManager defaultManager];
@@ -687,7 +695,7 @@
 	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPathShouldCreate:NO] error:&error]) {
 		//	If it is really a bundle, create an object and add it to our list
 		if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
-			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathShouldCreate:NO] stringByAppendingPathComponent:aBundleName]];
+			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathShouldCreate:NO] stringByAppendingPathComponent:aBundleName] shouldLoadInfo:loadInfo];
 			if (mailBundle) {
 				[bundleList addObject:mailBundle];
 			}
@@ -698,7 +706,7 @@
 	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPathLocalShouldCreate:NO] error:&error]) {
 		//	If it is really a bundle, create an object and add it to our list
 		if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
-			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathLocalShouldCreate:NO] stringByAppendingPathComponent:aBundleName]];
+			MBMMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathLocalShouldCreate:NO] stringByAppendingPathComponent:aBundleName] shouldLoadInfo:loadInfo];
 			if (mailBundle) {
 				[bundleList addObject:mailBundle];
 			}
@@ -708,7 +716,7 @@
 	return [NSArray arrayWithArray:bundleList];
 }
 
-+ (NSArray *)allDisabledMailBundles {
++ (NSArray *)allDisabledMailBundlesShouldLoadInfo:(BOOL)loadInfo {
 
 	NSMutableDictionary	*bundleDict = [NSMutableDictionary dictionary];
 	NSFileManager		*manager = [NSFileManager defaultManager];
@@ -720,7 +728,7 @@
 		for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:aDisabledFolder error:&error]) {
 			//	If it is really a bundle, create an object and add it to our dictionary, if it is newer than one already in there, with the same id
 			if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
-				MBMMailBundle	*mailBundle = [self mailBundleForPath:[aDisabledFolder stringByAppendingPathComponent:aBundleName]];
+				MBMMailBundle	*mailBundle = [self mailBundleForPath:[aDisabledFolder stringByAppendingPathComponent:aBundleName] shouldLoadInfo:loadInfo];
 				//	If we got a mailBundle, see if we need to update or set
 				if (mailBundle) {
 					if ([bundleDict valueForKey:mailBundle.identifier]) {

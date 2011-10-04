@@ -243,7 +243,7 @@
 	STAssertEqualObjects(bundle.version, @"1", nil);
 	STAssertEqualObjects(bundle.company, @"Little Known", nil);
 	STAssertEqualObjects(bundle.companyURL, @"http://www.littleknownsoftware.com", nil);
-	STAssertFalse(bundle.compatibleWithCurrentMail, nil);
+	STAssertTrue(bundle.incompatibleWithCurrentMail, nil);
 }
 
 - (void)test_041_Bundle_Copied_Into_Active {

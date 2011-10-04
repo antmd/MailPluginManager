@@ -23,7 +23,8 @@
 @property	(nonatomic, copy, readonly)		NSString		*incompatibleString;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
-@property	(nonatomic, assign, readonly)	BOOL			compatibleWithCurrentMail;
+@property	(nonatomic, assign, readonly)	BOOL			incompatibleWithCurrentMail;
+@property	(nonatomic, assign, readonly)	BOOL			incompatibleWithFutureMail;
 @property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
 
 @property	(nonatomic, copy)				NSString		*latestVersion;
@@ -35,7 +36,8 @@
 
 @property	(nonatomic, retain)				MBMSparkleDelegate	*sparkleDelegate;
 
-+ (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath;
+//+ (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath;
++ (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath shouldLoadInfo:(BOOL)loadInfo;
 
 + (NSString *)pathForActiveBundleWithName:(NSString *)aBundleName;
 
@@ -53,8 +55,9 @@
 + (NSString *)disabledBundleFolderPrefix;
 
 + (NSArray *)allMailBundles;
-+ (NSArray *)allActiveMailBundles;
-+ (NSArray *)allDisabledMailBundles;
++ (NSArray *)allMailBundlesLoadInfo;
++ (NSArray *)allActiveMailBundlesShouldLoadInfo:(BOOL)loadInfo;
++ (NSArray *)allDisabledMailBundlesShouldLoadInfo:(BOOL)loadInfo;
 
 + (NSComparisonResult)compareVersion:(NSString *)first toVersion:(NSString *)second;
 

@@ -157,12 +157,12 @@
 	self.bundleViewController = [[[NSViewController alloc] initWithNibName:@"MBMBundleView" bundle:nil] autorelease];
 	[self.bundleViewController configureForCollectionItem:self.collectionItem];
 
-	self.mailBundleList = [MBMMailBundle allMailBundles];
+	self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
 	
 	//	Add a notification watcher to handle uninstalls
 	[[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 		if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
-			self.mailBundleList = [MBMMailBundle allMailBundles];
+			self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
 		}
 	}];
 

@@ -8,6 +8,7 @@
 
 #import "MBTAppDelegate.h"
 #import "MBMMailBundle.h"
+#import "MBTSinglePluginController.h"
 
 @implementation MBTAppDelegate
 
@@ -113,7 +114,7 @@
 	NSMutableArray	*invalidBundles = [NSMutableArray array];
 	for (MBMMailBundle *aBundle in allBundles) {
 		//	Add any that are invalid
-		if (![aBundle compatibleWithCurrentMail]) {
+		if (aBundle.incompatibleWithCurrentMail) {
 			[invalidBundles addObject:aBundle];
 			//	Get that bundle to load up any update info
 			[aBundle loadUpdateInformation];
@@ -124,6 +125,9 @@
 	//	If there is just one, special case to show a nicer presentation
 	if ([invalidBundles count] == 1) {
 		//	Show a view for a single item
+		self.currentController = [[[MBTSinglePluginController alloc] initWithMailBundle:[invalidBundles lastObject]] autorelease];
+		[[self.currentController window] center];
+		[self.currentController showWindow:self];
 	}
 	else {
 		for (MBMMailBundle *badBundle in invalidBundles) {
@@ -156,3 +160,5 @@
 
 
 @end
+
+
