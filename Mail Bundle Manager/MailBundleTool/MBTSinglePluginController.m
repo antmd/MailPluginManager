@@ -97,58 +97,98 @@ typedef enum {
 	//	Buttons first
 	MBTButtonLayoutType	layout = kMBTButtonLayoutUpdate;
 	if (self.mailBundle.hasUpdate) {
-		if (self.mailBundle.incompatibleWithFutureMail) {
-			layout = kMBTButtonLayoutUpdateFutureIncompatible;
-		}
-		else if (self.mailBundle.incompatibleWithCurrentMail) {
+		if (self.mailBundle.incompatibleWithCurrentMail) {
 			layout = kMBTButtonLayoutUpdateIncompatible;
+		}
+		else if (self.mailBundle.incompatibleWithFutureMail) {
+			layout = kMBTButtonLayoutUpdateFutureIncompatible;
 		}
 	}
 	else if (self.mailBundle.incompatibleWithCurrentMail) {
-		layout = kMBTButtonLayoutFutureIncompatibleOnly;
+		layout = kMBTButtonLayoutIncompatibleOnly;
 	}
 	else {
-		layout = kMBTButtonLayoutIncompatibleOnly;
+		layout = kMBTButtonLayoutFutureIncompatibleOnly;
 	}
 	[self configureButtonsForLayoutType:layout];
 	
 	//	Configure the text views
 	NSString	*mainText = nil;
 	NSString	*secondaryText = nil;
-	NSString	*visitText = nil;
-	if (self.mailBundle.productURL || self.mailBundle.companyURL) {
-		visitText = NSLocalizedString(@" Visit the product site %@ for more information.", @"Visit Product Site Text");
-		visitText = [NSString stringWithFormat:visitText, self.mailBundle.productURL?self.mailBundle.productURL:self.mailBundle.companyURL];
-	}
+	NSArray		*values = nil;
+	
+	NSDictionary		*boldAttrs = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Lucida Grande Bold" size:11.0f] forKey:NSFontAttributeName];
+	NSAttributedString	*boldPluginName = [[[NSAttributedString alloc] initWithString:self.mailBundle.name attributes:boldAttrs] autorelease];
+	
 	switch (layout) {
 		case kMBTButtonLayoutUpdate:
-			mainText = NSLocalizedString(@"There is an update available for the Mail plugin \"%@\".", @"Main text for Update");
-			secondaryText = NSLocalizedString(@"Updating now will ensure that you are using the best version of \"%$1@\" for your system.%3$@", @"Secondary text for Update Only");
+			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
+			secondaryText = NSLocalizedString(@"Updating now will ensure that you are using the best version of %1$@ for your system.", @"Secondary text for Update Only");
+			values = [NSArray arrayWithObject:boldPluginName];
 			break;
 			
 		case kMBTButtonLayoutUpdateIncompatible:
-			mainText = NSLocalizedString(@"There is an update available for the Mail plugin \"%@\".", @"Main text for Update");
-			secondaryText = NSLocalizedString(@"However the current version of \"%1$@\" is not compatible with the current version of Mail and will be disabled.%3$@", @"Secondary text for Update with Incompatible");
+			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
+			secondaryText = NSLocalizedString(@"However the installed version of %1$@ is not compatible with the current version of Mail and will be disabled by Mail.", @"Secondary text for Update with Incompatible");
+			values = [NSArray arrayWithObject:boldPluginName];
 			break;
 			
 		case kMBTButtonLayoutUpdateFutureIncompatible:
-			mainText = NSLocalizedString(@"There is an update available for the Mail plugin \"%@\".", @"Main text for Update");
-			secondaryText = NSLocalizedString(@"The current version of \"%1$@\" will not be compatible with a future version of Mac OS X (%2$@). You should update before installing that version.%3$@", @"Secondary text for Update with Incompatible");
+			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
+			secondaryText = NSLocalizedString(@"The installed version of %1$@ will not be compatible with a future version of Mac OS X (%2$@). You should update before installing that version.", @"Secondary text for Update with Incompatible");
+			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease], nil];
 			break;
 			
 		case kMBTButtonLayoutIncompatibleOnly:
-			mainText = NSLocalizedString(@"The Mail plugin \"%@\" is not compatible with this version of Mac OS X.", @"Main text for Incompatible");
-			secondaryText = NSLocalizedString(@"Please note that we have no further information about \"%1$@\".%3$@", @"Secondary text for Update with Incompatible");
+			mainText = NSLocalizedString(@"The Mail plugin %@ is not compatible with this version of Mac OS X.", @"Main text for Incompatible");
+			secondaryText = NSLocalizedString(@"Please note that we have no further information about %1$@.", @"Secondary text for Update with Incompatible");
+			values = [NSArray arrayWithObject:boldPluginName];
 			break;
 			
 		case kMBTButtonLayoutFutureIncompatibleOnly:
-			mainText = NSLocalizedString(@"The Mail plugin \"%@\" will be incompatible with a future known version of Mac OS X.", @"Main text for Future Incompatiblity");
-			secondaryText = NSLocalizedString(@"The current version of \"%1$@\" will not be compatible with version %2$@ of Mac OS X. See if the developer will have a new version.%3$@", @"Secondary text for Future Incompatible");
+			mainText = NSLocalizedString(@"The Mail plugin %@ will be incompatible with a future known version of Mac OS X.", @"Main text for Future Incompatiblity");
+			secondaryText = NSLocalizedString(@"The current version of %1$@ will not be compatible with version %2$@ of Mac OS X.", @"Secondary text for Future Incompatible");
+			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease], nil];
 			break;
 	}
 	
 	[self.mainDescriptionField setStringValue:[NSString stringWithFormat:mainText, self.mailBundle.name]];
-	[self.secondaryTextField setAttributedStringValue:[[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:secondaryText, self.mailBundle.name, @"10.8", visitText?visitText:@""]] autorelease]];
+
+	//	Build the string with attributes from the secondary text and list of values
+	NSArray						*stupidArray = [NSArray arrayWithObjects:@"%1$@", @"%2$@", @"%3$@", @"%4$@", nil];
+	NSMutableAttributedString	*attrString = [[[NSMutableAttributedString alloc] initWithString:secondaryText] autorelease];
+	for (NSString *replacement in stupidArray) {
+		NSRange		aRange = [[attrString string] rangeOfString:replacement];
+		NSInteger	idx = [[replacement substringWithRange:NSMakeRange(1, 1)] integerValue] - 1;
+		if ((idx >= 0) && (idx < (NSInteger)[values count])) {
+			[attrString replaceCharactersInRange:aRange withAttributedString:[values objectAtIndex:idx]];
+		}
+	}
+	
+	//	build the visit text as an attributed string
+	if (self.mailBundle.productURL || self.mailBundle.companyURL) {
+
+		NSString					*urlString = self.mailBundle.productURL?self.mailBundle.productURL:self.mailBundle.companyURL;
+		NSDictionary				*urlAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+												 [NSURL URLWithString:urlString], NSLinkAttributeName,
+												 [NSColor blueColor], NSForegroundColorAttributeName,
+												 [NSNumber numberWithInt:NSSingleUnderlineStyle], NSUnderlineStyleAttributeName,
+												 nil];
+		NSAttributedString			*attrURL = [[[NSAttributedString alloc] initWithString:urlString attributes:urlAttrs] autorelease];
+		
+		NSMutableAttributedString	*visitText = [[[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@" Visit the product site %@ for more information.", @"Visit Product Site Text")] autorelease];
+		[visitText replaceCharactersInRange:[[visitText string] rangeOfString:@"%@"] withAttributedString:attrURL];
+
+		//	Then add it
+		[attrString appendAttributedString:visitText];
+		
+		[self.secondaryTextField setAllowsEditingTextAttributes:NO];
+		[self.secondaryTextField setSelectable:NO];
+		[self.secondaryTextField setEditable:NO];
+	}
+	
+	//	Then set the field
+	[self.secondaryTextField setAttributedStringValue:attrString];
 	
 	//	Set the window title explicitly
 	[self.window setTitle:NSLocalizedString(@"Issue with Mail Plugin", @"Window title indicating there is an issue with a plugin")];
@@ -191,13 +231,14 @@ typedef enum {
 			NSDictionary	*dict = (NSDictionary *)anObject;
 			[aButton setHidden:NO];
 			aButton.title = [dict valueForKey:TITLE_KEY];
-			[aButton sizeToFit];
+//			[aButton sizeToFit];
 		}
 		
 		//	Increment the location value
 		location++;
 	}
 	
+	/*
 	//	Then adjust the button positions
 	CGRect	newFrame = self.rightButton.frame;
 	newFrame = LKRectBySettingX(newFrame, ([[self.window contentView] frame].size.width - (newFrame.size.width + EDGE_DISTANCE)));
@@ -214,6 +255,7 @@ typedef enum {
 		newFrame = LKRectBySettingX(newFrame, EDGE_DISTANCE);
 		self.leftButton.frame = newFrame;
 	}
+	*/
 	
 }
 
