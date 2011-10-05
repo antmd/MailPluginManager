@@ -10,13 +10,19 @@
 #import "MBMMailBundle.h"
 #import "MBTSinglePluginController.h"
 
+
+@interface MBTAppDelegate ()
+@property (nonatomic, retain)	id					observerHolder;
+- (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
+- (void)validateAllBundles;
+@end
+
 @implementation MBTAppDelegate
 
 @synthesize window = _window;
 @synthesize currentController = _currentController;
 @synthesize canQuitAccordingToMaintenance;
 @synthesize isMailRunning;
-
 @synthesize observerHolder;
 
 
@@ -30,6 +36,9 @@
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	
+	//	Set default for mail is running
+	self.isMailRunning = IsMailRunning();
 	
 	//	Set a key-value observation on the running apps for "Mail"
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
@@ -109,44 +118,86 @@
 	[super dealloc];
 }
 
+
+#pragma mark - Action Methods
+
+
 - (void)validateAllBundles {
 	
-	//	Look through all of the bundles
-	NSArray			*allBundles = [MBMMailBundle allMailBundles];
-	NSMutableArray	*invalidBundles = [NSMutableArray array];
-	for (MBMMailBundle *aBundle in allBundles) {
-		//	Add any that are invalid
-		if (aBundle.incompatibleWithCurrentMail) {
-			[invalidBundles addObject:aBundle];
-			//	Get that bundle to load up any update info
-			[aBundle loadUpdateInformation];
+	//	Separate all the bundles into those that can update and those that can't
+	NSMutableArray	*updatingBundles = [NSMutableArray array];
+	NSMutableArray	*otherBundles = [NSMutableArray array];
+	for (MBMMailBundle *aBundle in [MBMMailBundle allMailBundles]) {
+		if ([aBundle supportsSparkleUpdates]) {
+			[updatingBundles addObject:aBundle];
+		}
+		else {
+			[otherBundles addObject:aBundle];
 		}
 	}
 	
-	//	Process the invalid bundles
-	//	If there is just one, special case to show a nicer presentation
-	if ([invalidBundles count] == 1) {
-
-		self.observerHolder = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneLoadingSparkleNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-			
-			//	Perform our action if it is the right object
-			if ([note object] == [invalidBundles lastObject]) {
-				//	Show a view for a single item
-				self.currentController = [[[MBTSinglePluginController alloc] initWithMailBundle:[invalidBundles lastObject]] autorelease];
-				[[self.currentController window] center];
-				[self.currentController showWindow:self];
-				
-				//	Then remove the observer
-				[[NSNotificationCenter defaultCenter] removeObserver:self.observerHolder];
-			}
-		}];
-		
+	//	If there are no bundles updating, just call method with otherBundles
+	if (IsEmpty(updatingBundles)) {
+		[self showUserInvalidBundles:otherBundles];
 	}
 	else {
-		for (MBMMailBundle *badBundle in invalidBundles) {
+		//	Otherwise setup an observer to ensure that all updates happen before processing
+		__block	NSUInteger	countDown = [updatingBundles count];
+		self.observerHolder = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneLoadingSparkleNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+			
+			//	If the object is in our list decrement counter
+			if ([updatingBundles containsObject:[note object]]) {
+				countDown--;
+			}
+			
+			//	Then test to see if our countDown is at zero
+			if (countDown == 0) {
+				//	Call our processing method first
+				[self showUserInvalidBundles:[otherBundles arrayByAddingObjectsFromArray:updatingBundles]];
+				
+				//	Then, remove observer, set it to nil
+				[[NSNotificationCenter defaultCenter] removeObserver:self.observerHolder];
+				self.observerHolder = nil;
+			}
+			
+		}];
+		
+		//	After setting up the listener, have all of these bundles load thier info
+		[updatingBundles makeObjectsPerformSelector:@selector(loadUpdateInformation)];
+	}
+}
+
+
+#pragma mark - Support Methods
+
+- (void)showUserInvalidBundles:(NSArray *)bundlesToTest {
+	
+	//	If there are no items, just return
+	if (IsEmpty(bundlesToTest)) {
+		return;
+	}
+	
+	//	Build list of ones to show
+	NSMutableArray	*badBundles = [NSMutableArray array];
+	for (MBMMailBundle *aBundle in bundlesToTest) {
+		if (aBundle.incompatibleWithCurrentMail || aBundle.incompatibleWithFutureMail) {// || aBundle.hasUpdate) {
+			[badBundles addObject:aBundle];
+		}
+	}
+	
+	//	If there is just one, special case to show a nicer presentation
+	if ([badBundles count] == 1) {
+		//	Show a view for a single item
+		self.currentController = [[[MBTSinglePluginController alloc] initWithMailBundle:[badBundles lastObject]] autorelease];
+		[[self.currentController window] center];
+		[self.currentController showWindow:self];
+	}
+	else {
+		for (MBMMailBundle *aBadBundle in badBundles) {
 			//	Show a view for multiples
 		}
 	}
+	
 }
 
 - (void)quittingNowIsReasonable {

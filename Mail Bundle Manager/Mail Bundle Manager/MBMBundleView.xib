@@ -726,38 +726,6 @@
 					<int key="connectionID">153</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.compatibleWithCurrentMail</string>
-						<reference key="source" ref="643855897"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="643855897"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.compatibleWithCurrentMail</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.compatibleWithCurrentMail</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">156</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.compatibleWithCurrentMail</string>
-						<reference key="source" ref="354495586"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="354495586"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.compatibleWithCurrentMail</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.compatibleWithCurrentMail</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">158</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">showURL:</string>
 						<reference key="source" ref="1003"/>
@@ -784,6 +752,38 @@
 						</object>
 					</object>
 					<int key="connectionID">161</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<reference key="source" ref="643855897"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="643855897"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">162</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<reference key="source" ref="354495586"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="354495586"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">163</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1129,7 +1129,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">161</int>
+			<int key="maxID">163</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

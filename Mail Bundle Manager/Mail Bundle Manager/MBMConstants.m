@@ -93,10 +93,10 @@ NSString	*kMBMAnimationBackgroundImageName = @"InstallAnimationBackground";
 
 BOOL IsMailRunning(void) {
 	BOOL mailIsRunning = NO;
-	NSArray *launchedApps = [[NSWorkspace sharedWorkspace] launchedApplications];
-	for (NSDictionary *app in launchedApps) {
-		if ([[app objectForKey:@"NSApplicationBundleIdentifier"] isEqualToString:kMBMMailBundleIdentifier])
+	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
+		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
 			mailIsRunning = YES;
+		}
 	}
 	return mailIsRunning;
 }
@@ -108,6 +108,16 @@ BOOL QuitMail(void) {
 	if (!IsMailRunning()) {
 		return YES;
 	}
+
+	//	Using the workspace, doesn't work for a restart
+	NSRunningApplication	*mailApp = nil;
+	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
+		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+			mailApp = app;
+		}
+	}
+	return [mailApp terminate];
+	
 	
 	NSString		*bundleID = kMBMMailBundleIdentifier;
 	OSStatus		result = noErr;
@@ -145,7 +155,7 @@ BOOL RestartMail(void) {
 	BOOL	wasRunning = IsMailRunning();
 	//	Quit it and if that was successful and it was running before, restart it.
 	if (QuitMail() && wasRunning) {
-		
+		return [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:NSWorkspaceLaunchWithoutActivation additionalEventParamDescriptor:nil launchIdentifier:NULL];
 		return YES;
 	}
 	else {

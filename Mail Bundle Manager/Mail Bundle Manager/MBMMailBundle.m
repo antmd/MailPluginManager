@@ -24,8 +24,6 @@
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
 + (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath;
 + (NSArray *)disabledBundlesPathListForDomain:(NSSearchPathDomainMask)domain;
-- (BOOL)supportsSparkleUpdates;
-- (void)loadUpdateInformation;
 @end
 
 @implementation MBMMailBundle
@@ -311,6 +309,9 @@
 		
 		//	See if there is a future incompatibility known
 		//	TODO: After implementing historicalUUIDs completely
+//		if ([_name isEqualToString:@"ExamplePlugin"]) {
+//			_incompatibleWithFutureMail = YES;
+//		}
 		
     }
     
@@ -448,6 +449,7 @@
 	else {
 		self.latestVersion = NSLocalizedString(@"???", @"String indicating that the latest version is not known");
 	}
+	
 }
 
 - (void)updateInteractive {

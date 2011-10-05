@@ -7,18 +7,19 @@
 //
 
 #import "MBTSinglePluginController.h"
+#import "MBTAppDelegate.h"
 
 typedef enum {
 	kMBTButtonLayoutUpdate = 0,
-		//	[hidden]			[Not Now]	[Update]
+	//	[hidden]			[Not Now]	[Update]
 	kMBTButtonLayoutUpdateIncompatible,
-		//	[Disable]			[Not Now]	[Update]
+	//	[Disable]			[Not Now]	[Update]
 	kMBTButtonLayoutUpdateFutureIncompatible,
-		//	[hidden]			[Thanks]	[Update]
+	//	[hidden]			[Thanks]	[Update]
 	kMBTButtonLayoutIncompatibleOnly,
-		//	[Remove]			[Disable]	[Thanks]
+	//	[Remove]			[Disable]	[Thanks]
 	kMBTButtonLayoutFutureIncompatibleOnly
-		//	[Disable]			[hidden]	[Thanks]
+	//	[Disable]			[hidden]	[Thanks]
 } MBTButtonLayoutType;
 
 typedef enum {
@@ -46,6 +47,7 @@ typedef enum {
 @property	(assign)	MBTButtonLayoutType	buttonLayout;
 @property	(retain, readonly)	NSArray		*buttonConfigurations;
 
+- (BOOL)confirmAndPerformAction:(MBTButtonActionType)actionType;
 - (void)configureButtonsForLayoutType:(MBTButtonLayoutType)layout;
 @end
 
@@ -95,22 +97,22 @@ typedef enum {
 	
 	//	Set up the data for the window
 	//	Buttons first
-	MBTButtonLayoutType	layout = kMBTButtonLayoutUpdate;
+	self.buttonLayout = kMBTButtonLayoutUpdate;
 	if (self.mailBundle.hasUpdate) {
 		if (self.mailBundle.incompatibleWithCurrentMail) {
-			layout = kMBTButtonLayoutUpdateIncompatible;
+			self.buttonLayout = kMBTButtonLayoutUpdateIncompatible;
 		}
 		else if (self.mailBundle.incompatibleWithFutureMail) {
-			layout = kMBTButtonLayoutUpdateFutureIncompatible;
+			self.buttonLayout = kMBTButtonLayoutUpdateFutureIncompatible;
 		}
 	}
 	else if (self.mailBundle.incompatibleWithCurrentMail) {
-		layout = kMBTButtonLayoutIncompatibleOnly;
+		self.buttonLayout = kMBTButtonLayoutIncompatibleOnly;
 	}
 	else {
-		layout = kMBTButtonLayoutFutureIncompatibleOnly;
+		self.buttonLayout = kMBTButtonLayoutFutureIncompatibleOnly;
 	}
-	[self configureButtonsForLayoutType:layout];
+	[self configureButtonsForLayoutType:self.buttonLayout];
 	
 	//	Configure the text views
 	NSString	*mainText = nil;
@@ -120,7 +122,7 @@ typedef enum {
 	NSDictionary		*boldAttrs = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Lucida Grande Bold" size:11.0f] forKey:NSFontAttributeName];
 	NSAttributedString	*boldPluginName = [[[NSAttributedString alloc] initWithString:self.mailBundle.name attributes:boldAttrs] autorelease];
 	
-	switch (layout) {
+	switch (self.buttonLayout) {
 		case kMBTButtonLayoutUpdate:
 			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
 			secondaryText = NSLocalizedString(@"Updating now will ensure that you are using the best version of %1$@ for your system.", @"Secondary text for Update Only");
@@ -176,7 +178,7 @@ typedef enum {
 												 nil];
 		NSAttributedString			*attrURL = [[[NSAttributedString alloc] initWithString:urlString attributes:urlAttrs] autorelease];
 		
-		NSMutableAttributedString	*visitText = [[[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@" Visit the product site %@ for more information.", @"Visit Product Site Text")] autorelease];
+		NSMutableAttributedString	*visitText = [[[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@" Visit the product site %@ to see if there is more information.", @"Visit Product Site Text")] autorelease];
 		[visitText replaceCharactersInRange:[[visitText string] rangeOfString:@"%@"] withAttributedString:attrURL];
 
 		//	Then add it
@@ -193,6 +195,126 @@ typedef enum {
 	//	Set the window title explicitly
 	[self.window setTitle:NSLocalizedString(@"Issue with Mail Plugin", @"Window title indicating there is an issue with a plugin")];
 }
+
+- (IBAction)buttonPressed:(id)sender {
+	BOOL			closeWindow = YES;
+	MBTButtonActionType	actionType = (MBTButtonActionType)[[[[[self buttonConfigurations] objectAtIndex:self.buttonLayout] objectAtIndex:[sender tag]] valueForKey:ACTION_KEY] integerValue];
+	switch (actionType) {
+		case kMBTActionNotNow:
+		case kMBTActionThanks:
+			[[NSApp delegate] quittingNowIsReasonable];
+			break;
+			
+		case kMBTActionDisable:
+		case kMBTActionRemove:
+			closeWindow = [self confirmAndPerformAction:actionType];
+			break;
+			
+		case kMBTActionUpdate:
+			[self.mailBundle updateIfNecessary];
+			break;
+			
+		default:
+			break;
+	}
+	
+	if (closeWindow) {
+		[[self window] close];
+	}
+}
+
+- (BOOL)confirmAndPerformAction:(MBTButtonActionType)actionType {
+
+	//	Set up strings
+	NSString	*messageText = nil;
+	NSString	*confirmButton = nil;
+	NSString	*infoText = nil;
+	NSString	*disableFolder = [MBMMailBundle disabledBundleFolderName];
+	switch (actionType) {
+		case kMBTActionDisable:
+			messageText = NSLocalizedString(@"Are you sure you want to disable %@?", @"");
+			confirmButton = NSLocalizedString(@"Disable", @"");
+			infoText = NSLocalizedString(@"%1$@ will be moved into '%2$@'.", @"");
+			break;
+			
+		case kMBTActionRemove:
+			messageText = NSLocalizedString(@"Are you sure you want to remove %@?", @"");
+			confirmButton = NSLocalizedString(@"Remove", @"");
+			infoText = NSLocalizedString(@"%1$@ will be placed in the Trash.", @"");
+			if ([MBMMailBundle latestDisabledBundlesPathShouldCreate:NO]) {
+				disableFolder = [[MBMMailBundle latestDisabledBundlesPathShouldCreate:NO] lastPathComponent];
+			}
+			break;
+			
+		default:
+			break;
+	}
+	
+	NSAlert	*confirm = [NSAlert alertWithMessageText:[NSString stringWithFormat:messageText, self.mailBundle.name]
+									   defaultButton:confirmButton
+									 alternateButton:NSLocalizedString(@"Cancel", @"")
+										 otherButton:nil
+						   informativeTextWithFormat:[NSString stringWithFormat:infoText, self.mailBundle.name, disableFolder]];
+	[confirm setIcon:self.mailBundle.icon];
+	
+	//	If they canceled return FALSE
+	if ([confirm runModal] != NSAlertDefaultReturn) {
+		return NO;
+	}
+	
+	//	Perform the action
+	if (actionType == kMBTActionDisable) {
+		LKLog(@"Would be disabling the plugin");
+		//			self.mailBundle.enabled = NO;
+	}
+	else if (actionType == kMBTActionRemove) {
+		LKLog(@"Would be removing the plugin");
+		//			self.mailBundle.installed = NO;
+	}
+
+	//	New Alert to tell them we did it? and restart mail
+	switch (actionType) {
+		case kMBTActionDisable:
+			messageText = NSLocalizedString(@"Plugin %@ was successfully disabled.", @"");
+			break;
+			
+		case kMBTActionRemove:
+			messageText = NSLocalizedString(@"Plugin %@ was successfully moved to the Trash.", @"");
+			break;
+			
+		default:
+			break;
+	}
+	NSString	*alternateButton = nil;
+	NSImage		*iconImage = nil;
+	confirmButton = nil;
+	infoText = @"";
+	if ([[NSApp delegate] isMailRunning]) {
+		confirmButton = NSLocalizedString(@"Restart Mail", @"");
+		alternateButton = NSLocalizedString(@"Later", @"");
+		infoText = NSLocalizedString(@"You will need to restart Mail to see the changes.", @"");
+		iconImage = self.mailBundle.icon;
+	}
+	//	Build a new alert
+	confirm = [NSAlert alertWithMessageText:[NSString stringWithFormat:messageText, self.mailBundle.name]
+									   defaultButton:confirmButton
+									 alternateButton:alternateButton
+										 otherButton:nil
+						   informativeTextWithFormat:infoText];
+	[confirm setIcon:iconImage];
+	//	And show it
+	if ([confirm runModal] == NSAlertDefaultReturn) {
+		//	If we have an alternate button, then they asked to restart Mail
+		if (alternateButton != nil) {
+			LKLog(@"Would be restarting Mail");
+			RestartMail();
+		}
+	}
+	
+	[[NSApp delegate] quittingNowIsReasonable];
+	return YES;
+}
+
 
 #pragma mark - Configuration Stuff
 
@@ -231,31 +353,11 @@ typedef enum {
 			NSDictionary	*dict = (NSDictionary *)anObject;
 			[aButton setHidden:NO];
 			aButton.title = [dict valueForKey:TITLE_KEY];
-//			[aButton sizeToFit];
 		}
 		
 		//	Increment the location value
 		location++;
 	}
-	
-	/*
-	//	Then adjust the button positions
-	CGRect	newFrame = self.rightButton.frame;
-	newFrame = LKRectBySettingX(newFrame, ([[self.window contentView] frame].size.width - (newFrame.size.width + EDGE_DISTANCE)));
-	self.rightButton.frame = newFrame;
-
-	if (![self.centerButton isHidden]) {
-		newFrame = self.centerButton.frame;
-		newFrame = LKRectBySettingX(newFrame, (self.rightButton.frame.origin.x - (newFrame.size.width + BETWEEN_DISTANCE)));
-		self.centerButton.frame = newFrame;
-	}
-
-	if (![self.leftButton isHidden]) {
-		newFrame = self.leftButton.frame;
-		newFrame = LKRectBySettingX(newFrame, EDGE_DISTANCE);
-		self.leftButton.frame = newFrame;
-	}
-	*/
 	
 }
 
