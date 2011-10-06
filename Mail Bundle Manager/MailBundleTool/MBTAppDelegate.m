@@ -21,9 +21,12 @@
 
 @synthesize window = _window;
 @synthesize currentController = _currentController;
-@synthesize canQuitAccordingToMaintenance;
 @synthesize isMailRunning;
 @synthesize observerHolder;
+
+@synthesize maintenanceQueue = _maintenanceQueue;
+@synthesize canQuitAccordingToMaintenance;
+@synthesize maintenanceCounter;
 
 
 - (void)applicationChangeForNotification:(NSNotification *)note {
@@ -38,29 +41,18 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
 	//	Set default for mail is running
-	self.isMailRunning = IsMailRunning();
+	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
+		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+			self.isMailRunning = YES;
+		}
+	}
 	
 	//	Set a key-value observation on the running apps for "Mail"
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidTerminateApplicationNotification object:nil];
+	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
+	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidTerminateApplicationNotification object:nil];
 	
-	//	Use a group to associate tasks that I am going to throw onto queues
-	dispatch_group_t	maintenanceTaskGroup = dispatch_group_create();
-	dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-	
-	//	Dispatch a task
-	/*
-	dispatch_group_async(maintenanceTaskGroup, globalQueue, ^(void) {
-		//	My Code
-	});
-	*/
-	
-	//	Finally setup our cleanup code after all maintenance is completed
-	dispatch_group_notify(maintenanceTaskGroup, globalQueue, ^(void) {
-		//	What I want to do when all is complete
-		self.canQuitAccordingToMaintenance = YES;
-	});
-	dispatch_release(maintenanceTaskGroup);
+	//	Create a new operation queue to use for maintenance tasks
+	self.maintenanceQueue = [[[NSOperationQueue alloc] init] autorelease];
 	
 	
 	//	Decide what actions to take
@@ -200,25 +192,104 @@
 	
 }
 
+- (BOOL)quitMail {
+
+	//	If it's not running, just return success
+	if (!self.isMailRunning) {
+		return YES;
+	}
+	
+	//	Using the workspace, doesn't work for a restart
+	NSRunningApplication	*mailApp = nil;
+	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
+		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+			mailApp = app;
+		}
+	}
+	return [mailApp terminate];
+}
+
+- (void)restartMail {
+	
+	//	If it is not running return
+	if (!self.isMailRunning) {
+		return;
+	}
+	
+	//	Set up an observer for app termination watch
+	__block id thingy = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:[NSWorkspace sharedWorkspace] queue:self.maintenanceQueue usingBlock:^(NSNotification *note) {
+		
+		if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+			//	Launch Mail again
+			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:NSWorkspaceLaunchWithoutActivation additionalEventParamDescriptor:nil launchIdentifier:NULL];
+			//	indicate that the maintenance is done
+			[self endMaintenance];
+			
+			//	Remove this observer
+			[[NSNotificationCenter defaultCenter] removeObserver:thingy];
+		}
+	}];
+
+	//	Quit it and if that was successful, try to restart it
+	if (QuitMail()) {
+		
+		//	Indicate that a maintenance task is running
+		[self startMaintenance];
+		
+	}
+	else {
+		//	Otherwise just remove the observer
+		[[NSNotificationCenter defaultCenter] removeObserver:thingy];
+	}
+}
+
+- (void)addMaintenanceTask:(void (^)(void))block {
+	
+	//	Create blocks for start, end and main
+	NSBlockOperation	*start = [NSBlockOperation blockOperationWithBlock:^{self.maintenanceCounter++;}];
+	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{self.maintenanceCounter--;}];
+	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
+	
+	//	Create the dependencies
+	[end addDependency:main];
+	[main addDependency:start];
+	
+	//	Then add the operations
+	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:start, main, end, nil] waitUntilFinished:NO];
+}
+
+- (void)startMaintenance {
+	[self.maintenanceQueue addOperationWithBlock:^{
+		self.maintenanceCounter++;
+	}];
+}	
+
+- (void)endMaintenance {
+	[self.maintenanceQueue addOperationWithBlock:^{
+		self.maintenanceCounter--;
+	}];
+}
+
 - (void)quittingNowIsReasonable {
-	if (self.canQuitAccordingToMaintenance) {
+	if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
 		[NSApp terminate:nil];
 	}
 	else {
 
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
-		dispatch_time_t		now = dispatch_walltime(DISPATCH_TIME_NOW, 0);
 		
 		//	Create the timer and set it to repeat every second
-		dispatch_source_set_timer(timer, now, 1ull*NSEC_PER_SEC, 5000ull);
+		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1ull*NSEC_PER_SEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
-			if (self.canQuitAccordingToMaintenance) {
-				dispatch_suspend(timer);
-				[NSApp terminate:nil];
+			if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+				dispatch_source_cancel(timer);
 				dispatch_release(timer);
+				[NSApp terminate:nil];
 			}
 		});
+		//	Start it
+		dispatch_resume(timer);
 	}
 }
 

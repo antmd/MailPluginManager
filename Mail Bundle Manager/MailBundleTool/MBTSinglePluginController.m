@@ -307,7 +307,7 @@ typedef enum {
 		//	If we have an alternate button, then they asked to restart Mail
 		if (alternateButton != nil) {
 			LKLog(@"Would be restarting Mail");
-			RestartMail();
+			[[NSApp delegate] restartMail];
 		}
 	}
 	
