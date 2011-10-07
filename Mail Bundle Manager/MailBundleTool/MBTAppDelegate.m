@@ -24,6 +24,7 @@
 @synthesize isMailRunning;
 @synthesize observerHolder;
 
+@synthesize maintenanceCounterQueue = _maintenanceCounterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
 @synthesize canQuitAccordingToMaintenance;
 @synthesize maintenanceCounter;
@@ -51,9 +52,10 @@
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidTerminateApplicationNotification object:nil];
 	
-	//	Create a new operation queue to use for maintenance tasks
+	//	Create a new operation queues to use for maintenance tasks
 	self.maintenanceQueue = [[[NSOperationQueue alloc] init] autorelease];
-	
+	[self.maintenanceQueue setMaxConcurrentOperationCount:1];	//	Makes this serial queue, in effect
+	self.maintenanceCounterQueue = [[[NSOperationQueue alloc] init] autorelease];
 	
 	//	Decide what actions to take
 	//	Read in any command line parameters and set instance variables accordingly
@@ -172,7 +174,7 @@
 	//	Build list of ones to show
 	NSMutableArray	*badBundles = [NSMutableArray array];
 	for (MBMMailBundle *aBundle in bundlesToTest) {
-		if (aBundle.incompatibleWithCurrentMail || aBundle.incompatibleWithFutureMail) {// || aBundle.hasUpdate) {
+		if (aBundle.incompatibleWithCurrentMail || aBundle.incompatibleWithFutureMail || aBundle.hasUpdate) {
 			[badBundles addObject:aBundle];
 		}
 	}
@@ -220,6 +222,7 @@
 	__block id thingy = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:[NSWorkspace sharedWorkspace] queue:self.maintenanceQueue usingBlock:^(NSNotification *note) {
 		
 		if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+			
 			//	Launch Mail again
 			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:NSWorkspaceLaunchWithoutActivation additionalEventParamDescriptor:nil launchIdentifier:NULL];
 			//	indicate that the maintenance is done
@@ -245,33 +248,34 @@
 
 - (void)addMaintenanceTask:(void (^)(void))block {
 	
-	//	Create blocks for start, end and main
-	NSBlockOperation	*start = [NSBlockOperation blockOperationWithBlock:^{self.maintenanceCounter++;}];
-	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{self.maintenanceCounter--;}];
+	//	Quickly start our maintenance
+	[self startMaintenance];
+
+	//	Create blocks for main and end
+	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self endMaintenance];}];
 	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
 	
 	//	Create the dependencies
 	[end addDependency:main];
-	[main addDependency:start];
 	
 	//	Then add the operations
-	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:start, main, end, nil] waitUntilFinished:NO];
+	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:main, end, nil] waitUntilFinished:NO];
 }
 
 - (void)startMaintenance {
-	[self.maintenanceQueue addOperationWithBlock:^{
+	[self.maintenanceCounterQueue addOperationWithBlock:^{
 		self.maintenanceCounter++;
 	}];
 }	
 
 - (void)endMaintenance {
-	[self.maintenanceQueue addOperationWithBlock:^{
+	[self.maintenanceCounterQueue addOperationWithBlock:^{
 		self.maintenanceCounter--;
 	}];
 }
 
 - (void)quittingNowIsReasonable {
-	if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+	if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
 		[NSApp terminate:nil];
 	}
 	else {
@@ -282,7 +286,7 @@
 		//	Create the timer and set it to repeat every second
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1ull*NSEC_PER_SEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
-			if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+			if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
 				[NSApp terminate:nil];
