@@ -231,7 +231,7 @@
 	}];
 
 	//	Quit it and if that was successful, try to restart it
-	if (QuitMail()) {
+	if ([self quitMail]) {
 		
 		//	Indicate that a maintenance task is running
 		[self startMaintenance];

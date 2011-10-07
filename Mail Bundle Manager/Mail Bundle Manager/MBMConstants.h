@@ -102,9 +102,6 @@ typedef enum {
 
 
 //	Functions
-BOOL IsMailRunning(void);
-BOOL QuitMail(void);
-BOOL RestartMail(void);
 NSString *CurrentMailUUID(void);
 NSString *CurrentMessageUUID(void);
 NSDictionary *HistoricalUUIDInformation(void);
