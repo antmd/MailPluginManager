@@ -92,6 +92,10 @@
 		D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
 		D2F70F82143F29EC000D5CC0 /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20A3EDD1434B3520083B10A /* MBMBundleView.xib */; };
 		D2F70F83143F32DF000D5CC0 /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */; };
+		D2F70F84143F34B7000D5CC0 /* BundleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C51439CD3E002F0157 /* BundleBackground.png */; };
+		D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */; };
+		D2F70F8B143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */; };
+		D2F70F8C143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,8 +161,8 @@
 		D20537B4143535E0002F0157 /* companies.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = companies.strings; path = "Mail Bundle Manager/companies.strings"; sourceTree = "<group>"; };
 		D20537B614361EB6002F0157 /* GenericPlugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GenericPlugin.png; path = "Mail Bundle Manager/GenericPlugin.png"; sourceTree = "<group>"; };
 		D20537B91436223D002F0157 /* historicalUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = historicalUUIDs.plist; path = "Mail Bundle Manager/historicalUUIDs.plist"; sourceTree = "<group>"; };
-		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BundleBackgroundRed.png; sourceTree = "<group>"; };
-		D20537C51439CD3E002F0157 /* BundleBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BundleBackground.png; sourceTree = "<group>"; };
+		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BundleBackgroundRed.png; path = "Mail Bundle Manager/BundleBackgroundRed.png"; sourceTree = "<group>"; };
+		D20537C51439CD3E002F0157 /* BundleBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BundleBackground.png; path = "Mail Bundle Manager/BundleBackground.png"; sourceTree = "<group>"; };
 		D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSinglePluginController.h; sourceTree = "<group>"; };
 		D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSinglePluginController.m; sourceTree = "<group>"; };
 		D20537F4143B161C002F0157 /* MBTSinglePluginWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MBTSinglePluginWindow.xib; sourceTree = "<group>"; };
@@ -241,6 +245,8 @@
 		D2E902AC141E72470058618F /* MBMSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSparkleDelegate.m; sourceTree = "<group>"; };
 		D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAppDelegate.h; path = "Mail Bundle Manager/MBAppDelegate.h"; sourceTree = "<group>"; };
 		D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBAppDelegate.m; path = "Mail Bundle Manager/MBAppDelegate.m"; sourceTree = "<group>"; };
+		D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMBackgroundableView.h; path = "Mail Bundle Manager/MBMBackgroundableView.h"; sourceTree = "<group>"; };
+		D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMBackgroundableView.m; path = "Mail Bundle Manager/MBMBackgroundableView.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,6 +416,8 @@
 				D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */,
 				D2E90292141E36110058618F /* MBMMySparkleDelegate.h */,
 				D2E90293141E36110058618F /* MBMMySparkleDelegate.m */,
+				D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */,
+				D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */,
 				D2730FE214293EE600EB5CB7 /* Controllers */,
 				D2E9029C141E63990058618F /* Model */,
 				D2E9029E141E63F70058618F /* Categories */,
@@ -432,6 +440,8 @@
 				D20537B91436223D002F0157 /* historicalUUIDs.plist */,
 				D20537B4143535E0002F0157 /* companies.strings */,
 				D20537B614361EB6002F0157 /* GenericPlugin.png */,
+				D20537C51439CD3E002F0157 /* BundleBackground.png */,
+				D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -490,8 +500,6 @@
 				D24DA330142CD92300720631 /* Localizable.strings */,
 				D2D7BEEF14223B840059E153 /* InstallDocument.png */,
 				D2779BF41434601B003F7BE0 /* UninstallDocument.png */,
-				D20537C51439CD3E002F0157 /* BundleBackground.png */,
-				D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */,
 				D216B347141DFDE1003788DC /* InfoPlist.strings */,
 				D216B34D141DFDE1003788DC /* Credits.rtf */,
 			);
@@ -666,6 +674,8 @@
 				D20537C71439D515002F0157 /* companies.strings in Resources */,
 				D20537F5143B161C002F0157 /* MBTSinglePluginWindow.xib in Resources */,
 				D2F70F82143F29EC000D5CC0 /* MBMBundleView.xib in Resources */,
+				D2F70F84143F34B7000D5CC0 /* BundleBackground.png in Resources */,
+				D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +722,7 @@
 				D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */,
 				D20537B11434C06E002F0157 /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
+				D2F70F8B143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -749,6 +760,7 @@
 				D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */,
 				D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
 				D2F70F83143F32DF000D5CC0 /* NSViewController+LKCollectionItemFix.m in Sources */,
+				D2F70F8C143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

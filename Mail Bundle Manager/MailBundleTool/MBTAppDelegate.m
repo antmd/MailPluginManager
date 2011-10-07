@@ -168,6 +168,11 @@
 			}
 		}];
 		
+		//	Adjust the window size if needed
+		if ([self.mailBundleList count] > 3) {
+			//	Adjust the window, scrollview and background image size.
+		}
+		
 		[[self window] center];
 		[[self window] makeKeyAndOrderFront:self];
 	}
