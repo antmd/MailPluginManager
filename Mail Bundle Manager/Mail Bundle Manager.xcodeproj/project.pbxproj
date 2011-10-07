@@ -88,6 +88,10 @@
 		D2E902A9141E70110058618F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
 		D2E902AA141E70290058618F /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2E902A8141E70110058618F /* Sparkle.framework */; };
 		D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MBMSparkleDelegate.m */; };
+		D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
+		D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
+		D2F70F82143F29EC000D5CC0 /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20A3EDD1434B3520083B10A /* MBMBundleView.xib */; };
+		D2F70F83143F32DF000D5CC0 /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,6 +239,8 @@
 		D2E902A8141E70110058618F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "Mail Bundle Manager/Sparkle.framework"; sourceTree = "<group>"; };
 		D2E902AB141E72460058618F /* MBMSparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSparkleDelegate.h; sourceTree = "<group>"; };
 		D2E902AC141E72470058618F /* MBMSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSparkleDelegate.m; sourceTree = "<group>"; };
+		D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAppDelegate.h; path = "Mail Bundle Manager/MBAppDelegate.h"; sourceTree = "<group>"; };
+		D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBAppDelegate.m; path = "Mail Bundle Manager/MBAppDelegate.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -400,6 +406,8 @@
 		D2779BD9143364C9003F7BE0 /* Common Source */ = {
 			isa = PBXGroup;
 			children = (
+				D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */,
+				D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */,
 				D2E90292141E36110058618F /* MBMMySparkleDelegate.h */,
 				D2E90293141E36110058618F /* MBMMySparkleDelegate.m */,
 				D2730FE214293EE600EB5CB7 /* Controllers */,
@@ -657,6 +665,7 @@
 				D20537BB1436223D002F0157 /* historicalUUIDs.plist in Resources */,
 				D20537C71439D515002F0157 /* companies.strings in Resources */,
 				D20537F5143B161C002F0157 /* MBTSinglePluginWindow.xib in Resources */,
+				D2F70F82143F29EC000D5CC0 /* MBMBundleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,6 +711,7 @@
 				D2D1E6C914307968002FF1B1 /* LKError.m in Sources */,
 				D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */,
 				D20537B11434C06E002F0157 /* NSViewController+LKCollectionItemFix.m in Sources */,
+				D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,6 +747,8 @@
 				D2779BEE14336DDC003F7BE0 /* LKError.m in Sources */,
 				D20537F3143B15ED002F0157 /* MBTSinglePluginController.m in Sources */,
 				D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */,
+				D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
+				D2F70F83143F32DF000D5CC0 /* NSViewController+LKCollectionItemFix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

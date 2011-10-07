@@ -313,7 +313,7 @@ typedef enum {
 	if ([confirm runModal] == NSAlertDefaultReturn) {
 		//	If we have an alternate button, then they asked to restart Mail
 		if (alternateButton != nil) {
-			[[NSApp delegate] restartMail];
+			[[NSApp delegate] restartMail:self];
 		}
 	}
 	

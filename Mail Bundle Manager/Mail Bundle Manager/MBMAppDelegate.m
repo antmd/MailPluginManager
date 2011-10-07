@@ -159,6 +159,7 @@
 
 	self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
 	
+	//	Don't worry about this observer not being released, since we want it around until the app closes.
 	//	Add a notification watcher to handle uninstalls
 	[[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 		if ([[note object] isKindOfClass:[MBMMailBundle class]]) {

@@ -12,7 +12,6 @@
 #import "MBMMySparkleDelegate.h"
 
 @interface MBMAppDelegate : NSObject <NSApplicationDelegate> {
-	NSCollectionViewItem *_collectionItem;
 }
 
 

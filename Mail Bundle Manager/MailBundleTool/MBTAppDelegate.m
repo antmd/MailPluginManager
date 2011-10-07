@@ -9,55 +9,24 @@
 #import "MBTAppDelegate.h"
 #import "MBMMailBundle.h"
 #import "MBTSinglePluginController.h"
+#import "NSViewController+LKCollectionItemFix.h"
 
 
 @interface MBTAppDelegate ()
-@property (nonatomic, retain)	id					observerHolder;
-- (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
+//@property (nonatomic, retain)	id					observerHolder;
 - (void)validateAllBundles;
+- (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 @end
 
 @implementation MBTAppDelegate
 
-@synthesize window = _window;
-@synthesize currentController = _currentController;
-@synthesize isMailRunning;
-@synthesize observerHolder;
-
-@synthesize maintenanceCounterQueue = _maintenanceCounterQueue;
-@synthesize maintenanceQueue = _maintenanceQueue;
-@synthesize canQuitAccordingToMaintenance;
-@synthesize maintenanceCounter;
-
-
-- (void)applicationChangeForNotification:(NSNotification *)note {
-	//	If this is Mail
-	if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
-		//	See if it launched or terminated
-		self.isMailRunning = [[note name] isEqualToString:NSWorkspaceDidLaunchApplicationNotification];
-		//	Post a notification for other observers to have a simplified notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailStatusChangedNotification object:[NSNumber numberWithBool:self.isMailRunning]];
-	}
-}
+//@synthesize observerHolder;
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	
-	//	Set default for mail is running
-	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
-		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
-			self.isMailRunning = YES;
-		}
-	}
-	
-	//	Set a key-value observation on the running apps for "Mail"
-	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
-	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidTerminateApplicationNotification object:nil];
-	
-	//	Create a new operation queues to use for maintenance tasks
-	self.maintenanceQueue = [[[NSOperationQueue alloc] init] autorelease];
-	[self.maintenanceQueue setMaxConcurrentOperationCount:1];	//	Makes this serial queue, in effect
-	self.maintenanceCounterQueue = [[[NSOperationQueue alloc] init] autorelease];
+
+	//	Call our super
+	[super applicationDidFinishLaunching:aNotification];
 	
 	//	Decide what actions to take
 	//	Read in any command line parameters and set instance variables accordingly
@@ -105,11 +74,6 @@
 }
 
 - (void)dealloc {
-	//	Remove the observations this class is doing.
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	//	Release our controller
-	self.currentController = nil;
 	
 	[super dealloc];
 }
@@ -139,7 +103,8 @@
 	else {
 		//	Otherwise setup an observer to ensure that all updates happen before processing
 		__block	NSUInteger	countDown = [updatingBundles count];
-		self.observerHolder = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneLoadingSparkleNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		__block	id			observerHolder;
+		observerHolder = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneLoadingSparkleNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 			
 			//	If the object is in our list decrement counter
 			if ([updatingBundles containsObject:[note object]]) {
@@ -152,8 +117,7 @@
 				[self showUserInvalidBundles:[otherBundles arrayByAddingObjectsFromArray:updatingBundles]];
 				
 				//	Then, remove observer, set it to nil
-				[[NSNotificationCenter defaultCenter] removeObserver:self.observerHolder];
-				self.observerHolder = nil;
+				[[NSNotificationCenter defaultCenter] removeObserver:observerHolder];
 			}
 			
 		}];
@@ -163,8 +127,6 @@
 	}
 }
 
-
-#pragma mark - Support Methods
 
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest {
 	
@@ -189,116 +151,28 @@
 		[self.currentController showWindow:self];
 	}
 	else {
-		for (MBMMailBundle *aBadBundle in badBundles) {
-			//	Show a view for multiples
-		}
-	}
-	
-}
-
-- (BOOL)quitMail {
-
-	//	If it's not running, just return success
-	if (!self.isMailRunning) {
-		return YES;
-	}
-	
-	//	Using the workspace, doesn't work for a restart
-	NSRunningApplication	*mailApp = nil;
-	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
-		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
-			mailApp = app;
-		}
-	}
-	return [mailApp terminate];
-}
-
-- (void)restartMail {
-	
-	//	If it is not running return
-	if (!self.isMailRunning) {
-		return;
-	}
-	
-	//	Set up an observer for app termination watch
-	__block id thingy = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:[NSWorkspace sharedWorkspace] queue:self.maintenanceQueue usingBlock:^(NSNotification *note) {
+		//	Show a view for multiples
+		self.bundleViewController = [[[NSViewController alloc] initWithNibName:@"MBMBundleView" bundle:nil] autorelease];
+		[self.bundleViewController configureForCollectionItem:self.collectionItem];
 		
-		if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
-			
-			//	Launch Mail again
-			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:NSWorkspaceLaunchWithoutActivation additionalEventParamDescriptor:nil launchIdentifier:NULL];
-			//	indicate that the maintenance is done
-			[self endMaintenance];
-			
-			//	Remove this observer
-			[[NSNotificationCenter defaultCenter] removeObserver:thingy];
-		}
-	}];
-
-	//	Quit it and if that was successful, try to restart it
-	if ([self quitMail]) {
+		//	Set our bundle list
+		self.mailBundleList = badBundles;
 		
-		//	Indicate that a maintenance task is running
-		[self startMaintenance];
-		
-	}
-	else {
-		//	Otherwise just remove the observer
-		[[NSNotificationCenter defaultCenter] removeObserver:thingy];
-	}
-}
-
-- (void)addMaintenanceTask:(void (^)(void))block {
-	
-	//	Quickly start our maintenance
-	[self startMaintenance];
-
-	//	Create blocks for main and end
-	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self endMaintenance];}];
-	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
-	
-	//	Create the dependencies
-	[end addDependency:main];
-	
-	//	Then add the operations
-	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:main, end, nil] waitUntilFinished:NO];
-}
-
-- (void)startMaintenance {
-	[self.maintenanceCounterQueue addOperationWithBlock:^{
-		self.maintenanceCounter++;
-	}];
-}	
-
-- (void)endMaintenance {
-	[self.maintenanceCounterQueue addOperationWithBlock:^{
-		self.maintenanceCounter--;
-	}];
-}
-
-- (void)quittingNowIsReasonable {
-	if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
-		[NSApp terminate:nil];
-	}
-	else {
-
-		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
-		
-		//	Create the timer and set it to repeat every second
-		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1ull*NSEC_PER_SEC, 5000ull);
-		dispatch_source_set_event_handler(timer, ^{
-			if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
-				dispatch_source_cancel(timer);
-				dispatch_release(timer);
-				[NSApp terminate:nil];
+		//	Add a notification watcher to handle uninstalls
+		self.bundleUnistallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
+				NSMutableArray	*change = [self.mailBundleList mutableCopy];
+				[change removeObjectIdenticalTo:[note object]];
+				self.mailBundleList = [NSArray arrayWithArray:change];
+				[change release];
 			}
-		});
-		//	Start it
-		dispatch_resume(timer);
+		}];
+		
+		[[self window] center];
+		[[self window] makeKeyAndOrderFront:self];
 	}
+	
 }
-
 
 @end
 

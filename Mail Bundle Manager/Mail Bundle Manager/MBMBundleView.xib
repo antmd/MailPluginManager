@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
 		<string key="IBDocument.SystemVersion">11B26</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1617</string>
+			<string key="NS.object.0">1938</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -27,11 +27,8 @@
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys" id="0">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
-			<reference key="dict.values" ref="0"/>
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -55,7 +52,6 @@
 						<string key="NSFrame">{{20, 4}, {210, 14}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:161</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="596984857">
@@ -453,52 +449,20 @@
 					<int key="connectionID">51</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: lkCVI.representedObject.version</string>
-						<reference key="source" ref="775824527"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="775824527"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: lkCVI.representedObject.version</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">lkCVI.representedObject.version</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showURL:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="728623758"/>
 					</object>
-					<int key="connectionID">60</int>
+					<int key="connectionID">108</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">valuePath: lkCVI.representedObject.iconPath</string>
-						<reference key="source" ref="996086242"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="996086242"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">valuePath: lkCVI.representedObject.iconPath</string>
-							<string key="NSBinding">valuePath</string>
-							<string key="NSKeyPath">lkCVI.representedObject.iconPath</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showURL:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="179296049"/>
 					</object>
-					<int key="connectionID">68</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">valuePath: lkCVI.representedObject.iconPath</string>
-						<reference key="source" ref="367386457"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="367386457"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">valuePath: lkCVI.representedObject.iconPath</string>
-							<string key="NSBinding">valuePath</string>
-							<string key="NSKeyPath">lkCVI.representedObject.iconPath</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">76</int>
+					<int key="connectionID">159</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -518,38 +482,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: lkCVI.representedObject.enabled</string>
-						<reference key="source" ref="643855897"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="643855897"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: lkCVI.representedObject.enabled</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">lkCVI.representedObject.enabled</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">83</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: lkCVI.representedObject.inLocalDomain</string>
-						<reference key="source" ref="354495586"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="354495586"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: lkCVI.representedObject.inLocalDomain</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">lkCVI.representedObject.inLocalDomain</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">86</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">toolTip: lkCVI.representedObject.companyURL</string>
 						<reference key="source" ref="728623758"/>
 						<reference key="destination" ref="1001"/>
@@ -566,30 +498,6 @@
 					<int key="connectionID">88</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showURL:</string>
-						<reference key="source" ref="1003"/>
-						<reference key="destination" ref="728623758"/>
-					</object>
-					<int key="connectionID">108</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: lkCVI.representedObject.incompatibleString</string>
-						<reference key="source" ref="829670092"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="829670092"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: lkCVI.representedObject.incompatibleString</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">lkCVI.representedObject.incompatibleString</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">115</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: lkCVI.representedObject.latestVersion</string>
 						<reference key="source" ref="523998315"/>
@@ -604,6 +512,22 @@
 						</object>
 					</object>
 					<int key="connectionID">118</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: lkCVI.representedObject.version</string>
+						<reference key="source" ref="775824527"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="775824527"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: lkCVI.representedObject.version</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">lkCVI.representedObject.version</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">60</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -624,6 +548,86 @@
 						</object>
 					</object>
 					<int key="connectionID">125</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">valuePath: lkCVI.representedObject.iconPath</string>
+						<reference key="source" ref="367386457"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="367386457"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">valuePath: lkCVI.representedObject.iconPath</string>
+							<string key="NSBinding">valuePath</string>
+							<string key="NSKeyPath">lkCVI.representedObject.iconPath</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">76</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: lkCVI.representedObject.inLocalDomain</string>
+						<reference key="source" ref="354495586"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="354495586"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: lkCVI.representedObject.inLocalDomain</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">lkCVI.representedObject.inLocalDomain</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">86</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<reference key="source" ref="354495586"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="354495586"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">163</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: lkCVI.representedObject.enabled</string>
+						<reference key="source" ref="643855897"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="643855897"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: lkCVI.representedObject.enabled</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">lkCVI.representedObject.enabled</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">83</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<reference key="source" ref="643855897"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="643855897"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">162</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -663,19 +667,39 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: lkCVI.representedObject.name</string>
-						<reference key="source" ref="732773932"/>
+						<string key="label">value: lkCVI.representedObject.incompatibleString</string>
+						<reference key="source" ref="829670092"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="732773932"/>
+							<reference key="NSSource" ref="829670092"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: lkCVI.representedObject.name</string>
+							<string key="NSLabel">value: lkCVI.representedObject.incompatibleString</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">lkCVI.representedObject.name</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleString</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">141</int>
+					<int key="connectionID">115</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<reference key="source" ref="829670092"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="829670092"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">161</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -692,6 +716,38 @@
 						</object>
 					</object>
 					<int key="connectionID">146</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">valuePath: lkCVI.representedObject.iconPath</string>
+						<reference key="source" ref="996086242"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="996086242"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">valuePath: lkCVI.representedObject.iconPath</string>
+							<string key="NSBinding">valuePath</string>
+							<string key="NSKeyPath">lkCVI.representedObject.iconPath</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: lkCVI.representedObject.name</string>
+						<reference key="source" ref="732773932"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="732773932"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: lkCVI.representedObject.name</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">lkCVI.representedObject.name</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">141</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -725,73 +781,15 @@
 					</object>
 					<int key="connectionID">153</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showURL:</string>
-						<reference key="source" ref="1003"/>
-						<reference key="destination" ref="179296049"/>
-					</object>
-					<int key="connectionID">159</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-						<reference key="source" ref="829670092"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="829670092"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<string key="NSBinding">hidden</string>
-							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">NSNegateBoolean</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">161</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-						<reference key="source" ref="643855897"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="643855897"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">162</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-						<reference key="source" ref="354495586"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="354495586"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">163</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<reference key="object" ref="0"/>
+						<object class="NSArray" key="object" id="0">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="children" ref="1000"/>
 						<nil key="parent"/>
 					</object>
