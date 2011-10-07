@@ -14,12 +14,18 @@ typedef enum {
 	//	[hidden]			[Not Now]	[Update]
 	kMBTButtonLayoutUpdateIncompatible,
 	//	[Disable]			[Not Now]	[Update]
+	kMBTButtonLayoutUpdateIncompatibleDisabled,
+	//	[hidden]			[Not Now]	[Update]
 	kMBTButtonLayoutUpdateFutureIncompatible,
 	//	[hidden]			[Thanks]	[Update]
 	kMBTButtonLayoutIncompatibleOnly,
 	//	[Remove]			[Disable]	[Thanks]
-	kMBTButtonLayoutFutureIncompatibleOnly
+	kMBTButtonLayoutIncompatibleOnlyDisabled,
+	//	[Remove]			[hidden]	[Thanks]
+	kMBTButtonLayoutFutureIncompatibleOnly,
 	//	[Disable]			[hidden]	[Thanks]
+	kMBTButtonLayoutFutureIncompatibleOnlyDisabled
+	//	[hidden]			[hidden]	[Thanks]
 } MBTButtonLayoutType;
 
 typedef enum {
@@ -100,17 +106,24 @@ typedef enum {
 	self.buttonLayout = kMBTButtonLayoutUpdate;
 	if (self.mailBundle.hasUpdate) {
 		if (self.mailBundle.incompatibleWithCurrentMail) {
-			self.buttonLayout = kMBTButtonLayoutUpdateIncompatible;
+			self.buttonLayout = self.mailBundle.enabled?kMBTButtonLayoutUpdateIncompatible:kMBTButtonLayoutUpdateIncompatibleDisabled;
 		}
 		else if (self.mailBundle.incompatibleWithFutureMail) {
 			self.buttonLayout = kMBTButtonLayoutUpdateFutureIncompatible;
 		}
 	}
-	else if (self.mailBundle.incompatibleWithCurrentMail) {
-		self.buttonLayout = kMBTButtonLayoutIncompatibleOnly;
-	}
 	else {
-		self.buttonLayout = kMBTButtonLayoutFutureIncompatibleOnly;
+		if (self.mailBundle.incompatibleWithCurrentMail) {
+			self.buttonLayout = kMBTButtonLayoutIncompatibleOnly;
+		}
+		else {
+			self.buttonLayout = kMBTButtonLayoutFutureIncompatibleOnly;
+		}
+		
+		//	If it is disabled move that value up by one
+		if (!self.mailBundle.enabled) {
+			self.buttonLayout++;
+		}
 	}
 	[self configureButtonsForLayoutType:self.buttonLayout];
 	
@@ -135,6 +148,12 @@ typedef enum {
 			values = [NSArray arrayWithObject:boldPluginName];
 			break;
 			
+		case kMBTButtonLayoutUpdateIncompatibleDisabled:
+			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
+			secondaryText = NSLocalizedString(@"However the installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail.", @"Secondary text for Update with Incompatible - currently disabled");
+			values = [NSArray arrayWithObject:boldPluginName];
+			break;
+			
 		case kMBTButtonLayoutUpdateFutureIncompatible:
 			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
 			secondaryText = NSLocalizedString(@"The installed version of %1$@ will not be compatible with a future version of Mac OS X (%2$@). You should update before installing that version.", @"Secondary text for Update with Incompatible");
@@ -143,7 +162,13 @@ typedef enum {
 			
 		case kMBTButtonLayoutIncompatibleOnly:
 			mainText = NSLocalizedString(@"The Mail plugin %@ is not compatible with this version of Mac OS X.", @"Main text for Incompatible");
-			secondaryText = NSLocalizedString(@"Please note that we have no further information about %1$@.", @"Secondary text for Update with Incompatible");
+			secondaryText = NSLocalizedString(@"The installed version of %1$@ is not compatible with the current version of Mail and will be disabled by Mail. Please note that we have no further information.", @"Secondary text for Update with Incompatible");
+			values = [NSArray arrayWithObject:boldPluginName];
+			break;
+			
+		case kMBTButtonLayoutIncompatibleOnlyDisabled:
+			mainText = NSLocalizedString(@"The Mail plugin %@ is not compatible with this version of Mac OS X.", @"Main text for Incompatible");
+			secondaryText = NSLocalizedString(@"The installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail. Please note that we have no further information.", @"Secondary text for Update with Incompatible - currently disabled");
 			values = [NSArray arrayWithObject:boldPluginName];
 			break;
 			
@@ -152,7 +177,13 @@ typedef enum {
 			secondaryText = NSLocalizedString(@"The current version of %1$@ will not be compatible with version %2$@ of Mac OS X.", @"Secondary text for Future Incompatible");
 			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease], nil];
 			break;
-	}
+
+		case kMBTButtonLayoutFutureIncompatibleOnlyDisabled:
+			mainText = NSLocalizedString(@"The Mail plugin %@ will be incompatible with a future known version of Mac OS X.", @"Main text for Future Incompatiblity");
+			secondaryText = NSLocalizedString(@"The current version of %1$@ will not be compatible with version %2$@ of Mac OS X. It is also currently disabled.", @"Secondary text for Future Incompatible - currently disabled");
+			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease], nil];
+			break;
+}
 	
 	[self.mainDescriptionField setStringValue:[NSString stringWithFormat:mainText, self.mailBundle.name]];
 
@@ -306,7 +337,6 @@ typedef enum {
 	if ([confirm runModal] == NSAlertDefaultReturn) {
 		//	If we have an alternate button, then they asked to restart Mail
 		if (alternateButton != nil) {
-			LKLog(@"Would be restarting Mail");
 			[[NSApp delegate] restartMail];
 		}
 	}
@@ -372,6 +402,7 @@ typedef enum {
 		NSString	*notNowString = NSLocalizedString(@"Not Now", @"Not Now button text");
 		
 		_buttonConfigurations = [[NSArray arrayWithObjects:
+								  //	kMBTButtonLayoutUpdate
 								  [NSArray arrayWithObjects:
 								   [NSDictionary dictionaryWithObjectsAndKeys:
 									updateString, TITLE_KEY,
@@ -383,6 +414,7 @@ typedef enum {
 									nil],
 								   [NSNull null],
 								   nil],
+								  //	kMBTButtonLayoutUpdateIncompatible
 								  [NSArray arrayWithObjects:
 								   [NSDictionary dictionaryWithObjectsAndKeys:
 									updateString, TITLE_KEY,
@@ -397,6 +429,19 @@ typedef enum {
 									[NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
 									nil],
 								   nil],
+								  //	kMBTButtonLayoutUpdateIncompatibleDisabled
+								  [NSArray arrayWithObjects:
+								   [NSDictionary dictionaryWithObjectsAndKeys:
+									updateString, TITLE_KEY,
+									[NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
+									nil],
+								   [NSDictionary dictionaryWithObjectsAndKeys:
+									notNowString, TITLE_KEY,
+									[NSNumber numberWithInteger:kMBTActionNotNow], ACTION_KEY,
+									nil],
+								   [NSNull null],
+								   nil],
+								  //	kMBTButtonLayoutUpdateFutureIncompatible
 								  [NSArray arrayWithObjects:
 								   [NSDictionary dictionaryWithObjectsAndKeys:
 									updateString, TITLE_KEY,
@@ -408,6 +453,7 @@ typedef enum {
 									nil],
 								   [NSNull null],
 								   nil],
+								  //	kMBTButtonLayoutIncompatibleOnly
 								  [NSArray arrayWithObjects:
 								   [NSDictionary dictionaryWithObjectsAndKeys:
 									thanksString, TITLE_KEY,
@@ -422,6 +468,19 @@ typedef enum {
 									[NSNumber numberWithInteger:kMBTActionRemove], ACTION_KEY,
 									nil],
 								   nil],
+								  //	kMBTButtonLayoutIncompatibleOnlyDisabled
+								  [NSArray arrayWithObjects:
+								   [NSDictionary dictionaryWithObjectsAndKeys:
+									thanksString, TITLE_KEY,
+									[NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
+									nil],
+								   [NSNull null],
+								   [NSDictionary dictionaryWithObjectsAndKeys:
+									removeString, TITLE_KEY,
+									[NSNumber numberWithInteger:kMBTActionRemove], ACTION_KEY,
+									nil],
+								   nil],
+								  //	kMBTButtonLayoutFutureIncompatibleOnly
 								  [NSArray arrayWithObjects:
 								   [NSDictionary dictionaryWithObjectsAndKeys:
 									thanksString, TITLE_KEY,
@@ -432,6 +491,15 @@ typedef enum {
 									disableString, TITLE_KEY,
 									[NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
 									nil],
+								   nil],
+								  //	kMBTButtonLayoutFutureIncompatibleOnlyDisabled
+								  [NSArray arrayWithObjects:
+								   [NSDictionary dictionaryWithObjectsAndKeys:
+									thanksString, TITLE_KEY,
+									[NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
+									nil],
+								   [NSNull null],
+								   [NSNull null],
 								   nil],
 								  nil] retain];
 	}
