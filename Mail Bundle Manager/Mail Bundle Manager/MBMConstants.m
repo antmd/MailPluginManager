@@ -81,6 +81,7 @@ NSString	*kMBMUnknownCompanyValue = @"<MBMCompanyUnknown>";
 //	Notifications
 NSString	*kMBMMailBundleUninstalledNotification = @"MBMMailBundleUninstalledNotification";
 NSString	*kMBMDoneLoadingSparkleNotification = @"MBMDoneLoadingSparkleNotification";
+NSString	*kMBMMailStatusChangedNotification = @"MBMMailStatusChangedNotification";
 
 NSString	*kMBMCompaniesInfoFileName = @"companies";
 

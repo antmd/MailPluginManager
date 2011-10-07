@@ -79,6 +79,7 @@ extern NSString	*kMBMUnknownCompanyValue;
 //	Notifications
 extern NSString	*kMBMMailBundleUninstalledNotification;
 extern NSString	*kMBMDoneLoadingSparkleNotification;
+extern NSString	*kMBMMailStatusChangedNotification;
 
 extern NSString	*kMBMCompaniesInfoFileName;
 
