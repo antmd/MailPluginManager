@@ -42,11 +42,13 @@ typedef enum {
 	kMBTActionNotNow
 } MBTButtonActionType;
 
-#define EDGE_DISTANCE		20.0f
-#define BETWEEN_DISTANCE	12.0f
+//	Configuration Dictionary Keys
+#define TITLE_KEY			@"title"
+#define ACTION_KEY			@"action"
+#define MAIN_TEXT_KEY		@"mainText"
+#define SECONDARY_TEXT_KEY	@"secondaryText"
+#define BUTTON_LIST_KEY		@"buttonList"
 
-#define TITLE_KEY		@"title"
-#define ACTION_KEY		@"action"
 
 
 @interface MBTSinglePluginController ()
@@ -80,12 +82,14 @@ typedef enum {
         // Initialization code here.
 		_mailBundle = [aMailBundle retain];
 		_buttonConfigurations = nil;
+		
     }
     
     return self;
 }
 
 - (void)dealloc {
+	//	Remove observers
 	[_buttonConfigurations release];
 	_buttonConfigurations = nil;
 	self.mailBundle = nil;
@@ -128,69 +132,38 @@ typedef enum {
 	[self configureButtonsForLayoutType:self.buttonLayout];
 	
 	//	Configure the text views
-	NSString	*mainText = nil;
-	NSString	*secondaryText = nil;
+	NSDictionary	*configurationDict = [[self buttonConfigurations] objectAtIndex:self.buttonLayout];
+	NSString	*mainText = [configurationDict valueForKey:MAIN_TEXT_KEY];
+	NSString	*secondaryText = [configurationDict valueForKey:SECONDARY_TEXT_KEY];
 	NSArray		*values = nil;
 	
 	NSDictionary		*boldAttrs = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Lucida Grande Bold" size:11.0f] forKey:NSFontAttributeName];
 	NSAttributedString	*boldPluginName = [[[NSAttributedString alloc] initWithString:self.mailBundle.name attributes:boldAttrs] autorelease];
+	NSAttributedString	*boldVersionString = [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease];
 	
 	switch (self.buttonLayout) {
 		case kMBTButtonLayoutUpdate:
-			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
-			secondaryText = NSLocalizedString(@"Updating now will ensure that you are using the best version of %1$@ for your system.", @"Secondary text for Update Only");
-			values = [NSArray arrayWithObject:boldPluginName];
-			break;
-			
 		case kMBTButtonLayoutUpdateIncompatible:
-			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
-			secondaryText = NSLocalizedString(@"However the installed version of %1$@ is not compatible with the current version of Mail and will be disabled by Mail.", @"Secondary text for Update with Incompatible");
-			values = [NSArray arrayWithObject:boldPluginName];
-			break;
-			
 		case kMBTButtonLayoutUpdateIncompatibleDisabled:
-			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
-			secondaryText = NSLocalizedString(@"However the installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail.", @"Secondary text for Update with Incompatible - currently disabled");
+		case kMBTButtonLayoutIncompatibleOnly:
+		case kMBTButtonLayoutIncompatibleOnlyDisabled:
 			values = [NSArray arrayWithObject:boldPluginName];
 			break;
 			
 		case kMBTButtonLayoutUpdateFutureIncompatible:
-			mainText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
-			secondaryText = NSLocalizedString(@"The installed version of %1$@ will not be compatible with a future version of Mac OS X (%2$@). You should update before installing that version.", @"Secondary text for Update with Incompatible");
-			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease], nil];
-			break;
-			
-		case kMBTButtonLayoutIncompatibleOnly:
-			mainText = NSLocalizedString(@"The Mail plugin %@ is not compatible with this version of Mac OS X.", @"Main text for Incompatible");
-			secondaryText = NSLocalizedString(@"The installed version of %1$@ is not compatible with the current version of Mail and will be disabled by Mail. Please note that we have no further information.", @"Secondary text for Update with Incompatible");
-			values = [NSArray arrayWithObject:boldPluginName];
-			break;
-			
-		case kMBTButtonLayoutIncompatibleOnlyDisabled:
-			mainText = NSLocalizedString(@"The Mail plugin %@ is not compatible with this version of Mac OS X.", @"Main text for Incompatible");
-			secondaryText = NSLocalizedString(@"The installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail. Please note that we have no further information.", @"Secondary text for Update with Incompatible - currently disabled");
-			values = [NSArray arrayWithObject:boldPluginName];
-			break;
-			
 		case kMBTButtonLayoutFutureIncompatibleOnly:
-			mainText = NSLocalizedString(@"The Mail plugin %@ will be incompatible with a future known version of Mac OS X.", @"Main text for Future Incompatiblity");
-			secondaryText = NSLocalizedString(@"The current version of %1$@ will not be compatible with version %2$@ of Mac OS X.", @"Secondary text for Future Incompatible");
-			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease], nil];
-			break;
-
 		case kMBTButtonLayoutFutureIncompatibleOnlyDisabled:
-			mainText = NSLocalizedString(@"The Mail plugin %@ will be incompatible with a future known version of Mac OS X.", @"Main text for Future Incompatiblity");
-			secondaryText = NSLocalizedString(@"The current version of %1$@ will not be compatible with version %2$@ of Mac OS X. It is also currently disabled.", @"Secondary text for Future Incompatible - currently disabled");
-			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease], nil];
+			values = [NSArray arrayWithObjects:boldPluginName, boldVersionString, nil];
 			break;
-}
+			
+	}
 	
 	[self.mainDescriptionField setStringValue:[NSString stringWithFormat:mainText, self.mailBundle.name]];
 
 	//	Build the string with attributes from the secondary text and list of values
-	NSArray						*stupidArray = [NSArray arrayWithObjects:@"%1$@", @"%2$@", @"%3$@", @"%4$@", nil];
+	NSArray						*replacementArray = [NSArray arrayWithObjects:@"%1$@", @"%2$@", @"%3$@", @"%4$@", nil];
 	NSMutableAttributedString	*attrString = [[[NSMutableAttributedString alloc] initWithString:secondaryText] autorelease];
-	for (NSString *replacement in stupidArray) {
+	for (NSString *replacement in replacementArray) {
 		NSRange		aRange = [[attrString string] rangeOfString:replacement];
 		NSInteger	idx = [[replacement substringWithRange:NSMakeRange(1, 1)] integerValue] - 1;
 		if ((idx >= 0) && (idx < (NSInteger)[values count])) {
@@ -227,9 +200,12 @@ typedef enum {
 	[self.window setTitle:NSLocalizedString(@"Issue with Mail Plugin", @"Window title indicating there is an issue with a plugin")];
 }
 
+
+#pragma mark - Actions & Watchers
+
 - (IBAction)buttonPressed:(id)sender {
 	BOOL			closeWindow = YES;
-	MBTButtonActionType	actionType = (MBTButtonActionType)[[[[[self buttonConfigurations] objectAtIndex:self.buttonLayout] objectAtIndex:[sender tag]] valueForKey:ACTION_KEY] integerValue];
+	MBTButtonActionType	actionType = (MBTButtonActionType)[[[[[[self buttonConfigurations] objectAtIndex:self.buttonLayout] valueForKey:BUTTON_LIST_KEY] objectAtIndex:[sender tag]] valueForKey:ACTION_KEY] integerValue];
 	switch (actionType) {
 		case kMBTActionNotNow:
 		case kMBTActionThanks:
@@ -346,7 +322,7 @@ typedef enum {
 }
 
 
-#pragma mark - Configuration Stuff
+#pragma mark - Configuration Methods
 
 - (void)configureButtonsForLayoutType:(MBTButtonLayoutType)layout {
 	if (layout >= [self.buttonConfigurations count]) {
@@ -354,7 +330,7 @@ typedef enum {
 	}
 	
 	MBTButtonLocation	location = kMBTButtonRight;
-	for (NSObject *anObject in [self.buttonConfigurations objectAtIndex:layout]) {
+	for (NSObject *anObject in [[self.buttonConfigurations objectAtIndex:layout] valueForKey:BUTTON_LIST_KEY]) {
 		//	get the button
 		NSButton	*aButton = nil;
 		switch (location) {
@@ -401,105 +377,143 @@ typedef enum {
 		NSString	*thanksString = NSLocalizedString(@"Thanks", @"Thanks button text");
 		NSString	*notNowString = NSLocalizedString(@"Not Now", @"Not Now button text");
 		
+		
+		NSString	*updateAvailableText = NSLocalizedString(@"There is an update available for this Mail plugin. Would you like to install it?", @"Main text for Update");
+		NSString	*incompatibleText = NSLocalizedString(@"The Mail plugin %@ is not compatible with this version of Mac OS X.", @"Main text for Incompatible");
+		NSString	*futureIncompatibleText  = NSLocalizedString(@"The Mail plugin %@ will be incompatible with a future known version of Mac OS X.", @"Main text for Future Incompatiblity");
+
+		
 		_buttonConfigurations = [[NSArray arrayWithObjects:
 								  //	kMBTButtonLayoutUpdate
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									updateString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
-									nil],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									notNowString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionNotNow], ACTION_KEY,
-									nil],
-								   [NSNull null],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   updateAvailableText, MAIN_TEXT_KEY,
+								   (NSLocalizedString(@"Updating now will ensure that you are using the best version of %1$@ for your system.", @"Secondary text for Update Only")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 updateString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
+									 nil],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 notNowString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionNotNow], ACTION_KEY,
+									 nil],
+									[NSNull null],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  //	kMBTButtonLayoutUpdateIncompatible
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									updateString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
-									nil],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									notNowString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionNotNow], ACTION_KEY,
-									nil],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									disableString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
-									nil],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   updateAvailableText, MAIN_TEXT_KEY,
+								   (NSLocalizedString(@"Note that the installed version of %1$@ is not compatible with the current version of Mail and will be disabled by Mail.", @"Secondary text for Update with Incompatible")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 updateString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
+									 nil],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 notNowString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionNotNow], ACTION_KEY,
+									 nil],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 disableString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
+									 nil],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  //	kMBTButtonLayoutUpdateIncompatibleDisabled
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									updateString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
-									nil],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									notNowString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionNotNow], ACTION_KEY,
-									nil],
-								   [NSNull null],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   updateAvailableText, MAIN_TEXT_KEY,
+								    (NSLocalizedString(@"Note that the installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail.", @"Secondary text for Update with Incompatible - currently disabled")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 updateString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
+									 nil],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 notNowString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionNotNow], ACTION_KEY,
+									 nil],
+									[NSNull null],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  //	kMBTButtonLayoutUpdateFutureIncompatible
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									updateString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
-									nil],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									thanksString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
-									nil],
-								   [NSNull null],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   updateAvailableText, MAIN_TEXT_KEY,
+								   (NSLocalizedString(@"The installed version of %1$@ will not be compatible with a future version of Mac OS X (%2$@). You should update before installing that version.", @"Secondary text for Update with Incompatible")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 updateString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionUpdate], ACTION_KEY,
+									 nil],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 thanksString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
+									 nil],
+									[NSNull null],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  //	kMBTButtonLayoutIncompatibleOnly
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									thanksString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
-									nil],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									disableString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
-									nil],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									removeString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionRemove], ACTION_KEY,
-									nil],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   incompatibleText, MAIN_TEXT_KEY,
+								   (NSLocalizedString(@"The installed version of %1$@ is not compatible with the current version of Mail and will be disabled by Mail. Please note that we have no further information.", @"Secondary text for Update with Incompatible")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 thanksString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
+									 nil],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 disableString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
+									 nil],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 removeString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionRemove], ACTION_KEY,
+									 nil],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  //	kMBTButtonLayoutIncompatibleOnlyDisabled
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									thanksString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
-									nil],
-								   [NSNull null],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									removeString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionRemove], ACTION_KEY,
-									nil],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   incompatibleText, MAIN_TEXT_KEY,
+								   (NSLocalizedString(@"Note that the installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail. Sorry, no further information si available.", @"Secondary text for Update with Incompatible - currently disabled")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 thanksString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
+									 nil],
+									[NSNull null],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 removeString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionRemove], ACTION_KEY,
+									 nil],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  //	kMBTButtonLayoutFutureIncompatibleOnly
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									thanksString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
-									nil],
-								   [NSNull null],
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									disableString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
-									nil],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   futureIncompatibleText, MAIN_TEXT_KEY,
+								   (NSLocalizedString(@"The current version of %1$@ will not be compatible with version %2$@ of Mac OS X.", @"Secondary text for Future Incompatible")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 thanksString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
+									 nil],
+									[NSNull null],
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 disableString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionDisable], ACTION_KEY,
+									 nil],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  //	kMBTButtonLayoutFutureIncompatibleOnlyDisabled
-								  [NSArray arrayWithObjects:
-								   [NSDictionary dictionaryWithObjectsAndKeys:
-									thanksString, TITLE_KEY,
-									[NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
-									nil],
-								   [NSNull null],
-								   [NSNull null],
+								  [NSDictionary dictionaryWithObjectsAndKeys:
+								   futureIncompatibleText, MAIN_TEXT_KEY,
+								   (NSLocalizedString(@"The current version of %1$@ will not be compatible with version %2$@ of Mac OS X. It is also currently disabled.", @"Secondary text for Future Incompatible - currently disabled")), SECONDARY_TEXT_KEY,
+								   [NSArray arrayWithObjects:
+									[NSDictionary dictionaryWithObjectsAndKeys:
+									 thanksString, TITLE_KEY,
+									 [NSNumber numberWithInteger:kMBTActionThanks], ACTION_KEY,
+									 nil],
+									[NSNull null],
+									[NSNull null],
+									nil], BUTTON_LIST_KEY,
 								   nil],
 								  nil] retain];
 	}
