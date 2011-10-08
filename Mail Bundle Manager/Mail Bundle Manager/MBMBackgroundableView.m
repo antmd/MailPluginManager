@@ -21,7 +21,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
 	
-	NSString	*imagePath = [[NSBundle bundleWithPath:@"/System/Library/Frameworks/AppKit.framework"] pathForImageResource:@"NSTexturedFullScreenBackgroundColor"];
+	NSString	*imagePath = [[NSBundle bundleWithPath:@"/System/Library/Frameworks/AppKit.framework"] pathForImageResource:@"NSLinenBackgroundPattern"];
 	NSImage		*image = [[[NSImage alloc] initWithContentsOfFile:imagePath] autorelease];
 	
 	[[NSColor colorWithPatternImage:image] set];

@@ -9,7 +9,7 @@
 #import "MBTAppDelegate.h"
 #import "MBMMailBundle.h"
 #import "MBTSinglePluginController.h"
-#import "NSViewController+LKCollectionItemFix.h"
+#import "LKCGStructs.h"
 
 
 @interface MBTAppDelegate ()
@@ -151,12 +151,9 @@
 		[self.currentController showWindow:self];
 	}
 	else {
-		//	Show a view for multiples
-		self.bundleViewController = [[[NSViewController alloc] initWithNibName:@"MBMBundleView" bundle:nil] autorelease];
-		[self.bundleViewController configureForCollectionItem:self.collectionItem];
-		
-		//	Set our bundle list
-		self.mailBundleList = badBundles;
+
+		//	Show the window
+		[self showCollectionWindowForBundles:badBundles];
 		
 		//	Add a notification watcher to handle uninstalls
 		self.bundleUnistallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -168,13 +165,7 @@
 			}
 		}];
 		
-		//	Adjust the window size if needed
-		if ([self.mailBundleList count] > 3) {
-			//	Adjust the window, scrollview and background image size.
-		}
-		
-		[[self window] center];
-		[[self window] makeKeyAndOrderFront:self];
+	
 	}
 	
 }

@@ -7,7 +7,7 @@
 //
 
 #import "MBAppDelegate.h"
-
+#import "NSViewController+LKCollectionItemFix.h"
 #import "MBMMailBundle.h"
 
 @interface MBAppDelegate ()
@@ -29,6 +29,9 @@
 @synthesize maintenanceQueue = _maintenanceQueue;
 @synthesize canQuitAccordingToMaintenance;
 @synthesize maintenanceCounter;
+
+@synthesize backgroundView = _backgroundView;
+@synthesize scrollView = _scrollView;
 
 
 #pragma mark - Application Delegate
@@ -53,6 +56,13 @@
 
 }
 
+- (void)applicationWillTerminate:(NSNotification *)notification {
+	if (self.bundleUnistallObserver != nil) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self.bundleUnistallObserver];
+		self.bundleUnistallObserver = nil;
+	}
+}
+
 - (void)dealloc {
 	//	Remove the observations this class is doing.
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -61,6 +71,16 @@
 	self.currentController = nil;
 	
 	[super dealloc];
+}
+
+- (void)applicationChangeForNotification:(NSNotification *)note {
+	//	If this is Mail
+	if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+		//	See if it launched or terminated
+		self.isMailRunning = [[note name] isEqualToString:NSWorkspaceDidLaunchApplicationNotification];
+		//	Post a notification for other observers to have a simplified notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailStatusChangedNotification object:[NSNumber numberWithBool:self.isMailRunning]];
+	}
 }
 
 - (void)quittingNowIsReasonable {
@@ -86,21 +106,29 @@
 	}
 }
 
-- (void)applicationChangeForNotification:(NSNotification *)note {
-	//	If this is Mail
-	if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
-		//	See if it launched or terminated
-		self.isMailRunning = [[note name] isEqualToString:NSWorkspaceDidLaunchApplicationNotification];
-		//	Post a notification for other observers to have a simplified notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailStatusChangedNotification object:[NSNumber numberWithBool:self.isMailRunning]];
-	}
-}
 
-- (void)applicationWillTerminate:(NSNotification *)notification {
-	if (self.bundleUnistallObserver != nil) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self.bundleUnistallObserver];
-		self.bundleUnistallObserver = nil;
+#pragma mark - Window Management
+
+- (void)showCollectionWindowForBundles:(NSArray *)bundleList {
+	
+	//	Show a view for multiples
+	self.bundleViewController = [[[NSViewController alloc] initWithNibName:@"MBMBundleView" bundle:nil] autorelease];
+	[self.bundleViewController configureForCollectionItem:self.collectionItem];
+	
+	//	Set our bundle list
+	self.mailBundleList = bundleList;
+	
+	//	Adjust the view & window sizes, if there should only be a single row
+	CGFloat	bundleHeightAdjust = (-1.0 * [[self.bundleViewController view] frame].size.height);
+	if ([self.mailBundleList count] <= (NSUInteger)([self.scrollView frame].size.width / [[self.bundleViewController view] frame].size.width)) {
+		//	Adjust the window, scrollview and background image size.
+		[self.scrollView setFrame:LKRectByAdjustingHeight([self.scrollView frame], bundleHeightAdjust)];
+		[self.backgroundView setFrame:LKRectByAdjustingHeight([self.backgroundView frame], bundleHeightAdjust)];
+		[[self window] setFrame:LKRectByAdjustingHeight([[self window] frame], bundleHeightAdjust) display:NO];
 	}
+	
+	[[self window] center];
+	[[self window] makeKeyAndOrderFront:self];
 }
 
 

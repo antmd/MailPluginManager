@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MBMBackgroundableView.h"
+
 @interface MBAppDelegate : NSObject <NSApplicationDelegate> {
 }
 
@@ -26,6 +28,11 @@
 @property (assign)				NSInteger				maintenanceCounter;
 @property (assign)				BOOL					canQuitAccordingToMaintenance;
 
+@property (assign)	IBOutlet	MBMBackgroundableView	*backgroundView;
+@property (assign)	IBOutlet	NSScrollView			*scrollView;
+
+//	Window management
+- (void)showCollectionWindowForBundles:(NSArray *)bundleList;
 
 //	Maintenance task management
 - (void)addMaintenanceTask:(void (^)(void))block;
