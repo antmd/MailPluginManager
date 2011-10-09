@@ -44,6 +44,7 @@ NSString	*kMBMDestinationPathKey = @"destination-path";
 NSString	*kMBMDescriptionKey = @"description";
 NSString	*kMBMPermissionsKey = @"permissions-needed";
 NSString	*kMBMIsBundleManagerKey = @"is-bundle-manager";
+NSString	*kMBMUserCanChooseDomainKey = @"user-can-choose-domain";
 //	Keys for the action items and sub objects
 NSString	*kMBMConfirmationStepsKey = @"confirmation-steps";
 NSString	*kMBMConfirmationTitleKey = @"title";

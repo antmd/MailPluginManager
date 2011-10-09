@@ -42,6 +42,7 @@ extern NSString	*kMBMDestinationPathKey;
 extern NSString	*kMBMDescriptionKey;
 extern NSString	*kMBMPermissionsKey;
 extern NSString	*kMBMIsBundleManagerKey;
+extern NSString	*kMBMUserCanChooseDomainKey;
 //	Keys for the action items and sub objects
 extern NSString	*kMBMConfirmationStepsKey;
 extern NSString	*kMBMConfirmationTitleKey;
