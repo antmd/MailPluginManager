@@ -171,33 +171,33 @@ The manifest file, which should be named **`mbm-manifest.plist`** is a plist fil
 
 There are several keys at the top level of the plist that are used to configure the installer window and define information about what we are doing.
 
-		manifest-type			[install/uninstall]					(String)
-		display-name			Plugin Name							(String)
-		background-image-path	path/to/image_to_show_in_installer	(String)
-		action-items			(see below)							(Array)
-		confirmation-steps		(see below)							(Array)
+		manifest-type			[install/uninstall]						(String)
+		display-name			Plugin Name								(String)
+		background-image-path	path/to/image_to_show_in_installer		(String)
+		action-items			(see below)								(Array)
+		confirmation-steps		(see below)								(Array)
 		
 Install specific (ignored during uninstall). These define the min and max versions of OS and min version of Mail supported. Pretty self-explanatory.
 		
-		min-os-major-version	10.X								(Number)
-		max-os-major-version	10.X								(Number)
-		min-mail-version		X.X									(Number)
+		min-os-major-version	10.X									(Number)
+		max-os-major-version	10.X									(Number)
+		min-mail-version		X.X										(Number)
 
 Uninstall specific (ignored during install). These are used to determine how the Mail Plugin Manager application can be deleted if different cases. Assuming that the Manager is included in an uninstall manifest.
 		
-		can-delete-bundle-manager-if-no-other-plugins-use			(Boolean)
-		can-delete-bundle-manager-if-no-plugins-left				(Boolean)
+		can-delete-bundle-manager-if-no-other-plugins-use				(Boolean)
+		can-delete-bundle-manager-if-no-plugins-left					(Boolean)
 		
 #### Action Items<a id="action-items"/>
 
 This is an array of dictionary objects that describe what is to be installed or uninstalled. The objects will not be installed in any particular order. Here are the keys and example values with a description of them afterward.
 
-		path				Delivery/MyPlugin.mailbundle			(String)
-		destination-path	<LibraryDomain>/Mail/Bundles/			(String)
-		name				My Bundle								(String)
-		description			A Bundle for Testing					(String)
-		is-bundle-manager											(Boolean)
-		user-can-choose-domain										(Boolean)
+		path					Delivery/MyPlugin.mailbundle			(String)
+		destination-path		<LibraryDomain>/Mail/Bundles/			(String)
+		name					My Bundle								(String)
+		description				A Bundle for Testing					(String)
+		is-bundle-manager												(Boolean)
+		user-can-choose-domain											(Boolean)
 
 The key `path` is the path where to find the original object to act upon.
 
@@ -231,11 +231,11 @@ This is an array of dictionary objects with values describing each of the steps 
 
 Here are the keys and example values with a description of them afterward.
 
-		type				[license|information|confirm]		(String)
-		title				(Name shown at top of page)			(String)
-		bullet-title		(Name of step in list at left)		(String)
-		path				/path/to/resource					(String)
-		license-agreement-required								(Boolean)
+		type						[license|information|confirm]		(String)
+		title						(Name shown at top of page)			(String)
+		bullet-title				(Name of step in list at left)		(String)
+		path						/path/to/resource					(String)
+		license-agreement-required										(Boolean)
 
 The key `type` defines one of three types of display steps, `license` and `information` are essentially the same and just display some content to the user, however the `license` type step will test to see if the user must [agree to a license](#license-agree) and, if so, present a proper alert to ensure that they agree. The `confirm` step shows the list of what will happen and show the Install/Remove button before doing the actions.
 
