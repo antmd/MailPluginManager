@@ -69,6 +69,8 @@
 	
 	//	Release our controller
 	self.currentController = nil;
+	self.mailBundleList = nil;
+	self.bundleViewController = nil;
 	
 	[super dealloc];
 }

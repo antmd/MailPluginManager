@@ -17,10 +17,6 @@
 
 #pragma mark - Accessors & Memeory
 
-@synthesize window = _window;
-@synthesize bundleViewController = _bundleViewController;
-@synthesize collectionItem = _collectionItem;
-
 @synthesize installing = _installing;
 @synthesize uninstalling = _uninstalling;
 @synthesize managing = _managing;
@@ -28,23 +24,13 @@
 @synthesize executablePath = _executablePath;
 @synthesize singleBundlePath = _singleBundlePath;
 @synthesize manifestModel = _manifestModel;
-@synthesize currentController = _currentController;
-@synthesize mailBundleList = _mailBundleList;
 
-
-- (BOOL)isMailRunning {
-	return IsMailRunning();
-}
 
 - (void)dealloc {
-	
-	self.bundleViewController = nil;
 	
 	self.executablePath = nil;
 	self.singleBundlePath = nil;
 	self.manifestModel = nil;
-	self.currentController = nil;
-	self.mailBundleList = nil;
 	
     [super dealloc];
 }
@@ -60,8 +46,6 @@
 	
 	//	Save the executable path
 	self.executablePath = [arguments objectAtIndex:0];
-	
-	LKLog(@"Path is:%@", self.executablePath);
 	
 	//	Default to managing
 	self.managing = YES;
@@ -84,6 +68,7 @@
 				return NO;
 			}
 			self.installing = YES;
+			self.managing = NO;
 		}
 		else if ([extension isEqualToString:kMBMUninstallerFileExtension]) {
 			if (self.manifestModel.manifestType != kMBMManifestTypeUninstallation) {
@@ -91,6 +76,7 @@
 				return NO;
 			}
 			self.uninstalling = YES;
+			self.managing = NO;
 		}
 		else {
 			return NO;
@@ -116,7 +102,9 @@
 }
 	
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// Insert code here to initialize your application
+
+	//	Call our super to setup stuff
+	[super applicationDidFinishLaunching:aNotification];
 	
 	//	Run the update handler for this application, if we are in any case except, running an install file that 
 	//		doesn't want to install the bundle manager
@@ -125,55 +113,27 @@
 //		[self ensureRunningBestVersion];
 	}
 	
-	//	Then determine the process to continue down
-	if (self.installing) {
-		
-		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
-		[controller showWindow:self];
-		self.currentController = controller;
-		
-//		//	Then quit
-//		[NSApp terminate:self];
-	}
-	else if (self.uninstalling) {
-		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
-		[controller showWindow:self];
-		self.currentController = controller;
-		
-	}
-	
 	//	Then test to see if we should be showing the general management window
 	if (self.managing) {
-		[self showBundleManagerWindow];
+		[self showCollectionWindowForBundles:[MBMMailBundle allMailBundlesLoadInfo]];
+		
+		//	Add a notification watcher to handle uninstalls
+		self.bundleUnistallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
+				self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
+			}
+		}];
+	}
+	else {	//	Either install or uninstall uses the same process
+		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
+		[controller showWindow:self];
+		self.currentController = controller;
 	}
 	
 }
 
 
 #pragma mark - Action Methods
-
-- (void)showBundleManagerWindow {
-	
-	self.bundleViewController = [[[NSViewController alloc] initWithNibName:@"MBMBundleView" bundle:nil] autorelease];
-	[self.bundleViewController configureForCollectionItem:self.collectionItem];
-
-	self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
-	
-	//	Don't worry about this observer not being released, since we want it around until the app closes.
-	//	Add a notification watcher to handle uninstalls
-	[[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-		if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
-			self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
-		}
-	}];
-
-	[[self window] center];
-	[[self window] makeKeyAndOrderFront:self];
-}
-
-- (IBAction)restartMail:(id)sender {
-	
-}
 
 - (IBAction)showURL:(id)sender {
 	if ([sender respondsToSelector:@selector(toolTip)]) {

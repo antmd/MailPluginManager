@@ -11,7 +11,7 @@
 //	Command line keys
 NSString	*kMBMCommandLineUninstallKey = @"-uninstall";
 NSString	*kMBMCommandLineUpdateKey = @"-update";
-NSString	*kMBMCommandLineCheckCrashReportsKey = @"-check-crash-reports";
+NSString	*kMBMCommandLineCheckCrashReportsKey = @"-send-crash-reports";
 NSString	*kMBMCommandLineUpdateAndCrashReportsKey = @"-update-and-crash-reports";
 NSString	*kMBMCommandLineValidateAllKey = @"-validate-all";
 
