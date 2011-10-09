@@ -136,7 +136,7 @@ The tool will keep an updated version of a list of UUIDs that Mail and Message.f
 
 This will probably need some type of Applescript interface, so this has a lesser priority.
 
-#### Command Line Syntax<a id="commands"/>
+#### Command Line Syntax<a id="commands">&nbsp;</a>
 
 In general, the syntax is very simple:
 
@@ -165,7 +165,7 @@ Sends any crash reports found and updates, if found, for the plugin at the indic
 This command is used at boot time to validate all plugins. *Generally only called by the Launch Agent*.
 	
 
-### Manifest File Format<a id="manifest"></a>
+### Manifest File Format<a name="manifest"></a>
 
 The manifest file, which should be named **`mbm-manifest.plist`** is a plist file that contains a description of the items to install or uninstall. It also is used to describe to the user what is being installed.
 
