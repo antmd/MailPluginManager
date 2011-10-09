@@ -10,6 +10,7 @@
 #import "NSViewController+LKCollectionItemFix.h"
 #import "MBMMailBundle.h"
 #import "MBMCompanyList.h"
+#import "MBMUUIDList.h"
 
 @interface MBAppDelegate ()
 - (void)applicationChangeForNotification:(NSNotification *)note;
@@ -60,6 +61,11 @@
 		[MBMCompanyList loadCompanyListFromCloud];
 	}];
 
+	//	Load the process to put in place our uuids file
+	[self addMaintenanceTask:^{
+		[MBMUUIDList loadUUIDListFromCloud];
+	}];
+	
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {

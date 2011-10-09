@@ -59,7 +59,7 @@ NSString	*kMBMUUIDLatestVersionKey = @"latest-version";
 NSString	*kMBMUUIDLatestVersionTestKey = @"latest-version-comparator";
 NSString	*kMBMUUIDTypeValueMail = @"mail";
 NSString	*kMBMUUIDTypeValueMessage = @"message";
-NSString	*kMBMHistoricalUUIDFileName = @"historicalUUIDs";
+NSString	*kMBMHistoricalUUIDFileName = @"uuids";
 
 //	Progress handling
 NSString	*kMBMInstallationProgressNotification = @"MBMInstallationProgressNotification";

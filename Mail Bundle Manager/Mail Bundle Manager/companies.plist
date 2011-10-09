@@ -19,6 +19,8 @@
 		<key>canonical</key>
 		<string>info.lokiware</string>
 	</dict>
+	<key>date</key>
+	<date>2011-10-09T22:15:31Z</date>
 	<key>info.lokiware</key>
 	<dict>
 		<key>name</key>

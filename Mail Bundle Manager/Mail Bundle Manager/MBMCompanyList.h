@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MBMCompanyList : NSObject
+#import "MBMRemoteUpdatableList.h"
+
+@interface MBMCompanyList : MBMRemoteUpdatableList
 + (void)loadCompanyListFromCloud;
 + (NSString *)companyNameFromIdentifier:(NSString *)identifier;
 + (NSString *)companyURLFromIdentifier:(NSString *)identifier;
