@@ -28,7 +28,8 @@ The tool application will be embedded inside of the manager application. When pl
 This manager only supports Snow Leopard & Lion - I'm even thinking of making it Lion only!
 
 
-### Mail Bundle Manager (MBM)<a id="manager"/>
+<a name="manager"/>
+### Mail Bundle Manager (MBM)
 
 It has the following main features:
 
@@ -73,7 +74,8 @@ The user can enable/disable, remove, update and change the domain of the plugin 
 This feature has not yet been implemented, but will just be a button for the user to click to send to a particular plugin developer (guessing that developers email needs to be worked out!). The information will include the plugin details, the system version, computer information and versions and UUIDs of both the Message framework and Mail.
 
 
-### Mail Bundle Tool (MBT)<a id="tool"/>
+<a name="tool"/>
+### Mail Bundle Tool (MBT)
 
 All interacts with MBT will be by command line, with perhaps a scripting interface for requests of information rather than actions.
 
@@ -136,7 +138,7 @@ The tool will keep an updated version of a list of UUIDs that Mail and Message.f
 
 This will probably need some type of Applescript interface, so this has a lesser priority.
 
-<a id="commands"/>
+<a name="commands"/>
 #### Command Line Syntax
 
 In general, the syntax is very simple:
@@ -190,7 +192,7 @@ Uninstall specific (ignored during install). These are used to determine how the
 		can-delete-bundle-manager-if-no-other-plugins-use				(Boolean)
 		can-delete-bundle-manager-if-no-plugins-left					(Boolean)
 		
-<a id="action-items"/>
+<a name="action-items"/>
 #### Action Items
 
 This is an array of dictionary objects that describe what is to be installed or uninstalled. The objects will not be installed in any particular order. Here are the keys and example values with a description of them afterward.
@@ -228,7 +230,8 @@ The key `permissions-needed` is an array of strings indicating the types of perm
 *This key is optional*
 -->
 
-#### Confirmation Steps<a id="confirm-steps"/>
+<a name="confirm-steps"/>
+#### Confirmation Steps
 
 This is an array of dictionary objects with values describing each of the steps to display to the user, in the desired order, during the confirmation of the install/uninstall process. 
 
@@ -250,11 +253,12 @@ The key `bullet-title` is used in the step list on the left side of the window. 
 
 The key `path` is the path where to find the resource to display for either an `information` or `license` type. The path should be relative to the manifest file and should be either an RTF/RTFD file or an HTML file (with resources relative to that file. *It is required for the `license` and `information` types*.
 
-<a id="license-agree"/>
+<a name="license-agree"/>
 The key `license-agreement-required` works in conjunction with the `license` type and is ignored in other cases. If set to **YES**, then the license will require the user to agree before continuing. The default is **NO**.
 *This key is optional*.
 
-### Macros Defined<a id="macros"/>
+<a name="macros"/>
+### Macros Defined
 
 **Not yet written.**
 
