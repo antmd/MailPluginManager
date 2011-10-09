@@ -45,13 +45,13 @@ A single plist file defines what will be installed, you can have other component
 
 Here are images of a dummy installation:
 
-![Installation Release Notes](images/Example_Install_1.png)
+![Installation Release Notes][install-1]
 
-![Installation License Info](images/Example_Install_2.png)
+![Installation License Info][install-2]
 
-![Installation License Agreement Dialog](images/Example_Install_License.png)
+![Installation License Agreement Dialog][install-3]
 
-![Installation Review](images/Example_Install_3.png)
+![Installation Review][install-4]
 
 #### Uninstallation
 
@@ -62,7 +62,7 @@ Similarly a file package format has been defined (with an extension of `mbremove
 
 This interface is for the user to interact with and is the default mode when the Mail Bundle Manager is opened without a file. Here is an example of what it looks like:
 
-![Mail Bundle Manager Window](images/Mail_Bundle_Manager.png)
+![Mail Bundle Manager Window][manager-window]
 
 I have tried to add as much information about the plugin as I can get from the plugin itself. There are ways to add more detailed information to the Info.plist file so that MBM can provide a better experience, but it's good to try to show something.
 
@@ -110,11 +110,11 @@ This mode will look at all plugins in both "Bundles" and "Bundles (Disabled[ X])
 
 A dialog/window will be presented to the user to potentially do something. For a single item a window similar to the following will appear:
 
-![Single Incompatible/Updatable Plugin Found](images/Single_Plugin_Notice.png)
+![Single Incompatible/Updatable Plugin Found][single-notice]
 
 When there are more than one plugins that need the user's attention a different presentation is shown, similar to the Manager's look, like this:
 
-![Multiple Incompatible/Updatable Plugins Found](images/Multi_Plugin_Notice.png)
+![Multiple Incompatible/Updatable Plugins Found][multi-notice]
 
 Through both of these the user can perform and Update, Disable a plugin, Remove it or ignore the message altogether.
 
@@ -313,4 +313,14 @@ Can a plugin be written to load first in Mail and then patch the loading process
 
 You can use this software any way that you like, as long as you don't blame me for anything ;-)
 
+<!-- links -->
 [launchd]: http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man5/launchd.plist.5.html#//apple_ref/doc/man/5/launchd.plist
+
+<!-- images -->
+[install-1]: http://media.lksw.eu/mbm/Example_Install_1.png
+[install-2]: http://media.lksw.eu/mbm/Example_Install_2.png
+[install-3]: http://media.lksw.eu/mbm/Example_Install_3.png
+[install-4]: http://media.lksw.eu/mbm/Example_Install_4.png
+[manager-window]: http://media.lksw.eu/mbm/Mail_Bundle_Manager.png
+[single-notice]: http://media.lksw.eu/mbm/Single_Plugin_Notice.png
+[multi-notice]: http://media.lksw.eu/mbm/Multi_Plugin_Notice.png
