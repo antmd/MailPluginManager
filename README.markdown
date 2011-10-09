@@ -136,7 +136,8 @@ The tool will keep an updated version of a list of UUIDs that Mail and Message.f
 
 This will probably need some type of Applescript interface, so this has a lesser priority.
 
-#### Command Line Syntax<a id="commands">&nbsp;</a>
+<a id="commands"/>
+#### Command Line Syntax
 
 In general, the syntax is very simple:
 
@@ -165,7 +166,8 @@ Sends any crash reports found and updates, if found, for the plugin at the indic
 This command is used at boot time to validate all plugins. *Generally only called by the Launch Agent*.
 	
 
-### Manifest File Format<a name="manifest"></a>
+<a name="manifest"/>
+### Manifest File Format
 
 The manifest file, which should be named **`mbm-manifest.plist`** is a plist file that contains a description of the items to install or uninstall. It also is used to describe to the user what is being installed.
 
@@ -188,7 +190,8 @@ Uninstall specific (ignored during install). These are used to determine how the
 		can-delete-bundle-manager-if-no-other-plugins-use				(Boolean)
 		can-delete-bundle-manager-if-no-plugins-left					(Boolean)
 		
-#### Action Items<a id="action-items"/>
+<a id="action-items"/>
+#### Action Items
 
 This is an array of dictionary objects that describe what is to be installed or uninstalled. The objects will not be installed in any particular order. Here are the keys and example values with a description of them afterward.
 
