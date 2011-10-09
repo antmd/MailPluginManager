@@ -473,7 +473,7 @@ typedef enum {
 								  //	kMBTButtonLayoutIncompatibleOnlyDisabled
 								  [NSDictionary dictionaryWithObjectsAndKeys:
 								   incompatibleText, MAIN_TEXT_KEY,
-								   (NSLocalizedString(@"Note that the installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail. Sorry, no further information si available.", @"Secondary text for Update with Incompatible - currently disabled")), SECONDARY_TEXT_KEY,
+								   (NSLocalizedString(@"Note that the installed version of %1$@ is not compatible with the current version of Mail and has been disabled by Mail. Sorry, no further information is available.", @"Secondary text for Update with Incompatible - currently disabled")), SECONDARY_TEXT_KEY,
 								   [NSArray arrayWithObjects:
 									[NSDictionary dictionaryWithObjectsAndKeys:
 									 thanksString, TITLE_KEY,
