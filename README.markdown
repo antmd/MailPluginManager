@@ -261,24 +261,24 @@ The key `license-agreement-required` works in conjunction with the `license` typ
 
 #### Common Pieces
 
-* Make it use ARC!
-* Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
-* Write macros to access from mail bundles.
 * Change companies.strings to a companies.plist that gets updated.
 * Load historicalUUIDs file from remote server on launch (MBM & MBT).
 * Use synchronized file features in Lion when we can for historicalUUIDs.
+* Write macros to access from mail bundles.
+* Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
+* Make it use ARC!
 * Setup system to report system setup when requested by user/developer.
 * Determining relevant info about system.
 * Add authorizations where needed when accessing files the user needs admin for.
 
 #### Manager Interface
 
+* Validate that the file types are setup correctly.
 * Add an Update All Plugins button to Manager window when relevant.
 * Add support for different domain installation.
 * Support the `<LibraryDomain>` path prefix.
 * Handle install path with a full URL.
 * Add complete error handling.
-* Validate that the file types are setup correctly.
 
 #### Tool
 
