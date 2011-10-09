@@ -9,6 +9,7 @@
 #import "MBAppDelegate.h"
 #import "NSViewController+LKCollectionItemFix.h"
 #import "MBMMailBundle.h"
+#import "MBMCompanyList.h"
 
 @interface MBAppDelegate ()
 - (void)applicationChangeForNotification:(NSNotification *)note;
@@ -53,6 +54,11 @@
 	self.maintenanceQueue = [[[NSOperationQueue alloc] init] autorelease];
 	[self.maintenanceQueue setMaxConcurrentOperationCount:1];	//	Makes this serial queue, in effect
 	self.maintenanceCounterQueue = [[[NSOperationQueue alloc] init] autorelease];
+	
+	//	Load the process to put in place our companies file
+	[self addMaintenanceTask:^{
+		[MBMCompanyList loadCompanyListFromCloud];
+	}];
 
 }
 

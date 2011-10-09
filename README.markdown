@@ -165,7 +165,7 @@ Sends any crash reports found and updates, if found, for the plugin at the indic
 This command is used at boot time to validate all plugins. *Generally only called by the Launch Agent*.
 	
 
-### Manifest File Format<a id="manifest"/>
+### Manifest File Format<a id="manifest"></a>
 
 The manifest file, which should be named **`mbm-manifest.plist`** is a plist file that contains a description of the items to install or uninstall. It also is used to describe to the user what is being installed.
 
@@ -261,15 +261,14 @@ The key `license-agreement-required` works in conjunction with the `license` typ
 
 #### Common Pieces
 
-* Change companies.strings to a companies.plist that gets updated.
 * Load historicalUUIDs file from remote server on launch (MBM & MBT).
-* Use synchronized file features in Lion when we can for historicalUUIDs.
 * Write macros to access from mail bundles.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Make it use ARC!
 * Setup system to report system setup when requested by user/developer.
 * Determining relevant info about system.
 * Add authorizations where needed when accessing files the user needs admin for.
+* Parse company Name from the Get Info string of info.plist
 
 #### Manager Interface
 

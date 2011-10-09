@@ -8,7 +8,7 @@
 
 #import "MBMMailBundle.h"
 #import "MBMAppDelegate.h"
-
+#import "MBMCompanyList.h"
 #import "NSBundle+MBMAdditions.h"
 
 @interface MBMMailBundle ()
@@ -20,7 +20,7 @@
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
 - (void)updateState;
-- (NSString *)companyFromIdentifier;
+//- (NSString *)companyFromIdentifier;
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
 + (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath;
 + (NSArray *)disabledBundlesPathListForDomain:(NSSearchPathDomainMask)domain;
@@ -155,7 +155,7 @@
 		if (aCompany == nil) {
 			
 			//	Try our database using the bundleIdentifier
-			aCompany = [self companyFromIdentifier];
+			aCompany = [MBMCompanyList companyNameFromIdentifier:self.identifier];
 			
 			if (aCompany == nil) {
 				aCompany = self.companyURL;
@@ -190,16 +190,8 @@
 		//	First look for our key
 		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMBMCompanyURLKey];
 		if (aURL == nil) {
-			
-			//	Get the identifier parts and make the URL
-			NSArray		*parts = [self.identifier componentsSeparatedByString:@"."];
-			
-			NSString	*companyRDN = [NSString stringWithFormat:@"[url]%@.%@", [parts objectAtIndex:0], [parts objectAtIndex:1]];
-			aURL = NSLocalizedStringFromTable(companyRDN, kMBMCompaniesInfoFileName, @"");
-			if ([aURL isEqualToString:companyRDN]) {
-				aURL = [NSString stringWithFormat:@"http://www.%@.%@", [parts objectAtIndex:1], [parts objectAtIndex:0]];
-			}
-			
+			//	Try to get it from our list file
+			aURL = [MBMCompanyList companyURLFromIdentifier:self.identifier];
 		}
 		
 		//	Release the previous value and copy the new one
@@ -216,15 +208,8 @@
 		//	First look for our key
 		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMBMProductURLKey];
 		if (aURL == nil) {
-			
-			//	Make a url from the identifier and lookup in the companies file
-			NSString	*productLookup = [NSString stringWithFormat:@"[url]%@", self.identifier];
-			aURL = NSLocalizedStringFromTable(productLookup, kMBMCompaniesInfoFileName, @"");
-			//	If we don't find it, give up
-			if ([aURL isEqualToString:productLookup]) {
-				aURL = nil;
-			}
-			
+			//	Try to get it from our list file
+			aURL = [MBMCompanyList productURLFromIdentifier:self.identifier];
 		}
 		
 		//	Release the previous value and copy the new one
@@ -233,16 +218,6 @@
 	}
 	
 	return [[_productURL retain] autorelease];
-}
-
-- (NSString *)companyFromIdentifier {
-	NSArray		*parts = [self.identifier componentsSeparatedByString:@"."];
-	NSString	*companyRDN = [NSString stringWithFormat:@"%@.%@", [parts objectAtIndex:0], [parts objectAtIndex:1]];
-	NSString	*theCompany = NSLocalizedStringFromTable(companyRDN, kMBMCompaniesInfoFileName, @"");
-	if ([theCompany isEqualToString:companyRDN]) {
-		theCompany = nil;
-	}
-	return theCompany;
 }
 
 - (NSString *)incompatibleString {
