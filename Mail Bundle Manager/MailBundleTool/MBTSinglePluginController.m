@@ -139,7 +139,6 @@ typedef enum {
 	
 	NSDictionary		*boldAttrs = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Lucida Grande Bold" size:11.0f] forKey:NSFontAttributeName];
 	NSAttributedString	*boldPluginName = [[[NSAttributedString alloc] initWithString:self.mailBundle.name attributes:boldAttrs] autorelease];
-	NSAttributedString	*boldVersionString = [[[NSAttributedString alloc] initWithString:@"10.8" attributes:boldAttrs] autorelease];
 	
 	switch (self.buttonLayout) {
 		case kMBTButtonLayoutUpdate:
@@ -153,7 +152,7 @@ typedef enum {
 		case kMBTButtonLayoutUpdateFutureIncompatible:
 		case kMBTButtonLayoutFutureIncompatibleOnly:
 		case kMBTButtonLayoutFutureIncompatibleOnlyDisabled:
-			values = [NSArray arrayWithObjects:boldPluginName, boldVersionString, nil];
+			values = [NSArray arrayWithObjects:boldPluginName, [[[NSAttributedString alloc] initWithString:[self.mailBundle firstOSVersionUnsupported] attributes:boldAttrs] autorelease], nil];
 			break;
 			
 	}

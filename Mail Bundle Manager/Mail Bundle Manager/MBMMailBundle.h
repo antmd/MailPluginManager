@@ -70,6 +70,7 @@
 - (BOOL)isInDisabledBundlesFolder;
 - (BOOL)hasLaterVersionNumberThanBundle:(MBMMailBundle *)otherBundle;
 - (NSString *)latestOSVersionSupported;
+- (NSString *)firstOSVersionUnsupported;
 - (BOOL)supportsSparkleUpdates;
 
 - (void)loadUpdateInformation;

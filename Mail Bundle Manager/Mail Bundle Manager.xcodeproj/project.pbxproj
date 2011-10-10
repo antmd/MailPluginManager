@@ -205,6 +205,7 @@
 		D23D31581442573A007D30F8 /* MBMUUIDList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMUUIDList.m; sourceTree = "<group>"; };
 		D23D315B1442575F007D30F8 /* MBMRemoteUpdatableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMRemoteUpdatableList.h; sourceTree = "<group>"; };
 		D23D315C1442575F007D30F8 /* MBMRemoteUpdatableList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMRemoteUpdatableList.m; sourceTree = "<group>"; };
+		D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMPluginMacros.h; path = "Mail Bundle Manager/MBMPluginMacros.h"; sourceTree = "<group>"; };
 		D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MBMAgreementWindow.xib; path = "Mail Bundle Manager/MBMAgreementWindow.xib"; sourceTree = "<group>"; };
 		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
@@ -430,14 +431,15 @@
 				D2E90293141E36110058618F /* MBMMySparkleDelegate.m */,
 				D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */,
 				D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */,
+				D216B37B141E1676003788DC /* MBMConstants.h */,
+				D216B37C141E1676003788DC /* MBMConstants.m */,
+				D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */,
 				D2730FE214293EE600EB5CB7 /* Controllers */,
 				D2E9029C141E63990058618F /* Model */,
 				D2E9029E141E63F70058618F /* Categories */,
 				D2F38F14141E9E6D00E564FB /* Utils */,
 				D2779BDA14336588003F7BE0 /* Resources */,
 				D2779BDB143365DB003F7BE0 /* Project */,
-				D216B37B141E1676003788DC /* MBMConstants.h */,
-				D216B37C141E1676003788DC /* MBMConstants.m */,
 			);
 			name = "Common Source";
 			sourceTree = "<group>";

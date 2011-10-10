@@ -122,21 +122,19 @@ Through both of these the user can perform and Update, Disable a plugin, Remove 
 
 I am thinking of also running it whenever the Bundles folder list changes as well, but not sure that we be a proper time, so I need to think about that one some more.
 
+<a name="sys-info"/>
 #### Get relevant system information
 
 **Not yet implemented.**
 
 This should allow the caller to get back a dictionary of information about the system, such as OS Version, Mail Version & UUID, Message.framework version & UUID.
 
-This will probably need some type of Applescript interface, so this has a lesser priority.
-
+<a name="uuid-list"/>
 #### Get list of *past & future* compatibility information
 
 **Not yet implemented.**
 
 The tool will keep an updated version of a list of UUIDs that Mail and Message.framework have defined and supported for plugins to access, so they can actually test in *advance* if they will be compatible with an upcoming OS release. Or even just an OS release after the one the user has.
-
-This will probably need some type of Applescript interface, so this has a lesser priority.
 
 <a name="commands"/>
 #### Command Line Syntax
@@ -161,7 +159,15 @@ Sends any crash reports found for the plugin at the indicated path (required).
 	
 		-update-and-crash-reports path/to/plugin
 
-Sends any crash reports found and updates, if found, for the plugin at the indicated path (required).
+Sends any crash reports found for the plugin at the indicated path (required).
+	
+		-system-info path/to/plugin
+
+Will collect a bunch of information from the system and return the results to you (through a notification block) as a `NSDictionary`. See [system information][#sys-info] above. The path is required to be able to post the notification to the correct plugin. *Not yet implemented*.
+	
+		-uuid-list path/to/plugin
+
+Will return a list of the past and future UUIDs that Mail and Message.framework support (through a notification block) as a `NSDictionary`. See [compatibility information][#uuid-list] above. The path is required to be able to post the notification to the correct plugin. *Not yet implemented*.
 	
 		-validate-all
 
@@ -269,7 +275,35 @@ Unfortunately this doesn't include the base of the project itself and thus all t
 <a name="macros"/>
 ### Macros Defined
 
-**Not yet written.**
+#### Fire and Forget Macros
+
+These macros are the ones that you might call when the app launches to do the update in the background. They do not require your plugin to take any other action. The names are pretty self-explanatory, I think.
+
+		MBMUninstallForBundle(mbmMailBundle)		
+		MBMCheckForUpdatesForBundle(mbmMailBundle)
+		MBMSendCrashReportsForBundle(mbmMailBundle)
+		MBMUpdateAndSendReportsForBundle(mbmMailBundle)
+		
+You need to pass in the bundle for your plugin, so it can properly determine the bundle identifier and it's path.
+
+#### Notification Block Macros
+
+These macros allow you to get information back from MBT by having a block run which is passed a dictionary of the results.
+
+		MBMMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
+		MBMUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
+
+The first argument is the bundle of your plugin, as with the macros above. The second argument is the block that you want to run when the results are returned. It is defined as a `MBMResultNotificationBlock` and has been `typedef`'d like this:
+
+		typedef void(^MBMResultNotificationBlock)(NSDictionary *);
+
+It takes the single argument of the dictionary of results and has a void result.
+
+The keys for the results in the dictionary are listed below.
+
+		MBM_UUID_COMPLETE_LIST_KEY				NSArray of all uuid dictionaries
+
+*Not yet completed*.
 
 ---
 
@@ -277,8 +311,6 @@ Unfortunately this doesn't include the base of the project itself and thus all t
 
 #### Common Pieces
 
-* Add something to MailBundleView to see future os version incompatibility.
-* Write macros to access from mail bundles.
 * Make it use ARC!
 * Setup system to report system setup when requested by user/developer.
 * Determining relevant info about system.
@@ -286,6 +318,7 @@ Unfortunately this doesn't include the base of the project itself and thus all t
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Parse company Name from the Get Info string of info.plist
 * Update remote file URLs
+* Add real version information to the uuids file for system, mail and message.
 
 #### Manager Interface
 
@@ -297,10 +330,11 @@ Unfortunately this doesn't include the base of the project itself and thus all t
 
 #### Tool
 
-* Add an Update All Plugins button to Multi Plugin window when relevant.
 * Crash Reporting.
 * Allowing access to Latest OS Support info.
+* Add an Update All Plugins button to Multi Plugin window when relevant.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
+* What happens when a command is sent and the app is already running?
 
 #### launchd values of interest (for boot time agent setup)
 
