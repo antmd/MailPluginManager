@@ -30,7 +30,7 @@
 @synthesize maintenanceCounterQueue = _maintenanceCounterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
 @synthesize canQuitAccordingToMaintenance;
-@synthesize maintenanceCounter;
+@synthesize maintenanceCounter = _maintenanceCounter;
 
 @synthesize backgroundView = _backgroundView;
 @synthesize scrollView = _scrollView;
@@ -221,14 +221,16 @@
 }
 
 - (void)startMaintenance {
+	__block MBAppDelegate *blockSelf = self;
 	[self.maintenanceCounterQueue addOperationWithBlock:^{
-		self.maintenanceCounter++;
+		blockSelf.maintenanceCounter++;
 	}];
 }	
 
 - (void)endMaintenance {
+	__block MBAppDelegate *blockSelf = self;
 	[self.maintenanceCounterQueue addOperationWithBlock:^{
-		self.maintenanceCounter--;
+		blockSelf.maintenanceCounter--;
 	}];
 }
 

@@ -311,6 +311,11 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
+* Remote file loading should have a frequency time limitation (use user defaults to store last date)
+* UUID list should have latestSupported and firstUnsupported, with each dict keeping the comparator, but also having real version values
+* Core Data repo for crash reports (previous updates as well?) so I can know which have been sent and allows for resending possibility.
+* Update and Send Crash Reports should have a frequency parameter (hours). Use Launch Agent scheduling for this?
+
 * Make it use ARC!
 * Setup system to report system setup when requested by user/developer.
 * Determining relevant info about system.
