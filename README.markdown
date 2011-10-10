@@ -268,7 +268,7 @@ The key `license-agreement-required` works in conjunction with the `license` typ
 
 #### Common Pieces
 
-* Load historicalUUIDs file from remote server on launch (MBM & MBT).
+* Add something to MailBundleView to see future os version incompatibility.
 * Write macros to access from mail bundles.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Make it use ARC!
@@ -276,6 +276,7 @@ The key `license-agreement-required` works in conjunction with the `license` typ
 * Determining relevant info about system.
 * Add authorizations where needed when accessing files the user needs admin for.
 * Parse company Name from the Get Info string of info.plist
+* Update remote file URLs
 
 #### Manager Interface
 

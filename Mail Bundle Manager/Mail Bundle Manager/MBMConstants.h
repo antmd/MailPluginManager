@@ -102,13 +102,6 @@ typedef enum {
 
 #define	kMBMNoVersionRequirement	-1.0
 
-
-//	Functions
-NSString *CurrentMailUUID(void);
-NSString *CurrentMessageUUID(void);
-NSDictionary *HistoricalUUIDInformation(void);
-BOOL IsValidPackageFile(NSString *packageFilePath);
-
 #define PerformOnAppDelegate(aSelectorString)						[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString)]
 #define PerformOnAppDelegate1(aSelectorString, object)				[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString) withObject:object]
 #define PerformOnAppDelegate2(aSelectorString, object1, object2)	[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString) withObject:object1 withObject:object2]

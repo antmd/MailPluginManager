@@ -55,7 +55,7 @@
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {
 	
 	//	If the file is a valid type..
-	if (IsValidPackageFile(filename)) {
+	if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:filename]) {
 		
 		//	Load the model
 		self.manifestModel = [[[MBMManifestModel alloc] initWithPackageAtPath:filename] autorelease];

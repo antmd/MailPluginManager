@@ -40,7 +40,7 @@
 		<key>earliest-version</key>
 		<string>10.7.2</string>
 		<key>latest-version</key>
-		<string>All</string>
+		<string>10.7.2</string>
 		<key>latest-version-comparator</key>
 		<string>999999</string>
 		<key>type</key>
@@ -62,7 +62,7 @@
 		<key>earliest-version</key>
 		<string>10.7.2</string>
 		<key>latest-version</key>
-		<string>All</string>
+		<string>10.7.2</string>
 		<key>latest-version-comparator</key>
 		<string>999999</string>
 		<key>type</key>

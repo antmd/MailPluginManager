@@ -12,4 +12,8 @@
 
 @interface MBMUUIDList : MBMRemoteUpdatableList
 + (void)loadUUIDListFromCloud;
++ (NSString *)currentMailUUID;
++ (NSString *)currentMessageUUID;
++ (NSString *)latestOSVersionInSupportedList:(NSArray *)supportedUUIDs;
++ (NSString *)firstUnsupportedOSVersionFromList:(NSArray *)supportedUUIDs;
 @end

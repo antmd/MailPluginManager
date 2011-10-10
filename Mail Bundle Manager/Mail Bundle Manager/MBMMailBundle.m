@@ -9,6 +9,7 @@
 #import "MBMMailBundle.h"
 #import "MBMAppDelegate.h"
 #import "MBMCompanyList.h"
+#import "MBMUUIDList.h"
 #import "NSBundle+MBMAdditions.h"
 
 @interface MBMMailBundle ()
@@ -274,8 +275,8 @@
 		//	Set the compatibility flag
 		//	Get the values to test
 		NSArray		*supportedUUIDs = [[_bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey];
-		NSString	*mailUUID = CurrentMailUUID();
-		NSString	*messageUUID = CurrentMessageUUID();
+		NSString	*mailUUID = [MBMUUIDList currentMailUUID];
+		NSString	*messageUUID = [MBMUUIDList currentMessageUUID];
 		
 		//	Test to ensure that the plugin list contains both the mail and message UUIDs
 		if (![supportedUUIDs containsObject:mailUUID] || ![supportedUUIDs containsObject:messageUUID]) {
@@ -283,10 +284,9 @@
 		}
 		
 		//	See if there is a future incompatibility known
-		//	TODO: After implementing historicalUUIDs completely
-//		if ([_name isEqualToString:@"ExamplePlugin"]) {
-//			_incompatibleWithFutureMail = YES;
-//		}
+		if ([MBMUUIDList firstUnsupportedOSVersionFromList:supportedUUIDs]) {
+			_incompatibleWithFutureMail = YES;
+		}
 		
     }
     
@@ -373,42 +373,11 @@
 }
 
 - (NSString *)latestOSVersionSupported {
-	NSString		*latestSupported = NSLocalizedString(@"Unknown", @"Text indicating that we couldn't determine the latest version of the OS that this plugin supports");
-	NSDictionary	*mailDict = nil;
-	NSDictionary	*messageDict = nil;
-	NSDictionary	*historicalUUIDs = HistoricalUUIDInformation();
-	
-	//	Look through all supported values, each time saving the later one
-	for (NSString *aUUIDValue in [[[NSBundle bundleWithPath:self.path] infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]) {
-		NSDictionary	*anInfoDict = [historicalUUIDs valueForKey:aUUIDValue];
-		if ([[anInfoDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMail]) {
-			if ((mailDict == nil) || 
-				([[anInfoDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue])) {
-				mailDict = anInfoDict;
-			}
-		}
-		else if ([[anInfoDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMessage])  {
-			if ((messageDict == nil) || 
-				([[anInfoDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue])) {
-				messageDict = anInfoDict;
-			}
-		}
-	}
-	
-	//	If either is nil, we can't determine
-	if ((mailDict == nil) || (messageDict == nil)) {
-		return latestSupported;
-	}
-	
-	//	Then between the two of those, which is the earliest
-	if ([[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
-		latestSupported = [messageDict valueForKey:kMBMUUIDLatestVersionKey];
-	}
-	else {
-		latestSupported = [mailDict valueForKey:kMBMUUIDLatestVersionKey];
-	}
-	
-	return latestSupported;
+	return [MBMUUIDList latestOSVersionInSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+}
+
+- (NSString *)firstOSVersionUnsupported {
+	return [MBMUUIDList firstUnsupportedOSVersionFromList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
 }
 
 #pragma mark - Actions
