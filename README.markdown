@@ -257,6 +257,15 @@ The key `path` is the path where to find the resource to display for either an `
 The key `license-agreement-required` works in conjunction with the `license` type and is ignored in other cases. If set to **YES**, then the license will require the user to agree before continuing. The default is **NO**.
 *This key is optional*.
 
+<a name="localization"/>
+#### Localizing Install/Uninstall packages
+
+These packages can be localized in the same way that applications or bundles can. If you put an .lproj folder for a language in the package, any text values that are pulled out of your manifest file will attempt to be localized from those localization folders.
+
+Unfortunately this doesn't include the base of the project itself and thus all the parts around this that are not localized will come through in English. Hopefully we can get some localization done for the rest of the app.
+
+---
+
 <a name="macros"/>
 ### Macros Defined
 
@@ -270,17 +279,16 @@ The key `license-agreement-required` works in conjunction with the `license` typ
 
 * Add something to MailBundleView to see future os version incompatibility.
 * Write macros to access from mail bundles.
-* Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Make it use ARC!
 * Setup system to report system setup when requested by user/developer.
 * Determining relevant info about system.
 * Add authorizations where needed when accessing files the user needs admin for.
+* Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Parse company Name from the Get Info string of info.plist
 * Update remote file URLs
 
 #### Manager Interface
 
-* Validate that the file types are setup correctly.
 * Add an Update All Plugins button to Manager window when relevant.
 * Add support for different domain installation.
 * Support the `<LibraryDomain>` path prefix.

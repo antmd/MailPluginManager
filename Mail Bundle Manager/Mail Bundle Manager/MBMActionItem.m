@@ -36,7 +36,7 @@
 	self = [super init];
     if (self) {
         // Initialization code here.
-		_name = [[itemDictionary valueForKey:kMBMNameKey] copy];
+		_name = [MBMLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMNameKey], packageFilePath) copy];
 		
 		//	Get the path, ensuring to take into account the manifestType
 		NSString	*tempPath = [itemDictionary valueForKey:kMBMPathKey];
@@ -68,7 +68,7 @@
 		
 		//	Description is optional
 		if ([itemDictionary valueForKey:kMBMDescriptionKey]) {
-			_itemDescription = [[itemDictionary valueForKey:kMBMDescriptionKey] copy];
+			_itemDescription = [MBMLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMDescriptionKey], packageFilePath) copy];
 		}
 		
 		//	If there are permissions specific to this action, see what they will be

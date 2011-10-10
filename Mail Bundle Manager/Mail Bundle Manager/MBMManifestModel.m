@@ -119,7 +119,7 @@
 		
 		//	set the display name and background if there is one
 		if ([manifestDict valueForKey:kMBMDisplayNameKey]) {
-			_displayName = [[manifestDict valueForKey:kMBMDisplayNameKey] copy];
+			_displayName = [MBMLocalizedStringFromPackageFile([manifestDict valueForKey:kMBMDisplayNameKey], packageFilePath) copy];
 		}
 		if ([manifestDict valueForKey:kMBMBackgroundImagePathKey]) {
 			_backgroundImagePath = [[packageFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMBackgroundImagePathKey]] copy];

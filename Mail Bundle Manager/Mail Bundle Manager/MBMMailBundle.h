@@ -36,7 +36,6 @@
 
 @property	(nonatomic, retain)				MBMSparkleDelegate	*sparkleDelegate;
 
-//+ (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath;
 + (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath shouldLoadInfo:(BOOL)loadInfo;
 
 + (NSString *)pathForActiveBundleWithName:(NSString *)aBundleName;

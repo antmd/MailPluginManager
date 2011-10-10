@@ -8,29 +8,33 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>mbinstall</string>
-			</array>
+			<array/>
 			<key>CFBundleTypeIconFile</key>
 			<string>InstallDocument</string>
 			<key>CFBundleTypeName</key>
 			<string>Mail Bundle Installer Package</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbinstall</string>
+			</array>
 			<key>LSTypeIsPackage</key>
 			<true/>
 		</dict>
 		<dict>
 			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>mbremove</string>
-			</array>
+			<array/>
 			<key>CFBundleTypeIconFile</key>
 			<string>UninstallDocument</string>
 			<key>CFBundleTypeName</key>
 			<string>Mail Bundle Uninstaller Package</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbremove</string>
+			</array>
 			<key>LSTypeIsPackage</key>
 			<true/>
 		</dict>
@@ -51,8 +55,6 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array/>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
@@ -63,8 +65,6 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSServices</key>
-	<array/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -73,11 +73,13 @@
 				<string>com.apple.package</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Mail Bundle installer document</string>
+			<string></string>
 			<key>UTTypeIconFile</key>
-			<string>InstallDocument</string>
+			<string></string>
 			<key>UTTypeIdentifier</key>
 			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbinstall</string>
+			<key>UTTypeReferenceURL</key>
+			<string>http://littleknownsoftware.com/mbm</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -92,11 +94,13 @@
 				<string>com.apple.package</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Mail Bundle Uninstaller document</string>
+			<string></string>
 			<key>UTTypeIconFile</key>
-			<string>UnstallDocument</string>
+			<string></string>
 			<key>UTTypeIdentifier</key>
 			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbremove</string>
+			<key>UTTypeReferenceURL</key>
+			<string>http://littleknownsoftware.com/mbm</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -106,7 +110,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>UTImportedTypeDeclarations</key>
-	<array/>
 </dict>
 </plist>
