@@ -26,7 +26,6 @@
 @property (nonatomic, retain)	NSOperationQueue		*maintenanceCounterQueue;
 @property (nonatomic, retain)	NSOperationQueue		*maintenanceQueue;
 @property (assign)				NSInteger				maintenanceCounter;
-@property (assign)				BOOL					canQuitAccordingToMaintenance;
 
 @property (assign)	IBOutlet	MBMBackgroundableView	*backgroundView;
 @property (assign)	IBOutlet	NSScrollView			*scrollView;
@@ -38,6 +37,7 @@
 - (void)addMaintenanceTask:(void (^)(void))block;
 - (void)startMaintenance;
 - (void)endMaintenance;
+- (void)performWhenMaintenanceIsFinishedUsingBlock:(void(^)(void))block;
 
 //	Mail Application Management
 - (BOOL)quitMail;
@@ -45,5 +45,6 @@
 
 //	Quitting only when tasks are completed
 - (void)quittingNowIsReasonable;
+
 
 @end

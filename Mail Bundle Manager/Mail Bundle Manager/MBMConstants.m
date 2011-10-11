@@ -13,6 +13,8 @@ NSString	*kMBMCommandLineUninstallKey = @"-uninstall";
 NSString	*kMBMCommandLineUpdateKey = @"-update";
 NSString	*kMBMCommandLineCheckCrashReportsKey = @"-send-crash-reports";
 NSString	*kMBMCommandLineUpdateAndCrashReportsKey = @"-update-and-crash-reports";
+NSString	*kMBMCommandLineSystemInfoKey = @"-system-info";
+NSString	*kMBMCommandLineUUIDListKey = @"-uuid-list";
 NSString	*kMBMCommandLineValidateAllKey = @"-validate-all";
 
 //	Extensions and commonly used values
@@ -23,6 +25,7 @@ NSString	*kMBMManifestName = @"mbm-manifest";
 NSString	*kMBMMailFolderName = @"Mail";
 NSString	*kMBMBundleFolderName = @"Bundles";
 NSString	*kMBMAppSupportFolderName = @"Mail Bundle Support";
+NSString	*kMBMUserDefaultSharedDomainName = @"com.littleknownsoftware.MailBundleShared";
 NSString	*kMBMGenericBundleIcon = @"GenericPlugin";
 
 //	Keys for top level of manifest
@@ -67,6 +70,7 @@ NSString	*kMBMUUIDListFileName = @"uuids";
 NSString	*kMBMUUIDAllUUIDListKey = @"all-uuids";
 NSString	*kMBMUUIDLatestUUIDDictKey = @"latest-uuid-dict";
 NSString	*kMBMUUIDFirstUnsupportedUUIDDictKey = @"first-unsupported-uuid-dict";
+NSString	*kMBMUUIDNotificationSenderKey = @"sender-id";
 
 //	Progress handling
 NSString	*kMBMInstallationProgressNotification = @"MBMInstallationProgressNotification";
@@ -90,6 +94,8 @@ NSString	*kMBMUnknownCompanyValue = @"<MBMCompanyUnknown>";
 NSString	*kMBMMailBundleUninstalledNotification = @"MBMMailBundleUninstalledNotification";
 NSString	*kMBMDoneLoadingSparkleNotification = @"MBMDoneLoadingSparkleNotification";
 NSString	*kMBMMailStatusChangedNotification = @"MBMMailStatusChangedNotification";
+NSString	*kMBMSystemInfoDistNotification = @"MBMSystemInfoDistNotification";
+NSString	*kMBMUUIDListDistNotification = @"MBMUUIDListDistNotification";
 
 NSString	*kMBMCompaniesInfoFileName = @"companies";
 

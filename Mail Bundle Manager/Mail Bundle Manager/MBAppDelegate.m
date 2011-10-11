@@ -29,7 +29,6 @@
 @synthesize isMailRunning;
 @synthesize maintenanceCounterQueue = _maintenanceCounterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
-@synthesize canQuitAccordingToMaintenance;
 @synthesize maintenanceCounter = _maintenanceCounter;
 
 @synthesize backgroundView = _backgroundView;
@@ -56,16 +55,16 @@
 	[self.maintenanceQueue setMaxConcurrentOperationCount:1];	//	Makes this serial queue, in effect
 	self.maintenanceCounterQueue = [[[NSOperationQueue alloc] init] autorelease];
 	
-	//	Load the process to put in place our companies file
-	[self addMaintenanceTask:^{
-		[MBMCompanyList loadCompanyListFromCloud];
-	}];
-
 	//	Load the process to put in place our uuids file
 	[self addMaintenanceTask:^{
 		[MBMUUIDList loadUUIDListFromCloud];
 	}];
 	
+	//	Load the process to put in place our companies file
+	[self addMaintenanceTask:^{
+		[MBMCompanyList loadCompanyListFromCloud];
+	}];
+
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
@@ -98,21 +97,48 @@
 }
 
 - (void)quittingNowIsReasonable {
-	if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+	
+	[self performWhenMaintenanceIsFinishedUsingBlock:^{
 		[NSApp terminate:nil];
+	}];
+//	if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+//		[NSApp terminate:nil];
+//	}
+//	else {
+//		
+//		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
+//		
+//		//	Create the timer and set it to repeat every second
+//		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1ull*NSEC_PER_SEC, 5000ull);
+//		dispatch_source_set_event_handler(timer, ^{
+//			if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+//				dispatch_source_cancel(timer);
+//				dispatch_release(timer);
+//				[NSApp terminate:nil];
+//			}
+//		});
+//		//	Start it
+//		dispatch_resume(timer);
+//	}
+}
+
+- (void)performWhenMaintenanceIsFinishedUsingBlock:(void(^)(void))block {
+	if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+		block();
 	}
 	else {
 		
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
 		
-		//	Create the timer and set it to repeat every second
-		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1ull*NSEC_PER_SEC, 5000ull);
+		//	Create the timer and set it to repeat every half second
+		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
 			if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
-				[NSApp terminate:nil];
+				block();
 			}
 		});
 		//	Start it

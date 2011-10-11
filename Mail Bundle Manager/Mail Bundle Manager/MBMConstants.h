@@ -11,6 +11,8 @@ extern NSString	*kMBMCommandLineUninstallKey;
 extern NSString	*kMBMCommandLineUpdateKey;
 extern NSString	*kMBMCommandLineCheckCrashReportsKey;
 extern NSString	*kMBMCommandLineUpdateAndCrashReportsKey;
+extern NSString	*kMBMCommandLineSystemInfoKey;
+extern NSString	*kMBMCommandLineUUIDListKey;
 extern NSString	*kMBMCommandLineValidateAllKey;
 
 //	Extensions and commonly used values
@@ -21,6 +23,7 @@ extern NSString	*kMBMManifestName;
 extern NSString	*kMBMMailFolderName;
 extern NSString	*kMBMBundleFolderName;
 extern NSString	*kMBMAppSupportFolderName;
+extern NSString	*kMBMUserDefaultSharedDomainName;
 extern NSString	*kMBMGenericBundleIcon;
 
 //	Keys for top level of manifest
@@ -65,6 +68,7 @@ extern NSString	*kMBMUUIDListFileName;
 extern NSString	*kMBMUUIDAllUUIDListKey;
 extern NSString	*kMBMUUIDLatestUUIDDictKey;
 extern NSString	*kMBMUUIDFirstUnsupportedUUIDDictKey;
+extern NSString	*kMBMUUIDNotificationSenderKey;
 
 //	Progress handling
 extern NSString	*kMBMInstallationProgressNotification;
@@ -88,6 +92,8 @@ extern NSString	*kMBMUnknownCompanyValue;
 extern NSString	*kMBMMailBundleUninstalledNotification;
 extern NSString	*kMBMDoneLoadingSparkleNotification;
 extern NSString	*kMBMMailStatusChangedNotification;
+extern NSString	*kMBMSystemInfoDistNotification;
+extern NSString	*kMBMUUIDListDistNotification;
 
 extern NSString	*kMBMCompaniesInfoFileName;
 

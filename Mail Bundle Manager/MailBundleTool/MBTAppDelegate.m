@@ -8,19 +8,19 @@
 
 #import "MBTAppDelegate.h"
 #import "MBMMailBundle.h"
+#import "MBMUUIDList.h"
 #import "MBTSinglePluginController.h"
 #import "LKCGStructs.h"
 
 
 @interface MBTAppDelegate ()
-//@property (nonatomic, retain)	id					observerHolder;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
+- (void)sendUUIDListForMailBundle::(MBMMailBundle *)mailBundle;
+- (void)sendSystemInfoForMailBundle:(MBMMailBundle *)mailBundle;
 @end
 
 @implementation MBTAppDelegate
-
-//@synthesize observerHolder;
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -68,6 +68,14 @@
 		//	And update itself
 		[mailBundle updateIfNecessary];
 	}
+	else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
+		[self sendSystemInfoForMailBundle:mailBundle];
+	}
+	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
+		[self performWhenMaintenanceIsFinishedUsingBlock:^{
+			[self sendUUIDListForMailBundle:mailBundle];
+		}];
+	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
 		[self validateAllBundles];
 	}
@@ -80,7 +88,6 @@
 
 
 #pragma mark - Action Methods
-
 
 - (void)validateAllBundles {
 	
@@ -169,6 +176,17 @@
 	}
 	
 }
+
+- (void)sendUUIDListForMailBundle:(MBMMailBundle *)mailBundle {
+	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+	NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
+	[center postNotificationName:kMBMUUIDListDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
+}
+
+- (void)sendSystemInfoForMailBundle:(MBMMailBundle *)mailBundle {
+	
+}
+
 
 @end
 
