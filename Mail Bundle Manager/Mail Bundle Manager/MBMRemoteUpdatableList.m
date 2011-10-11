@@ -10,14 +10,13 @@
 
 
 #define DATE_KEY		@"date"
+#define ONE_DAY_AGO		(-1 * 60 * 60 * 24)
 
 @implementation MBMRemoteUpdatableList
 
 @synthesize contents = _contents;
 
 + (void)loadListFromCloudURL:(NSURL *)theURL {
-	//	Try to load the plist from the remote server
-	NSDictionary	*remoteContents = [NSDictionary dictionaryWithContentsOfURL:theURL];
 	
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*localFilePath = [self localSupportPath];
@@ -46,18 +45,31 @@
 		}
 	}
 	
-	//	Then load the local file contents
-	NSDictionary	*localContents = [NSDictionary dictionaryWithContentsOfFile:localFilePath];
+	//	Test to see if the last load was within our time limit.
+	NSDictionary	*defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMUserDefaultSharedDomainName];
+	NSDate	*previousLoad = [defaults objectForKey:[theURL absoluteString]];
+	if ((previousLoad != nil) && [previousLoad laterDate:[NSDate dateWithTimeIntervalSinceNow:ONE_DAY_AGO]]) {
+		return;
+	}
+	
+		//	Try to load the plist from the remote server
+	NSDictionary	*remoteContents = [NSDictionary dictionaryWithContentsOfURL:theURL];
 	
 	//	If we got something, then compare the date of that to the one in the App Support folder
 	if (remoteContents != nil) {
 		NSDate	*remoteDate = [remoteContents valueForKey:DATE_KEY];
-		NSDate	*localDate = [localContents valueForKey:DATE_KEY];
+		NSDate	*localDate = [[NSDictionary dictionaryWithContentsOfFile:localFilePath] valueForKey:DATE_KEY];
 		
 		//	If the remote contents are newer than ours, save it
 		if ([remoteDate laterDate:localDate]) {
 			[remoteContents writeToFile:localFilePath atomically:NO]; 
 		}
+		
+		//	Note that we have loaded this file in the user defaults
+		NSMutableDictionary	*changedDefaults = [defaults mutableCopy];
+		[changedDefaults setObject:[NSDate date] forKey:[theURL absoluteString]];
+		[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMBMUserDefaultSharedDomainName];
+		
 	}
 }
 

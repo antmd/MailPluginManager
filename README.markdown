@@ -311,15 +311,15 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* UUID list should have latestSupported and firstUnsupported, with each dict keeping the comparator, but also having real version values
-* Remote file loading should have a frequency time limitation (use user defaults to store last date)
 * Setup system to report system setup when requested by user/developer.
 * Determining relevant info about system.
+* Ensure that run paths through the app all quit when appropriate.
 * Add authorizations where needed when accessing files the user needs admin for.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
-* Parse company Name from the Get Info string of info.plist
 * Update remote file URLs
 * Add real version information to the uuids file for system, mail and message.
+* *These are would be nice*
+* Parse company Name from the Get Info string of info.plist
 
 #### Manager Interface
 
