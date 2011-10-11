@@ -14,6 +14,10 @@
 + (void)loadUUIDListFromCloud;
 + (NSString *)currentMailUUID;
 + (NSString *)currentMessageUUID;
-+ (NSString *)latestOSVersionInSupportedList:(NSArray *)supportedUUIDs;
-+ (NSString *)firstUnsupportedOSVersionFromList:(NSArray *)supportedUUIDs;
++ (NSString *)latestOSVersionFromSupportedList:(NSArray *)supportedUUIDs;
++ (NSString *)firstUnsupportedOSVersionFromSupportedList:(NSArray *)supportedUUIDs;
++ (NSDictionary *)latestUUIDDictFromSupportedList:(NSArray *)supportedUUIDs;
++ (NSDictionary *)firstUnsupportedUUIDDictFromSupportedList:(NSArray *)supportedUUIDs;
++ (NSDictionary *)fullUUIDListFromSupportedList:(NSArray *)supportedUUIDs;
++ (NSDictionary *)fullUUIDListFromBundle:(NSBundle *)pluginBundle;
 @end

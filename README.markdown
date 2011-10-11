@@ -25,7 +25,7 @@ The features provided are separated into 2 separate applications, a user facing 
 
 The tool application will be embedded inside of the manager application. When plugins call it they should use a standard NSTask call to it and pass one of the parameters [defined below](#commands). A .h file will be available with **macros** defined for the calls to the tool. These will be defined as macros in order to avoid namespace conflicts between plugins using this code. [A List](#macros) is provided in these docs so you can see what you can do.
 
-This manager only supports Snow Leopard & Lion - I'm even thinking of making it Lion only!
+This manager only supports Snow Leopard & Lion.
 
 
 <a name="manager"/>
@@ -311,12 +311,8 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* Remote file loading should have a frequency time limitation (use user defaults to store last date)
 * UUID list should have latestSupported and firstUnsupported, with each dict keeping the comparator, but also having real version values
-* Core Data repo for crash reports (previous updates as well?) so I can know which have been sent and allows for resending possibility.
-* Update and Send Crash Reports should have a frequency parameter (hours). Use Launch Agent scheduling for this?
-
-* Make it use ARC!
+* Remote file loading should have a frequency time limitation (use user defaults to store last date)
 * Setup system to report system setup when requested by user/developer.
 * Determining relevant info about system.
 * Add authorizations where needed when accessing files the user needs admin for.
@@ -336,6 +332,8 @@ The keys for the results in the dictionary are listed below.
 #### Tool
 
 * Crash Reporting.
+* Core Data repo for crash reports (previous updates as well?) so I can know which have been sent and allows for resending possibility.
+* Update and Send Crash Reports should have a frequency parameter (hours). Use Launch Agent scheduling for this?
 * Allowing access to Latest OS Support info.
 * Add an Update All Plugins button to Multi Plugin window when relevant.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.

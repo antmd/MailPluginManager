@@ -284,7 +284,7 @@
 		}
 		
 		//	See if there is a future incompatibility known
-		if ([MBMUUIDList firstUnsupportedOSVersionFromList:supportedUUIDs]) {
+		if ([MBMUUIDList firstUnsupportedOSVersionFromSupportedList:supportedUUIDs]) {
 			_incompatibleWithFutureMail = YES;
 		}
 		
@@ -373,11 +373,11 @@
 }
 
 - (NSString *)latestOSVersionSupported {
-	return [MBMUUIDList latestOSVersionInSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	return [MBMUUIDList latestOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
 }
 
 - (NSString *)firstOSVersionUnsupported {
-	return [MBMUUIDList firstUnsupportedOSVersionFromList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	return [MBMUUIDList firstUnsupportedOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
 }
 
 #pragma mark - Actions

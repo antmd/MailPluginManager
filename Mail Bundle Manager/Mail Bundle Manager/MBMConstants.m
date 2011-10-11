@@ -54,12 +54,19 @@ NSString	*kMBMConfirmationTypeKey = @"type";
 
 //	Keys for historical UUID plist
 NSString	*kMBMUUIDTypeKey = @"type";
-NSString	*kMBMUUIDEarliestVersionKey = @"earliest-version";
-NSString	*kMBMUUIDLatestVersionKey = @"latest-version";
+NSString	*kMBMUUIDEarliestOSVersionDisplayKey = @"earliest-os-version-display";
+NSString	*kMBMUUIDEarliestOSVersionKey = @"earliest-os-version";
+NSString	*kMBMUUIDLatestOSVersionDisplayKey = @"latest-os-version-display";
+NSString	*kMBMUUIDLatestOSVersionKey = @"latest-os-version";
+NSString	*kMBMUUIDMailMessageVersionKey = @"types-version";
+NSString	*kMBMUUIDMailMessageVersionDisplayKey = @"types-version-display";
 NSString	*kMBMUUIDLatestVersionTestKey = @"latest-version-comparator";
 NSString	*kMBMUUIDTypeValueMail = @"mail";
 NSString	*kMBMUUIDTypeValueMessage = @"message";
-NSString	*kMBMHistoricalUUIDFileName = @"uuids";
+NSString	*kMBMUUIDListFileName = @"uuids";
+NSString	*kMBMUUIDAllUUIDListKey = @"all-uuids";
+NSString	*kMBMUUIDLatestUUIDDictKey = @"latest-uuid-dict";
+NSString	*kMBMUUIDFirstUnsupportedUUIDDictKey = @"first-unsupported-uuid-dict";
 
 //	Progress handling
 NSString	*kMBMInstallationProgressNotification = @"MBMInstallationProgressNotification";

@@ -52,12 +52,19 @@ extern NSString	*kMBMConfirmationTypeKey;
 
 //	Keys for historical UUID plist
 extern NSString	*kMBMUUIDTypeKey;
-extern NSString	*kMBMUUIDEarliestVersionKey;
-extern NSString	*kMBMUUIDLatestVersionKey;
+extern NSString	*kMBMUUIDEarliestOSVersionDisplayKey;
+extern NSString	*kMBMUUIDEarliestOSVersionKey;
+extern NSString	*kMBMUUIDLatestOSVersionDisplayKey;
+extern NSString	*kMBMUUIDLatestOSVersionKey;
+extern NSString	*kMBMUUIDMailMessageVersionKey;
+extern NSString	*kMBMUUIDMailMessageVersionDisplayKey;
 extern NSString	*kMBMUUIDLatestVersionTestKey;
 extern NSString	*kMBMUUIDTypeValueMail;
 extern NSString	*kMBMUUIDTypeValueMessage;
-extern NSString	*kMBMHistoricalUUIDFileName;
+extern NSString	*kMBMUUIDListFileName;
+extern NSString	*kMBMUUIDAllUUIDListKey;
+extern NSString	*kMBMUUIDLatestUUIDDictKey;
+extern NSString	*kMBMUUIDFirstUnsupportedUUIDDictKey;
 
 //	Progress handling
 extern NSString	*kMBMInstallationProgressNotification;

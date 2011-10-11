@@ -4,20 +4,30 @@
 <dict>
 	<key>1146A009-E373-4DB6-AB4D-47E59A7E50FD</key>
 	<dict>
-		<key>earliest-version</key>
+		<key>New item 2</key>
+		<string></string>
+		<key>earliest-os-version</key>
+		<string></string>
+		<key>earliest-os-version-display</key>
 		<string>10.7</string>
-		<key>latest-version</key>
+		<key>latest-os-version</key>
+		<string></string>
+		<key>latest-os-version-display</key>
 		<string>10.7.1</string>
 		<key>latest-version-comparator</key>
 		<integer>100</integer>
 		<key>type</key>
 		<string>message</string>
+		<key>types-version</key>
+		<string></string>
+		<key>types-version-display</key>
+		<string></string>
 	</dict>
 	<key>2DE49D65-B49E-4303-A280-8448872EFE87</key>
 	<dict>
-		<key>earliest-version</key>
+		<key>earliest-os-version-display</key>
 		<string>10.7</string>
-		<key>latest-version</key>
+		<key>latest-os-version-display</key>
 		<string>10.7.1</string>
 		<key>latest-version-comparator</key>
 		<integer>100</integer>
@@ -26,9 +36,9 @@
 	</dict>
 	<key>36555EB0-53A7-4B29-9B84-6C0C6BACFC23</key>
 	<dict>
-		<key>earliest-version</key>
+		<key>earliest-os-version-display</key>
 		<string>10.6.7</string>
-		<key>latest-version</key>
+		<key>latest-os-version-display</key>
 		<string>10.6.8</string>
 		<key>latest-version-comparator</key>
 		<string>95</string>
@@ -37,9 +47,9 @@
 	</dict>
 	<key>6E7970A3-E5F1-4C41-A904-B18D3D8FAA7D</key>
 	<dict>
-		<key>earliest-version</key>
+		<key>earliest-os-version-display</key>
 		<string>10.7.2</string>
-		<key>latest-version</key>
+		<key>latest-os-version-display</key>
 		<string>10.7.2</string>
 		<key>latest-version-comparator</key>
 		<string>999999</string>
@@ -48,9 +58,9 @@
 	</dict>
 	<key>9049EF7D-5873-4F54-A447-51D722009310</key>
 	<dict>
-		<key>earliest-version</key>
+		<key>earliest-os-version-display</key>
 		<string>10.6.7</string>
-		<key>latest-version</key>
+		<key>latest-os-version-display</key>
 		<string>10.6.8</string>
 		<key>latest-version-comparator</key>
 		<string>95</string>
@@ -59,9 +69,9 @@
 	</dict>
 	<key>EF59EC5E-EFCD-4EA7-B617-6C5708397D24</key>
 	<dict>
-		<key>earliest-version</key>
+		<key>earliest-os-version-display</key>
 		<string>10.7.2</string>
-		<key>latest-version</key>
+		<key>latest-os-version-display</key>
 		<string>10.7.2</string>
 		<key>latest-version-comparator</key>
 		<string>999999</string>

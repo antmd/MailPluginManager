@@ -9,14 +9,12 @@
 #import "MBMUUIDList.h"
 
 
-#define LATEST_MAIL_KEY		@"latest-mail"
-#define LATEST_MESSAGE_KEY	@"latest-message"
-
 @interface MBMUUIDList ()
 @property	(nonatomic, copy)	NSString	*mailUUID;
 @property	(nonatomic, copy)	NSString	*messageUUID;
 + (MBMUUIDList *)sharedInstance;
 + (NSDictionary *)latestVersionsInList:(NSArray *)uuidList;
++ (NSDictionary *)firstUnsupportedVersionsInList:(NSArray *)uuidList;
 @end
 
 @implementation MBMUUIDList
@@ -24,81 +22,8 @@
 @synthesize mailUUID = _mailUUID;
 @synthesize messageUUID = _messageUUID;
 
-#pragma Mark - External Methods
 
-+ (void)loadUUIDListFromCloud {
-	//	Try to load the plist from the remote server
-	NSURL			*theURL = [NSURL URLWithString:@"http://lkslocal/mbm-uuids.plist"];
-	[self loadListFromCloudURL:theURL];
-}
-
-+ (NSString *)latestOSVersionInSupportedList:(NSArray *)supportedUUIDs {
-	NSString		*latestSupported = NSLocalizedString(@"Unknown", @"Text indicating that we couldn't determine the latest version of the OS that this plugin supports");
-	NSDictionary	*latestDicts = [self latestVersionsInList:supportedUUIDs];
-	NSDictionary	*mailDict = [latestDicts valueForKey:LATEST_MAIL_KEY];
-	NSDictionary	*messageDict = [latestDicts valueForKey:LATEST_MESSAGE_KEY];
-	
-	//	If either is nil, we can't determine
-	if ((mailDict == nil) || (messageDict == nil)) {
-		return latestSupported;
-	}
-	
-	//	Then between the two of those, which is the earliest
-	if ([[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
-		latestSupported = [messageDict valueForKey:kMBMUUIDLatestVersionKey];
-	}
-	else {
-		latestSupported = [mailDict valueForKey:kMBMUUIDLatestVersionKey];
-	}
-	
-	return latestSupported;
-}
-
-+ (NSString *)firstUnsupportedOSVersionFromList:(NSArray *)supportedUUIDs {
-	NSString		*firstUnsupported = NSLocalizedString(@"None", @"Text indicating that we couldn't find any version of the OS that this plugin does not support");
-	NSDictionary	*latestDicts = [self latestVersionsInList:supportedUUIDs];
-	NSDictionary	*latestMailDict = [latestDicts valueForKey:LATEST_MAIL_KEY];
-	NSDictionary	*latestMessageDict = [latestDicts valueForKey:LATEST_MESSAGE_KEY];
-	NSDictionary	*lowestFutureMailDict = nil;
-	NSDictionary	*lowestFutureMessageDict = nil;
-	
-	//	Look though all the defined UUIDs in our file
-	NSDictionary	*allContents = [self sharedInstance].contents;
-	for (NSString *aUUID in [allContents allKeys]) {
-		NSDictionary	*uuidDict = [allContents valueForKey:aUUID];
-		
-		//	For each type save the one that is greater than the latest from the list, but less that any already saved
-		if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMail]) {
-			if ((lowestFutureMailDict == nil) ||
-				(([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) &&
-				([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]))) {
-					lowestFutureMailDict = uuidDict;
-			}
-		}
-		else if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMessage]) {
-			if ((lowestFutureMessageDict == nil) ||
-				(([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) &&
-				 ([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]))) {
-					lowestFutureMessageDict = uuidDict;
-			}
-		}
-	}
-	
-	//	If either is nil, we can't determine
-	if ((lowestFutureMailDict == nil) || (lowestFutureMessageDict == nil)) {
-		return firstUnsupported;
-	}
-	
-	//	Then between the two of those, which is the earliest
-	if ([[lowestFutureMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
-		firstUnsupported = [lowestFutureMessageDict valueForKey:kMBMUUIDLatestVersionKey];
-	}
-	else {
-		firstUnsupported = [lowestFutureMailDict valueForKey:kMBMUUIDLatestVersionKey];
-	}
-	
-	return firstUnsupported;
-}
+#pragma mark - External Methods
 
 + (NSString *)currentMailUUID {
 	if ([self sharedInstance].mailUUID == nil) {
@@ -117,9 +42,96 @@
 	return [self sharedInstance].messageUUID;
 }
 
-+ (NSString *)filename {
-	return kMBMHistoricalUUIDFileName;
++ (NSString *)latestOSVersionFromSupportedList:(NSArray *)supportedUUIDs {
+	NSString		*latestSupported = NSLocalizedString(@"Unknown", @"Text indicating that we couldn't determine the latest version of the OS that this plugin supports");
+	NSDictionary	*latestDict = [self latestUUIDDictFromSupportedList:supportedUUIDs];
+	if (latestDict) {
+		latestSupported = [latestDict valueForKey:kMBMUUIDLatestOSVersionDisplayKey];
+	}
+	
+	return latestSupported;
 }
+
++ (NSString *)firstUnsupportedOSVersionFromSupportedList:(NSArray *)supportedUUIDs {
+	NSString		*firstUnsupported = NSLocalizedString(@"None", @"Text indicating that we couldn't find any version of the OS that this plugin does not support");
+	NSDictionary	*firstUnsupportedDict = [self firstUnsupportedUUIDDictFromSupportedList:supportedUUIDs];
+	if (firstUnsupportedDict) {
+		firstUnsupported = [firstUnsupportedDict valueForKey:kMBMUUIDLatestOSVersionDisplayKey];
+	}
+	
+	return firstUnsupported;
+}
+
++ (NSDictionary *)latestUUIDDictFromSupportedList:(NSArray *)supportedUUIDs {
+	NSDictionary	*latestDicts = [self latestVersionsInList:supportedUUIDs];
+	NSDictionary	*mailDict = [latestDicts valueForKey:kMBMUUIDTypeValueMail];
+	NSDictionary	*messageDict = [latestDicts valueForKey:kMBMUUIDTypeValueMessage];
+	
+	//	If either is nil, we can't determine
+	if ((mailDict == nil) || (messageDict == nil)) {
+		return nil;
+	}
+	
+	//	Then between the two of those, which is the earliest
+	if ([[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
+		return messageDict;
+	}
+	else {
+		return mailDict;
+	}
+}
+
++ (NSDictionary *)firstUnsupportedUUIDDictFromSupportedList:(NSArray *)supportedUUIDs {
+	NSDictionary	*latestDicts = [self firstUnsupportedVersionsInList:supportedUUIDs];
+	NSDictionary	*lowestFutureMailDict = [latestDicts valueForKey:kMBMUUIDTypeValueMail];
+	NSDictionary	*lowestFutureMessageDict = [latestDicts valueForKey:kMBMUUIDTypeValueMessage];
+	
+	//	If either is nil, we can't determine
+	if ((lowestFutureMailDict == nil) || (lowestFutureMessageDict == nil)) {
+		return nil;
+	}
+	
+	//	Then between the two of those, which is the earliest
+	if ([[lowestFutureMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
+		return lowestFutureMessageDict;
+	}
+	else {
+		return lowestFutureMailDict;
+	}
+}
+
+
++ (NSDictionary *)fullUUIDListFromSupportedList:(NSArray *)supportedUUIDs {
+	NSMutableDictionary	*fullDict = [NSMutableDictionary dictionaryWithCapacity:3];
+	[fullDict setObject:[self sharedInstance].contents forKey:kMBMUUIDAllUUIDListKey];
+	NSDictionary	*aUUIDDict = [self latestUUIDDictFromSupportedList:supportedUUIDs];
+	if (aUUIDDict) {
+		[fullDict setObject:aUUIDDict forKey:kMBMUUIDLatestUUIDDictKey];
+	}
+	aUUIDDict = [self firstUnsupportedUUIDDictFromSupportedList:supportedUUIDs];
+	if (aUUIDDict) {
+		[fullDict setObject:aUUIDDict forKey:kMBMUUIDFirstUnsupportedUUIDDictKey];
+	}
+	return [NSDictionary dictionaryWithDictionary:fullDict];
+}
+
++ (NSDictionary *)fullUUIDListFromBundle:(NSBundle *)pluginBundle {
+	return [self fullUUIDListFromSupportedList:[[pluginBundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+}
+
+
+#pragma mark - Action Methods
+
++ (void)loadUUIDListFromCloud {
+	//	Try to load the plist from the remote server
+	NSURL			*theURL = [NSURL URLWithString:@"http://lkslocal/mbm-uuids.plist"];
+	[self loadListFromCloudURL:theURL];
+}
+
++ (NSString *)filename {
+	return kMBMUUIDListFileName;
+}
+
 
 #pragma mark - Internal Methods
 
@@ -144,7 +156,39 @@
 		}
 	}
 	
-	return [NSDictionary dictionaryWithObjectsAndKeys:mailDict, LATEST_MAIL_KEY, messageDict, LATEST_MESSAGE_KEY, nil];
+	return [NSDictionary dictionaryWithObjectsAndKeys:mailDict, kMBMUUIDTypeValueMail, messageDict, kMBMUUIDTypeValueMessage, nil];
+}
+
++ (NSDictionary *)firstUnsupportedVersionsInList:(NSArray *)uuidList {
+	NSDictionary	*latestDicts = [self latestVersionsInList:uuidList];
+	NSDictionary	*latestMailDict = [latestDicts valueForKey:kMBMUUIDTypeValueMail];
+	NSDictionary	*latestMessageDict = [latestDicts valueForKey:kMBMUUIDTypeValueMessage];
+	NSDictionary	*lowestFutureMailDict = nil;
+	NSDictionary	*lowestFutureMessageDict = nil;
+
+	//	Look though all the defined UUIDs in our file
+	NSDictionary	*allContents = [self sharedInstance].contents;
+	for (NSString *aUUID in [allContents allKeys]) {
+		NSDictionary	*uuidDict = [allContents valueForKey:aUUID];
+		
+		//	For each type save the one that is greater than the latest from the list, but less that any already saved
+		if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMail]) {
+			if ((lowestFutureMailDict == nil) ||
+				(([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) &&
+				 ([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]))) {
+					lowestFutureMailDict = uuidDict;
+				}
+		}
+		else if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMessage]) {
+			if ((lowestFutureMessageDict == nil) ||
+				(([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) &&
+				 ([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]))) {
+					lowestFutureMessageDict = uuidDict;
+				}
+		}
+	}
+	
+	return [NSDictionary dictionaryWithObjectsAndKeys:lowestFutureMailDict, kMBMUUIDTypeValueMail, lowestFutureMessageDict, kMBMUUIDTypeValueMessage, nil];
 }
 
 + (MBMUUIDList *)sharedInstance {
