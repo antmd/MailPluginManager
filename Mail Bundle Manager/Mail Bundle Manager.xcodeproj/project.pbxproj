@@ -39,6 +39,8 @@
 		D23D315E1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D315C1442575F007D30F8 /* MBMRemoteUpdatableList.m */; };
 		D23D316E1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */; };
 		D23D316F1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */; };
+		D23D31721445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */; };
+		D23D31731445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */; };
 		D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */; };
 		D24DA331142CD92300720631 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D24DA330142CD92300720631 /* Localizable.strings */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
@@ -210,6 +212,8 @@
 		D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMPluginMacros.h; path = "Mail Bundle Manager/MBMPluginMacros.h"; sourceTree = "<group>"; };
 		D23D316C1444DD7A007D30F8 /* MBMSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSystemInfo.h; sourceTree = "<group>"; };
 		D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSystemInfo.m; sourceTree = "<group>"; };
+		D23D31701445B979007D30F8 /* NSUserDefaults+MBMShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MBMShared.h"; sourceTree = "<group>"; };
+		D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MBMShared.m"; sourceTree = "<group>"; };
 		D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MBMAgreementWindow.xib; path = "Mail Bundle Manager/MBMAgreementWindow.xib"; sourceTree = "<group>"; };
 		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
@@ -539,6 +543,8 @@
 				D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */,
 				D2E90298141E5EF90058618F /* NSBundle+MBMAdditions.h */,
 				D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */,
+				D23D31701445B979007D30F8 /* NSUserDefaults+MBMShared.h */,
+				D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */,
 			);
 			name = Categories;
 			path = "Mail Bundle Manager";
@@ -753,6 +759,7 @@
 				D23D31591442573A007D30F8 /* MBMUUIDList.m in Sources */,
 				D23D315D1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */,
 				D23D316E1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */,
+				D23D31721445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -795,6 +802,7 @@
 				D23D315A1442573A007D30F8 /* MBMUUIDList.m in Sources */,
 				D23D315E1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */,
 				D23D316F1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */,
+				D23D31731445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

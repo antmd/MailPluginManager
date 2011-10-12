@@ -311,28 +311,28 @@ The keys for the results in the dictionary are listed below.
 
 * Ensure that run paths through the app all quit when appropriate.
 * Add authorizations where needed when accessing files the user needs admin for.
-* Add complete error handling.
+* Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
-* Update remote file URLs
+* Add complete error handling.
+* Update remote file URLs (can we use github link?)
 * Add real version information to the uuids file for system, mail and message.
-* *These are would be nice*
+* *Would be nice*
 * Parse company Name from the Get Info string of info.plist
 
 #### Manager Interface
 
-* Add an Update All Plugins button to Manager window when relevant.
 * Add support for different domain installation.
 * Support the `<LibraryDomain>` path prefix.
+* Add an Update All Plugins button to Manager window when relevant.
 * Handle install path with a full URL.
 
 #### Tool
 
-* Add an Update All Plugins button to Multi Plugin window when relevant.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
 * Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * Crash Reporting.
-* Core Data repo for crash reports (previous updates as well?) so I can know which have been sent and allows for resending possibility.
 * What happens when a command is sent and the app is already running?
+* Add an Update All Plugins button to Multi Plugin window when relevant.
 
 #### launchd values of interest (for boot time agent setup)
 
@@ -343,6 +343,11 @@ The keys for the results in the dictionary are listed below.
 * StandardOutPath = path
 * [man page][launchd]
 * LaunchOnlyOnce = YES (nope)
+
+#### Data to be stored about each bundle
+
+* Last run date of update, crash report & both.
+* Crash Report(s) unsuccessfully sent (file paths to a folder I manage)
 
 #### Other
 

@@ -12,6 +12,7 @@
 #import "MBMSystemInfo.h"
 #import "MBTSinglePluginController.h"
 #import "LKCGStructs.h"
+#import "NSUserDefaults+MBMShared.h"
 
 #define HOURS_AGO	(-1 * 60 * 60)
 
@@ -201,11 +202,10 @@
 	//	Default is that we have passed the frequency
 	BOOL	result = YES;
 	
-	//	Look in [User Defaults|Database] to see when last run
-	NSDictionary	*defaultsDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMUserDefaultSharedDomainName];
-	NSDictionary	*bundleDict = [defaultsDict valueForKey:mailBundle.identifier];
-	NSDate			*bundleActionLastDate = [bundleDict valueForKey:actionKey];
-	NSDate			*checkDate = [NSDate dateWithTimeIntervalSinceNow:(frequency * HOURS_AGO)];
+	//	Look in User Defaults to see when last run
+	NSMutableDictionary	*bundleDict = [[NSUserDefaults standardUserDefaults] mutableDefaultsForMailBundle:mailBundle];
+	NSDate				*bundleActionLastDate = [bundleDict valueForKey:actionKey];
+	NSDate				*checkDate = [NSDate dateWithTimeIntervalSinceNow:(frequency * HOURS_AGO)];
 	
 	//	If we are within the freq, then return false
 	if ([bundleActionLastDate laterDate:checkDate]) {
@@ -213,13 +213,8 @@
 	}
 	else {
 		//	Update user defaults with attempt date
-		NSMutableDictionary	*changedDefaults = [defaultsDict mutableCopy];
-		NSMutableDictionary	*changedBundleDict = [bundleDict mutableCopy];
-		[changedBundleDict setObject:[NSDate date] forKey:actionKey];
-		[changedDefaults setObject:changedBundleDict forKey:mailBundle.identifier];
-		[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMBMUserDefaultSharedDomainName];
-		[changedBundleDict release];
-		[changedDefaults release];
+		[bundleDict setObject:[NSDate date] forKey:actionKey];
+		[[NSUserDefaults standardUserDefaults] setDefaults:bundleDict forMailBundle:mailBundle];
 	}
 	
 	//	Look to see if we need to update our Agents asynchronously
