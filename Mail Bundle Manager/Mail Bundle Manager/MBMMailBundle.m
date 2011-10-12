@@ -21,7 +21,6 @@
 @property	(nonatomic, retain, readwrite)		NSImage			*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
 - (void)updateState;
-//- (NSString *)companyFromIdentifier;
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
 + (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath;
 + (NSArray *)disabledBundlesPathListForDomain:(NSSearchPathDomainMask)domain;

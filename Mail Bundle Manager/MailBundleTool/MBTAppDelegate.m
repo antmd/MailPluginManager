@@ -9,14 +9,16 @@
 #import "MBTAppDelegate.h"
 #import "MBMMailBundle.h"
 #import "MBMUUIDList.h"
+#import "MBMSystemInfo.h"
 #import "MBTSinglePluginController.h"
 #import "LKCGStructs.h"
 
+#define HOURS_AGO	(-1 * 60 * 60)
 
 @interface MBTAppDelegate ()
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
-- (void)sendSystemInfoForMailBundle:(MBMMailBundle *)mailBundle;
+- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
 @end
 
 @implementation MBTAppDelegate
@@ -34,12 +36,18 @@
 	//	See if there are more arguments
 	NSString	*action = nil;
 	NSString	*bundlePath = nil;
+	NSInteger	frequencyInHours = 0;
 	
 	if ([arguments count] > 1) {
 		action = [arguments objectAtIndex:1];
 	}
 	if ([arguments count] > 2) {
 		bundlePath = [arguments objectAtIndex:2];
+	}
+	if ([arguments count] > 3) {
+		if ([[arguments objectAtIndex:3] isEqualToString:kMBMCommandLineFrequencyOptionKey]) {
+			frequencyInHours = [[arguments objectAtIndex:4] integerValue];
+		}
 	}
 	
 	//	Get the mail bundle, if there
@@ -54,21 +62,31 @@
 		[mailBundle uninstall];
 	}
 	else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
-		//	Tell it to update itself
-		[mailBundle updateIfNecessary];
+		//	Tell it to update itself, if frequency requirements met
+		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[mailBundle updateIfNecessary];
+		}
 	}
 	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
-		//	Tell it to check its crash reports
-		[mailBundle sendCrashReports];
+		//	Tell it to check its crash reports, if frequency requirements met
+		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[mailBundle sendCrashReports];
+		}
 	}
 	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
-		//	Tell it to check its crash reports
-		[mailBundle sendCrashReports];
-		//	And update itself
-		[mailBundle updateIfNecessary];
+		//	If frequency requirements met
+		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			//	Tell it to check its crash reports
+			[mailBundle sendCrashReports];
+			//	And update itself
+			[mailBundle updateIfNecessary];
+		}
 	}
 	else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
-		[self sendSystemInfoForMailBundle:mailBundle];
+		//	Then send the information
+		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+		NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMSystemInfo completeInfo], kMBMSysInfoKey, nil];
+		[center postNotificationName:kMBMSystemInfoDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
 	}
 	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
 		[self performWhenMaintenanceIsFinishedUsingBlock:^{
@@ -178,23 +196,36 @@
 	
 }
 
-- (void)sendSystemInfoForMailBundle:(MBMMailBundle *)mailBundle {
-	NSMutableDictionary	*sysInfo = [NSMutableDictionary dictionaryWithCapacity:6];
+- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle {
 	
-	//	[System, Mail, Message.framework (version & build)], hardware device, [plugins installed, plugins disabled (including paths)]
-	[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"10.7.1", kMBMSysInfoVersionKey, @"115DF", kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoSystemKey];
-	[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"10.7.1", kMBMSysInfoVersionKey, @"115DF", kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoMailKey];
-	[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"10.7.1", kMBMSysInfoVersionKey, @"115DF", kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoMessageKey];
-	[sysInfo setObject:@"mac1,1" forKey:kMBMSysInfoHardwareKey];
-	[sysInfo setObject:@"installed" forKey:kMBMSysInfoInstalledMailPluginsKey];
-	[sysInfo setObject:@"disabled" forKey:kMBMSysInfoDisabledMailPluginsKey];
-
-	//	Then send the information
-	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-	NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [NSDictionary dictionaryWithDictionary:sysInfo], kMBMSysInfoKey, nil];
-	[center postNotificationName:kMBMSystemInfoDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
+	//	Default is that we have passed the frequency
+	BOOL	result = YES;
+	
+	//	Look in [User Defaults|Database] to see when last run
+	NSDictionary	*defaultsDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMUserDefaultSharedDomainName];
+	NSDictionary	*bundleDict = [defaultsDict valueForKey:mailBundle.identifier];
+	NSDate			*bundleActionLastDate = [bundleDict valueForKey:actionKey];
+	NSDate			*checkDate = [NSDate dateWithTimeIntervalSinceNow:(frequency * HOURS_AGO)];
+	
+	//	If we are within the freq, then return false
+	if ([bundleActionLastDate laterDate:checkDate]) {
+		result = NO;
+	}
+	else {
+		//	Update user defaults with attempt date
+		NSMutableDictionary	*changedDefaults = [defaultsDict mutableCopy];
+		NSMutableDictionary	*changedBundleDict = [bundleDict mutableCopy];
+		[changedBundleDict setObject:[NSDate date] forKey:actionKey];
+		[changedDefaults setObject:changedBundleDict forKey:mailBundle.identifier];
+		[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMBMUserDefaultSharedDomainName];
+		[changedBundleDict release];
+		[changedDefaults release];
+	}
+	
+	//	Look to see if we need to update our Agents asynchronously
+	
+	return result;
 }
-
 
 @end
 

@@ -36,7 +36,6 @@ It has the following main features:
 1. Installation
 2. Uninstallation (by user double-click)
 3. Plugin Manager
-4. Send relevant system info to developer (by user action)
 
 #### Installation
 
@@ -68,10 +67,6 @@ This interface is for the user to interact with and is the default mode when the
 I have tried to add as much information about the plugin as I can get from the plugin itself. There are ways to add more detailed information to the Info.plist file so that MBM can provide a better experience, but it's good to try to show something.
 
 The user can enable/disable, remove, update and change the domain of the plugin from this window. They can also click on the name to go to a product site and the company name to go to the company site.
-
-#### Send System Info to developer
-
-This feature has not yet been implemented, but will just be a button for the user to click to send to a particular plugin developer (guessing that developers email needs to be worked out!). The information will include the plugin details, the system version, computer information and versions and UUIDs of both the Message framework and Mail.
 
 
 <a name="tool"/>
@@ -141,7 +136,7 @@ The tool will keep an updated version of a list of UUIDs that Mail and Message.f
 
 In general, the syntax is very simple:
 
-		/path/to/MailBundleTool -command [path/to/plugin]
+		/path/to/MailBundleTool -command [path/to/plugin] [-freq 999]
 
 With these as the full options:
 
@@ -149,30 +144,33 @@ With these as the full options:
 
 Uninstalls the plugin at the indicated path (required).
 	
-		-update path/to/plugin
+		-update path/to/plugin [-freq 999]
 
-Checks for and, if found, updates the plugin at the indicated path (required).
+Checks for and, if found, updates the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates without any further need for the plugin to manage it. When used the number represents hours. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
-		-send-crash-reports path/to/plugin
+		-send-crash-reports path/to/plugin [-freq 999]
 
-Sends any crash reports found for the plugin at the indicated path (required).
+Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for sending crash reports without any further need for the plugin to manage it. When used the number represents hours. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
-		-update-and-crash-reports path/to/plugin
+		-update-and-crash-reports path/to/plugin [-freq 999]
 
-Sends any crash reports found for the plugin at the indicated path (required).
+Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates & sending crash reports without any further need for the plugin to manage it. When used the number represents hours. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
 		-system-info path/to/plugin
 
-Will collect a bunch of information from the system and return the results to you (through a notification block) as a `NSDictionary`. See [system information][#sys-info] above. The path is required to be able to post the notification to the correct plugin. *Not yet implemented*.
+Will collect a bunch of information from the system and return the results to you (through a notification block) as a `NSDictionary`. See [system information](#sys-info) above. The path is required to be able to post the notification to the correct plugin.
 	
 		-uuid-list path/to/plugin
 
-Will return a list of the past and future UUIDs that Mail and Message.framework support (through a notification block) as a `NSDictionary`. See [compatibility information][#uuid-list] above. The path is required to be able to post the notification to the correct plugin. *Not yet implemented*.
+Will return a list of the past and future UUIDs that Mail and Message.framework support (through a notification block) as a `NSDictionary`. See [compatibility information](#uuid-list) above. The path is required to be able to post the notification to the correct plugin.
 	
 		-validate-all
 
 This command is used at boot time to validate all plugins. *Generally only called by the Launch Agent*.
-	
+
+<a name="freq-note"/>
+<span style="color:red"/>&nbsp;\*&nbsp;</span>The __frequency flag__ `-freq` is independent between the three commands that use it. What this means is that you can schedule the updates differently than the crash reports and even have a separate schedule for doing both.
+
 
 <a name="manifest"/>
 ### Manifest File Format
@@ -311,10 +309,9 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* Setup system to report system setup when requested by user/developer.
-* Determining relevant info about system.
 * Ensure that run paths through the app all quit when appropriate.
 * Add authorizations where needed when accessing files the user needs admin for.
+* Add complete error handling.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Update remote file URLs
 * Add real version information to the uuids file for system, mail and message.
@@ -327,16 +324,14 @@ The keys for the results in the dictionary are listed below.
 * Add support for different domain installation.
 * Support the `<LibraryDomain>` path prefix.
 * Handle install path with a full URL.
-* Add complete error handling.
 
 #### Tool
 
-* Crash Reporting.
-* Core Data repo for crash reports (previous updates as well?) so I can know which have been sent and allows for resending possibility.
-* Update and Send Crash Reports should have a frequency parameter (hours). Use Launch Agent scheduling for this?
-* Allowing access to Latest OS Support info.
 * Add an Update All Plugins button to Multi Plugin window when relevant.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
+* Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
+* Crash Reporting.
+* Core Data repo for crash reports (previous updates as well?) so I can know which have been sent and allows for resending possibility.
 * What happens when a command is sent and the app is already running?
 
 #### launchd values of interest (for boot time agent setup)

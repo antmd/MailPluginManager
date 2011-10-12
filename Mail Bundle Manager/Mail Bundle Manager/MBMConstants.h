@@ -13,6 +13,7 @@ extern NSString	*kMBMCommandLineCheckCrashReportsKey;
 extern NSString	*kMBMCommandLineUpdateAndCrashReportsKey;
 extern NSString	*kMBMCommandLineSystemInfoKey;
 extern NSString	*kMBMCommandLineUUIDListKey;
+extern NSString	*kMBMCommandLineFrequencyOptionKey;
 extern NSString	*kMBMCommandLineValidateAllKey;
 
 //	Extensions and commonly used values

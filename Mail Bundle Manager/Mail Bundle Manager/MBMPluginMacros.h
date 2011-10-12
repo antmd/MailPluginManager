@@ -22,6 +22,7 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 #define MBM_UPDATE_AND_CRASH_REPORTS_COMMAND	@"-update-and-crash-reports"
 #define MBM_SYSTEM_INFO_COMMAND					@"-system-info"
 #define MBM_UUID_LIST_COMMAND					@"-uuid-list"
+#define	MBM_FREQUENCY_OPTION					@"-freq"
 
 #pragma mark Internal Values
 
@@ -33,11 +34,12 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #pragma mark - Reused Macros
 
-#define	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle) \
+#define	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, mbmFrequency) \
 { \
 	/*	Then actually launch the app to get the information back	*/ \
 	NSString	*mbmToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MBM_TOOL_IDENTIFIER]; \
-	NSArray		*mbmToolArguments = [NSArray arrayWithObjects:mbmCommand, [mbmMailBundle bundlePath], nil]; \
+	NSString	*mbmFreqFlag = (mbmFrequency != 0)?[NSString stringWithFormat:@"%@ %d", MBM_FREQUENCY_OPTION, mbmFrequency]:nil; \
+	NSArray		*mbmToolArguments = [NSArray arrayWithObjects:mbmCommand, [mbmMailBundle bundlePath], mbmFreqFlag, nil]; \
 	[NSTask launchedTaskWithLaunchPath:mbmToolPath arguments:mbmToolArguments]; \
 }
 
@@ -62,10 +64,12 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Launch and Forget
 
-#define	MBMUninstallForBundle(mbmMailBundle)				MBMLaunchCommandForBundle(MBM_UNINSTALL_COMMAND, mbmMailBundle);
-#define	MBMCheckForUpdatesForBundle(mbmMailBundle)			MBMLaunchCommandForBundle(MBM_CHECK_FOR_UPDATES_COMMAND, mbmMailBundle);
-#define	MBMSendCrashReportsForBundle(mbmMailBundle)			MBMLaunchCommandForBundle(MBM_SEND_CRASH_REPORTS_COMMAND, mbmMailBundle);
-#define	MBMUpdateAndSendReportsForBundle(mbmMailBundle)		MBMLaunchCommandForBundle(MBM_UPDATE_AND_CRASH_REPORTS_COMMAND, mbmMailBundle);
+#define	MBMUninstallForBundle(mbmMailBundle)									MBMLaunchCommandForBundle(MBM_UNINSTALL_COMMAND, mbmMailBundle, 0);
+#define	MBMCheckForUpdatesForBundle(mbmMailBundle)								MBMLaunchCommandForBundle(MBM_CHECK_FOR_UPDATES_COMMAND, mbmMailBundle, 0);
+#define	MBMSendCrashReportsForBundle(mbmMailBundle)								MBMLaunchCommandForBundle(MBM_SEND_CRASH_REPORTS_COMMAND, mbmMailBundle, 0);
+#define	MBMUpdateAndSendReportsForBundle(mbmMailBundle)							MBMLaunchCommandForBundle(MBM_UPDATE_AND_CRASH_REPORTS_COMMAND, mbmMailBundle, 0);
+#define	MBMCheckForUpdatesForBundleWithFrequency(mbmMailBundle, mbmFreq)		MBMLaunchCommandForBundle(MBM_CHECK_FOR_UPDATES_COMMAND, mbmMailBundle, mbmFreq);
+#define	MBMUpdateAndSendReportsForBundleWithFrequency(mbmMailBundle, mbmFreq)	MBMLaunchCommandForBundle(MBM_UPDATE_AND_CRASH_REPORTS_COMMAND, mbmMailBundle, mbmFreq);
 
 #pragma mark Notification Block
 

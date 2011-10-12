@@ -15,6 +15,7 @@ NSString	*kMBMCommandLineCheckCrashReportsKey = @"-send-crash-reports";
 NSString	*kMBMCommandLineUpdateAndCrashReportsKey = @"-update-and-crash-reports";
 NSString	*kMBMCommandLineSystemInfoKey = @"-system-info";
 NSString	*kMBMCommandLineUUIDListKey = @"-uuid-list";
+NSString	*kMBMCommandLineFrequencyOptionKey = @"-freq";
 NSString	*kMBMCommandLineValidateAllKey = @"-validate-all";
 
 //	Extensions and commonly used values
