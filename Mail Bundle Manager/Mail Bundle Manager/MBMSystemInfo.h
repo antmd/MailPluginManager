@@ -9,5 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface MBMSystemInfo : NSObject
-
++ (NSString *)systemVersion;
++ (NSString *)systemBuild;
++ (NSString *)mailShortVersion;
++ (NSString *)mailVersion;
++ (NSString *)messageShortVersion;
++ (NSString *)messageVersion;
++ (NSString *)hardware;
++ (NSDictionary *)completeInfo;
 @end

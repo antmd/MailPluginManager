@@ -16,7 +16,6 @@
 @interface MBTAppDelegate ()
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
-- (void)sendUUIDListForMailBundle::(MBMMailBundle *)mailBundle;
 - (void)sendSystemInfoForMailBundle:(MBMMailBundle *)mailBundle;
 @end
 
@@ -73,7 +72,9 @@
 	}
 	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
 		[self performWhenMaintenanceIsFinishedUsingBlock:^{
-			[self sendUUIDListForMailBundle:mailBundle];
+			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+			NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
+			[center postNotificationName:kMBMUUIDListDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
 		}];
 	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
@@ -177,14 +178,21 @@
 	
 }
 
-- (void)sendUUIDListForMailBundle:(MBMMailBundle *)mailBundle {
-	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-	NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
-	[center postNotificationName:kMBMUUIDListDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
-}
-
 - (void)sendSystemInfoForMailBundle:(MBMMailBundle *)mailBundle {
+	NSMutableDictionary	*sysInfo = [NSMutableDictionary dictionaryWithCapacity:6];
 	
+	//	[System, Mail, Message.framework (version & build)], hardware device, [plugins installed, plugins disabled (including paths)]
+	[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"10.7.1", kMBMSysInfoVersionKey, @"115DF", kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoSystemKey];
+	[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"10.7.1", kMBMSysInfoVersionKey, @"115DF", kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoMailKey];
+	[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:@"10.7.1", kMBMSysInfoVersionKey, @"115DF", kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoMessageKey];
+	[sysInfo setObject:@"mac1,1" forKey:kMBMSysInfoHardwareKey];
+	[sysInfo setObject:@"installed" forKey:kMBMSysInfoInstalledMailPluginsKey];
+	[sysInfo setObject:@"disabled" forKey:kMBMSysInfoDisabledMailPluginsKey];
+
+	//	Then send the information
+	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+	NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [NSDictionary dictionaryWithDictionary:sysInfo], kMBMSysInfoKey, nil];
+	[center postNotificationName:kMBMSystemInfoDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
 }
 
 

@@ -43,6 +43,7 @@ NSString	*kMBMCanDeleteManagerIfNoBundlesKey = @"can-delete-bundle-manager-if-no
 NSString	*kMBMActionItemsKey = @"action-items";
 NSString	*kMBMPathKey = @"path";
 NSString	*kMBMNameKey = @"name";
+NSString	*kMBMVersionKey = @"version";
 NSString	*kMBMDestinationPathKey = @"destination-path";
 NSString	*kMBMDescriptionKey = @"description";
 NSString	*kMBMPermissionsKey = @"permissions-needed";
@@ -68,9 +69,20 @@ NSString	*kMBMUUIDTypeValueMail = @"mail";
 NSString	*kMBMUUIDTypeValueMessage = @"message";
 NSString	*kMBMUUIDListFileName = @"uuids";
 NSString	*kMBMUUIDAllUUIDListKey = @"all-uuids";
-NSString	*kMBMUUIDLatestUUIDDictKey = @"latest-uuid-dict";
+NSString	*kMBMUUIDLatestUUIDDictKey = @"latest-supported-uuid-dict";
 NSString	*kMBMUUIDFirstUnsupportedUUIDDictKey = @"first-unsupported-uuid-dict";
 NSString	*kMBMUUIDNotificationSenderKey = @"sender-id";
+
+//	Keys for System Information dictionary
+NSString	*kMBMSysInfoKey = @"system-info";
+NSString	*kMBMSysInfoSystemKey = @"system";
+NSString	*kMBMSysInfoMailKey = @"mail";
+NSString	*kMBMSysInfoMessageKey = @"message";
+NSString	*kMBMSysInfoVersionKey = @"version";
+NSString	*kMBMSysInfoBuildKey = @"build";
+NSString	*kMBMSysInfoHardwareKey = @"hardware";
+NSString	*kMBMSysInfoInstalledMailPluginsKey = @"installed";
+NSString	*kMBMSysInfoDisabledMailPluginsKey = @"disabled";
 
 //	Progress handling
 NSString	*kMBMInstallationProgressNotification = @"MBMInstallationProgressNotification";

@@ -41,6 +41,7 @@ extern NSString	*kMBMCanDeleteManagerIfNoBundlesKey;
 extern NSString	*kMBMActionItemsKey;
 extern NSString	*kMBMPathKey;
 extern NSString	*kMBMNameKey;
+extern NSString	*kMBMVersionKey;
 extern NSString	*kMBMDestinationPathKey;
 extern NSString	*kMBMDescriptionKey;
 extern NSString	*kMBMPermissionsKey;
@@ -69,6 +70,17 @@ extern NSString	*kMBMUUIDAllUUIDListKey;
 extern NSString	*kMBMUUIDLatestUUIDDictKey;
 extern NSString	*kMBMUUIDFirstUnsupportedUUIDDictKey;
 extern NSString	*kMBMUUIDNotificationSenderKey;
+
+//	Keys for System Information dictionary
+extern NSString	*kMBMSysInfoKey;
+extern NSString	*kMBMSysInfoSystemKey;
+extern NSString	*kMBMSysInfoMailKey;
+extern NSString	*kMBMSysInfoMessageKey;
+extern NSString	*kMBMSysInfoVersionKey;
+extern NSString	*kMBMSysInfoBuildKey;
+extern NSString	*kMBMSysInfoHardwareKey;
+extern NSString	*kMBMSysInfoInstalledMailPluginsKey;
+extern NSString	*kMBMSysInfoDisabledMailPluginsKey;
 
 //	Progress handling
 extern NSString	*kMBMInstallationProgressNotification;
