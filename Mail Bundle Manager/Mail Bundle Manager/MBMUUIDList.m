@@ -173,14 +173,16 @@
 		
 		//	For each type save the one that is greater than the latest from the list, but less that any already saved
 		if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMail]) {
-			if ((lowestFutureMailDict == nil) ||
+			if (((lowestFutureMailDict == nil) &&
+				 ([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue])) ||
 				(([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) &&
 				 ([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]))) {
 					lowestFutureMailDict = uuidDict;
 				}
 		}
 		else if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMessage]) {
-			if ((lowestFutureMessageDict == nil) ||
+			if (((lowestFutureMessageDict == nil) &&
+				 ([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue])) ||
 				(([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[latestMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) &&
 				 ([[uuidDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[lowestFutureMessageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]))) {
 					lowestFutureMessageDict = uuidDict;
