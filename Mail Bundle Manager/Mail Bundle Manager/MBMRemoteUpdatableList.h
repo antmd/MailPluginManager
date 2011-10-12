@@ -10,6 +10,7 @@
 
 @interface MBMRemoteUpdatableList : NSObject
 @property	(nonatomic, retain)		NSDictionary	*contents;
+@property	(nonatomic, retain)		NSDate			*date;
 + (void)loadListFromCloudURL:(NSURL *)theURL;
 + (NSString *)filename;
 + (NSString *)localSupportPath;

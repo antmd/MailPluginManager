@@ -2,31 +2,34 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>com.c-command</key>
+	<key>contents</key>
 	<dict>
-		<key>name</key>
-		<string>C-Command Software</string>
-	</dict>
-	<key>com.littleknownsoftware</key>
-	<dict>
-		<key>com.littleknownsoftware.SignatureProfiler</key>
-		<string>http://littleknownsoftware.com/sigpro</string>
-		<key>name</key>
-		<string>Little Known Software, Inc.</string>
-	</dict>
-	<key>cz.kppm</key>
-	<dict>
-		<key>canonical</key>
-		<string>info.lokiware</string>
+		<key>com.c-command</key>
+		<dict>
+			<key>name</key>
+			<string>C-Command Software</string>
+		</dict>
+		<key>com.littleknownsoftware</key>
+		<dict>
+			<key>com.littleknownsoftware.SignatureProfiler</key>
+			<string>http://littleknownsoftware.com/sigpro</string>
+			<key>name</key>
+			<string>Little Known Software, Inc.</string>
+		</dict>
+		<key>cz.kppm</key>
+		<dict>
+			<key>canonical</key>
+			<string>info.lokiware</string>
+		</dict>
+		<key>info.lokiware</key>
+		<dict>
+			<key>name</key>
+			<string>Lokiware</string>
+			<key>url</key>
+			<string>http://lokiware.info</string>
+		</dict>
 	</dict>
 	<key>date</key>
 	<date>2011-10-09T22:15:31Z</date>
-	<key>info.lokiware</key>
-	<dict>
-		<key>name</key>
-		<string>Lokiware</string>
-		<key>url</key>
-		<string>http://lokiware.info</string>
-	</dict>
 </dict>
 </plist>

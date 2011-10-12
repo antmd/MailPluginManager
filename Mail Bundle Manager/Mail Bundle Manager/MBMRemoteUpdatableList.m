@@ -10,11 +10,13 @@
 
 
 #define DATE_KEY		@"date"
+#define CONTENTS_KEY	@"contents"
 #define ONE_DAY_AGO		(-1 * 60 * 60 * 24)
 
 @implementation MBMRemoteUpdatableList
 
 @synthesize contents = _contents;
+@synthesize date = _date;
 
 + (void)loadListFromCloudURL:(NSURL *)theURL {
 	
@@ -69,7 +71,7 @@
 		NSMutableDictionary	*changedDefaults = [defaults mutableCopy];
 		[changedDefaults setObject:[NSDate date] forKey:[theURL absoluteString]];
 		[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMBMUserDefaultSharedDomainName];
-		
+		[changedDefaults release];
 	}
 }
 
@@ -78,7 +80,9 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		self.contents = [NSDictionary dictionaryWithContentsOfFile:[[self class] localSupportPath]];
+		NSDictionary	*dict = [NSDictionary dictionaryWithContentsOfFile:[[self class] localSupportPath]];
+		_contents = [[dict valueForKey:CONTENTS_KEY] retain];
+		_date = [[dict valueForKey:DATE_KEY] retain];
 	}
 	return self;
 }
@@ -95,9 +99,9 @@
 }
 
 + (NSString *)localSupportPath {
-	NSString		*appSupportFolder = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject];
-	NSString		*fileName = [[self filename] stringByAppendingPathExtension:kMBMPlistExtension];
-	NSString		*localFilePath = [[appSupportFolder stringByAppendingPathComponent:kMBMAppSupportFolderName] stringByAppendingPathComponent:fileName];
+	NSString	*appSupportFolder = @"/Users/Shared/Library/Application Support";
+	NSString	*fileName = [[self filename] stringByAppendingPathExtension:kMBMPlistExtension];
+	NSString	*localFilePath = [[appSupportFolder stringByAppendingPathComponent:kMBMAppSupportFolderName] stringByAppendingPathComponent:fileName];
 	return localFilePath;
 }
 
