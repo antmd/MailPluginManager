@@ -352,6 +352,7 @@ The keys for the results in the dictionary are listed below.
 #### Other
 
 * Add support for .mbinstall install through sparkle updater?
+* What about debs that want to use this but have there own installer?
 
 ---
 
