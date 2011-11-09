@@ -300,6 +300,14 @@ typedef enum {
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	dispatch_async(myQueue, ^(void) {
 		[self processAllItems];
+
+		//	Configure a quit button
+		NSString	*actionTitle = NSLocalizedString(@"Quit", @"Quit button text for installation/uninstallation");
+		[self.actionButton setTitle:actionTitle];
+		[self.actionButton setEnabled:YES];
+		[self.actionButton setTarget:[NSApp delegate]];
+		[self.actionButton setAction:NSSelectorFromString(@"quittingNowIsReasonable")];
+		
 	});
 	
 }

@@ -13,25 +13,18 @@
 #import "MBMAnimatedListController.h"
 
 @interface MBMInstallerController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
-	NSScrollView *_displayTextScrollView;
-	NSView *_displayProgressView;
-	NSProgressIndicator *_progressBar;
-	NSTextField *_displayProgressTextView;
-	NSTextField *_displayProgressLabel;
-	NSTableView *_installationSummaryTable;
-	NSScrollView *_displayInstallationPreview;
 }
 
 @property	(nonatomic, retain)	MBMManifestModel			*manifestModel;
 @property	(nonatomic, retain)	MBMAnimatedListController	*animatedListController;
 @property	(nonatomic, assign)	NSUInteger					currentStep;
 
-@property	(assign) IBOutlet NSImageView	*backgroundImageView;
-@property	(assign) IBOutlet NSView		*confirmationStepsView;
-@property	(assign) IBOutlet NSTextField	*titleTextField;
-@property	(assign) IBOutlet WebView		*displayWebView;
-@property	(assign) IBOutlet NSButton		*previousStepButton;
-@property	(assign) IBOutlet NSButton		*actionButton;
+@property	(assign) IBOutlet NSImageView			*backgroundImageView;
+@property	(assign) IBOutlet NSView				*confirmationStepsView;
+@property	(assign) IBOutlet NSTextField			*titleTextField;
+@property	(assign) IBOutlet WebView				*displayWebView;
+@property	(assign) IBOutlet NSButton				*previousStepButton;
+@property	(assign) IBOutlet NSButton				*actionButton;
 
 @property	(assign) IBOutlet NSText				*displayTextView;
 @property	(assign) IBOutlet NSScrollView			*displayTextScrollView;
