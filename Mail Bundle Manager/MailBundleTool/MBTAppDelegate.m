@@ -47,7 +47,16 @@
 	}
 	if ([arguments count] > 3) {
 		if ([[arguments objectAtIndex:3] isEqualToString:kMBMCommandLineFrequencyOptionKey]) {
-			frequencyInHours = [[arguments objectAtIndex:4] integerValue];
+			NSString	*frequencyType = [arguments objectAtIndex:4];
+			if ([frequencyType isEqualToString:@"daily"]) {
+				frequencyInHours = 24;
+			}
+			else if ([frequencyType isEqualToString:@"weekly"]) {
+				frequencyInHours = 24 * 7;
+			}
+			else if ([frequencyType isEqualToString:@"monthly"]) {
+				frequencyInHours = 24 * 7 * 28;
+			}
 		}
 	}
 	

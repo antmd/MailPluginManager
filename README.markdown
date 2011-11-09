@@ -144,17 +144,17 @@ With these as the full options:
 
 Uninstalls the plugin at the indicated path (required).
 	
-		-update path/to/plugin [-freq 999]
+		-update path/to/plugin [-freq (daily|weekly|monthly)]
 
-Checks for and, if found, updates the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates without any further need for the plugin to manage it. When used the number represents hours. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
+Checks for and, if found, updates the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
-		-send-crash-reports path/to/plugin [-freq 999]
+		-send-crash-reports path/to/plugin [-freq (daily|weekly|monthly)]
 
-Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for sending crash reports without any further need for the plugin to manage it. When used the number represents hours. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
+Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for sending crash reports without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
-		-update-and-crash-reports path/to/plugin [-freq 999]
+		-update-and-crash-reports path/to/plugin [(daily|weekly|monthly)]
 
-Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates & sending crash reports without any further need for the plugin to manage it. When used the number represents hours. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
+Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates & sending crash reports without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
 		-system-info path/to/plugin
 
