@@ -109,6 +109,15 @@ NSString	*kMBMDoneLoadingSparkleNotification = @"MBMDoneLoadingSparkleNotificati
 NSString	*kMBMMailStatusChangedNotification = @"MBMMailStatusChangedNotification";
 NSString	*kMBMSystemInfoDistNotification = @"MBMSystemInfoDistNotification";
 NSString	*kMBMUUIDListDistNotification = @"MBMUUIDListDistNotification";
+NSString	*kMBMDoneUpdatingMailBundleNotification = @"MBMDoneUpdatingMailBundleNotification";
+NSString	*kMBMDoneSendingCrashReportsMailBundleNotification = @"MBMDoneSendingCrashReportsMailBundleNotification";
+
+NSString	*kMBMNotificationWaitNote = @"note";
+NSString	*kMBMNotificationWaitObject	= @"object";
+NSString	*kMBMNotificationWaitReceived = @"received";
+NSString	*kMBMNotificationWaitObserver = @"observer";
+
+
 
 NSString	*kMBMCompaniesInfoFileName = @"companies";
 

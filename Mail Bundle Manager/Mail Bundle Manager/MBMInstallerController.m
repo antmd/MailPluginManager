@@ -305,8 +305,8 @@ typedef enum {
 		NSString	*actionTitle = NSLocalizedString(@"Quit", @"Quit button text for installation/uninstallation");
 		[self.actionButton setTitle:actionTitle];
 		[self.actionButton setEnabled:YES];
-		[self.actionButton setTarget:[NSApp delegate]];
-		[self.actionButton setAction:NSSelectorFromString(@"quittingNowIsReasonable")];
+		[self.actionButton setTarget:AppDel];
+		[self.actionButton setAction:@selector(quittingNowIsReasonable)];
 		
 	});
 	

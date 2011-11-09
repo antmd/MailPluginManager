@@ -13,4 +13,9 @@
 	#import	"LKError.h"
 
 	#import "MBMConstants.h"
+
+	#import	"MBMAppDelegate.h"
+
+	#define	AppDel	((MBMAppDelegate *)[NSApp delegate])
+
 #endif

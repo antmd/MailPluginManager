@@ -74,18 +74,21 @@
 	else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
 		//	Tell it to update itself, if frequency requirements met
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil]]];
 			[mailBundle updateIfNecessary];
 		}
 	}
 	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
 		//	Tell it to check its crash reports, if frequency requirements met
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil]]];
 			[mailBundle sendCrashReports];
 		}
 	}
 	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
 		//	If frequency requirements met
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil],[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil],nil]];
 			//	Tell it to check its crash reports
 			[mailBundle sendCrashReports];
 			//	And update itself
@@ -97,12 +100,14 @@
 		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 		NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMSystemInfo completeInfo], kMBMSysInfoKey, nil];
 		[center postNotificationName:kMBMSystemInfoDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
+		[AppDel quittingNowIsReasonable];
 	}
 	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
 		[self performWhenMaintenanceIsFinishedUsingBlock:^{
 			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 			NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
 			[center postNotificationName:kMBMUUIDListDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
+			[AppDel quittingNowIsReasonable];
 		}];
 	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {

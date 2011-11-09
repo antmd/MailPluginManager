@@ -107,6 +107,13 @@ extern NSString	*kMBMDoneLoadingSparkleNotification;
 extern NSString	*kMBMMailStatusChangedNotification;
 extern NSString	*kMBMSystemInfoDistNotification;
 extern NSString	*kMBMUUIDListDistNotification;
+extern NSString	*kMBMDoneUpdatingMailBundleNotification;
+extern NSString	*kMBMDoneSendingCrashReportsMailBundleNotification;
+
+extern NSString	*kMBMNotificationWaitNote;
+extern NSString	*kMBMNotificationWaitObject;
+extern NSString	*kMBMNotificationWaitReceived;
+extern NSString	*kMBMNotificationWaitObserver;
 
 extern NSString	*kMBMCompaniesInfoFileName;
 
