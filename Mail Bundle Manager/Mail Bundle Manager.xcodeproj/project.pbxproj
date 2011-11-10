@@ -28,6 +28,12 @@
 		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
 		D22CC04D146B455B0055CFBE /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2C473C7146B449B00B2981D /* Sparkle.framework */; };
+		D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
+		D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D22CC059146BD87F0055CFBE /* InfoPlist.strings */; };
+		D22CC05D146BD87F0055CFBE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D22CC05C146BD87F0055CFBE /* main.m */; };
+		D22CC061146BD8800055CFBE /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D22CC05F146BD8800055CFBE /* Credits.rtf */; };
+		D22CC064146BD8800055CFBE /* TTHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D22CC063146BD8800055CFBE /* TTHAppDelegate.m */; };
+		D22CC067146BD8800055CFBE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22CC065146BD8800055CFBE /* MainMenu.xib */; };
 		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
 		D23D3151144216E3007D30F8 /* companies.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23D3150144216E3007D30F8 /* companies.plist */; };
@@ -189,6 +195,15 @@
 		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstants.h; path = "Mail Bundle Manager/MBMConstants.h"; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = "Mail Bundle Manager/MBMConstants.m"; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
+		D22CC053146BD87F0055CFBE /* ToolTestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToolTestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D22CC058146BD87F0055CFBE /* ToolTestHarness-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToolTestHarness-Info.plist"; sourceTree = "<group>"; };
+		D22CC05A146BD87F0055CFBE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D22CC05C146BD87F0055CFBE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D22CC05E146BD8800055CFBE /* ToolTestHarness-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ToolTestHarness-Prefix.pch"; sourceTree = "<group>"; };
+		D22CC060146BD8800055CFBE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		D22CC062146BD8800055CFBE /* TTHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTHAppDelegate.h; sourceTree = "<group>"; };
+		D22CC063146BD8800055CFBE /* TTHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTHAppDelegate.m; sourceTree = "<group>"; };
+		D22CC066146BD8800055CFBE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D231F4471428ED4E002DB999 /* NSString+LKStructUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKStructUtils.h"; path = "../../LKKit/Categories/NSString+LKStructUtils.h"; sourceTree = "<group>"; };
 		D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKStructUtils.m"; path = "../../LKKit/Categories/NSString+LKStructUtils.m"; sourceTree = "<group>"; };
 		D231F44B1428ED5E002DB999 /* LKLogHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKLogHelper.h; path = ../../LKKit/Helpers/LKLogHelper.h; sourceTree = "<group>"; };
@@ -280,6 +295,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D22CC050146BD87F0055CFBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2779BBD14336287003F7BE0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,6 +322,7 @@
 				D2779BD9143364C9003F7BE0 /* Common Source */,
 				D216B344141DFDE1003788DC /* Mail Bundle Manager */,
 				D2779BC314336287003F7BE0 /* MailBundleTool */,
+				D22CC056146BD87F0055CFBE /* ToolTestHarness */,
 				D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */,
 				D216B33D141DFDE1003788DC /* Frameworks */,
 				D216B33B141DFDE1003788DC /* Products */,
@@ -311,6 +335,7 @@
 				D216B33A141DFDE1003788DC /* Mail Bundle Manager.app */,
 				D216B35B141DFDE2003788DC /* Mail Bundle ManagerTests.octest */,
 				D2779BC014336287003F7BE0 /* MailBundleTool.app */,
+				D22CC053146BD87F0055CFBE /* ToolTestHarness.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -367,6 +392,29 @@
 				D2D1E6D91431C171002FF1B1 /* mbm-manifest.plist */,
 				D216B363141DFDE2003788DC /* Mail Bundle ManagerTests-Info.plist */,
 				D216B364141DFDE2003788DC /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D22CC056146BD87F0055CFBE /* ToolTestHarness */ = {
+			isa = PBXGroup;
+			children = (
+				D22CC062146BD8800055CFBE /* TTHAppDelegate.h */,
+				D22CC063146BD8800055CFBE /* TTHAppDelegate.m */,
+				D22CC065146BD8800055CFBE /* MainMenu.xib */,
+				D22CC057146BD87F0055CFBE /* Supporting Files */,
+			);
+			path = ToolTestHarness;
+			sourceTree = "<group>";
+		};
+		D22CC057146BD87F0055CFBE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D22CC058146BD87F0055CFBE /* ToolTestHarness-Info.plist */,
+				D22CC059146BD87F0055CFBE /* InfoPlist.strings */,
+				D22CC05C146BD87F0055CFBE /* main.m */,
+				D22CC05E146BD8800055CFBE /* ToolTestHarness-Prefix.pch */,
+				D22CC05F146BD8800055CFBE /* Credits.rtf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -598,6 +646,23 @@
 			productReference = D216B35B141DFDE2003788DC /* Mail Bundle ManagerTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
+		D22CC052146BD87F0055CFBE /* ToolTestHarness */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D22CC068146BD8800055CFBE /* Build configuration list for PBXNativeTarget "ToolTestHarness" */;
+			buildPhases = (
+				D22CC04F146BD87F0055CFBE /* Sources */,
+				D22CC050146BD87F0055CFBE /* Frameworks */,
+				D22CC051146BD87F0055CFBE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ToolTestHarness;
+			productName = ToolTestHarness;
+			productReference = D22CC053146BD87F0055CFBE /* ToolTestHarness.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D2779BBF14336287003F7BE0 /* MailBundleTool */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailBundleTool" */;
@@ -641,6 +706,7 @@
 				D216B339141DFDE1003788DC /* Mail Bundle Manager */,
 				D2779BBF14336287003F7BE0 /* MailBundleTool */,
 				D216B35A141DFDE2003788DC /* Mail Bundle ManagerTests */,
+				D22CC052146BD87F0055CFBE /* ToolTestHarness */,
 			);
 		};
 /* End PBXProject section */
@@ -675,6 +741,16 @@
 			files = (
 				D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */,
 				D2D1E6DA1431C171002FF1B1 /* mbm-manifest.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D22CC051146BD87F0055CFBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */,
+				D22CC061146BD8800055CFBE /* Credits.rtf in Resources */,
+				D22CC067146BD8800055CFBE /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,6 +836,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D22CC04F146BD87F0055CFBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D22CC05D146BD87F0055CFBE /* main.m in Sources */,
+				D22CC064146BD8800055CFBE /* TTHAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2779BBC14336287003F7BE0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -835,6 +920,30 @@
 				D216B365141DFDE2003788DC /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D22CC059146BD87F0055CFBE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D22CC05A146BD87F0055CFBE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D22CC05F146BD8800055CFBE /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D22CC060146BD8800055CFBE /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		D22CC065146BD8800055CFBE /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D22CC066146BD8800055CFBE /* en */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 		D2779BC614336287003F7BE0 /* InfoPlist.strings */ = {
@@ -977,6 +1086,30 @@
 			};
 			name = Release;
 		};
+		D22CC069146BD8800055CFBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
+				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D22CC06A146BD8800055CFBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
+				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1036,6 +1169,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D22CC068146BD8800055CFBE /* Build configuration list for PBXNativeTarget "ToolTestHarness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D22CC069146BD8800055CFBE /* Debug */,
+				D22CC06A146BD8800055CFBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailBundleTool" */ = {
 			isa = XCConfigurationList;

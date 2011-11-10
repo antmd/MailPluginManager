@@ -96,6 +96,8 @@
 		}
 	}
 	else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
+		LKLog(@"Here in the tool, trying to get System Info");
+		LKLog(@"System Info should be:%@", [MBMSystemInfo completeInfo]);
 		//	Then send the information
 		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 		NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMSystemInfo completeInfo], kMBMSysInfoKey, nil];
@@ -103,12 +105,14 @@
 		[AppDel quittingNowIsReasonable];
 	}
 	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
+		LKLog(@"Here in the tool, trying to get UUID List");
 		[self performWhenMaintenanceIsFinishedUsingBlock:^{
 			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 			NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
 			[center postNotificationName:kMBMUUIDListDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
 			[AppDel quittingNowIsReasonable];
 		}];
+		LKLog(@"List should be:%@", [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle]);
 	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
 		[self validateAllBundles];
