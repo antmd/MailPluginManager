@@ -13,4 +13,7 @@
    <FileRef
       location = "group:../../UsefulRepos/Mail-Plugin-Manager/MailPluginManager.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../../UsefulRepos/Sparkle/Sparkle.xcodeproj">
+   </FileRef>
 </Workspace>

@@ -309,7 +309,6 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* Ensure that run paths through the app all quit when appropriate.
 * Add authorizations where needed when accessing files the user needs admin for.
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.

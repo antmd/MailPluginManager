@@ -137,7 +137,7 @@
 - (void)performBlock:(void(^)(void))block whenAllNotificationsReceived:(NSArray *)notificationList {
 	
 	//	Make a mutable copy of the array
-	__block NSMutableArray	*listCopy = [notificationList mutableCopy];
+	NSMutableArray	*listCopy = [notificationList mutableCopy];
 	
 	//	Create the block that we'll use for each notification type
 	void (^testNotificationBlock)(NSNotification *) = ^(NSNotification *notification) {
@@ -145,7 +145,7 @@
 		NSUInteger	counter = 0;
 		for (NSDictionary *aNote in listCopy) {
 			if ([[aNote objectForKey:kMBMNotificationWaitNote] isEqualToString:[notification name]] &&
-				[[aNote objectForKey:kMBMNotificationWaitObject] isEqualToString:[notification object]]) {
+				[[aNote objectForKey:kMBMNotificationWaitObject] isEqual:[notification object]]) {
 				
 				//	Set the received flag on the dict
 				NSMutableDictionary	*dictCopy = [aNote mutableCopy];
@@ -166,14 +166,16 @@
 		
 		//	If all received then run our block and remove the notifications
 		if (allReceived) {
-			block();
-			
+			//	Remove all the observers
 			for (NSDictionary *aNote in listCopy) {
 				id	anObserver = [aNote objectForKey:kMBMNotificationWaitObserver];
 				if (anObserver) {
 					[[NSNotificationCenter defaultCenter] removeObserver:anObserver];
 				}
 			}
+
+			//	And run the block
+			block();
 		}
 	};
 	

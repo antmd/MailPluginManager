@@ -9,15 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <Sparkle/Sparkle.h>
 
-//#import "MBMMailBundle.h"
+@class MBMMailBundle;
 
 @interface MBMSparkleDelegate : NSObject
 
-//@property	(nonatomic, retain, readonly)	MBMMailBundle	*mailBundle;
-@property	(nonatomic, copy)				NSString		*relaunchPath;
-@property	(nonatomic, assign)				BOOL			quitMail;
-@property	(nonatomic, assign)				BOOL			quitManager;
+@property	(nonatomic, retain, readonly)	MBMMailBundle	*mailBundle;
+//@property	(nonatomic, copy)				NSString		*relaunchPath;
+//@property	(nonatomic, assign)				BOOL			quitMail;
+//@property	(nonatomic, assign)				BOOL			quitManager;
 
-//- (id)initWithMailBundle:(MBMMailBundle *)aMailBundle;
+- (id)initWithMailBundle:(MBMMailBundle *)aMailBundle;
 
 @end

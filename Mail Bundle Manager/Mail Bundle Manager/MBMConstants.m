@@ -110,6 +110,7 @@ NSString	*kMBMMailStatusChangedNotification = @"MBMMailStatusChangedNotification
 NSString	*kMBMSystemInfoDistNotification = @"MBMSystemInfoDistNotification";
 NSString	*kMBMUUIDListDistNotification = @"MBMUUIDListDistNotification";
 NSString	*kMBMDoneUpdatingMailBundleNotification = @"MBMDoneUpdatingMailBundleNotification";
+NSString	*kMBMCancelledUpdatingMailBundleNotification = @"MBMCancelledUpdatingMailBundleNotification";
 NSString	*kMBMDoneSendingCrashReportsMailBundleNotification = @"MBMDoneSendingCrashReportsMailBundleNotification";
 
 NSString	*kMBMNotificationWaitNote = @"note";

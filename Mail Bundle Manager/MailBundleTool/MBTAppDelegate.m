@@ -171,8 +171,9 @@
 
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest {
 	
-	//	If there are no items, just return
+	//	If there are no items, just return after indicating we can quit
 	if (IsEmpty(bundlesToTest)) {
+		[AppDel quittingNowIsReasonable];
 		return;
 	}
 	

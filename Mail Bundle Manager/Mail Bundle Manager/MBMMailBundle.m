@@ -411,17 +411,17 @@
 	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
 	SUUpdater	*updater = [SUUpdater updaterForBundle:self.bundle];
 	if (updater) {
-		self.sparkleDelegate = [[[MBMSparkleDelegate alloc] init] autorelease];
+		self.sparkleDelegate = [[[MBMSparkleDelegate alloc] initWithMailBundle:self] autorelease];
 		[updater setDelegate:self.sparkleDelegate];
 		
-		//	Set the Path to relaunch to Mail
+/*		//	Set the Path to relaunch to Mail
 		self.sparkleDelegate.relaunchPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
 		
 		//	Tell the delegate to quit mail when needed
 		self.sparkleDelegate.quitMail = YES;
 		//	And also quit this app when done
 		self.sparkleDelegate.quitManager = YES;
-		
+*/		
 		//	Check for an update
 		[updater checkForUpdatesInBackground];
 	}

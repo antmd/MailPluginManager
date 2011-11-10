@@ -8,56 +8,66 @@
 
 #import "MBMSparkleDelegate.h"
 
-//#import "MBMAppDelegate.h"
-
-@interface MBMSparkleDelegate ()
-@end
-
 @implementation MBMSparkleDelegate
 
-//@synthesize mailBundle = _mailBundle;
-@synthesize relaunchPath = _relaunchPath;
-@synthesize quitMail = _quitMail;
-@synthesize quitManager = _quitManager;
+@synthesize mailBundle = _mailBundle;
+//@synthesize relaunchPath = _relaunchPath;
+//@synthesize quitMail = _quitMail;
+//@synthesize quitManager = _quitManager;
 
-- (id)init {
+- (id)initWithMailBundle:(MBMMailBundle *)aMailBundle {
     self = [super init];
     if (self) {
         // Initialization code here.
-//		_mailBundle = [aMailBundle retain];
+		_mailBundle = [aMailBundle retain];
     }
     
     return self;
 }
 
 - (void)dealloc {
-	self.relaunchPath = nil;
-	
+	[_mailBundle release];
+	_mailBundle = nil;
 	[super dealloc];
 }
 
+- (void)postDoneNotification {
+	//	Post a new notification indicating that we are done
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:self.mailBundle];
+}
+
+- (void)updateDriverFinished:(NSNotification *)notification {
+	
+	//	Then reomve the observer
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SUUpdateDriverFinished" object:[notification object]];
+	
+	[self postDoneNotification];
+}
+
+- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDriverFinished:) name:@"SUUpdateDriverFinished" object:[updater valueForKey:@"driver"]];
+}
+
+- (void)updaterDidNotFindUpdate:(SUUpdater *)update {
+	//	Post a new notification indicating that we are done
+	[self postDoneNotification];
+}
 
 // Sent immediately before installing the specified update.
 - (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update {
-	
 	//	If the relaunchPath is for Mail, then quit it here
-	if (self.quitMail) {
 //		QuitMail();
-	}
 }
 
-// Called immediately before relaunching.
-- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
-	
-	//	Are we supposed to quit this app?
-	if (self.quitManager) {
-		//	 If so, then wait a second and then do it.
-		[NSApp performSelector:@selector(terminate:) withObject:self afterDelay:1.0];
-	}
+//	Always postpone (indefinitely) the relaunch, but send a notification that the update is done.
+- (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
+	[self postDoneNotification];
+	return NO;
 }
 
+//	Return nil path for restart
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
-	return self.relaunchPath;
+	return nil;
 }
 
 @end

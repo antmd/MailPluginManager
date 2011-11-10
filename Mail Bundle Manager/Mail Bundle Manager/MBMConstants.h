@@ -108,6 +108,7 @@ extern NSString	*kMBMMailStatusChangedNotification;
 extern NSString	*kMBMSystemInfoDistNotification;
 extern NSString	*kMBMUUIDListDistNotification;
 extern NSString	*kMBMDoneUpdatingMailBundleNotification;
+extern NSString	*kMBMCancelledUpdatingMailBundleNotification;
 extern NSString	*kMBMDoneSendingCrashReportsMailBundleNotification;
 
 extern NSString	*kMBMNotificationWaitNote;
