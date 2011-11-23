@@ -43,7 +43,7 @@
 	}
 	NSArray		*arguments = [NSArray arrayWithObject:pluginPath];
 	if ([[self evaluatedArguments] valueForKey:@"frequency"]) {
-		arguments = [arguments arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MBM_FREQUENCY_OPTION, [[self evaluatedArguments] valueForKey:@"frequency"], nil]];
+		arguments = [arguments arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MBT_FREQUENCY_OPTION, [[self evaluatedArguments] valueForKey:@"frequency"], nil]];
 	}
 	LKLog(@"Action='%@' args=%@", command, arguments);
 	[AppDel doAction:command withArguments:arguments];

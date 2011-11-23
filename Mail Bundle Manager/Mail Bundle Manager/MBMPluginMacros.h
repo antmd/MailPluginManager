@@ -16,15 +16,22 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Command List
 
-#define MBM_UNINSTALL_COMMAND					@"-uninstall"
-#define MBM_CHECK_FOR_UPDATES_COMMAND			@"-update"
-#define MBM_SEND_CRASH_REPORTS_COMMAND			@"-send-crash-reports"
-#define MBM_UPDATE_AND_CRASH_REPORTS_COMMAND	@"-update-and-crash-reports"
-#define MBM_SYSTEM_INFO_COMMAND					@"-system-info"
-#define MBM_UUID_LIST_COMMAND					@"-uuid-list"
-#define	MBM_FREQUENCY_OPTION					@"-freq"
+#define MBT_SEND_MAIL_INFO_TEXT					@"send mail info plugin path"
+#define MBT_SEND_UUID_LIST_TEXT					@"send uuid list plugin path"
+#define MBT_UNINSTALL_TEXT						@"uninstall"
+#define MBT_UPDATE_TEXT							@"update"
+#define MBT_CRASH_REPORTS_TEXT					@"crash reports"
+#define MBT_UPDATE_CRASH_REPORTS_TEXT			@"update and crash reports"
 
 #pragma mark Internal Values
+
+//#define MBT_TELL_APPLICATION_FORMAT				@"tell application \"MailBundleTool\" to %@ \"%@\""
+#define MBT_TELL_APPLICATION_OPEN				@"tell application \"MailBundleTool\"\n"
+#define MBT_ACTIVATE_APP						@"activate\n"
+#define MBT_SCRIPT_FORMAT						@" %@ \"%@\""
+#define MBT_END_TELL							@"\nend tell"
+#define MBT_FREQUENCY_FORMAT					@" frequency %@"
+#define MBT_FREQUENCY_OPTION					@"-freq"
 
 #define MBM_SYSTEM_INFO_NOTIFICATION			@"MBMSystemInfoDistNotification"
 #define MBM_UUID_LIST_NOTIFICATION				@"MBMUUIDListDistNotification"
@@ -36,20 +43,30 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #pragma mark - Reused Macros
 
-#define	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, mbmFrequency) \
+#define	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, mbmNeedsActivate, mbmFrequency) \
 { \
 	/*	Then actually launch the app to get the information back	*/ \
-	NSString	*mbmToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MBM_TOOL_IDENTIFIER]; \
-	mbmToolPath = [[mbmToolPath stringByAppendingPathComponent:MBM_APP_CONTENTS_PATH] stringByAppendingPathComponent:MBM_TOOL_NAME]; \
-	NSString	*mbmFreqFlag = (mbmFrequency != nil)?[NSString stringWithFormat:@"%@ %@", MBM_FREQUENCY_OPTION, mbmFrequency]:nil; \
-	NSArray		*mbmToolArguments = [NSArray arrayWithObjects:mbmCommand, [mbmMailBundle bundlePath], mbmFreqFlag, nil]; \
-	[NSTask launchedTaskWithLaunchPath:mbmToolPath arguments:mbmToolArguments]; \
+	NSDictionary	*scriptErrors = nil; \
+	NSMutableString	*appleScript = [NSMutableString stringWithString:MBT_TELL_APPLICATION_OPEN]; \
+	if (mbmNeedsActivate) { \
+		[appleScript appendString:MBT_ACTIVATE_APP]; \
+	} \
+	[appleScript appendFormat:MBT_SCRIPT_FORMAT, mbmCommand, [mbmMailBundle bundlePath]]; \
+	if (mbmFrequency != nil) { \
+		[appleScript appendFormat:MBT_FREQUENCY_FORMAT, mbmFrequency]; \
+	} \
+	[appleScript appendString:MBT_END_TELL]; \
+	NSAppleScript	*theScript = [[[NSAppleScript alloc] initWithSource:appleScript] autorelease]; \
+	NSAppleEventDescriptor	*desc = [theScript executeAndReturnError:&scriptErrors]; \
+	if (!desc) { \
+		NSLog(@"Script (%@) to call MailBundleTool failed:%@", appleScript, scriptErrors); \
+	} \
 }
 
 
 #define	MBMCallToolCommandForBundleWithBlock(mbmCommand, mbmMailBundle, mbmNotificationBlock) \
 { \
-	NSString	*mbmNotificationName = [mbmCommand isEqualToString:MBM_SYSTEM_INFO_COMMAND]?MBM_SYSTEM_INFO_NOTIFICATION:MBM_UUID_LIST_NOTIFICATION; \
+	NSString	*mbmNotificationName = [mbmCommand isEqualToString:MBT_SEND_MAIL_INFO_TEXT]?MBM_SYSTEM_INFO_NOTIFICATION:MBM_UUID_LIST_NOTIFICATION; \
 	/*	Set up the notification watch	*/ \
 	NSOperationQueue	*mbmQueue = [[[NSOperationQueue alloc] init] autorelease]; \
 	__block id mbmObserver; \
@@ -61,22 +78,23 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 		} \
 	}]; \
 	/*	Then actually launch the app to get the information back	*/ \
-	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, nil); \
+	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, NO, nil); \
 }
 
 #pragma mark - Plugin Macros
 
 #pragma mark Launch and Forget
 
-#define	MBMUninstallForBundle(mbmMailBundle)									MBMLaunchCommandForBundle(MBM_UNINSTALL_COMMAND, mbmMailBundle, nil);
-#define	MBMCheckForUpdatesForBundle(mbmMailBundle)								MBMLaunchCommandForBundle(MBM_CHECK_FOR_UPDATES_COMMAND, mbmMailBundle, nil);
-#define	MBMSendCrashReportsForBundle(mbmMailBundle)								MBMLaunchCommandForBundle(MBM_SEND_CRASH_REPORTS_COMMAND, mbmMailBundle, nil);
-#define	MBMUpdateAndSendReportsForBundle(mbmMailBundle)							MBMLaunchCommandForBundle(MBM_UPDATE_AND_CRASH_REPORTS_COMMAND, mbmMailBundle, nil);
-#define	MBMCheckForUpdatesForBundleWithFrequency(mbmMailBundle, mbmFreq)		MBMLaunchCommandForBundle(MBM_CHECK_FOR_UPDATES_COMMAND, mbmMailBundle, mbmFreq);
-#define	MBMUpdateAndSendReportsForBundleWithFrequency(mbmMailBundle, mbmFreq)	MBMLaunchCommandForBundle(MBM_UPDATE_AND_CRASH_REPORTS_COMMAND, mbmMailBundle, mbmFreq);
+#define	MBMUninstallForBundle(mbmMailBundle)									MBMLaunchCommandForBundle(MBT_UNINSTALL_TEXT, mbmMailBundle. YES, nil);
+#define	MBMCheckForUpdatesForBundle(mbmMailBundle)								MBMLaunchCommandForBundle(MBT_UPDATE_TEXT, mbmMailBundle, YES, nil);
+#define	MBMSendCrashReportsForBundle(mbmMailBundle)								MBMLaunchCommandForBundle(MBT_CRASH_REPORTS_TEXT, mbmMailBundle, NO, nil);
+#define	MBMUpdateAndSendReportsForBundle(mbmMailBundle)							MBMLaunchCommandForBundle(MBT_UPDATE_CRASH_REPORTS_TEXT, mbmMailBundle, YES, nil);
+#define	MBMCheckForUpdatesForBundleWithFrequency(mbmMailBundle, mbmFreq)		MBMLaunchCommandForBundle(MBT_UPDATE_TEXT, mbmMailBundle, YES, mbmFreq);
+#define	MBMSendCrashReportsForBundleWithFrequency(mbmMailBundle, mbmFreq)		MBMLaunchCommandForBundle(MBT_CRASH_REPORTS_TEXT, mbmMailBundle, NO, mbmFreq);
+#define	MBMUpdateAndSendReportsForBundleWithFrequency(mbmMailBundle, mbmFreq)	MBMLaunchCommandForBundle(MBT_UPDATE_CRASH_REPORTS_TEXT, mbmMailBundle, YES, mbmFreq);
 
 #pragma mark Notification Block
 
-#define	MBMMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)		MBMCallToolCommandForBundleWithBlock(MBM_SYSTEM_INFO_COMMAND, mbmMailBundle, mbmNotificationBlock);
-#define	MBMUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)				MBMCallToolCommandForBundleWithBlock(MBM_UUID_LIST_COMMAND, mbmMailBundle, mbmNotificationBlock);
+#define	MBMMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)		MBMCallToolCommandForBundleWithBlock(MBT_SEND_MAIL_INFO_TEXT, mbmMailBundle, mbmNotificationBlock);
+#define	MBMUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)				MBMCallToolCommandForBundleWithBlock(MBT_SEND_UUID_LIST_TEXT, mbmMailBundle, mbmNotificationBlock);
 

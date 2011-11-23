@@ -10,28 +10,26 @@
 #import	"MBMPluginMacros.h"
 
 
-#define MBT_TELL_APPLICATION_FORMAT		@"tell application \"MailBundleTool\" to %@ \"%@\""
-#define MBT_FREQUENCY_FORMAT			@" frequency %@"
-#define MBT_SEND_MAIL_INFO_TEXT			@"send mail info plugin path"
-#define MBT_SEND_UUID_LIST_TEXT			@"send uuid list plugin path"
-#define MBT_UPDATE_TEXT					@"update"
-#define MBT_CRASH_REPORTS_TEXT			@"crash reports"
-#define MBT_UPDATE_CRASH_REPORTS_TEXT	@"update and crash reports"
 
 @implementation TTHAppDelegate
 
 @synthesize window = _window;
 
-void	MBMLaunchCommandForBundle2(NSString *mbmCommand, NSBundle *mbmMailBundle, NSString *mbmFrequency);
+void	MBMLaunchCommandForBundle2(NSString *mbmCommand, NSBundle *mbmMailBundle, BOOL needsActivate, NSString *mbmFrequency);
 void	MBMCallToolCommandForBundleWithBlock2(NSString *mbmCommand, NSBundle *mbmMailBundle, MBMResultNotificationBlock mbmNotificationBlock);
 
-void	MBMLaunchCommandForBundle2(NSString *mbmCommand, NSBundle *mbmMailBundle, NSString *mbmFrequency) \
+void	MBMLaunchCommandForBundle2(NSString *mbmCommand, NSBundle *mbmMailBundle, BOOL mbmNeedsActivate, NSString *mbmFrequency) \
 { \
 	NSDictionary	*scriptErrors = nil; \
-	NSMutableString	*appleScript = [NSMutableString stringWithFormat:MBT_TELL_APPLICATION_FORMAT, mbmCommand, [mbmMailBundle bundlePath]]; \
+	NSMutableString	*appleScript = [NSMutableString stringWithString:MBT_TELL_APPLICATION_OPEN]; \
+	if (mbmNeedsActivate) {
+		[appleScript appendString:MBT_ACTIVATE_APP];
+	}
+	[appleScript appendFormat:MBT_SCRIPT_FORMAT, mbmCommand, [mbmMailBundle bundlePath]]; \
 	if (mbmFrequency != nil) { \
 		[appleScript appendFormat:MBT_FREQUENCY_FORMAT, mbmFrequency]; \
 	} \
+	[appleScript appendString:MBT_END_TELL]; \
 	NSAppleScript	*theScript = [[[NSAppleScript alloc] initWithSource:appleScript] autorelease]; \
 	NSAppleEventDescriptor	*desc = [theScript executeAndReturnError:&scriptErrors]; \
 	if (!desc) { \
@@ -53,7 +51,7 @@ void	MBMCallToolCommandForBundleWithBlock2(NSString *mbmCommand, NSBundle *mbmMa
 		} \
 	}]; \
 	/*	Then actually launch the app to get the information back	*/ \
-	MBMLaunchCommandForBundle2(mbmCommand, mbmMailBundle, nil); \
+	MBMLaunchCommandForBundle2(mbmCommand, mbmMailBundle, NO, nil); \
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -66,13 +64,15 @@ void	MBMCallToolCommandForBundleWithBlock2(NSString *mbmCommand, NSBundle *mbmMa
 	
 	NSBundle *mailBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/ExamplePlugin.mailbundle"];
 
-	MBMCallToolCommandForBundleWithBlock2(MBT_SEND_MAIL_INFO_TEXT, mailBundle, myBlock);
-	MBMCallToolCommandForBundleWithBlock2(MBT_SEND_UUID_LIST_TEXT, mailBundle, myBlock);
+//	MBMCallToolCommandForBundleWithBlock2(MBT_SEND_MAIL_INFO_TEXT, mailBundle, myBlock);
+//	MBMCallToolCommandForBundleWithBlock2(MBT_SEND_UUID_LIST_TEXT, mailBundle, myBlock);
 
-//	MBMLaunchCommandForBundle2(@"update", mailBundle, nil);
+//	MBMLaunchCommandForBundle2(@"update", mailBundle, YES, nil);
 
-//	MBMMailInformationForBundleWithBlock(mailBundle, myBlock);
-//	MBMUUIDListForBundleWithBlock(mailBundle, myBlock);
+	MBMMailInformationForBundleWithBlock(mailBundle, myBlock);
+	MBMUUIDListForBundleWithBlock(mailBundle, myBlock);
+	
+	MBMCheckForUpdatesForBundle(mailBundle);
 	
 	
 }

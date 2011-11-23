@@ -152,7 +152,7 @@ Checks for and, if found, updates the plugin at the indicated path (required). I
 
 Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for sending crash reports without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
-		-update-and-crash-reports path/to/plugin [(daily|weekly|monthly)]
+		-update-and-crash-reports path/to/plugin [-freq (daily|weekly|monthly)]
 
 Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates & sending crash reports without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
@@ -327,11 +327,11 @@ The keys for the results in the dictionary are listed below.
 
 #### Tool
 
-* Change all events to be handled as Apple Events to avoid launching multiple copies.
+* Uninstall doesn't properly quit after Cancel (others?)
+* What happens when a command is sent and the app is already running?
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
 * Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * Crash Reporting.
-* What happens when a command is sent and the app is already running?
 * Add an Update All Plugins button to Multi Plugin window when relevant.
 
 #### launchd values of interest (for boot time agent setup)
