@@ -26,7 +26,7 @@
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	LKLog(@"Inside the MailBundleTool");
+	NSLog(@"Inside the MailBundleTool");
 
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
@@ -37,15 +37,18 @@
 	
 	//	See if there are more arguments
 	NSString	*action = nil;
-	NSString	*bundlePath = nil;
-	NSInteger	frequencyInHours = 0;
+//	NSString	*bundlePath = nil;
+//	NSInteger	frequencyInHours = 0;
 	
 	if ([arguments count] > 1) {
 		action = [arguments objectAtIndex:1];
 	}
 	if ([arguments count] > 2) {
-		bundlePath = [arguments objectAtIndex:2];
+		arguments = [arguments subarrayWithRange:NSMakeRange(1, [arguments count] - 1)];
+		[self doAction:action withArguments:arguments];
+		//bundlePath = [arguments objectAtIndex:2];
 	}
+	/*
 	if ([arguments count] > 3) {
 		if ([[arguments objectAtIndex:3] isEqualToString:kMBMCommandLineFrequencyOptionKey]) {
 			NSString	*frequencyType = [arguments objectAtIndex:4];
@@ -101,7 +104,6 @@
 		LKLog(@"System Info should be:%@", [MBMSystemInfo completeInfo]);
 		//	Then send the information
 		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-//		NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMSystemInfo completeInfo], kMBMSysInfoKey, nil];
 		[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo]];
 		[AppDel quittingNowIsReasonable];
 	}
@@ -109,9 +111,6 @@
 		LKLog(@"Here in the tool, trying to get UUID List");
 		[self performWhenMaintenanceIsFinishedUsingBlock:^{
 			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-//			NSMutableDictionary	*infoDict = [[[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] mutableCopy] autorelease];
-//			[infoDict setObject:mailBundle.identifier forKey:kMBMUUIDNotificationSenderKey];
-//			NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
 			[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle]];
 			[AppDel quittingNowIsReasonable];
 		}];
@@ -120,6 +119,7 @@
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
 		[self validateAllBundles];
 	}
+	*/
 }
 
 - (void)dealloc {
@@ -129,6 +129,88 @@
 
 
 #pragma mark - Action Methods
+
+- (void)doAction:(NSString *)action withArguments:(NSArray *)arguments {
+	
+	NSString	*bundlePath = nil;
+	NSInteger	frequencyInHours = 0;
+	
+	if ([arguments count] > 0) {
+		bundlePath = [arguments objectAtIndex:0];
+	}
+	if ([arguments count] > 1) {
+		if ([[arguments objectAtIndex:1] isEqualToString:kMBMCommandLineFrequencyOptionKey]) {
+			NSString	*frequencyType = [arguments objectAtIndex:4];
+			if ([frequencyType isEqualToString:@"daily"]) {
+				frequencyInHours = 24;
+			}
+			else if ([frequencyType isEqualToString:@"weekly"]) {
+				frequencyInHours = 24 * 7;
+			}
+			else if ([frequencyType isEqualToString:@"monthly"]) {
+				frequencyInHours = 24 * 7 * 28;
+			}
+		}
+	}
+	
+	//	Get the mail bundle, if there
+	MBMMailBundle	*mailBundle = nil;
+	if (bundlePath) {
+		mailBundle = [[[MBMMailBundle alloc] initWithPath:bundlePath shouldLoadUpdateInfo:NO] autorelease];
+	}
+	
+	//	Look at the first argument (after executable name) and test for one of our types
+	if ([kMBMCommandLineUninstallKey isEqualToString:action]) {
+		//	Tell it to uninstall itself
+		[mailBundle uninstall];
+	}
+	else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
+		//	Tell it to update itself, if frequency requirements met
+		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil]]];
+			[mailBundle updateIfNecessary];
+		}
+	}
+	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
+		//	Tell it to check its crash reports, if frequency requirements met
+		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil]]];
+			[mailBundle sendCrashReports];
+		}
+	}
+	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
+		//	If frequency requirements met
+		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil],[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil],nil]];
+			//	Tell it to check its crash reports
+			[mailBundle sendCrashReports];
+			//	And update itself
+			[mailBundle updateIfNecessary];
+		}
+	}
+	else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
+		LKLog(@"Here in the tool, trying to get System Info");
+		LKLog(@"Mail bundle id should be:%@", mailBundle.identifier);
+		//	Then send the information
+		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+		[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
+		[AppDel quittingNowIsReasonable];
+	}
+	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
+		LKLog(@"Here in the tool, trying to get UUID List");
+		LKLog(@"Mail bundle id should be:%@", mailBundle.identifier);
+		[self performWhenMaintenanceIsFinishedUsingBlock:^{
+			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+			[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+			[AppDel quittingNowIsReasonable];
+		}];
+		LKLog(@"List should be:%@", [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle]);
+	}
+	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
+		[self validateAllBundles];
+	}
+}
+
 
 - (void)validateAllBundles {
 	
@@ -243,6 +325,7 @@
 	
 	return result;
 }
+
 
 @end
 

@@ -156,7 +156,7 @@ Sends any crash reports found for the plugin at the indicated path (required). I
 
 Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates & sending crash reports without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
 	
-		-system-info path/to/plugin
+		-mail-info path/to/plugin
 
 Will collect a bunch of information from the system and return the results to you (through a notification block) as a `NSDictionary`. See [system information](#sys-info) above. The path is required to be able to post the notification to the correct plugin.
 	
@@ -327,6 +327,7 @@ The keys for the results in the dictionary are listed below.
 
 #### Tool
 
+* Change all events to be handled as Apple Events to avoid launching multiple copies.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
 * Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * Crash Reporting.

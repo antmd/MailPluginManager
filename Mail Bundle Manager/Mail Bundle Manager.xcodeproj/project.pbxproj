@@ -48,6 +48,8 @@
 		D23D316F1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */; };
 		D23D31721445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */; };
 		D23D31731445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */; };
+		D24AF649147D3565000EDC6F /* MBT Scripting.sdef in Resources */ = {isa = PBXBuildFile; fileRef = D24AF648147D3565000EDC6F /* MBT Scripting.sdef */; };
+		D24AF64F147D4CAD000EDC6F /* MBTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */; };
 		D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */; };
 		D24DA331142CD92300720631 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D24DA330142CD92300720631 /* Localizable.strings */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
@@ -229,6 +231,9 @@
 		D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSystemInfo.m; sourceTree = "<group>"; };
 		D23D31701445B979007D30F8 /* NSUserDefaults+MBMShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MBMShared.h"; sourceTree = "<group>"; };
 		D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MBMShared.m"; sourceTree = "<group>"; };
+		D24AF648147D3565000EDC6F /* MBT Scripting.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "MBT Scripting.sdef"; sourceTree = "<group>"; };
+		D24AF64D147D4CAD000EDC6F /* MBTSendInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSendInfoCommand.h; sourceTree = "<group>"; };
+		D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSendInfoCommand.m; sourceTree = "<group>"; };
 		D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MBMAgreementWindow.xib; path = "Mail Bundle Manager/MBMAgreementWindow.xib"; sourceTree = "<group>"; };
 		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
@@ -443,6 +448,8 @@
 			children = (
 				D2779BCF14336287003F7BE0 /* MBTAppDelegate.h */,
 				D2779BD014336287003F7BE0 /* MBTAppDelegate.m */,
+				D24AF64D147D4CAD000EDC6F /* MBTSendInfoCommand.h */,
+				D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */,
 				D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */,
 				D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */,
 				D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */,
@@ -465,6 +472,7 @@
 		D2779BD8143363DF003F7BE0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D24AF648147D3565000EDC6F /* MBT Scripting.sdef */,
 				D2779BD214336287003F7BE0 /* MainMenu.xib */,
 				D20537F4143B161C002F0157 /* MBTSinglePluginWindow.xib */,
 				D2779BCC14336287003F7BE0 /* Credits.rtf */,
@@ -780,6 +788,7 @@
 				D2F70F84143F34B7000D5CC0 /* BundleBackground.png in Resources */,
 				D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */,
 				D23D3152144216E3007D30F8 /* companies.plist in Resources */,
+				D24AF649147D3565000EDC6F /* MBT Scripting.sdef in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -884,6 +893,7 @@
 				D23D315E1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */,
 				D23D316F1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */,
 				D23D31731445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
+				D24AF64F147D4CAD000EDC6F /* MBTSendInfoCommand.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1132,6 +1142,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					MB_TOOL,
+				);
 				INFOPLIST_FILE = "MailBundleTool/MailBundleTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1147,6 +1161,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					MB_TOOL,
+				);
 				INFOPLIST_FILE = "MailBundleTool/MailBundleTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

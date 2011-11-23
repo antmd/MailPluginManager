@@ -11,5 +11,5 @@
 #import "MBAppDelegate.h"
 
 @interface MBTAppDelegate : MBAppDelegate 
-
+- (void)doAction:(NSString *)action withArguments:(NSArray *)arguments;
 @end
