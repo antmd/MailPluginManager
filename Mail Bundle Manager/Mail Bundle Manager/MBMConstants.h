@@ -79,6 +79,7 @@ extern NSString	*kMBMSysInfoMailKey;
 extern NSString	*kMBMSysInfoMessageKey;
 extern NSString	*kMBMSysInfoVersionKey;
 extern NSString	*kMBMSysInfoBuildKey;
+extern NSString	*kMBMSysInfoUUIDKey;
 extern NSString	*kMBMSysInfoHardwareKey;
 extern NSString	*kMBMSysInfoInstalledMailPluginsKey;
 extern NSString	*kMBMSysInfoDisabledMailPluginsKey;

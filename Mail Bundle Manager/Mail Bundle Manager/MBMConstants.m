@@ -81,6 +81,7 @@ NSString	*kMBMSysInfoMailKey = @"mail";
 NSString	*kMBMSysInfoMessageKey = @"message";
 NSString	*kMBMSysInfoVersionKey = @"version";
 NSString	*kMBMSysInfoBuildKey = @"build";
+NSString	*kMBMSysInfoUUIDKey = @"uuid";
 NSString	*kMBMSysInfoHardwareKey = @"hardware";
 NSString	*kMBMSysInfoInstalledMailPluginsKey = @"installed";
 NSString	*kMBMSysInfoDisabledMailPluginsKey = @"disabled";

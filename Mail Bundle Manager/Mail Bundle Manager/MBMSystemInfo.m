@@ -8,6 +8,7 @@
 
 #import "MBMSystemInfo.h"
 #import "MBMMailBundle.h"
+#import "MBMUUIDList.h"
 
 #import <sys/sysctl.h>
 
@@ -114,8 +115,8 @@
 		
 		//	[System, Mail, Message.framework (version & build)], hardware device, [plugins installed, plugins disabled (including paths)]
 		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self systemVersion], kMBMSysInfoVersionKey, [self systemBuild], kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoSystemKey];
-		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self mailShortVersion], kMBMSysInfoVersionKey, [self mailVersion], kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoMailKey];
-		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self messageShortVersion], kMBMSysInfoVersionKey, [self messageVersion], kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoMessageKey];
+		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self mailShortVersion], kMBMSysInfoVersionKey, [self mailVersion], kMBMSysInfoBuildKey, [MBMUUIDList currentMailUUID], kMBMSysInfoUUIDKey, nil] forKey:kMBMSysInfoMailKey];
+		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self messageShortVersion], kMBMSysInfoVersionKey, [self messageVersion], kMBMSysInfoBuildKey, [MBMUUIDList currentMessageUUID], kMBMSysInfoUUIDKey, nil] forKey:kMBMSysInfoMessageKey];
 		[sysInfo setObject:[self hardware] forKey:kMBMSysInfoHardwareKey];
 		NSArray				*bundles = [MBMMailBundle allActiveMailBundlesShouldLoadInfo:NO];
 		NSMutableArray		*bundleInfoList = [NSMutableArray arrayWithCapacity:[bundles count]];
