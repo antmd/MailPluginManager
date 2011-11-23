@@ -117,6 +117,13 @@
 			remoteGlobalIDString = D216B339141DFDE1003788DC;
 			remoteInfo = "Mail Bundle Manager";
 		};
+		D24AF645147D177A000EDC6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2779BBF14336287003F7BE0;
+			remoteInfo = MailBundleTool;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -657,6 +664,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D24AF646147D177A000EDC6F /* PBXTargetDependency */,
 			);
 			name = ToolTestHarness;
 			productName = ToolTestHarness;
@@ -886,6 +894,11 @@
 			isa = PBXTargetDependency;
 			target = D216B339141DFDE1003788DC /* Mail Bundle Manager */;
 			targetProxy = D216B35F141DFDE2003788DC /* PBXContainerItemProxy */;
+		};
+		D24AF646147D177A000EDC6F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2779BBF14336287003F7BE0 /* MailBundleTool */;
+			targetProxy = D24AF645147D177A000EDC6F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1177,6 +1190,7 @@
 				D22CC06A146BD8800055CFBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailBundleTool" */ = {
 			isa = XCConfigurationList;

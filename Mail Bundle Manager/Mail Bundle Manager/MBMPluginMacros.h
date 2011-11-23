@@ -26,9 +26,11 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Internal Values
 
-#define MBM_SYSTEM_INFO_NOTIFICATION			@"MBMSystemInfoNotification"
-#define MBM_UUID_LIST_NOTIFICATION				@"MBMUUIDListNotification"
+#define MBM_SYSTEM_INFO_NOTIFICATION			@"MBMSystemInfoDistNotification"
+#define MBM_UUID_LIST_NOTIFICATION				@"MBMUUIDListDistNotification"
+#define MBM_TOOL_NAME							@"MailBundleTool"
 #define MBM_TOOL_IDENTIFIER						@"com.littleknownsoftware.MailBundleTool"
+#define MBM_APP_CONTENTS_PATH					@"Contents/MacOS"
 #define MBM_SENDER_ID_KEY						@"sender-id"
 
 
@@ -38,6 +40,7 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 { \
 	/*	Then actually launch the app to get the information back	*/ \
 	NSString	*mbmToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MBM_TOOL_IDENTIFIER]; \
+	mbmToolPath = [[mbmToolPath stringByAppendingPathComponent:MBM_APP_CONTENTS_PATH] stringByAppendingPathComponent:MBM_TOOL_NAME]; \
 	NSString	*mbmFreqFlag = (mbmFrequency != nil)?[NSString stringWithFormat:@"%@ %@", MBM_FREQUENCY_OPTION, mbmFrequency]:nil; \
 	NSArray		*mbmToolArguments = [NSArray arrayWithObjects:mbmCommand, [mbmMailBundle bundlePath], mbmFreqFlag, nil]; \
 	[NSTask launchedTaskWithLaunchPath:mbmToolPath arguments:mbmToolArguments]; \
@@ -52,8 +55,8 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 	__block id mbmObserver; \
 	mbmObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:mbmNotificationName object:nil queue:mbmQueue usingBlock:^(NSNotification *note) { \
 		/*	If this was aimed at us, then perform the block and remove the observer	*/ \
-		if ([[[note userInfo] valueForKey:MBM_SENDER_ID_KEY] isEqualToString:[mbmMailBundle bundleIdentifier]]) { \
-			mbmNotificationBlock([note object]); \
+		if ([[note object] isEqualToString:[mbmMailBundle bundleIdentifier]]) { \
+			mbmNotificationBlock([note userInfo]); \
 			[[NSDistributedNotificationCenter defaultCenter] removeObserver:mbmObserver]; \
 		} \
 	}]; \

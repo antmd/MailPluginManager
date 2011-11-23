@@ -26,6 +26,7 @@
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	LKLog(@"Inside the MailBundleTool");
 
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
@@ -100,16 +101,18 @@
 		LKLog(@"System Info should be:%@", [MBMSystemInfo completeInfo]);
 		//	Then send the information
 		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-		NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMSystemInfo completeInfo], kMBMSysInfoKey, nil];
-		[center postNotificationName:kMBMSystemInfoDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
+//		NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMSystemInfo completeInfo], kMBMSysInfoKey, nil];
+		[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo]];
 		[AppDel quittingNowIsReasonable];
 	}
 	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
 		LKLog(@"Here in the tool, trying to get UUID List");
 		[self performWhenMaintenanceIsFinishedUsingBlock:^{
 			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-			NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
-			[center postNotificationName:kMBMUUIDListDistNotification object:[[NSBundle mainBundle] bundleIdentifier] userInfo:infoDict];
+//			NSMutableDictionary	*infoDict = [[[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] mutableCopy] autorelease];
+//			[infoDict setObject:mailBundle.identifier forKey:kMBMUUIDNotificationSenderKey];
+//			NSDictionary	*infoDict = [NSDictionary dictionaryWithObjectsAndKeys:mailBundle.identifier, kMBMUUIDNotificationSenderKey, [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle], kMBMUUIDAllUUIDListKey, nil];
+			[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle]];
 			[AppDel quittingNowIsReasonable];
 		}];
 		LKLog(@"List should be:%@", [MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle]);
