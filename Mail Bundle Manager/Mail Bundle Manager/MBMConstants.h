@@ -6,6 +6,10 @@
 //  Copyright (c) 2011 Little Known Software. All rights reserved.
 //
 
+#define STR_CONST(name, value) extern NSString* const name
+#include "MBMConstantsList.h"
+
+/*
 //	Command line keys
 extern NSString	*kMBMCommandLineUninstallKey;
 extern NSString	*kMBMCommandLineUpdateKey;
@@ -121,7 +125,7 @@ extern NSString	*kMBMCompaniesInfoFileName;
 
 //	Names for objects in MBM
 extern NSString	*kMBMAnimationBackgroundImageName;
-
+*/
 typedef enum {
 	kMBMConfirmationTypeInformation,
 	kMBMConfirmationTypeLicense,

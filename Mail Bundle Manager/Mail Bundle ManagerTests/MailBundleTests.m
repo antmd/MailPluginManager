@@ -177,7 +177,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the active bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 
 	STAssertTrue([mailBundle isInActiveBundlesFolder], nil);
 	
@@ -191,7 +191,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	
 	STAssertFalse([mailBundle isInActiveBundlesFolder], nil);
 	
@@ -205,7 +205,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	
 	STAssertTrue([mailBundle isInDisabledBundlesFolder], nil);
 	
@@ -219,7 +219,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the active bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	
 	STAssertFalse([mailBundle isInDisabledBundlesFolder], nil);
 	
@@ -229,7 +229,7 @@
 #pragma mark - Getting Bundles
 
 - (void)test_040_Bundle_From_Path {
-	MBMMailBundle	*bundle = [MBMMailBundle mailBundleForPath:self.testBundlePath];
+	MBMMailBundle	*bundle = [MBMMailBundle mailBundleForPath:self.testBundlePath shouldLoadInfo:NO];
 	
 	STAssertNotNil(bundle, nil);
 	STAssertFalse(bundle.installed, nil);
@@ -254,7 +254,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the bundles folder failed:%@", error);
 
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	
 	STAssertNotNil(mailBundle, nil);
 	STAssertTrue(mailBundle.installed, nil);
@@ -275,7 +275,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	
 	STAssertNotNil(mailBundle, nil);
 	STAssertTrue(mailBundle.installed, nil);
@@ -298,7 +298,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the disabled bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	STAssertTrue(mailBundle.installed, nil);
 	STAssertFalse(mailBundle.enabled, nil);
 	mailBundle.enabled = YES;
@@ -330,7 +330,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the enabled bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 
 	STAssertTrue(mailBundle.installed, nil);
 	STAssertTrue(mailBundle.enabled, nil);
@@ -362,7 +362,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the enabled bundles folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	
 	STAssertTrue(mailBundle.installed, nil);
 	STAssertTrue(mailBundle.enabled, nil);
@@ -388,7 +388,7 @@
 	NSError		*error;
 	STAssertTrue([[NSFileManager defaultManager] copyItemAtPath:self.testBundlePath toPath:bundleInPlacePath error:&error], @"Copying the bundle into the temporary folder failed:%@", error);
 	
-	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath];
+	MBMMailBundle	*mailBundle = [MBMMailBundle mailBundleForPath:bundleInPlacePath shouldLoadInfo:NO];
 	
 	STAssertFalse(mailBundle.installed, nil);
 	STAssertFalse(mailBundle.enabled, nil);

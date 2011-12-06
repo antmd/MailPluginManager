@@ -6,6 +6,13 @@
 //  Copyright (c) 2011 Little Known Software. All rights reserved.
 //
 
+#ifdef STR_CONST
+#undef STR_CONST
+#endif
+#define STR_CONST(name, value) NSString* const name = @ value
+#include "MBMConstantsList.h"
+
+/*
 #import "MBMConstants.h"
 
 //	Command line keys
@@ -125,6 +132,6 @@ NSString	*kMBMCompaniesInfoFileName = @"companies";
 
 //	Names for objects in MBM
 NSString	*kMBMAnimationBackgroundImageName = @"InstallAnimationBackground";
-
+*/
 
 
