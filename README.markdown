@@ -327,8 +327,9 @@ The keys for the results in the dictionary are listed below.
 
 #### Tool
 
-* Uninstall doesn't properly quit after Cancel (others?)
 * What happens when a command is sent and the app is already running?
+	1. Make a queue of items as they are added?
+	2. Will happen pretty frequently with Update and Send Crash logs.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
 * Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * Crash Reporting.
