@@ -81,6 +81,9 @@
 	//	Then update the bundle
 	self.bundle = [NSBundle bundleWithPath:toPath];
 	
+	//	Send a notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleDisabledNotification object:self];
+	
 	//	Update all the state
 	[self updateState];
 }
@@ -447,6 +450,10 @@
 	//	Should disable the plugin, instead
 	else if (result == NSAlertOtherReturn) {
 		self.enabled = NO;
+	}
+	else {
+		//	Send a notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleNoActionTakenNotification object:self];
 	}
 }
 

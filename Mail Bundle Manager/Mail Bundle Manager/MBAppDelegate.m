@@ -16,6 +16,7 @@
 - (void)applicationChangeForNotification:(NSNotification *)note;
 @end
 
+
 @implementation MBAppDelegate
 
 @synthesize bundleUnistallObserver;
@@ -107,7 +108,25 @@
 	__block id	mySelf = self;
 	[self performBlock:^(void) {
 		[mySelf quittingNowIsReasonable];
-	} whenAllNotificationsReceived:notificationList];
+	} whenNotificationsReceived:notificationList testType:MBMAllNotificationsReceived];
+}
+
+- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
+	__block id	mySelf = self;
+	[self performBlock:^(void) {
+		[mySelf quittingNowIsReasonable];
+	} whenNotificationsReceived:notificationList testType:testType];
+}
+
+- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType {
+	__block id	mySelf = self;
+	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationNames count]];
+	for (NSString *noteName in notificationNames) {
+		[listCopy addObject:[NSDictionary dictionaryWithObjectsAndKeys:noteName, kMBMNotificationWaitNote, object, kMBMNotificationWaitObject, nil]];
+	}
+	[self performBlock:^(void) {
+		[mySelf quittingNowIsReasonable];
+	} whenNotificationsReceived:listCopy testType:testType];
 }
 
 - (void)performWhenMaintenanceIsFinishedUsingBlock:(void(^)(void))block {
@@ -134,38 +153,52 @@
 }
 
 
-- (void)performBlock:(void(^)(void))block whenAllNotificationsReceived:(NSArray *)notificationList {
+- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
 	
 	//	Make a mutable copy of the array
-	NSMutableArray	*listCopy = [notificationList mutableCopy];
+	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationList count]];
 	
 	//	Create the block that we'll use for each notification type
 	void (^testNotificationBlock)(NSNotification *) = ^(NSNotification *notification) {
 		//	Find this notification within the list
-		NSUInteger	counter = 0;
-		for (NSDictionary *aNote in listCopy) {
+		for (NSMutableDictionary *aNote in listCopy) {
 			if ([[aNote objectForKey:kMBMNotificationWaitNote] isEqualToString:[notification name]] &&
-				[[aNote objectForKey:kMBMNotificationWaitObject] isEqual:[notification object]]) {
+				(([aNote objectForKey:kMBMNotificationWaitObject] == nil) || [[aNote objectForKey:kMBMNotificationWaitObject] isEqual:[notification object]])) {
 				
 				//	Set the received flag on the dict
-				NSMutableDictionary	*dictCopy = [aNote mutableCopy];
-				[dictCopy setObject:[NSNumber numberWithBool:YES] forKey:kMBMNotificationWaitReceived];
-				[listCopy replaceObjectAtIndex:counter withObject:dictCopy];
-				[dictCopy release];
-				counter++;
+				[aNote setObject:[NSNumber numberWithBool:YES] forKey:kMBMNotificationWaitReceived];
 			}
 		}
 		
-		//	Then test to see if all notifications have been received
-		BOOL	allReceived = YES;
+		//	Then test to see if how many notifications have been received
+		NSUInteger	receivedCount = 0;
 		for (NSDictionary *aNote in listCopy) {
-			if (![aNote objectForKey:kMBMNotificationWaitReceived] || ![[aNote objectForKey:kMBMNotificationWaitReceived] boolValue]) {
-				allReceived = NO;
+			if ([aNote objectForKey:kMBMNotificationWaitReceived] && [[aNote objectForKey:kMBMNotificationWaitReceived] boolValue]) {
+				receivedCount++;
 			}
+		}
+		
+		//	Check the count based on the testType
+		BOOL	enoughReceived = NO;
+		switch (testType) {
+			case MBMAnyNotificationReceived:
+				enoughReceived = (receivedCount > 0);
+				break;
+				
+			case MBMAnyTwoNotificationsReceived:
+				enoughReceived = (receivedCount > 1);
+				break;
+				
+			case MBMAllNotificationsReceived:
+				enoughReceived = (receivedCount == [listCopy count]);
+				break;
+				
+			default:
+				break;
 		}
 		
 		//	If all received then run our block and remove the notifications
-		if (allReceived) {
+		if (enoughReceived) {
 			//	Remove all the observers
 			for (NSDictionary *aNote in listCopy) {
 				id	anObserver = [aNote objectForKey:kMBMNotificationWaitObserver];
@@ -180,20 +213,16 @@
 	};
 	
 	//	Then go through the notificationList and build the notifications
-	NSUInteger	counter = 0;
-	for (NSDictionary *aNote in listCopy) {
+	for (NSDictionary *aNote in notificationList) {
 		id	quitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:[aNote objectForKey:kMBMNotificationWaitNote] object:[aNote objectForKey:kMBMNotificationWaitObject] queue:[NSOperationQueue mainQueue] usingBlock:testNotificationBlock];
 		
 		//	Set the received flag on the dict
 		NSMutableDictionary	*dictCopy = [aNote mutableCopy];
 		[dictCopy setObject:quitObserver forKey:kMBMNotificationWaitObserver];
-		[listCopy replaceObjectAtIndex:counter withObject:dictCopy];
+		[listCopy addObject:dictCopy];
 		[dictCopy release];
-		counter++;
 	}
 
-	//	Release the listcopy made
-	[listCopy release];
 }
 
 #pragma mark - Window Management

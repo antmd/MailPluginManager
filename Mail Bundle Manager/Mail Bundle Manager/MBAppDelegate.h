@@ -38,7 +38,7 @@
 - (void)startMaintenance;
 - (void)endMaintenance;
 - (void)performWhenMaintenanceIsFinishedUsingBlock:(void(^)(void))block;
-- (void)performBlock:(void(^)(void))block whenAllNotificationsReceived:(NSArray *)notificationList;
+- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
 
 //	Mail Application Management
 - (BOOL)quitMail;
@@ -47,5 +47,7 @@
 //	Quitting only when tasks are completed
 - (void)quittingNowIsReasonable;
 - (void)quitAfterReceivingNotifications:(NSArray *)notificationList;
+- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
+- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType;
 
 @end

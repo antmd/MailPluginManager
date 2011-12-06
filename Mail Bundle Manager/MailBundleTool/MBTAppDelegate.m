@@ -87,26 +87,27 @@
 	//	Look at the first argument (after executable name) and test for one of our types
 	if ([kMBMCommandLineUninstallKey isEqualToString:action]) {
 		//	Tell it to uninstall itself
+		[self quitAfterReceivingNotificationNames:[NSArray arrayWithObjects:kMBMMailBundleUninstalledNotification, kMBMMailBundleDisabledNotification, kMBMMailBundleNoActionTakenNotification, nil] onObject:mailBundle testType:MBMAnyNotificationReceived];
 		[mailBundle uninstall];
 	}
 	else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
 		//	Tell it to update itself, if frequency requirements met
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-			[self quitAfterReceivingNotifications:[NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil]]];
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], nil] testType:MBMAnyNotificationReceived];
 			[mailBundle updateIfNecessary];
 		}
 	}
 	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
 		//	Tell it to check its crash reports, if frequency requirements met
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-			[self quitAfterReceivingNotifications:[NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil]]];
+			[self quitAfterReceivingNotificationNames:[NSArray arrayWithObject:kMBMDoneSendingCrashReportsMailBundleNotification] onObject:mailBundle testType:MBMAnyNotificationReceived];
 			[mailBundle sendCrashReports];
 		}
 	}
 	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
 		//	If frequency requirements met
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil],[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil],nil]];
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], nil] testType:MBMAnyTwoNotificationsReceived];
 			//	Tell it to check its crash reports
 			[mailBundle sendCrashReports];
 			//	And update itself

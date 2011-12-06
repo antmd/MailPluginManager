@@ -99,6 +99,8 @@ STR_CONST(kMBMUnknownCompanyValue, "<MBMCompanyUnknown>");
 
 //	Notifications
 STR_CONST(kMBMMailBundleUninstalledNotification, "MBMMailBundleUninstalledNotification");
+STR_CONST(kMBMMailBundleDisabledNotification, "MBMMailBundleDisabledNotification");
+STR_CONST(kMBMMailBundleNoActionTakenNotification, "MBMMailBundleNoActionTakenNotification");
 STR_CONST(kMBMDoneLoadingSparkleNotification, "MBMDoneLoadingSparkleNotification");
 STR_CONST(kMBMMailStatusChangedNotification, "MBMMailStatusChangedNotification");
 STR_CONST(kMBMSystemInfoDistNotification, "MBMSystemInfoDistNotification");
@@ -106,6 +108,7 @@ STR_CONST(kMBMUUIDListDistNotification, "MBMUUIDListDistNotification");
 STR_CONST(kMBMDoneUpdatingMailBundleNotification, "MBMDoneUpdatingMailBundleNotification");
 STR_CONST(kMBMCancelledUpdatingMailBundleNotification, "MBMCancelledUpdatingMailBundleNotification");
 STR_CONST(kMBMDoneSendingCrashReportsMailBundleNotification, "MBMDoneSendingCrashReportsMailBundleNotification");
+STR_CONST(kMBMSUUpdateDriverDoneNotification, "SUUpdateDriverFinished");
 
 STR_CONST(kMBMNotificationWaitNote, "note");
 STR_CONST(kMBMNotificationWaitObject, "object");
