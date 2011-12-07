@@ -7,6 +7,7 @@
 //
 
 #import "MBMRemoteUpdatableList.h"
+#import "NSString+LKHelper.h"
 
 
 #define DATE_KEY		@"date"
@@ -99,7 +100,8 @@
 }
 
 + (NSString *)localSupportPath {
-	NSString	*appSupportFolder = @"/Users/Shared/Library/Application Support";
+	//	Always use App Support Folder of user
+	NSString	*appSupportFolder = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString	*fileName = [[self filename] stringByAppendingPathExtension:kMBMPlistExtension];
 	NSString	*localFilePath = [[appSupportFolder stringByAppendingPathComponent:kMBMAppSupportFolderName] stringByAppendingPathComponent:fileName];
 	return localFilePath;
