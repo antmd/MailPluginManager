@@ -11,6 +11,7 @@
 #import "MBMCompanyList.h"
 #import "MBMUUIDList.h"
 #import "NSBundle+MBMAdditions.h"
+#import "NSString+LKHelper.h"
 
 @interface MBMMailBundle ()
 @property	(nonatomic, copy, readwrite)		NSString		*name;
@@ -71,11 +72,21 @@
 	NSString	*fromPath = self.path;
 	NSString	*toPath = [[[self class] pathForDomain:domain shouldCreate:YES disabled:!enabled] stringByAppendingPathComponent:[self.path lastPathComponent]];
 	
-	//	Now do the move
-	NSError	*error;
-	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
-		NSLog(@"Error moving bundle (enable/disable):%@", error);
-		return;
+	//	Ensure that the user has access to both paths (for the to path just check the folder)
+	if (![fromPath userHasAccessRights] || ![[toPath stringByDeletingLastPathComponent] userHasAccessRights]) {
+		
+		LKLog(@"User doesn't have access to the from or to destination during enable change.");
+		//	Use the authentication mechanism inside Sparkle
+	}
+	else {
+		
+		//	Otherwise do the move simply
+		NSError	*error;
+		if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
+			LKLog(@"Error moving bundle (enable/disable):%@", error);
+			return;
+		}
+		
 	}
 	
 	//	Then update the bundle
@@ -102,20 +113,26 @@
 	
 	//	Default is to *install* it
 	NSString	*fromPath = self.path;
-	NSString	*toPath = nil;
-	char		*trashedPath;
+	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[self.path lastPathComponent]];
 	
-	//[[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[self.path lastPathComponent]];
-	OSErr anError = FSPathMoveObjectToTrashSync([fromPath UTF8String], &trashedPath, kFSFileOperationDefaultOptions);
-	
-	//	Now do the move
-	if (anError != noErr) {
-		LKLog(@"Error moving bundle to the trash:%d", anError);
-		return;
+	//	Ensure that the user has access to both paths
+	if (![fromPath userHasAccessRights] || ![toPath userHasAccessRights]) {
+		
+		LKLog(@"User doesn't have access to the from or to destination during enable change.");
+		//	Use the authentication mechanism inside Sparkle
+	}
+	else {
+
+		char	*trashedPath;
+		OSErr	anError = FSPathMoveObjectToTrashSync([fromPath UTF8String], &trashedPath, kFSFileOperationDefaultOptions);
+		if (anError != noErr) {
+			LKLog(@"Error moving bundle to the trash:%d", anError);
+			return;
+		}
+		toPath = [NSString stringWithUTF8String:trashedPath];
 	}
 	
 	//	Then update the bundle
-	toPath = [NSString stringWithUTF8String:trashedPath];
 	self.bundle = [NSBundle bundleWithPath:toPath];
 	
 	//	Send a notification
@@ -136,11 +153,20 @@
 	NSString	*fromPath = self.path;
 	NSString	*toPath = [[[self class] pathForDomain:domain shouldCreate:YES disabled:NO] stringByAppendingPathComponent:[self.path lastPathComponent]];
 	
-	//	Now do the move
-	NSError	*error;
-	if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
-		NSLog(@"Error moving bundle (domain change):%@", error);
-		return;
+	//	Ensure that the user has access to both paths (for the to path just check the folder)
+	if (![fromPath userHasAccessRights] || ![[toPath stringByDeletingLastPathComponent] userHasAccessRights]) {
+		
+		LKLog(@"User doesn't have access to the from or to destination during enable change.");
+		//	Use the authentication mechanism inside Sparkle
+	}
+	else {
+		
+		//	Otherwise move normally
+		NSError	*error;
+		if (![[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:&error]) {
+			NSLog(@"Error moving bundle (domain change):%@", error);
+			return;
+		}
 	}
 	
 	//	Then update the bundle
@@ -381,6 +407,7 @@
 - (NSString *)firstOSVersionUnsupported {
 	return [MBMUUIDList firstUnsupportedOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
 }
+
 
 #pragma mark - Actions
 

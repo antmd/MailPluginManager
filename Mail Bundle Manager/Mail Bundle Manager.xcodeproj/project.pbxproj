@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D20537B11434C06E002F0157 /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */; };
 		D20537B714361EB6002F0157 /* GenericPlugin.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537B614361EB6002F0157 /* GenericPlugin.png */; };
 		D20537B814361F95002F0157 /* GenericPlugin.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537B614361EB6002F0157 /* GenericPlugin.png */; };
 		D20537BA1436223D002F0157 /* uuids.plist in Resources */ = {isa = PBXBuildFile; fileRef = D20537B91436223D002F0157 /* uuids.plist */; };
@@ -104,10 +103,15 @@
 		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
 		D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */; };
 		D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MBMSparkleDelegate.m */; };
+		D2EB824E148F9EE700C8B0DB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2EB824D148F9EE700C8B0DB /* Security.framework */; };
+		D2EB824F148F9EFA00C8B0DB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2EB824D148F9EE700C8B0DB /* Security.framework */; };
+		D2EB825A148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB8257148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m */; };
+		D2EB825B148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB8257148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m */; };
+		D2EB825C148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */; };
+		D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */; };
 		D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
 		D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
 		D2F70F82143F29EC000D5CC0 /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20A3EDD1434B3520083B10A /* MBMBundleView.xib */; };
-		D2F70F83143F32DF000D5CC0 /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */; };
 		D2F70F84143F34B7000D5CC0 /* BundleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C51439CD3E002F0157 /* BundleBackground.png */; };
 		D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */; };
 		D2F70F8B143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */; };
@@ -178,8 +182,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D20537AE1434C06E002F0157 /* NSViewController+LKCollectionItemFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSViewController+LKCollectionItemFix.h"; sourceTree = "<group>"; };
-		D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSViewController+LKCollectionItemFix.m"; sourceTree = "<group>"; };
 		D20537B614361EB6002F0157 /* GenericPlugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GenericPlugin.png; path = "Mail Bundle Manager/GenericPlugin.png"; sourceTree = "<group>"; };
 		D20537B91436223D002F0157 /* uuids.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = uuids.plist; path = "Mail Bundle Manager/uuids.plist"; sourceTree = "<group>"; };
 		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BundleBackgroundRed.png; path = "Mail Bundle Manager/BundleBackgroundRed.png"; sourceTree = "<group>"; };
@@ -288,6 +290,11 @@
 		D2E9029F141E643F0058618F /* lk-warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "lk-warnings.xcconfig"; path = "../../lk-warnings.xcconfig"; sourceTree = "<group>"; };
 		D2E902AB141E72460058618F /* MBMSparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSparkleDelegate.h; sourceTree = "<group>"; };
 		D2E902AC141E72470058618F /* MBMSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSparkleDelegate.m; sourceTree = "<group>"; };
+		D2EB824D148F9EE700C8B0DB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		D2EB8256148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSViewController+LKCollectionItemFix.h"; path = "../../LKKit/Categories/NSViewController+LKCollectionItemFix.h"; sourceTree = "<group>"; };
+		D2EB8257148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSViewController+LKCollectionItemFix.m"; path = "../../LKKit/Categories/NSViewController+LKCollectionItemFix.m"; sourceTree = "<group>"; };
+		D2EB8258148FA79300C8B0DB /* NSFileManager+LKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+LKAdditions.h"; path = "../../LKKit/Categories/NSFileManager+LKAdditions.h"; sourceTree = "<group>"; };
+		D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+LKAdditions.m"; path = "../../LKKit/Categories/NSFileManager+LKAdditions.m"; sourceTree = "<group>"; };
 		D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAppDelegate.h; path = "Mail Bundle Manager/MBAppDelegate.h"; sourceTree = "<group>"; };
 		D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBAppDelegate.m; path = "Mail Bundle Manager/MBAppDelegate.m"; sourceTree = "<group>"; };
 		D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMBackgroundableView.h; path = "Mail Bundle Manager/MBMBackgroundableView.h"; sourceTree = "<group>"; };
@@ -299,6 +306,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2EB824E148F9EE700C8B0DB /* Security.framework in Frameworks */,
 				D24248A6148E53C800DE7E6A /* QuartzCore.framework in Frameworks */,
 				D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */,
 				D24248A8148E544100DE7E6A /* Sparkle.framework in Frameworks */,
@@ -326,6 +334,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2EB824F148F9EFA00C8B0DB /* Security.framework in Frameworks */,
 				D2779BC214336287003F7BE0 /* Cocoa.framework in Frameworks */,
 				D2C473C9146B44C200B2981D /* Sparkle.framework in Frameworks */,
 				D2C473CA146B44DA00B2981D /* QuartzCore.framework in Frameworks */,
@@ -338,6 +347,7 @@
 		D216B32F141DFDE1003788DC = {
 			isa = PBXGroup;
 			children = (
+				D2EB824D148F9EE700C8B0DB /* Security.framework */,
 				D2779BD9143364C9003F7BE0 /* Common Source */,
 				D216B344141DFDE1003788DC /* Mail Bundle Manager */,
 				D2779BC314336287003F7BE0 /* MailBundleTool */,
@@ -598,12 +608,14 @@
 		D2E9029E141E63F70058618F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				D20537AE1434C06E002F0157 /* NSViewController+LKCollectionItemFix.h */,
-				D20537AF1434C06E002F0157 /* NSViewController+LKCollectionItemFix.m */,
 				D2E90298141E5EF90058618F /* NSBundle+MBMAdditions.h */,
 				D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */,
 				D23D31701445B979007D30F8 /* NSUserDefaults+MBMShared.h */,
 				D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */,
+				D2EB8256148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.h */,
+				D2EB8257148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m */,
+				D2EB8258148FA79300C8B0DB /* NSFileManager+LKAdditions.h */,
+				D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */,
 			);
 			name = Categories;
 			path = "Mail Bundle Manager";
@@ -841,7 +853,6 @@
 				D2731011142CB1E500EB5CB7 /* MBMConfirmationStep.m in Sources */,
 				D2D1E6C914307968002FF1B1 /* LKError.m in Sources */,
 				D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */,
-				D20537B11434C06E002F0157 /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
 				D2F70F8B143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */,
 				D23D3155144234B4007D30F8 /* MBMCompanyList.m in Sources */,
@@ -849,6 +860,8 @@
 				D23D315D1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */,
 				D23D316E1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */,
 				D23D31721445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
+				D2EB825A148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
+				D2EB825C148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -894,7 +907,6 @@
 				D20537F3143B15ED002F0157 /* MBTSinglePluginController.m in Sources */,
 				D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */,
 				D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
-				D2F70F83143F32DF000D5CC0 /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2F70F8C143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */,
 				D23D3156144234B4007D30F8 /* MBMCompanyList.m in Sources */,
 				D23D315A1442573A007D30F8 /* MBMUUIDList.m in Sources */,
@@ -902,6 +914,8 @@
 				D23D316F1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */,
 				D23D31731445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
 				D24AF64F147D4CAD000EDC6F /* MBTSendInfoCommand.m in Sources */,
+				D2EB825B148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
+				D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

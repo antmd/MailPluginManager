@@ -240,9 +240,9 @@
 	CGFloat	bundleHeightAdjust = (-1.0 * [[self.bundleViewController view] frame].size.height);
 	if ([self.mailBundleList count] <= (NSUInteger)([self.scrollView frame].size.width / [[self.bundleViewController view] frame].size.width)) {
 		//	Adjust the window, scrollview and background image size.
+		[[self window] setFrame:LKRectByAdjustingHeight([[self window] frame], bundleHeightAdjust) display:NO];
 		[self.scrollView setFrame:LKRectByAdjustingHeight([self.scrollView frame], bundleHeightAdjust)];
 		[self.backgroundView setFrame:LKRectByAdjustingHeight([self.backgroundView frame], bundleHeightAdjust)];
-		[[self window] setFrame:LKRectByAdjustingHeight([[self window] frame], bundleHeightAdjust) display:NO];
 	}
 	
 	[[self window] center];
