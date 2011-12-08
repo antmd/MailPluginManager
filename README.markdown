@@ -309,7 +309,6 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* Add authorizations where needed when accessing files the user needs admin for.
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Add complete error handling.
@@ -320,8 +319,10 @@ The keys for the results in the dictionary are listed below.
 
 #### Manager Interface
 
+* Update Installer/Uninstaller methods with auth
 * Add support for different domain installation.
 * Support the `<LibraryDomain>` path prefix.
+* Add Mail Configuration code
 * Add an Update All Plugins button to Manager window when relevant.
 * Handle install path with a full URL.
 
