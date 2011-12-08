@@ -121,6 +121,7 @@
 		self.bundleUnistallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
 				self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
+				[self adjustWindowSizeForBundleList:self.mailBundleList animate:YES];
 			}
 		}];
 	}

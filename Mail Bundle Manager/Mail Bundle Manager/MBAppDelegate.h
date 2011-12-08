@@ -32,6 +32,7 @@
 
 //	Window management
 - (void)showCollectionWindowForBundles:(NSArray *)bundleList;
+- (void)adjustWindowSizeForBundleList:(NSArray *)bundleList animate:(BOOL)animate;
 
 //	Maintenance task management
 - (void)addMaintenanceTask:(void (^)(void))block;

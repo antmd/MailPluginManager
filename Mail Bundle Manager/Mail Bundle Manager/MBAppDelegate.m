@@ -237,16 +237,37 @@
 	self.mailBundleList = bundleList;
 	
 	//	Adjust the view & window sizes, if there should only be a single row
-	CGFloat	bundleHeightAdjust = (-1.0 * [[self.bundleViewController view] frame].size.height);
-	if ([self.mailBundleList count] <= (NSUInteger)([self.scrollView frame].size.width / [[self.bundleViewController view] frame].size.width)) {
-		//	Adjust the window, scrollview and background image size.
-		[[self window] setFrame:LKRectByAdjustingHeight([[self window] frame], bundleHeightAdjust) display:NO];
-		[self.scrollView setFrame:LKRectByAdjustingHeight([self.scrollView frame], bundleHeightAdjust)];
-		[self.backgroundView setFrame:LKRectByAdjustingHeight([self.backgroundView frame], bundleHeightAdjust)];
-	}
+	[self adjustWindowSizeForBundleList:bundleList animate:NO];
 	
 	[[self window] center];
 	[[self window] makeKeyAndOrderFront:self];
+}
+
+- (void)adjustWindowSizeForBundleList:(NSArray *)bundleList animate:(BOOL)animate {
+	
+	//	If the size is already equivalent to one controller height, just leave (test that it is less than 1.5 of a controller)
+	if ([self.scrollView frame].size.height < (1.5f * [[self.bundleViewController view] frame].size.height)) {
+		return;
+	}
+	
+	//	Adjust the view & window sizes, if there should only be a single row
+	CGFloat	bundleHeightAdjust = (-1.0 * [[self.bundleViewController view] frame].size.height);
+	if ([self.mailBundleList count] <= (NSUInteger)([self.scrollView frame].size.width / [[self.bundleViewController view] frame].size.width)) {
+		//	Adjust the window, scrollview and background image size.
+		NSRect	windowFrame = LKRectByAdjustingHeight([[self window] frame], bundleHeightAdjust);
+		if (animate) {
+			[NSAnimationContext beginGrouping];
+			[[NSAnimationContext currentContext] setDuration:0.3f];
+			windowFrame = LKRectByOffsettingY(windowFrame, (-1.0f * (bundleHeightAdjust / 2.f)));
+		}
+		[(animate?[[self window] animator]:[self window]) setFrame:windowFrame display:NO];
+		[(animate?[self.scrollView animator]:self.scrollView) setFrame:LKRectByAdjustingHeight([self.scrollView frame], bundleHeightAdjust)];
+		[(animate?[self.backgroundView animator]:self.backgroundView) setFrame:LKRectByAdjustingHeight([self.backgroundView frame], bundleHeightAdjust)];
+		if (animate) {
+			[NSAnimationContext endGrouping];
+		}
+	}
+	
 }
 
 
