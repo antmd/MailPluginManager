@@ -104,6 +104,16 @@
 	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[self.path lastPathComponent]];
 	NSError		*error;
 	
+	//	Ensure that we have a unique file name for the trash
+	NSString	*tempPath = toPath;
+	NSInteger	counter = 1;
+	while ([[NSFileManager defaultManager] fileExistsAtPath:tempPath]) {
+		tempPath = [toPath stringByAppendingFormat:@" %ld", counter++];
+	}
+	if (toPath != tempPath) {	//	Using pointer equivalence here expressly!!
+		toPath = tempPath;
+	}
+	
 	//	Move the plugin to the trash
 	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath error:&error]) {
 		//	Then update the bundle
