@@ -11,7 +11,6 @@
 #import "MBMRemoteUpdatableList.h"
 
 @interface MBMCompanyList : MBMRemoteUpdatableList
-+ (void)loadCompanyListFromCloud;
 + (NSString *)companyNameFromIdentifier:(NSString *)identifier;
 + (NSString *)companyURLFromIdentifier:(NSString *)identifier;
 + (NSString *)productURLFromIdentifier:(NSString *)identifier;

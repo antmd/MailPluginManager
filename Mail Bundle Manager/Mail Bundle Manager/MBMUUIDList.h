@@ -11,7 +11,6 @@
 #import "MBMRemoteUpdatableList.h"
 
 @interface MBMUUIDList : MBMRemoteUpdatableList
-+ (void)loadUUIDListFromCloud;
 + (NSString *)currentMailUUID;
 + (NSString *)currentMessageUUID;
 + (NSString *)latestOSVersionFromSupportedList:(NSArray *)supportedUUIDs;

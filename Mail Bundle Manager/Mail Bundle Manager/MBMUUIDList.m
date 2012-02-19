@@ -122,12 +122,6 @@
 
 #pragma mark - Action Methods
 
-+ (void)loadUUIDListFromCloud {
-	//	Try to load the plist from the remote server
-//	NSURL			*theURL = [NSURL URLWithString:[[kMBMRemoteUpdateableListPathURL stringByAppendingPathComponent:[self filename]] stringByAppendingPathExtension:kMBMPlistExtension]];
-//	[self loadListFromCloudURL:theURL];
-}
-
 + (NSString *)filename {
 	return kMBMUUIDListFileName;
 }
