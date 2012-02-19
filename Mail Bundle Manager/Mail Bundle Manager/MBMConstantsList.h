@@ -49,6 +49,8 @@ STR_CONST(kMBMConfirmationTitleKey, "title");
 STR_CONST(kMBMConfirmationBulletTitleKey, "bullet-title");
 STR_CONST(kMBMConfirmationShouldAgreeToLicense, "license-agreement-required");
 STR_CONST(kMBMConfirmationTypeKey, "type");
+//	Other error keys
+STR_CONST(kMBMErrorKey, "error");
 
 //	Keys for historical UUID plist
 STR_CONST(kMBMUUIDTypeKey, "type");

@@ -33,11 +33,13 @@
 //"200-button-1" = "Quit";
 
 "201-description" = "The source path for '%<name>@' is invalid [%<path>@].";
-"202-description" = "Trying to install the Bundle Manager with a different BundleID [%1$@] over the existing app '%3$@' [%2$@]";
-"203-description" = "Can't copy '%1$@ because the destination is actually a file:%2$@";
+"202-description" = "Trying to install %<name>@ with a different BundleID [%<bundleid>@] over the existing app '%<dest-name>@' [%<bundleid2>@]";
+"203-description" = "Can't copy '%<name>@' because the destination is actually a file:%<path>@";
+"204-description" = "I am unable to move '%<name>@' to the trash.\n%<error>@";
 
-"210-description" = "Couldn't <%@> create folder:%2$@  [%1$@]";
-"211-description" = "Unable to copy item '%1$@ to %2$@\n%3$@";
+"210-description" = "Couldn't create folder to copy item '%<name>@' into.\n%<error>@";
+"211-description" = "Unable to copy item '%<name>@ to %<path>@.\n%<error>@";
 
-"2001-description" = "This Mail Plugin will not work with this version of Mail";
+"2001-description" = "";
+"2002-description" = "This Mail Plugin will not work with the current version of Mail (%<version>@)";
 

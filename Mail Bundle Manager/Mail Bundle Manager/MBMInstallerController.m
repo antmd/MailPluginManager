@@ -11,7 +11,10 @@
 
 #import "MBMMailBundle.h"
 #import "MBMConfirmationStep.h"
+#import "MBMSystemInfo.h"
+#import "MBMUUIDList.h"
 #import "LKError.h"
+#import "NSFileManager+LKAdditions.h"
 
 typedef enum {
 	MBMMinOSInsufficientCode = 101,
@@ -22,6 +25,7 @@ typedef enum {
 	MBMInvalidSourcePath = 201,
 	MBMDifferentDestinationBundleManager = 202,
 	MBMTryingToInstallOverFile = 203,
+	MBMUnableToMoveFileToTrash = 204,
 	
 	MBMCantCreateFolder = 210,
 	MBMCopyFailed = 211,
@@ -399,20 +403,14 @@ typedef enum {
 	
 	//	Before installing an actual mail bundle, ensure that the plugin is actaully update to date
 	if (anItem.isMailBundle) {
-		//	Get the values to test
-		NSBundle	*aBundle = [NSBundle bundleWithPath:anItem.path];
-		NSArray		*supportedUUIDs = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey];
-		aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
-		NSString	*mailUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
-		NSString	*messageBundlePath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject];
-		messageBundlePath = [messageBundlePath stringByAppendingPathComponent:kMBMMessageBundlePath];
-		aBundle = [NSBundle bundleWithPath:messageBundlePath];
-		NSString	*messageUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
-		
-		//	Test to ensure that the plugin list contains both the mail and message UUIDs
-		if (![supportedUUIDs containsObject:mailUUID] || ![supportedUUIDs containsObject:messageUUID]) {
-			LKPresentErrorCode(MBMPluginDoesNotWorkWithMailVersion);
-			LKErr(@"This Mail Plugin will not work with this version of Mail:mailUUID:%@ messageUUID:%@", mailUUID, messageUUID);
+
+		//	Create a mail bundle
+		MBMMailBundle	*mailBundle = [[[MBMMailBundle alloc] initWithPath:anItem.path shouldLoadUpdateInfo:NO] autorelease];
+		//	Test to ensure that the plugin is actually compatible
+		if ([mailBundle incompatibleWithCurrentMail]) {
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:[MBMSystemInfo mailVersion], kMBMVersionKey, nil];
+			LKPresentErrorCodeUsingDict(MBMPluginDoesNotWorkWithMailVersion, theDict);
+			LKErr(@"This Mail Plugin will not work with this version of Mail:mailUUID:%@ messageUUID:%@", [MBMUUIDList currentMailUUID], [MBMUUIDList currentMessageUUID]);
 			return NO;
 		}
 	}
@@ -425,7 +423,8 @@ typedef enum {
 	NSError	*error;
 	if (![manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent]]) {
 		if (![manager createDirectoryAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error]) {
-			LKPresentErrorCode(MBMGenericFileCode);
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, error, kMBMErrorKey, nil];
+			LKPresentErrorCodeUsingDict(MBMCantCreateFolder, theDict);
 			LKErr(@"Couldn't create folder to copy item '%@' into:%@", anItem.name, error);
 			return NO;
 		}
@@ -434,14 +433,16 @@ typedef enum {
 	BOOL	isFolder;
 	[manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] isDirectory:&isFolder];
 	if (!isFolder) {
-		LKPresentErrorCode(MBMGenericFileCode);
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, [anItem.destinationPath stringByDeletingLastPathComponent], kMBMPathKey, nil];
+		LKPresentErrorCodeUsingDict(MBMTryingToInstallOverFile, theDict);
 		LKErr(@"Can't copy item '%@' to location that is actually a file:%@", anItem.name, [anItem.destinationPath stringByDeletingLastPathComponent]);
 		return NO;
 	}
 	
 	//	Now do the copy, replacing anything that is already there
-	if (![manager copyItemAtPath:anItem.path toPath:anItem.destinationPath error:&error]) {
-		LKPresentErrorCode(MBMGenericFileCode);
+	if (![manager copyWithAuthenticationFromPath:anItem.path toPath:anItem.destinationPath error:&error]) {
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.destinationPath, kMBMPathKey, error, kMBMErrorKey, nil];
+		LKPresentErrorCodeUsingDict(MBMCopyFailed, theDict);
 		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
 		return NO;
 	}
@@ -457,16 +458,31 @@ typedef enum {
 	
 	//	Default is to *enable* it
 	NSString	*fromPath = anItem.path;
+	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[anItem.path lastPathComponent]];
+	NSError		*error;
 		
-	//	Notification for what we are copying
+	//	Ensure that we have a unique file name for the trash
+	NSString	*tempPath = toPath;
+	NSInteger	counter = 1;
+	while ([[NSFileManager defaultManager] fileExistsAtPath:tempPath]) {
+		tempPath = [toPath stringByAppendingFormat:@" %ld", counter++];
+	}
+	if (toPath != tempPath) {	//	Using pointer equivalence here expressly!!
+		toPath = tempPath;
+	}
+	
+	//	Notification for what we are deleting
 	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
 	
-	OSErr		anError = FSPathMoveObjectToTrashSync([fromPath UTF8String], NULL, kFSFileOperationDefaultOptions);
-	
-	//	Now do the move
-	if (anError != noErr) {
-		LKLog(@"Error removing an item to the trash:%d", anError);
+	//	Move the plugin to the trash
+	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath error:&error]) {
+		//	Send a notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleUninstalledNotification object:self];
+	}
+	else {
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, error, kMBMErrorKey, nil];
+		LKPresentErrorCodeUsingDict(MBMUnableToMoveFileToTrash, theDict);
 		return NO;
 	}
 
@@ -512,8 +528,8 @@ typedef enum {
 		
 		//	There is a serious problem if the bundle ids are different
 		if (!isSameBundleID) {
-			
-			LKPresentErrorCode(MBMGenericFileCode);
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:[[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], kMBMNameKey, [sourceBundle bundleIdentifier], @"bundleid", [[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], @"dest-name", [destBundle bundleIdentifier], @"bundleid2", nil];
+			LKPresentErrorCodeUsingDict(MBMGenericFileCode, theDict);
 			LKErr(@"Trying to install a bundle manager (%@) with different BundleID [%@] over existing app (%@) [%@]", [[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [sourceBundle bundleIdentifier], [[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [destBundle bundleIdentifier]);
 			return NO;
 		}
