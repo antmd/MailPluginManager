@@ -13,6 +13,7 @@
 #import "NSBundle+MBMAdditions.h"
 #import "NSString+LKHelper.h"
 #import "NSFileManager+LKAdditions.h"
+#import "NSObject+LKObject.h"
 
 typedef enum {
 	MBMGenericBundleErrorCode = 500,
@@ -343,16 +344,18 @@ typedef enum {
 
 - (void)updateState {
 	
-	//	Set the state values
-	[self willChangeValueForKey:@"enabled"];
-	_enabled = [self isInActiveBundlesFolder];
-	[self didChangeValueForKey:@"enabled"];
-	[self willChangeValueForKey:@"installed"];
-	_installed = [self isInActiveBundlesFolder] || [self isInDisabledBundlesFolder];
-	[self didChangeValueForKey:@"installed"];
-	[self willChangeValueForKey:@"inLocalDomain"];
-	_inLocalDomain = [self.path hasPrefix:[[self class] mailFolderPathLocal]];
-	[self didChangeValueForKey:@"inLocalDomain"];
+	[self performBlock:^{
+		//	Set the state values
+		[self willChangeValueForKey:@"enabled"];
+		_enabled = [self isInActiveBundlesFolder];
+		[self didChangeValueForKey:@"enabled"];
+		[self willChangeValueForKey:@"installed"];
+		_installed = [self isInActiveBundlesFolder] || [self isInDisabledBundlesFolder];
+		[self didChangeValueForKey:@"installed"];
+		[self willChangeValueForKey:@"inLocalDomain"];
+		_inLocalDomain = [self.path hasPrefix:[[self class] mailFolderPathLocal]];
+		[self didChangeValueForKey:@"inLocalDomain"];
+	} afterDelay:0.1f];
 	
 }
 
