@@ -19,8 +19,11 @@
 @synthesize contents = _contents;
 @synthesize date = _date;
 
-+ (void)loadListFromCloudURL:(NSURL *)theURL {
+
++ (void)loadListFromCloud {
 	
+	NSURL			*theURL = [NSURL URLWithString:[[kMBMRemoteUpdateableListPathURL stringByAppendingPathComponent:[self filename]] stringByAppendingPathExtension:kMBMPlistExtension]];
+
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*localFilePath = [self localSupportPath];
 	NSError			*theError = nil;

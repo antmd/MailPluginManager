@@ -58,12 +58,12 @@
 	
 	//	Load the process to put in place our uuids file
 	[self addMaintenanceTask:^{
-		[MBMUUIDList loadUUIDListFromCloud];
+		[MBMUUIDList loadListFromCloud];
 	}];
 	
 	//	Load the process to put in place our companies file
 	[self addMaintenanceTask:^{
-		[MBMCompanyList loadCompanyListFromCloud];
+		[MBMCompanyList loadListFromCloud];
 	}];
 
 }

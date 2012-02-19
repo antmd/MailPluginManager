@@ -25,8 +25,8 @@
 
 + (void)loadCompanyListFromCloud {
 	//	Try to load the plist from the remote server
-	NSURL			*theURL = [NSURL URLWithString:@"http://lkslocal/mbm-companies.plist"];
-	[self loadListFromCloudURL:theURL];
+//	NSURL			*theURL = [NSURL URLWithString:[[kMBMRemoteUpdateableListPathURL stringByAppendingPathComponent:[self filename]] stringByAppendingPathExtension:kMBMPlistExtension]];
+//	[self loadListFromCloudURL:theURL];
 }
 
 + (NSString *)companyNameFromIdentifier:(NSString *)identifier {

@@ -347,7 +347,6 @@
 		D216B32F141DFDE1003788DC = {
 			isa = PBXGroup;
 			children = (
-				D2EB824D148F9EE700C8B0DB /* Security.framework */,
 				D2779BD9143364C9003F7BE0 /* Common Source */,
 				D216B344141DFDE1003788DC /* Mail Bundle Manager */,
 				D2779BC314336287003F7BE0 /* MailBundleTool */,
@@ -372,6 +371,7 @@
 		D216B33D141DFDE1003788DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2EB824D148F9EE700C8B0DB /* Security.framework */,
 				D2C473C7146B449B00B2981D /* Sparkle.framework */,
 				D2779BF214337389003F7BE0 /* QuartzCore.framework */,
 				D216B33E141DFDE1003788DC /* Cocoa.framework */,

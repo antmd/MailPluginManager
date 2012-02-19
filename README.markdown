@@ -309,32 +309,37 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
-* Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
 * Add complete error handling.
-* Update remote file URLs (can we use github link?)
 * Add real version information to the uuids file for system, mail and message.
 * *Would be nice*
+* Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
+* Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
+* *Maybe*
 * Parse company Name from the Get Info string of info.plist
 
 #### Manager Interface
 
+* Add Mail Configuration code
+* Change Name to "Mail Plugin Manager"
 * Update Installer/Uninstaller methods with auth
+* *Would be nice*
 * Add support for different domain installation.
 * Support the `<LibraryDomain>` path prefix.
-* Add Mail Configuration code
 * Add an Update All Plugins button to Manager window when relevant.
+* *Maybe*
 * Handle install path with a full URL.
 
 #### Tool
 
+* Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * What happens when a command is sent and the app is already running?
 	1. Make a queue of items as they are added?
 	2. Will happen pretty frequently with Update and Send Crash logs.
-* During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
-* Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
+* Ensure that the Bundle app doesn't ask if you want to Update (from Sparkle).
+* *Would be nice*
 * Crash Reporting.
 * Add an Update All Plugins button to Multi Plugin window when relevant.
+* During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
 
 #### launchd values of interest (for boot time agent setup)
 
