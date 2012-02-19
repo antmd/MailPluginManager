@@ -26,6 +26,8 @@
 		D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
+		D222073C14F143E400881515 /* MBMBackgroundImage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D222073B14F143E400881515 /* MBMBackgroundImage.pdf */; };
+		D222073D14F143E400881515 /* MBMBackgroundImage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D222073B14F143E400881515 /* MBMBackgroundImage.pdf */; };
 		D22CC04D146B455B0055CFBE /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2C473C7146B449B00B2981D /* Sparkle.framework */; };
 		D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D22CC059146BD87F0055CFBE /* InfoPlist.strings */; };
@@ -210,6 +212,7 @@
 		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstants.h; path = "Mail Bundle Manager/MBMConstants.h"; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = "Mail Bundle Manager/MBMConstants.m"; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
+		D222073B14F143E400881515 /* MBMBackgroundImage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = MBMBackgroundImage.pdf; path = "Mail Bundle Manager/MBMBackgroundImage.pdf"; sourceTree = "<group>"; };
 		D22CC053146BD87F0055CFBE /* ToolTestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToolTestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D22CC058146BD87F0055CFBE /* ToolTestHarness-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToolTestHarness-Info.plist"; sourceTree = "<group>"; };
 		D22CC05A146BD87F0055CFBE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -534,6 +537,7 @@
 				D20537B614361EB6002F0157 /* GenericPlugin.png */,
 				D20537C51439CD3E002F0157 /* BundleBackground.png */,
 				D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */,
+				D222073B14F143E400881515 /* MBMBackgroundImage.pdf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -768,6 +772,7 @@
 				D20537C41439C9BB002F0157 /* BundleBackgroundRed.png in Resources */,
 				D20537C61439CD3E002F0157 /* BundleBackground.png in Resources */,
 				D23D3151144216E3007D30F8 /* companies.plist in Resources */,
+				D222073C14F143E400881515 /* MBMBackgroundImage.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -809,6 +814,7 @@
 				D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */,
 				D23D3152144216E3007D30F8 /* companies.plist in Resources */,
 				D24AF649147D3565000EDC6F /* MBT Scripting.sdef in Resources */,
+				D222073D14F143E400881515 /* MBMBackgroundImage.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

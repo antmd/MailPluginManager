@@ -117,6 +117,7 @@ STR_CONST(kMBMNotificationWaitObserver, "observer");
 
 //	Names for objects in MBM
 STR_CONST(kMBMAnimationBackgroundImageName, "InstallAnimationBackground");
+STR_CONST(kMBMWindowBackgroundImageName, "MBMBackgroundImage");
 
 //	Paths
 STR_CONST(kMBMRemoteUpdateableListPathURL, "https://raw.github.com/lksoft/BundleManager/master/Mail%20Bundle%20Manager/Mail%20Bundle%20Manager/");
