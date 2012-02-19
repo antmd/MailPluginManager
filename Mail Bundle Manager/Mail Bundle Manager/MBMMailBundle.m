@@ -99,7 +99,7 @@
 		return;
 	}
 	
-	//	Default is to *install* it
+	//	Default is to *uninstall* it
 	NSString	*fromPath = self.path;
 	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[self.path lastPathComponent]];
 	NSError		*error;
