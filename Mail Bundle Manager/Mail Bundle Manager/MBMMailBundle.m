@@ -14,6 +14,14 @@
 #import "NSString+LKHelper.h"
 #import "NSFileManager+LKAdditions.h"
 
+typedef enum {
+	MBMGenericBundleErrorCode = 500,
+	MBMCantCreateDisabledBundleFolderErrorCode = 501,
+	
+	MBMUnknownBundleCode
+} MBMBundleErrorCodes;
+
+
 @interface MBMMailBundle ()
 @property	(nonatomic, copy, readwrite)		NSString		*name;
 @property	(nonatomic, copy, readwrite)		NSString		*company;
@@ -551,6 +559,8 @@
 		
 		NSError		*error;
 		if (shouldCreate && ![manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:path, kMBMPathKey, error, kMBMErrorKey, nil];
+			LKPresentErrorCodeUsingDict(MBMCantCreateDisabledBundleFolderErrorCode, theDict);
 			LKErr(@"Couldn't create the Disabled Bundle folder:%@", error);
 			return nil;
 		}
@@ -701,6 +711,13 @@
 	}
 	
 	return [bundleDict allValues];
+}
+
+
+#pragma mark - Error Delegate Methods
+
+- (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
+	return @"MBMMailBundleErrorDomain";
 }
 
 

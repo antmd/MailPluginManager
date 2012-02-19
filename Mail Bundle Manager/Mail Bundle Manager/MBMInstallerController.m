@@ -27,11 +27,10 @@ typedef enum {
 	MBMTryingToInstallOverFile = 203,
 	MBMUnableToMoveFileToTrash = 204,
 	
-	MBMCantCreateFolder = 210,
-	MBMCopyFailed = 211,
+	MBMCantCreateFolder = 211,
+	MBMCopyFailed = 212,
 	
-	MBMBundleManagerAlreadyUpToDate = 2001,
-	MBMPluginDoesNotWorkWithMailVersion = 2002,
+	MBMPluginDoesNotWorkWithMailVersion = 221,
 	
 	MBMUnknownInstallCode
 } MBMInstallErrorCodes;
@@ -704,22 +703,7 @@ typedef enum {
 }
 
 - (NSArray *)recoveryOptionsForError:(LKError *)error {
-	NSMutableArray	*options = [NSMutableArray array];
-	
-	//	Loop to find all buttons
-	for (NSInteger i = 1;; i++) {
-		NSString	*format = [NSString stringWithFormat:@"%%d-button-%d", i];
-		NSString	*compareValue = [NSString stringWithFormat:format, [error code]];
-		NSString	*value = [error localizeWithFormat:format];
-		//	If it wasn't found, there are no more options
-		if ((value == nil) || [compareValue isEqualToString:value]) {
-			break;
-		}
-		[options addObject:value];
-	}
-	
-	//	If the options are not empty, return them
-	return IsEmpty(options)?nil:[NSArray arrayWithArray:options];
+	return [error localizedRecoveryOptionList];
 }
 
 - (NSArray *)formatDescriptionValuesForError:(LKError *)error {

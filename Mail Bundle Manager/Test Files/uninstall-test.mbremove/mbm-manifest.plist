@@ -57,6 +57,6 @@
 	<key>display-name</key>
 	<string>ExamplePlugin</string>
 	<key>manifest-type</key>
-	<string>uninstall</string>
+	<string>uninstall-bad</string>
 </dict>
 </plist>

@@ -37,9 +37,19 @@
 "203-description" = "Can't copy '%<name>@' because the destination is actually a file:%<path>@";
 "204-description" = "I am unable to move '%<name>@' to the trash.\n%<error>@";
 
-"210-description" = "Couldn't create folder to copy item '%<name>@' into.\n%<error>@";
-"211-description" = "Unable to copy item '%<name>@ to %<path>@.\n%<error>@";
+"211-description" = "Couldn't create folder to copy item '%<name>@' into.\n%<error>@";
+"212-description" = "Unable to copy item '%<name>@ to %<path>@.\n%<error>@";
 
-"2001-description" = "";
-"2002-description" = "This Mail Plugin will not work with the current version of Mail (%<version>@)";
+"221-description" = "This Mail Plugin will not work with the current version of Mail (%<version>@)";
+
+//	Messages from the MBM AppDelegate
+"400-description" = "Undefined error from the Mail Plugin Manager";
+"400-recovery-suggestion" = "Please let us know about this problem.";
+"400-button-1" = "Quit";
+"401-description" = "This Installation file is corrupted";
+"402-description" = "This Uninstallation file is corrupted";
+
+//	Messages from the MBMBundle class
+"500-description" = "Undefined error from the Plugin Bundle";
+"501-description" = "Couldn't create the Disabled Bundle folder at %<path>@.\n%<error>@";
 

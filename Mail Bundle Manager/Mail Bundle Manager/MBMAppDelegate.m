@@ -13,6 +13,14 @@
 #import "NSViewController+LKCollectionItemFix.h"
 
 
+typedef enum {
+	MBMInstallerHasBadTypeCode = 401,
+	MBMUninstallerHasBadTypeCode = 402,
+	
+	MBMEndAppDelegateCode
+} MBMAppDelegateErrorCodes;
+
+
 @implementation MBMAppDelegate
 
 #pragma mark - Accessors & Memeory
@@ -64,7 +72,8 @@
 		NSString	*extension = [filename pathExtension];
 		if ([extension isEqualToString:kMBMInstallerFileExtension]) {
 			if (self.manifestModel.manifestType != kMBMManifestTypeInstallation) {
-				LKPresentErrorCode(401);
+				LKPresentErrorCode(MBMInstallerHasBadTypeCode);
+				[self quittingNowIsReasonable];
 				return NO;
 			}
 			self.installing = YES;
@@ -72,7 +81,8 @@
 		}
 		else if ([extension isEqualToString:kMBMUninstallerFileExtension]) {
 			if (self.manifestModel.manifestType != kMBMManifestTypeUninstallation) {
-				LKPresentErrorCode(402);
+				LKPresentErrorCode(MBMUninstallerHasBadTypeCode);
+				[self quittingNowIsReasonable];
 				return NO;
 			}
 			self.uninstalling = YES;
@@ -165,6 +175,25 @@
 			//	Use Sparkle to check the local version.
 		}
 	}
+}
+
+
+#pragma mark - Error Delegate Methods
+
+- (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
+	return @"MBMAppDelegateErrorDomain";
+}
+
+- (NSArray *)recoveryOptionsForError:(LKError *)error {
+	return [error localizedRecoveryOptionList];
+}
+
+- (id)recoveryAttemptorForError:(LKError *)error {
+	return self;
+}
+
+- (BOOL)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex {
+	return recoveryOptionIndex==0?YES:NO;
 }
 
 

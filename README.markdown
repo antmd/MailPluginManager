@@ -309,7 +309,7 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* Add complete error handling.
+* Add complete error handling. Test values and buttons.
 * Add real version information to the uuids file for system, mail and message.
 * *Would be nice*
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
@@ -319,12 +319,11 @@ The keys for the results in the dictionary are listed below.
 
 #### Manager Interface
 
-* Add Mail Configuration code
-* Change Name to "Mail Plugin Manager"
-* Update Installer/Uninstaller methods with auth
-* *Would be nice*
-* Add support for different domain installation.
+* Add support for different domains in installation and uninstall.
 * Support the `<LibraryDomain>` path prefix.
+* Change Name to "Mail Plugin Manager"
+* Add Mail Configuration code
+* *Would be nice*
 * Add an Update All Plugins button to Manager window when relevant.
 * *Maybe*
 * Handle install path with a full URL.
