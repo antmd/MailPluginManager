@@ -28,6 +28,8 @@
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
 		D222073C14F143E400881515 /* MBMBackgroundImage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D222073B14F143E400881515 /* MBMBackgroundImage.pdf */; };
 		D222073D14F143E400881515 /* MBMBackgroundImage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D222073B14F143E400881515 /* MBMBackgroundImage.pdf */; };
+		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
+		D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D22CC04D146B455B0055CFBE /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2C473C7146B449B00B2981D /* Sparkle.framework */; };
 		D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D22CC059146BD87F0055CFBE /* InfoPlist.strings */; };
@@ -213,6 +215,8 @@
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = "Mail Bundle Manager/MBMConstants.m"; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
 		D222073B14F143E400881515 /* MBMBackgroundImage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = MBMBackgroundImage.pdf; path = "Mail Bundle Manager/MBMBackgroundImage.pdf"; sourceTree = "<group>"; };
+		D222073E14F1B04000881515 /* NSObject+LKObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+LKObject.h"; path = "../../LKKit/Categories/NSObject+LKObject.h"; sourceTree = "<group>"; };
+		D222073F14F1B04000881515 /* NSObject+LKObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+LKObject.m"; path = "../../LKKit/Categories/NSObject+LKObject.m"; sourceTree = "<group>"; };
 		D22CC053146BD87F0055CFBE /* ToolTestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToolTestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D22CC058146BD87F0055CFBE /* ToolTestHarness-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToolTestHarness-Info.plist"; sourceTree = "<group>"; };
 		D22CC05A146BD87F0055CFBE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -632,6 +636,8 @@
 				D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */,
 				D2D1E6CA1430827F002FF1B1 /* NSString+LKHelper.h */,
 				D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */,
+				D222073E14F1B04000881515 /* NSObject+LKObject.h */,
+				D222073F14F1B04000881515 /* NSObject+LKObject.m */,
 				D2730FEF142A1F4700EB5CB7 /* LKCGStructs.h */,
 				D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */,
 				D231F44B1428ED5E002DB999 /* LKLogHelper.h */,
@@ -868,6 +874,7 @@
 				D23D31721445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
 				D2EB825A148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2EB825C148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
+				D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -922,6 +929,7 @@
 				D24AF64F147D4CAD000EDC6F /* MBTSendInfoCommand.m in Sources */,
 				D2EB825B148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
+				D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

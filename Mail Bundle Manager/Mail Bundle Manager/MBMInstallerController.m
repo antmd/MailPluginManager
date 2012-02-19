@@ -277,6 +277,14 @@ typedef enum {
 
 
 - (void)startActions {
+
+	//	Test installation requirements
+	if ((self.manifestModel.manifestType == kMBMManifestTypeInstallation) &&
+		![self validateRequirements]) {
+		return;
+	}
+	
+
 	//	Show the progress view
 	[self showContentView:self.displayProgressView];
 	
@@ -320,12 +328,6 @@ typedef enum {
 
 - (BOOL)processAllItems {
 	
-	//	Test installation requirements
-	if ((self.manifestModel.manifestType == kMBMManifestTypeInstallation) &&
-		![self validateRequirements]) {
-		return NO;
-	}
-
 	//	Try to process the items first
 	BOOL result = [self processItems];
 	//	If that worked, then try to process the bundle manager
@@ -360,7 +362,7 @@ typedef enum {
 	}
 	
 	//	First just ensure that the all items are there to copy
-	for (MBMActionItem *anItem in self.manifestModel.actionItemList) {
+	for (MBMActionItem *anItem in model.actionItemList) {
 		if (![manager fileExistsAtPath:anItem.path]) {
 			NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.path, kMBMPathKey, nil];
 			LKPresentErrorCodeUsingDict(MBMInvalidSourcePath, dict);
@@ -371,7 +373,8 @@ typedef enum {
 
 	//	Ensure that the source bundle is where we think it is
 	if (![manager fileExistsAtPath:model.bundleManager.path] || ![workspace isFilePackageAtPath:model.bundleManager.path]) {
-		LKPresentErrorCode(MBMGenericFileCode);
+		NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:model.bundleManager.name, kMBMNameKey, model.bundleManager.path, kMBMPathKey, nil];
+		LKPresentErrorCodeUsingDict(MBMInvalidSourcePath, dict);
 		LKErr(@"The source path for the bundle manager (%@) is invalid.", model.bundleManager.path);
 		return NO;
 	}
