@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Mail Bundle Manager/Mail Bundle Manager.xcodeproj">
+      location = "group:Mail Bundle Manager/Mail Plugin Manager.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:LKKit/LKKit.xcodeproj">
