@@ -17,6 +17,9 @@
 @property	(nonatomic, copy, readonly)		NSString	*destinationPath;
 @property	(nonatomic, assign, readonly)	BOOL		isMailBundle;
 @property	(nonatomic, assign, readonly)	BOOL		isBundleManager;
+@property	(nonatomic, assign, readonly)	BOOL		useLibraryDomain;
+
+@property	(nonatomic, assign)	NSSearchPathDomainMask	domainMask;
 
 - (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath manifestType:(MBMManifestType)type;
 

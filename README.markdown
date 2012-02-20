@@ -318,7 +318,6 @@ The keys for the results in the dictionary are listed below.
 
 #### Manager Interface
 
-* Support the `<LibraryDomain>` path prefix.
 * Change Name to "Mail Plugin Manager"
 * Add Mail Configuration code
 * *Would be nice*

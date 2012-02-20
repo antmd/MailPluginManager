@@ -39,6 +39,7 @@ STR_CONST(kMBMPathKey, "path");
 STR_CONST(kMBMNameKey, "name");
 STR_CONST(kMBMVersionKey, "version");
 STR_CONST(kMBMDestinationPathKey, "destination-path");
+STR_CONST(kMBMDestinationDomainKey, "<LibraryDomain>");
 STR_CONST(kMBMDescriptionKey, "description");
 STR_CONST(kMBMPermissionsKey, "permissions-needed");
 STR_CONST(kMBMIsBundleManagerKey, "is-bundle-manager");

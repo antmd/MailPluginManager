@@ -27,6 +27,8 @@
 @synthesize destinationPath = _destinationPath;
 @synthesize isMailBundle = _isMailBundle;
 @synthesize isBundleManager = _isBundleManager;
+@synthesize useLibraryDomain = _useLibraryDomain;
+@synthesize domainMask = _domainMask;
 
 
 #pragma mark - Memory Management
@@ -64,6 +66,11 @@
 				tempPath = [tempPath stringByAppendingPathComponent:fileName];
 			}
 		}
+		//	See if the dest has the "<LibraryDomain>" value at the beginning
+		if ([tempPath hasPrefix:kMBMDestinationDomainKey]) {
+			_useLibraryDomain = YES;
+			tempPath = [tempPath substringFromIndex:[kMBMDestinationDomainKey length]];
+		}
 		_destinationPath = [tempPath copy];
 		
 		//	Description is optional
@@ -81,6 +88,8 @@
 		
 		//	If there is a bundle manager key, set it otherwise set as NO
 		_isBundleManager = ([itemDictionary valueForKey:kMBMIsBundleManagerKey] != nil)?[[itemDictionary valueForKey:kMBMIsBundleManagerKey] boolValue]:NO;
+		
+		_domainMask = NSUserDomainMask;
 	}
     
     return self;
@@ -96,6 +105,22 @@
 	[super dealloc];
 }
 
+
+#pragma mark - Accessors
+
+- (NSString *)destinationPath {
+
+	NSString	*destPath = _destinationPath;
+	
+	if (self.useLibraryDomain) {
+		destPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, self.domainMask, YES) lastObject] stringByAppendingPathComponent:_destinationPath];
+	}
+	
+	return destPath;
+}
+
+
+#pragma mark - Helper
 
 - (NSString *)description {
 	NSMutableString	*result = [NSMutableString string];
