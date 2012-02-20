@@ -59,7 +59,7 @@ STR_CONST(kMBMUUIDEarliestOSVersionKey, "earliest-os-version");
 STR_CONST(kMBMUUIDLatestOSVersionDisplayKey, "latest-os-version-display");
 STR_CONST(kMBMUUIDLatestOSVersionKey, "latest-os-version");
 STR_CONST(kMBMUUIDMailMessageVersionKey, "types-version");
-STR_CONST(kMBMUUIDMailMessageVersionDisplayKey, "types-version-display");
+STR_CONST(kMBMUUIDMailMessageVersionDisplayKey, "type-version-display");
 STR_CONST(kMBMUUIDLatestVersionTestKey, "latest-version-comparator");
 STR_CONST(kMBMUUIDTypeValueMail, "mail");
 STR_CONST(kMBMUUIDTypeValueMessage, "message");

@@ -6,22 +6,16 @@
 	<dict>
 		<key>1146A009-E373-4DB6-AB4D-47E59A7E50FD</key>
 		<dict>
-			<key>earliest-os-version</key>
-			<string></string>
 			<key>earliest-os-version-display</key>
 			<string>10.7</string>
-			<key>latest-os-version</key>
-			<string></string>
 			<key>latest-os-version-display</key>
 			<string>10.7.1</string>
 			<key>latest-version-comparator</key>
 			<integer>100</integer>
 			<key>type</key>
 			<string>message</string>
-			<key>types-version</key>
-			<string></string>
-			<key>types-version-display</key>
-			<string></string>
+			<key>type-version-display</key>
+			<string>5.0</string>
 		</dict>
 		<key>2DE49D65-B49E-4303-A280-8448872EFE87</key>
 		<dict>
@@ -33,6 +27,8 @@
 			<integer>100</integer>
 			<key>type</key>
 			<string>mail</string>
+			<key>type-version-display</key>
+			<string>5.0</string>
 		</dict>
 		<key>36555EB0-53A7-4B29-9B84-6C0C6BACFC23</key>
 		<dict>
@@ -45,6 +41,32 @@
 			<key>type</key>
 			<string>message</string>
 		</dict>
+		<key>4C286C70–7F18–4839-B903–6F2D58FA4C71</key>
+		<dict>
+			<key>earliest-os-version-display</key>
+			<string>10.7.3</string>
+			<key>latest-os-version-display</key>
+			<string>10.7.3</string>
+			<key>latest-version-comparator</key>
+			<string>102</string>
+			<key>type</key>
+			<string>mail</string>
+			<key>type-version-display</key>
+			<string>5.2</string>
+		</dict>
+		<key>608CE00F-4576–4CAD-B362-F3CCB7DE8D67</key>
+		<dict>
+			<key>earliest-os-version-display</key>
+			<string>10.8</string>
+			<key>latest-os-version-display</key>
+			<string>10.8</string>
+			<key>latest-version-comparator</key>
+			<string>999999</string>
+			<key>type</key>
+			<string>mail</string>
+			<key>type-version-display</key>
+			<string>6.0</string>
+		</dict>
 		<key>6E7970A3-E5F1-4C41-A904-B18D3D8FAA7D</key>
 		<dict>
 			<key>earliest-os-version-display</key>
@@ -52,9 +74,11 @@
 			<key>latest-os-version-display</key>
 			<string>10.7.2</string>
 			<key>latest-version-comparator</key>
-			<string>999999</string>
+			<string>101</string>
 			<key>type</key>
 			<string>mail</string>
+			<key>type-version-display</key>
+			<string>5.1</string>
 		</dict>
 		<key>9049EF7D-5873-4F54-A447-51D722009310</key>
 		<dict>
@@ -72,14 +96,16 @@
 			<key>earliest-os-version-display</key>
 			<string>10.7.2</string>
 			<key>latest-os-version-display</key>
-			<string>10.7.2</string>
+			<string>10.8</string>
 			<key>latest-version-comparator</key>
 			<string>999999</string>
 			<key>type</key>
 			<string>message</string>
+			<key>type-version-display</key>
+			<string>5.1</string>
 		</dict>
 	</dict>
 	<key>date</key>
-	<date>2011-09-30T15:03:04Z</date>
+	<date>2012-02-20T00:00:00Z</date>
 </dict>
 </plist>
