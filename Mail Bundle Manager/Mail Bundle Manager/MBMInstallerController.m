@@ -442,7 +442,7 @@ typedef enum {
 	}
 	
 	//	Now do the copy, replacing anything that is already there
-	if (![manager copyWithAuthenticationFromPath:anItem.path toPath:anItem.destinationPath error:&error]) {
+	if (![manager copyWithAuthenticationFromPath:anItem.path toPath:anItem.destinationPath overwrite:YES error:&error]) {
 		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.destinationPath, kMBMPathKey, error, kMBMErrorKey, nil];
 		LKPresentErrorCodeUsingDict(MBMCopyFailed, theDict);
 		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
@@ -478,7 +478,7 @@ typedef enum {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
 	
 	//	Move the plugin to the trash
-	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath error:&error]) {
+	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath overwrite:NO error:&error]) {
 		//	Send a notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleUninstalledNotification object:self];
 	}
