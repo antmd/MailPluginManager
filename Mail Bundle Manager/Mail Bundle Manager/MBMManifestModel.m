@@ -36,6 +36,8 @@
 @synthesize confirmationStepCount = _confirmationStepCount;
 @synthesize canDeleteManagerIfNotUsedByOthers = _canDeleteManagerIfNotUsedByOthers;
 @synthesize canDeleteManagerIfNoBundlesLeft = _canDeleteManagerIfNoBundlesLeft;
+@synthesize shouldConfigureMail = _shouldConfigureMail;
+@synthesize configureMailVersion = _configureMailVersion;
 
 
 - (BOOL)shouldInstallManager {
@@ -142,6 +144,14 @@
 			_canDeleteManagerIfNoBundlesLeft = [[manifestDict valueForKey:kMBMCanDeleteManagerIfNoBundlesKey] boolValue];
 		}
 		
+		//	Set values for mail configuration
+		_shouldConfigureMail = NO;
+		_configureMailVersion = kMBMDefaultMailPluginVersion;
+		if ([manifestDict valueForKey:kMBMMinMailBundleVersionKey] != nil) {
+			_shouldConfigureMail = YES;
+			_configureMailVersion = [[manifestDict valueForKey:kMBMMinMailBundleVersionKey] integerValue];
+		}
+		
 	}
 	return self;
 }
@@ -173,6 +183,10 @@
 	[result appendFormat:@"shouldInstallManager:%@\n", [NSString stringWithBool:self.shouldInstallManager]];
 	[result appendFormat:@"bundleManager:\n\t(%@)\n", self.bundleManager];
 	[result appendFormat:@"totalActionCount:%d  ", self.totalActionItemCount];
+	[result appendFormat:@"canDeleteManagerIfNotUsedByOthers:%@\n", [NSString stringWithBool:self.canDeleteManagerIfNotUsedByOthers]];
+	[result appendFormat:@"canDeleteManagerIfNoBundlesLeft:%@\n", [NSString stringWithBool:self.canDeleteManagerIfNoBundlesLeft]];
+	[result appendFormat:@"shouldConfigureMail:%@\n", [NSString stringWithBool:self.shouldConfigureMail]];
+	[result appendFormat:@"configureMailVersion:%d\n", self.configureMailVersion];
 	[result appendString:@"actionItems:{\n"];
 	for (MBMActionItem *anItem in self.actionItemList) {
 		[result appendFormat:@"\t[%@]\n", anItem];
@@ -182,6 +196,7 @@
 	for (MBMConfirmationStep *anItem in self.confirmationStepList) {
 		[result appendFormat:@"\t[%@]\n", anItem];
 	}
+	
 	[result appendString:@"}"];
 	
 	return [NSString stringWithString:result];

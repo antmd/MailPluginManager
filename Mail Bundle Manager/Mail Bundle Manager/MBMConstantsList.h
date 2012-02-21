@@ -33,6 +33,8 @@ STR_CONST(kMBMMaxOSVersionKey, "max-os-major-version");
 STR_CONST(kMBMMinMailVersionKey, "min-mail-version");
 STR_CONST(kMBMCanDeleteManagerIfNotUsedByOthersKey, "can-delete-bundle-manager-if-no-other-plugins-use");
 STR_CONST(kMBMCanDeleteManagerIfNoBundlesKey, "can-delete-bundle-manager-if-no-plugins-left");
+STR_CONST(kMBMMinMailBundleVersionKey, "configure-mail-min-bundle-version");
+
 //	Keys for the action items and sub objects
 STR_CONST(kMBMActionItemsKey, "action-items");
 STR_CONST(kMBMPathKey, "path");
@@ -126,4 +128,7 @@ STR_CONST(kMBMWindowBackgroundImageName, "MBMBackgroundImage");
 STR_CONST(kMBMRemoteUpdateableListPathURL, "https://raw.github.com/lksoft/BundleManager/master/Mail%20Bundle%20Manager/Mail%20Bundle%20Manager/");
 STR_CONST(kMBMCompaniesInfoFileName, "companies");
 
+//	Mail Compatibility
+STR_CONST(kMBMBundleCompatibilityVersionKey, "BundleCompatibilityVersion");
+STR_CONST(kMBMEnableBundlesKey, "EnableBundles");
 

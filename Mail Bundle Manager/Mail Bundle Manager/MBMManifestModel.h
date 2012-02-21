@@ -26,6 +26,8 @@
 @property	(nonatomic, assign, readonly)	NSUInteger		confirmationStepCount;
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNotUsedByOthers;	//	Default is NO
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNoBundlesLeft;	//	Default is YES
+@property	(nonatomic, assign, readonly)	BOOL			shouldConfigureMail;	//	Default is NO
+@property	(nonatomic, assign, readonly)	NSUInteger		configureMailVersion;
 
 - (id)initWithPackageAtPath:(NSString *)packageFilePath;
 

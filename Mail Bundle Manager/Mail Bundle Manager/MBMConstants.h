@@ -30,7 +30,8 @@ typedef enum {
 
 
 
-#define	kMBMNoVersionRequirement	-1.0
+#define	kMBMNoVersionRequirement		-1.0
+#define	kMBMDefaultMailPluginVersion	4
 
 #define PerformOnAppDelegate(aSelectorString)						[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString)]
 #define PerformOnAppDelegate1(aSelectorString, object)				[[NSApp delegate] performSelector:NSSelectorFromString(aSelectorString) withObject:object]
