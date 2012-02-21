@@ -75,7 +75,7 @@
 			<key>UTTypeDescription</key>
 			<string></string>
 			<key>UTTypeIconFile</key>
-			<string></string>
+			<string>InstallDocument</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbinstall</string>
 			<key>UTTypeReferenceURL</key>
@@ -96,7 +96,7 @@
 			<key>UTTypeDescription</key>
 			<string></string>
 			<key>UTTypeIconFile</key>
-			<string></string>
+			<string>UninstallDocument</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbremove</string>
 			<key>UTTypeReferenceURL</key>

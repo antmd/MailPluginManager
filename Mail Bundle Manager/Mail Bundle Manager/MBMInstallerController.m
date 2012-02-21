@@ -749,13 +749,19 @@ typedef enum {
 		NSDictionary	*nameAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:16.0f] , NSFontAttributeName, 
 									  mainColor, NSForegroundColorAttributeName,
 									  nil];
-		NSDictionary	*filenameAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12.0f] , NSFontAttributeName, 
-										  pathColor, NSForegroundColorAttributeName,
-										  [NSNumber numberWithFloat:1.0f], NSBaselineOffsetAttributeName,
-										  nil];
+		NSDictionary	*filenameAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:11.0f] , NSFontAttributeName, 
+											 pathColor, NSForegroundColorAttributeName,
+											 [NSNumber numberWithFloat:0.2f], NSObliquenessAttributeName,
+											 [NSNumber numberWithFloat:-2.0f], NSBaselineOffsetAttributeName,
+											 nil];
+		NSDictionary	*fileLabelAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12.0f] , NSFontAttributeName, 
+										   labelColor, NSForegroundColorAttributeName,
+										   [NSNumber numberWithFloat:-2.0f], NSBaselineOffsetAttributeName,
+										   nil];
+		
 		NSDictionary	*descAttrs = [NSDictionary dictionaryWithObjectsAndKeys:mainColor, NSForegroundColorAttributeName,
 									  nil];
-		NSAttributedString	*nameString = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - ", theItem.name] attributes:nameAttrs] autorelease];
+		NSAttributedString	*nameString = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:((theItem.itemDescription != nil)?@"%@ – ":@"%@"), theItem.name] attributes:nameAttrs] autorelease];
 		NSAttributedString	*filenameString = [[[NSAttributedString alloc] initWithString:[theItem.path lastPathComponent] attributes:filenameAttrs] autorelease];
 		NSAttributedString	*descString = [[[NSAttributedString alloc] initWithString:((theItem.itemDescription != nil)?theItem.itemDescription:@"") attributes:descAttrs] autorelease];
 		
@@ -763,28 +769,22 @@ typedef enum {
 		NSAttributedString	*destinationLabelString = nil;
 		NSAttributedString	*destinationString = nil;
 		if (theItem.destinationPath != nil) {
-			NSDictionary	*destinationLabelAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12.0f] , NSFontAttributeName, 
-													  labelColor, NSForegroundColorAttributeName,
-													  nil];
-			NSDictionary	*destinationAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:11.0f] , NSFontAttributeName, 
-												 pathColor, NSForegroundColorAttributeName,
-												 [NSNumber numberWithFloat:0.2f], NSObliquenessAttributeName,
-												 nil];
 			
-			destinationLabelString = [[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Destination: ", @"Label for destination in action summary lists.") attributes:destinationLabelAttrs] autorelease];
-			destinationString = [[[NSAttributedString alloc] initWithString:[theItem.destinationPath stringByDeletingLastPathComponent] attributes:destinationAttrs] autorelease];
+			destinationLabelString = [[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Destination: ", @"Label for destination in action summary lists.") attributes:fileLabelAttrs] autorelease];
+			destinationString = [[[NSAttributedString alloc] initWithString:[theItem.destinationPath stringByDeletingLastPathComponent] attributes:filenameAttrs] autorelease];
 		}
 		
 		//	Then build them all together in the correct format
 		NSMutableAttributedString	*fullString = [[[NSMutableAttributedString alloc] initWithAttributedString:nameString] autorelease];
+		[fullString appendAttributedString:descString];
+		[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n  "] autorelease]];
+		[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Filename: ", @"Label for source file name in action summary lists.") attributes:fileLabelAttrs] autorelease]];
 		[fullString appendAttributedString:filenameString];
 		if (destinationString != nil) {
-			[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n\t"] autorelease]];
+			[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n  "] autorelease]];
 			[fullString appendAttributedString:destinationLabelString];
 			[fullString appendAttributedString:destinationString];
 		}
-		[fullString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n  "] autorelease]];
-		[fullString appendAttributedString:descString];
 		
 		return [[[NSAttributedString alloc] initWithAttributedString:fullString] autorelease];
 	}

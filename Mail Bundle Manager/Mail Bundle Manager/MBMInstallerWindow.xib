@@ -649,7 +649,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 												<int key="NSColorSpace">1</int>
 												<bytes key="NSRGB">MC43ODYwMjIyODk2IDAuODAyMDc5MzE5MiAwLjgyMjY0MDQ2NzIAA</bytes>
 											</object>
-											<double key="NSRowHeight">60</double>
+											<double key="NSRowHeight">100</double>
 											<int key="NSTvFlags">843055104</int>
 											<reference key="NSDelegate"/>
 											<reference key="NSDataSource"/>
@@ -707,7 +707,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference key="NSVScroller" ref="749685312"/>
 							<reference key="NSHScroller" ref="825470739"/>
 							<reference key="NSContentView" ref="160368869"/>
-							<bytes key="NSScrollAmts">QSAAAEEgAABCeAAAQngAAA</bytes>
+							<bytes key="NSScrollAmts">QSAAAEEgAABCzAAAQswAAA</bytes>
 						</object>
 						<object class="NSTextField" id="563996948">
 							<reference key="NSNextResponder" ref="1006"/>
