@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>10K549</string>
+	<string>11D50b</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -25,17 +25,17 @@
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>4B110f</string>
+	<string>4E109</string>
 	<key>DTPlatformVersion</key>
 	<string>GM</string>
 	<key>DTSDKBuild</key>
-	<string>4B110f</string>
+	<string>11D50a</string>
 	<key>DTSDKName</key>
-	<string>macosx10.6</string>
+	<string>macosx10.7</string>
 	<key>DTXcode</key>
-	<string>0410</string>
+	<string>0430</string>
 	<key>DTXcodeBuild</key>
-	<string>4B110f</string>
+	<string>4E109</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2011 Little Known Software. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
@@ -65,6 +65,9 @@
 		<string># Keys for 10.7.2</string>
 		<string>6E7970A3-E5F1-4C41-A904-B18D3D8FAA7D</string>
 		<string>EF59EC5E-EFCD-4EA7-B617-6C5708397D24</string>
+		<string># Key for Mail in 10.7.3
+4C286C70-7F18-4839-B903-6F2D58FA4C71</string>
+		<string>4C286C70-7F18-4839-B903-6F2D58FA4C71</string>
 	</array>
 </dict>
 </plist>
