@@ -40,6 +40,7 @@ typedef enum {
 @interface MBMInstallerController ()
 @property	(nonatomic, assign)				id					notificationObserver;
 @property	(nonatomic, retain, readonly)	MBMConfirmationStep	*currentInstallationStep;
+@property	(nonatomic, retain)				NSString			*displayErrorMessage;
 
 - (void)updateCurrentConfigurationToStep:(NSUInteger)toStep;
 - (void)showContentView:(NSView *)aView;
@@ -67,6 +68,7 @@ typedef enum {
 @synthesize manifestModel = _manifestModel;
 @synthesize animatedListController = _animatedListController;
 @synthesize currentStep = _currentStep;
+@synthesize displayErrorMessage = _displayErrorMessage;
 
 @synthesize backgroundImageView = _backgroundImageView;
 @synthesize confirmationStepsView = _installStepsView;
@@ -110,6 +112,7 @@ typedef enum {
 	self.notificationObserver = nil;
 	self.manifestModel = nil;
 	self.animatedListController = nil;
+	self.displayErrorMessage = nil;
 	
 	[super dealloc];
 }
@@ -148,6 +151,7 @@ typedef enum {
 	 
 	 //	Localize the progress label
 	[self.displayProgressLabel setStringValue:progressText];
+	[self.displayProgressTextView setStringValue:@""];
 	
 	//	Localize the Go Back step as well
 	[self.previousStepButton setTitle:NSLocalizedString(@"Go Back", @"Go Back button text for installation/uninstallation window")];
@@ -311,15 +315,38 @@ typedef enum {
 	//	Do the installation on a dispatch queue
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	dispatch_async(myQueue, ^(void) {
-		[self processAllItems];
-
+		
+		NSString	*displayMessage = NSLocalizedString(@"Installation complete.", @"Installation successful message in view");
+		if (![self processAllItems]) {
+			if (self.displayErrorMessage == nil) {
+				//	Localize the progress label
+				NSString	*progressText = NSLocalizedString(@"The %@ was not completed successfully .\nSorry for any inconvenience.", @"Progress label after failure");
+				NSString	*actionText = NSLocalizedString(@"installation", @"Installation name");
+				if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
+					actionText = NSLocalizedString(@"removal", @"Uninstallation name");
+				}
+				displayMessage = [NSString stringWithFormat:progressText, actionText];
+			}
+			else {
+				displayMessage = self.displayErrorMessage;
+			}
+			
+		}
+		else if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
+			displayMessage = NSLocalizedString(@"Uninstall successful.", @"Uninstall successful message in view");
+		}
+		
 		//	Configure a quit button
 		NSString	*actionTitle = NSLocalizedString(@"Quit", @"Quit button text for installation/uninstallation");
 		[self.actionButton setTitle:actionTitle];
 		[self.actionButton setEnabled:YES];
 		[self.actionButton setTarget:AppDel];
 		[self.actionButton setAction:@selector(quittingNowIsReasonable)];
-		
+		[self.previousStepButton setHidden:YES];
+
+		[self.displayProgressLabel setStringValue:displayMessage];
+		[self.progressBar setHidden:YES];
+		[self.displayProgressTextView setHidden:YES];
 	});
 	
 }
