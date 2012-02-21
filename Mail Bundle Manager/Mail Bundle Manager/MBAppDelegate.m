@@ -290,11 +290,13 @@
 	return [mailApp terminate];
 }
 
-- (IBAction)restartMail:(id)sender {
+- (BOOL)restartMailWithBlock:(void (^)(void))taskBlock {
 	
 	//	If it is not running return
 	if (!self.isMailRunning) {
-		return;
+		//	Perform the task first
+		taskBlock();
+		return YES;
 	}
 	
 	//	Set up an observer for app termination watch
@@ -302,6 +304,11 @@
 	appDoneObserver = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:[NSWorkspace sharedWorkspace] queue:self.maintenanceQueue usingBlock:^(NSNotification *note) {
 		
 		if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+			
+			//	If there is a block, run it first
+			if (taskBlock != nil) {
+				taskBlock();
+			}
 			
 			//	Launch Mail again
 			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:NSWorkspaceLaunchWithoutActivation additionalEventParamDescriptor:nil launchIdentifier:NULL];
@@ -323,7 +330,14 @@
 	else {
 		//	Otherwise just remove the observer
 		[[NSNotificationCenter defaultCenter] removeObserver:appDoneObserver];
+		return NO;
 	}
+	
+	return YES;
+}
+
+- (IBAction)restartMail:(id)sender {
+	[self restartMailWithBlock:nil];
 }
 
 

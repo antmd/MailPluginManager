@@ -43,6 +43,7 @@
 
 //	Mail Application Management
 - (BOOL)quitMail;
+- (BOOL)restartMailWithBlock:(void (^)(void))taskBlock;
 - (IBAction)restartMail:(id)sender;
 
 //	Quitting only when tasks are completed
