@@ -156,6 +156,16 @@ typedef enum {
 	//	Localize the Go Back step as well
 	[self.previousStepButton setTitle:NSLocalizedString(@"Go Back", @"Go Back button text for installation/uninstallation window")];
 	
+	//	Initialize the views
+	self.displayWebView.hidden = YES;
+	self.displayTextScrollView.hidden = YES;
+	self.displayProgressView.hidden = YES;
+	self.actionSummaryView.hidden = YES;
+	self.displayWebView.alphaValue = 0.0f;
+	self.displayTextScrollView.alphaValue = 0.0f;
+	self.displayProgressView.alphaValue = 0.0f;
+	self.actionSummaryView.alphaValue = 0.0f;
+	
 	//	Set the current step
 	self.currentStep = 0;
 	
@@ -186,22 +196,67 @@ typedef enum {
 	}
 }
 
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+	if (flag) {
+		if ([[anim valueForKey:@"name"] isEqualToString:@"fadeOut"]) {
+			CABasicAnimation	*fadeIn = [CABasicAnimation animation];
+			[fadeIn setValue:@"fadeIn" forKey:@"name"];
+			fadeIn.duration = 0.1f;
+			[fadeIn setDelegate:self];
+			if ([anim valueForKey:@"removeView"] != nil) {
+				[fadeIn setValue:[anim valueForKey:@"removeView"] forKey:@"removeView"];
+			}
+			NSView	*incomingView = [anim valueForKey:@"incomingView"];
+			[incomingView setAnimations:[NSDictionary dictionaryWithObject:fadeIn forKey:@"alphaValue"]];
+			//	Fade in
+			[[incomingView animator] setAlphaValue:1.0f];
+		}
+		else if ([[anim valueForKey:@"name"] isEqualToString:@"fadeIn"]) {
+			if ([anim valueForKey:@"removeView"] != nil) {
+				[[anim valueForKey:@"removeView"] setHidden:YES];
+			}
+		}
+	}
+}
+
 - (void)showContentView:(NSView *)aView {
-	//	Handle the transition with a small animation
-	[NSAnimationContext beginGrouping];
-	[[NSAnimationContext currentContext] setDuration:0.25f];
-	//	After the animation, HIDE the view because otherwise they eat the events (thanks CALayer!)
-	[[NSAnimationContext currentContext] setCompletionHandler:^(void) {
-		[self.displayWebView setHidden:(aView != self.displayWebView)];
-		[self.displayTextScrollView setHidden:(aView != self.displayTextScrollView)];
-		[self.displayProgressView setHidden:(aView != self.displayProgressView)];
-		[self.actionSummaryView setHidden:(aView != self.actionSummaryView)];
-	}];
-	[[self.displayWebView animator] setAlphaValue:(aView == self.displayWebView)?1.0f:0.0f];
-	[[self.displayTextScrollView animator] setAlphaValue:(aView == self.displayTextScrollView)?1.0f:0.0f];
-	[[self.displayProgressView animator] setAlphaValue:(aView == self.displayProgressView)?1.0f:0.0f];
-	[[self.actionSummaryView animator] setAlphaValue:(aView == self.actionSummaryView)?1.0f:0.0f];
-	[NSAnimationContext endGrouping];
+	NSView	*outView = nil;
+	if (self.displayWebView.alphaValue > 0.9f) {
+		outView = self.displayWebView;
+	}
+	else if (self.displayTextScrollView.alphaValue > 0.9f) {
+		outView = self.displayTextScrollView;
+	}
+	else if (self.displayProgressView.alphaValue > 0.9f) {
+		outView = self.displayProgressView;
+	}
+	else if (self.actionSummaryView.alphaValue > 0.9f) {
+		outView = self.actionSummaryView;
+	}
+	
+	aView.hidden = NO;
+	aView.alphaValue = 0.0;
+
+	//	If outview is nil, just show the view
+	if (outView == nil) {
+		CABasicAnimation	*fadeIn = [CABasicAnimation animation];
+		fadeIn.duration = 0.2f;
+		[aView setAnimations:[NSDictionary dictionaryWithObject:fadeIn forKey:@"alphaValue"]];
+		//	Fade in
+		[[aView animator] setAlphaValue:1.0f];
+	}
+	else {
+		CABasicAnimation	*fadeOut = [CABasicAnimation animation];
+		[fadeOut setValue:@"fadeOut" forKey:@"name"];
+		fadeOut.duration = 0.1f;
+		[fadeOut setDelegate:self];
+		[fadeOut setValue:aView forKey:@"incomingView"];
+		[fadeOut setValue:outView forKey:@"removeView"];
+		[outView setAnimations:[NSDictionary dictionaryWithObject:fadeOut forKey:@"alphaValue"]];
+		//	Fade out
+		[[outView animator] setAlphaValue:0.0f];
+	}
 }
 
 
