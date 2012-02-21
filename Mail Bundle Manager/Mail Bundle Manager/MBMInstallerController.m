@@ -377,7 +377,7 @@ typedef enum {
 	}
 
 	//	Ensure that the source bundle is where we think it is
-	if (![manager fileExistsAtPath:model.bundleManager.path] || ![workspace isFilePackageAtPath:model.bundleManager.path]) {
+	if ((model.bundleManager != nil) && (![manager fileExistsAtPath:model.bundleManager.path] || ![workspace isFilePackageAtPath:model.bundleManager.path])) {
 		NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:model.bundleManager.name, kMBMNameKey, model.bundleManager.path, kMBMPathKey, nil];
 		LKPresentErrorCodeUsingDict(MBMInvalidSourcePath, dict);
 		LKErr(@"The source path for the bundle manager (%@) is invalid.", model.bundleManager.path);
@@ -446,10 +446,14 @@ typedef enum {
 	//	Install each one
 	for (MBMActionItem *anItem in self.manifestModel.actionItemList) {
 		if (self.manifestModel.manifestType == kMBMManifestTypeInstallation) {
-			[self installItem:anItem];
+			if (![self installItem:anItem]) {
+				return NO;
+			}
 		}
 		else {
-			[self removeItem:anItem];
+			if (![self removeItem:anItem]) {
+				return NO;
+			}
 		}
 	}
 	
@@ -475,7 +479,7 @@ typedef enum {
 	}
 	
 	//	Notification for what we are copying
-	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, nil];
+	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMInstallationProgressDescriptionKey, nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
 	
 	//	Make sure that the destination folder exists
@@ -531,7 +535,7 @@ typedef enum {
 	}
 	
 	//	Notification for what we are deleting
-	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:[anItem.path lastPathComponent], kMBMInstallationProgressDescriptionKey, nil];
+	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMInstallationProgressDescriptionKey, nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
 	
 	//	Move the plugin to the trash
@@ -556,6 +560,10 @@ typedef enum {
 #pragma mark BundleManager
 
 - (BOOL)processBundleManager {
+	if (!self.manifestModel.shouldInstallManager) {
+		return YES;
+	}
+	
 	if (self.manifestModel.manifestType == kMBMManifestTypeInstallation) {
 		return [self installBundleManager];
 	}
