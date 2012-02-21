@@ -38,6 +38,7 @@
 @synthesize canDeleteManagerIfNoBundlesLeft = _canDeleteManagerIfNoBundlesLeft;
 @synthesize shouldConfigureMail = _shouldConfigureMail;
 @synthesize configureMailVersion = _configureMailVersion;
+@synthesize completionMessage = _completionMessage;
 
 
 - (BOOL)shouldInstallManager {
@@ -150,6 +151,12 @@
 		if ([manifestDict valueForKey:kMBMMinMailBundleVersionKey] != nil) {
 			_shouldConfigureMail = YES;
 			_configureMailVersion = [[manifestDict valueForKey:kMBMMinMailBundleVersionKey] integerValue];
+		}
+		
+		//	Set the completion message (default is empty string)
+		_completionMessage = @"";
+		if ([manifestDict valueForKey:kMBMCompletionMessageKey] != nil) {
+			_completionMessage = [[manifestDict valueForKey:kMBMCompletionMessageKey] copy];
 		}
 		
 	}

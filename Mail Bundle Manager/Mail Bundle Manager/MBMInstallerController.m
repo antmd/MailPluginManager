@@ -316,7 +316,7 @@ typedef enum {
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	dispatch_async(myQueue, ^(void) {
 		
-		NSString	*displayMessage = NSLocalizedString(@"Installation complete.", @"Installation successful message in view");
+		NSString	*displayMessage = nil;
 		if (![self processAllItems]) {
 			if (self.displayErrorMessage == nil) {
 				//	Localize the progress label
@@ -334,6 +334,10 @@ typedef enum {
 		}
 		else if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
 			displayMessage = NSLocalizedString(@"Uninstall successful.", @"Uninstall successful message in view");
+		}
+		else {
+			displayMessage = NSLocalizedString(@"Installation complete.\n\n%@", @"Installation successful message in view");
+			displayMessage = [NSString stringWithFormat:displayMessage, self.manifestModel.completionMessage];
 		}
 		
 		//	Configure a quit button
@@ -454,7 +458,7 @@ typedef enum {
 		
 			//	If they denied, return NO
 			if (mailResult == NSAlertAlternateReturn) {
-				self.displayErrorMessage = NSLocalizedString(@"The plugin has been installed, however Mail has not been configured correctly to recognize it.\nRerun the installer when you are willing to quit Mail.", @"Message to indicate to the user that mail hasn't been configured");
+				self.displayErrorMessage = NSLocalizedString(@"The plugin has been installed, but Mail has not been configured correctly to recognize it.\n\nPlease run the installer again when you are willing to quit Mail.", @"Message to indicate to the user that mail hasn't been configured");
 				return NO;
 			}
 		}

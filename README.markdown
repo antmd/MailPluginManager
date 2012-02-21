@@ -318,7 +318,6 @@ The keys for the results in the dictionary are listed below.
 
 #### Manager Interface
 
-* Add Mail Configuration code
 * *Would be nice*
 * Add support for different domains in installation and uninstall.
 * Add an Update All Plugins button to Manager window when relevant.

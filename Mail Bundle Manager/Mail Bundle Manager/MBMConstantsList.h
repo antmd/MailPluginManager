@@ -34,6 +34,7 @@ STR_CONST(kMBMMinMailVersionKey, "min-mail-version");
 STR_CONST(kMBMCanDeleteManagerIfNotUsedByOthersKey, "can-delete-bundle-manager-if-no-other-plugins-use");
 STR_CONST(kMBMCanDeleteManagerIfNoBundlesKey, "can-delete-bundle-manager-if-no-plugins-left");
 STR_CONST(kMBMMinMailBundleVersionKey, "configure-mail-min-bundle-version");
+STR_CONST(kMBMCompletionMessageKey, "completion-message");
 
 //	Keys for the action items and sub objects
 STR_CONST(kMBMActionItemsKey, "action-items");

@@ -28,6 +28,7 @@
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNoBundlesLeft;	//	Default is YES
 @property	(nonatomic, assign, readonly)	BOOL			shouldConfigureMail;	//	Default is NO
 @property	(nonatomic, assign, readonly)	NSUInteger		configureMailVersion;
+@property	(nonatomic, copy, readonly)		NSString		*completionMessage;		//	Deefault is @""
 
 - (id)initWithPackageAtPath:(NSString *)packageFilePath;
 
