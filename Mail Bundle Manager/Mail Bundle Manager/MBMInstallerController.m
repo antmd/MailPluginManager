@@ -787,7 +787,9 @@ typedef enum {
 	
 	//	If we need the icon, get that from the filemanager
 	if ([[tableColumn identifier] isEqualToString:@"icon"]) {
-		return [[NSWorkspace sharedWorkspace] iconForFile:theItem.path];
+		NSImage		*theIcon = [[NSWorkspace sharedWorkspace] iconForFile:theItem.path];
+		[theIcon setSize:NSMakeSize(128.0f, 128.0f)];
+		return theIcon;
 	}
 	//	Otherwise format a description of the file to install
 	else {
