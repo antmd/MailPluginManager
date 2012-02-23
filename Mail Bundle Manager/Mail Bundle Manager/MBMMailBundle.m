@@ -84,7 +84,7 @@ typedef enum {
 	NSError		*error;
 	
 	//	Move the plugin to a disabled folder
-	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath overwrite:YES error:&error]) {
+	if ([[NSFileManager defaultManager] moveWithAuthenticationIfNeededFromPath:fromPath toPath:toPath error:&error]) {
 		//	Then update the bundle
 		self.bundle = [NSBundle bundleWithPath:toPath];
 		
@@ -124,7 +124,7 @@ typedef enum {
 	}
 	
 	//	Move the plugin to the trash
-	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath overwrite:NO error:&error]) {
+	if ([[NSFileManager defaultManager] moveWithAuthenticationIfNeededFromPath:fromPath toPath:toPath overwrite:NO error:&error]) {
 		//	Then update the bundle
 		self.bundle = [NSBundle bundleWithPath:toPath];
 		
@@ -150,7 +150,7 @@ typedef enum {
 	NSError		*error;
 	
 	//	Move the plugin to the other domain
-	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath overwrite:YES error:&error]) {
+	if ([[NSFileManager defaultManager] moveWithAuthenticationIfNeededFromPath:fromPath toPath:toPath error:&error]) {
 		//	Then update the bundle
 		self.bundle = [NSBundle bundleWithPath:toPath];
 	}

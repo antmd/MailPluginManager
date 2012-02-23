@@ -10,13 +10,20 @@
 
 #import "MBMActionItem.h"
 
+typedef enum {
+	kMBMOSIsSupported = 0,
+	kMBMOSIsTooLow,
+	kMBMOSIsTooHigh
+} MBMOSSupportResult;
+	
+
 @interface MBMManifestModel : NSObject
 
 @property	(nonatomic, assign, readonly)	MBMManifestType	manifestType;
 @property	(nonatomic, copy, readonly)		NSString		*displayName;
 @property	(nonatomic, copy, readonly)		NSString		*backgroundImagePath;
-@property	(nonatomic, assign, readonly)	CGFloat			minOSVersion;
-@property	(nonatomic, assign, readonly)	CGFloat			maxOSVersion;
+@property	(nonatomic, assign, readonly)	NSString		*minOSVersion;
+@property	(nonatomic, assign, readonly)	NSString		*maxOSVersion;
 @property	(nonatomic, assign, readonly)	CGFloat			minMailVersion;
 @property	(assign, readonly)				BOOL			shouldInstallManager;
 @property	(nonatomic, retain, readonly)	MBMActionItem	*bundleManager;
@@ -28,11 +35,13 @@
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNoBundlesLeft;	//	Default is YES
 @property	(nonatomic, assign, readonly)	BOOL			shouldConfigureMail;	//	Default is NO
 @property	(nonatomic, assign, readonly)	NSUInteger		configureMailVersion;
-@property	(nonatomic, copy, readonly)		NSString		*completionMessage;		//	Deefault is @""
+@property	(nonatomic, copy, readonly)		NSString		*completionMessage;		//	Default is @""
 
 - (id)initWithPackageAtPath:(NSString *)packageFilePath;
+- (MBMOSSupportResult)supportResultForManifest;
 
 @end
 
 CGFloat macOSXVersion(void);
+NSInteger macOSXBugFixVersion(void);
 CGFloat mailVersion(void);

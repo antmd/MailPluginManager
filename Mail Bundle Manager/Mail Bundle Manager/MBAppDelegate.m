@@ -98,7 +98,7 @@
 }
 
 - (void)quittingNowIsReasonable {
-	
+	LKLog(@"Quitting called");
 	[self performWhenMaintenanceIsFinishedUsingBlock:^{
 		[NSApp terminate:nil];
 	}];

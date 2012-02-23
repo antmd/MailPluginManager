@@ -435,17 +435,17 @@ typedef enum {
 	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
 	
 	//	Ensure that the versions all check out
-	CGFloat	currentVersion = macOSXVersion();
-	if ((model.minOSVersion != kMBMNoVersionRequirement) && (currentVersion < model.minOSVersion)) {
+	MBMOSSupportResult	supportResult = [model supportResultForManifest];
+	if (supportResult == kMBMOSIsTooLow) {
 		LKPresentErrorCode(MBMMinOSInsufficientCode);
 		return NO;
 	}
-	if ((model.maxOSVersion != kMBMNoVersionRequirement) && (currentVersion > model.maxOSVersion)) {
+	if (supportResult == kMBMOSIsTooHigh) {
 		LKPresentErrorCode(MBMMaxOSInsufficientCode);
 		return NO;
 	}
 	if (model.minMailVersion != kMBMNoVersionRequirement) {
-		currentVersion = mailVersion();
+		CGFloat	currentVersion = mailVersion();
 		if (currentVersion > model.minMailVersion) {
 			LKPresentErrorCode(MBMMinMailInsufficientCode);
 			return NO;
@@ -589,7 +589,7 @@ typedef enum {
 	}
 	
 	//	Now do the copy, replacing anything that is already there
-	if (![manager copyWithAuthenticationFromPath:anItem.path toPath:anItem.destinationPath overwrite:YES error:&error]) {
+	if (![manager copyWithAuthenticationIfNeededFromPath:anItem.path toPath:anItem.destinationPath error:&error]) {
 		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.destinationPath, kMBMPathKey, error, kMBMErrorKey, nil];
 		LKPresentErrorCodeUsingDict(MBMCopyFailed, theDict);
 		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
@@ -625,7 +625,7 @@ typedef enum {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
 	
 	//	Move the plugin to the trash
-	if ([[NSFileManager defaultManager] moveWithAuthenticationFromPath:fromPath toPath:toPath overwrite:NO error:&error]) {
+	if ([[NSFileManager defaultManager] moveWithAuthenticationIfNeededFromPath:fromPath toPath:toPath overwrite:NO error:&error]) {
 		//	Send a notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleUninstalledNotification object:self];
 	}
@@ -675,6 +675,7 @@ typedef enum {
 	//	If there is a destination already, check it's bundle id matches and version is < installing one
 	if (destBundle) {
 		NSBundle	*sourceBundle = [NSBundle bundleWithPath:model.bundleManager.path];
+		LKLog(@"Version key:%@", (NSString *)kCFBundleVersionKey);
 		
 		BOOL		isSameBundleID = [[sourceBundle bundleIdentifier] isEqualToString:[destBundle bundleIdentifier]];
 		BOOL		isSourceVersionGreater = ([MBMMailBundle compareVersion:[[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey] toVersion:[[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey]] == NSOrderedDescending);
@@ -867,14 +868,14 @@ typedef enum {
 	switch ([error code]) {
 		case MBMMinOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minOSVersion]];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
+			[values addObject:self.manifestModel.minOSVersion];
+			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
 			break;
 			
 		case MBMMaxOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.maxOSVersion]];
-			[values addObject:[NSString stringWithFormat:@"%3.1f", macOSXVersion()]];
+			[values addObject:self.manifestModel.maxOSVersion];
+			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
 			break;
 			
 		case MBMMinMailInsufficientCode:

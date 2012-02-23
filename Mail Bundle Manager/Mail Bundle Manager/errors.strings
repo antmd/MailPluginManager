@@ -17,14 +17,14 @@
 
 
 //	Overall Requirements
-"101-description" = "%1$@ requires the minimum OS version (%2$@) - you have (%3$@)";
-"101-recovery-suggestion" = "You'll need to upgrade your OS first.";
+"101-description" = "'%1$@' requires minimum OS X version %2$@ - you have (%3$@)";
+"101-recovery-suggestion" = "You'll need to upgrade OS X first.";
 
-"102-description" = "%1$@ doesn't work on this OS version (%3$@) - it's max version is (%2$@)";
-"102-recovery-suggestion" = "This plugin doesn't work in this OS.";
+"102-description" = "'%1$@' doesn't work on OS X version %3$@ - it's max version is (%2$@)";
+"102-recovery-suggestion" = "This plugin doesn't work in this version of OS X.";
 
-"103-description" = "%1$@ requires the minimum Mail version (%2$@) - you have (%3$@)";
-"103-recovery-suggestion" = "You'll need to upgrade your OS (and thus Mail) first.";
+"103-description" = "'%1$@' requires minimum Mail version %2$@ - you have (%3$@)";
+"103-recovery-suggestion" = "You'll need to upgrade your OS X (and thus Mail) before installing.";
 
 
 //	Generic 200 level message

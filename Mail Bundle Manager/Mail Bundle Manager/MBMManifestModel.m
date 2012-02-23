@@ -17,6 +17,10 @@
 @property	(nonatomic, retain, readwrite)	MBMActionItem	*bundleManager;
 @property	(nonatomic, retain, readwrite)	NSArray			*confirmationStepList;
 @property	(nonatomic, retain, readwrite)	NSArray			*actionItemList;
+@property	(nonatomic, assign)				CGFloat			minVersionMinor;
+@property	(nonatomic, assign)				NSInteger		minVersionBugFix;
+@property	(nonatomic, assign)				CGFloat			maxVersionMinor;
+@property	(nonatomic, assign)				NSInteger		maxVersionBugFix;
 @end
 
 @implementation MBMManifestModel
@@ -39,7 +43,10 @@
 @synthesize shouldConfigureMail = _shouldConfigureMail;
 @synthesize configureMailVersion = _configureMailVersion;
 @synthesize completionMessage = _completionMessage;
-
+@synthesize	minVersionMinor = _minVersionMinor;
+@synthesize	minVersionBugFix = _minVersionBugFix;
+@synthesize	maxVersionMinor = _maxVersionMinor;
+@synthesize	maxVersionBugFix = _maxVersionBugFix;
 
 - (BOOL)shouldInstallManager {
 	return !IsEmpty(self.bundleManager.path);
@@ -107,14 +114,28 @@
 		
 		
 		//	See if there are any version requirements - set defaults first
-		_minOSVersion = kMBMNoVersionRequirement;
-		_maxOSVersion = kMBMNoVersionRequirement;
+		_minOSVersion = nil;
+		_maxOSVersion = nil;
+		_minVersionMinor = kMBMNoVersionRequirement;
+		_maxVersionMinor = kMBMNoVersionRequirement;
 		_minMailVersion = kMBMNoVersionRequirement;
 		if ([manifestDict valueForKey:kMBMMinOSVersionKey]) {
-			_minOSVersion = [[manifestDict valueForKey:kMBMMinOSVersionKey] floatValue];
+			_minOSVersion = [[manifestDict valueForKey:kMBMMinOSVersionKey] retain];
+			NSScanner	*versionScanner = [NSScanner scannerWithString:_minOSVersion];
+			[versionScanner scanDouble:&_minVersionMinor];
+			[versionScanner scanString:@"." intoString:NULL];
+			if (![versionScanner isAtEnd]) {
+				[versionScanner scanInteger:&_minVersionBugFix];
+			}
 		}
 		if ([manifestDict valueForKey:kMBMMaxOSVersionKey]) {
-			_maxOSVersion = [[manifestDict valueForKey:kMBMMaxOSVersionKey] floatValue];
+			_maxOSVersion = [[manifestDict valueForKey:kMBMMaxOSVersionKey] retain];
+			NSScanner	*versionScanner = [NSScanner scannerWithString:_maxOSVersion];
+			[versionScanner scanDouble:&_maxVersionMinor];
+			[versionScanner scanString:@"." intoString:NULL];
+			if (![versionScanner isAtEnd]) {
+				[versionScanner scanInteger:&_maxVersionBugFix];
+			}
 		}
 		if ([manifestDict valueForKey:kMBMMinMailVersionKey]) {
 			_minMailVersion = [[manifestDict valueForKey:kMBMMinMailVersionKey] floatValue];
@@ -178,14 +199,34 @@
 #pragma mark - Helpful Methods
 
 
+- (MBMOSSupportResult)supportResultForManifest {
+	
+	//	Ensure that the versions all check out
+	CGFloat		currentVersion = macOSXVersion();
+	NSInteger	currentBugFixVersion = macOSXBugFixVersion();
+	
+	if ((self.minVersionMinor != kMBMNoVersionRequirement) && 
+		((currentVersion < self.minVersionMinor) ||
+		 ((fabs(currentVersion - self.minVersionMinor) < 0.01f) && (currentBugFixVersion < self.minVersionBugFix)))) {
+		return kMBMOSIsTooLow;
+	}
+	if ((self.maxVersionMinor != kMBMNoVersionRequirement) && 
+		((currentVersion > self.maxVersionMinor) || 
+		 ((fabs(currentVersion - self.maxVersionMinor) < 0.01f) && (currentBugFixVersion > self.maxVersionBugFix)))) {
+		return kMBMOSIsTooHigh;
+	}
+
+	return kMBMOSIsSupported;
+}
+
 - (NSString *)description {
 	NSMutableString	*result = [NSMutableString string];
 	
 	[result appendFormat:@">%@ [%p]  ", [self className], self];
 	[result appendFormat:@"displayName:%@  ", self.displayName];
 	[result appendFormat:@"backgroundImagePath:%@\n", self.backgroundImagePath];
-	[result appendFormat:@"minOSVersion:%3.2f  ", self.minOSVersion];
-	[result appendFormat:@"maxOSVersion:%3.2f  ", self.maxOSVersion];
+	[result appendFormat:@"minOSVersion:%@  ", self.minOSVersion];
+	[result appendFormat:@"maxOSVersion:%@  ", self.maxOSVersion];
 	[result appendFormat:@"minMailVersion:%3.2f  ", self.minMailVersion];
 	[result appendFormat:@"shouldInstallManager:%@\n", [NSString stringWithBool:self.shouldInstallManager]];
 	[result appendFormat:@"bundleManager:\n\t(%@)\n", self.bundleManager];
@@ -223,6 +264,17 @@ CGFloat macOSXVersion(void) {
 		}
 	}
 	return minorVer;
+}
+
+NSInteger macOSXBugFixVersion(void) {
+	// use a static because we only really need to get the version once.
+	NSInteger	value = 0;
+	SInt32 version = 0;
+	OSErr err = Gestalt(gestaltSystemVersionBugFix, &version);
+	if (!err) {
+		value = (NSInteger)version;
+	}
+	return value;
 }
 
 CGFloat mailVersion(void) {
