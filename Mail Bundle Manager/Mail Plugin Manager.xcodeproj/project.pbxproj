@@ -250,6 +250,8 @@
 		D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSendInfoCommand.m; sourceTree = "<group>"; };
 		D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MBMAgreementWindow.xib; path = "Mail Bundle Manager/MBMAgreementWindow.xib"; sourceTree = "<group>"; };
 		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
+		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
 		D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSClickableURLTextField.m; sourceTree = "<group>"; };
 		D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMManifestModel.m; sourceTree = "<group>"; };
@@ -455,6 +457,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D256CF0814F7DB97001BA72D /* External Headers */ = {
+			isa = PBXGroup;
+			children = (
+				D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */,
+				D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */,
+			);
+			name = "External Headers";
+			sourceTree = "<group>";
+		};
 		D2730FE214293EE600EB5CB7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +491,7 @@
 				D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */,
 				D2779BD8143363DF003F7BE0 /* Resources */,
 				D2779BC414336287003F7BE0 /* Project */,
+				D256CF0814F7DB97001BA72D /* External Headers */,
 			);
 			path = MailBundleTool;
 			sourceTree = "<group>";
@@ -1177,7 +1189,7 @@
 					"\"$(SRCROOT)/Mail Bundle Manager\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,
@@ -1196,7 +1208,7 @@
 					"\"$(SRCROOT)/Mail Bundle Manager\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Bundle Manager-Prefix.pch";
+				GCC_PREFIX_HEADER = "Mail Bundle Manager/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,

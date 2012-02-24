@@ -13,10 +13,17 @@
 #import "MBTSinglePluginController.h"
 #import "LKCGStructs.h"
 #import "NSUserDefaults+MBMShared.h"
+#import <Sparkle/Sparkle.h>
+
+#import "SUBasicUpdateDriver.h"
+
 
 #define HOURS_AGO	(-1 * 60 * 60)
 
 @interface MBTAppDelegate ()
+@property	(nonatomic, assign)	BOOL			savedAutomaticallyDownloadsUpdates;
+@property	(nonatomic, assign)	BOOL			savedSendsSystemProfile;
+@property	(nonatomic, retain)	NSInvocation	*updateInvocation;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
@@ -24,12 +31,21 @@
 
 @implementation MBTAppDelegate
 
+@synthesize savedAutomaticallyDownloadsUpdates = _savedAutomaticallyDownloadsUpdates;
+@synthesize savedSendsSystemProfile = _savedSendsSystemProfile;
+@synthesize updateInvocation = _updateInvocation;
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	NSLog(@"Inside the MailBundleTool");
 
-	//	Call our super
-	[super applicationDidFinishLaunching:aNotification];
+
+#pragma mark - Handler Methods
+
+- (void)resetSparkleValuesInHostForUpdater:(SUUpdater *)updater {
+	//	Restore any changed values for the app
+	updater.automaticallyDownloadsUpdates = self.savedAutomaticallyDownloadsUpdates;
+	updater.sendsSystemProfile = self.savedSendsSystemProfile;
+}
+
+- (void)processArguments {
 	
 	//	Decide what actions to take
 	//	Read in any command line parameters and set instance variables accordingly
@@ -45,6 +61,69 @@
 		arguments = [arguments subarrayWithRange:NSMakeRange(2, [arguments count] - 2)];
 	}
 	[self doAction:action withArguments:arguments];
+}
+
+#pragma mark - Sparkle Delegate Methods
+
+- (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)updater {
+	return NO;
+}
+
+- (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
+	//	Prevents any relaunch after an update, since we are just going to wait until the app quits to do it.
+	return @"/Users/scott/Public/SfI Installer/Mail Plugin Manager.app";
+}
+
+- (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
+	self.updateInvocation = invocation;
+	[self processArguments];
+	return YES;
+}
+
+- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
+	[self resetSparkleValuesInHostForUpdater:updater];
+}
+
+- (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
+	[self resetSparkleValuesInHostForUpdater:updater];
+
+	[self processArguments];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	NSLog(@"Inside the MailBundleTool");
+
+	//	Call our super
+	[super applicationDidFinishLaunching:aNotification];
+	
+	//	Get update for main application (MPM)
+	NSBundle	*managerBundle = [NSBundle bundleWithPath:@"/Users/scott/Public/SfI Installer/Mail Plugin Manager.app"];
+	SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
+	[managerUpdater resetUpdateCycle];
+	managerUpdater.delegate = self;
+	//	May need to save the state of these two and restore afterward
+	self.savedAutomaticallyDownloadsUpdates = managerUpdater.automaticallyDownloadsUpdates;
+	self.savedSendsSystemProfile = managerUpdater.sendsSystemProfile;
+	managerUpdater.automaticallyDownloadsUpdates = YES;
+	managerUpdater.sendsSystemProfile = YES;
+	
+	//	Run a background thread to see if we need to update this app, using the basic updater directly.
+	SUUpdateDriver	*theUpdateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
+	[NSThread detachNewThreadSelector:NSSelectorFromString(@"checkForUpdatesInBgReachabilityCheckWithDriver:") toTarget:managerUpdater withObject:theUpdateDriver];
+	
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+	LKLog(@"Terminating with invoke:%@", self.updateInvocation);
+	if (self.updateInvocation != nil) {
+		NSInvocation	*localInvocation = self.updateInvocation;
+		self.updateInvocation = nil;
+		[localInvocation invoke];
+		LKLog(@"Returning Cancel");
+		return NSTerminateCancel;
+	}
+	LKLog(@"Returning Now");
+	return NSTerminateNow;
 }
 
 - (void)dealloc {
@@ -129,6 +208,9 @@
 	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
 		[self validateAllBundles];
+	}
+	else {
+		[AppDel quittingNowIsReasonable];
 	}
 }
 

@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
       <title>Mail Plugin Manager's Changelog</title>
-      <link>https://littleknownsoftware.com/mpm/appcast.xml</link>
+      <link>https://littleknownsoftware.com/mpm/Appcast.xml</link>
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
 
@@ -12,7 +12,7 @@
 							http://littleknownsoftware.com/mpm/notes/1.1.html
 						</sparkle:releaseNotesLink>
             <pubDate>Wed, 24 Jan 2012 19:20:11 +0000</pubDate>
-            <enclosure url="http://littleknownsoftware.com/mpm/MailPluginManager.1.1.zip" sparkle:version="1.1" length="1623481" type="application/octet-stream" />
+            <enclosure url="https://littleknownsoftware.com/mpm/MailPluginManager.1.1.zip" sparkle:version="1.1" length="1623481" type="application/octet-stream" />
          </item>
 
    </channel>
