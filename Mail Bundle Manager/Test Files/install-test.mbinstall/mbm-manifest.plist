@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>New item</key>
+	<dict>
+		<key>destination-path</key>
+		<string>~/Downloads/Tests/Apps</string>
+		<key>is-bundle-manager</key>
+		<true/>
+		<key>name</key>
+		<string>Mail Bundle Manager</string>
+		<key>path</key>
+		<string>../Mail Bundle Manager.app</string>
+	</dict>
 	<key>action-items</key>
 	<array>
 		<dict>
@@ -21,18 +32,8 @@
 			<string>Large-File.dmg</string>
 		</dict>
 		<dict>
-			<key>destination-path</key>
-			<string>~/Downloads/Tests/Apps</string>
-			<key>is-bundle-manager</key>
-			<true/>
-			<key>name</key>
-			<string>Mail Bundle Manager</string>
-			<key>path</key>
-			<string>../Mail Bundle Manager.app</string>
-		</dict>
-		<dict>
 			<key>description</key>
-			<string>Just like it says - a thingy</string>
+			<string>Just like it says - a thingy with a very long description that should do some wrapping.</string>
 			<key>destination-path</key>
 			<string>~/Downloads/Tests/thingy.txt</string>
 			<key>is-bundle-manager</key>
@@ -45,6 +46,10 @@
 	</array>
 	<key>background-image-path</key>
 	<string>image.png</string>
+	<key>completion-message</key>
+	<string>Thank you for installing ExamplePlugin.</string>
+	<key>configure-mail-min-bundle-version</key>
+	<string>4</string>
 	<key>confirmation-steps</key>
 	<array>
 		<dict>
@@ -79,6 +84,6 @@
 	<key>manifest-type</key>
 	<string>install</string>
 	<key>min-os-major-version</key>
-	<real>10.6</real>
+	<string>10.6</string>
 </dict>
 </plist>

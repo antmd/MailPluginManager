@@ -8,12 +8,9 @@
       location = "group:LKKit/LKKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../UsefulRepos/Injector/Injector.xcodeproj">
+      location = "group:../../UsefulRepos/Sparkle/Sparkle.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../../UsefulRepos/Mail-Plugin-Manager/MailPluginManager.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../../UsefulRepos/Sparkle/Sparkle.xcodeproj">
    </FileRef>
 </Workspace>
