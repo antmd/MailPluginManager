@@ -56,7 +56,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.0</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
@@ -65,6 +65,8 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUFeedKey</key>
+	<string>https://littleknownsoftware.com/mpm/Appcast.xml</string>
 	<key>SUFeedURL</key>
 	<string>https://littleknownsoftware.com/mpm/Appcast.xml</string>
 	<key>UTExportedTypeDeclarations</key>
