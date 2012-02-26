@@ -27,6 +27,7 @@
 @property	(nonatomic, assign)	BOOL						installUpdateOnQuit;
 @property	(nonatomic, assign) MBTSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
+- (NSString *)pathToManagerContainer;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
@@ -95,13 +96,22 @@
 #pragma mark - Application Events
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	NSLog(@"Inside the MailBundleTool - Path is:'%@'", [[NSBundle mainBundle] bundlePath]);
+	LKLog(@"Inside the MailBundleTool - Path is:'%@'", [[NSBundle mainBundle] bundlePath]);
 
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
-	//	Get update for main application (MPM)
-	NSURL		*bundleURL = [NSURL URLWithString:@"file:///Users/scott/Public/SfI Installer/Mail Plugin Manager.app"];
+	//	Get Path for the Mail Plugin Manager container
+	NSString	*mpmPath = [self pathToManagerContainer];
+	//	Currently don't support Sparkle updating for just the Tool, so if it is not contained with the Manager, just do the action and return
+	LKLog(@"mpmPath is:%@", mpmPath);
+	if (mpmPath == nil) {
+		[self processArguments];
+		return;
+	}
+	
+	//	Then find it's bundle
+	NSURL		*bundleURL = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@", mpmPath]];
 	NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
 	
 	//	Test to see if this bundle is running
@@ -113,6 +123,7 @@
 		}
 	}
 	
+	//	Test for an update quietly
 	SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
 	[managerUpdater resetUpdateCycle];
 	managerUpdater.delegate = self;
@@ -129,7 +140,6 @@
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	LKLog(@"Terminating with install:%@", self.installUpdateOnQuit?@"YES":@"NO");
 	if (self.installUpdateOnQuit) {
 		self.installUpdateOnQuit = NO;
 		[self.updateDriver installWithToolAndRelaunch:NO];
@@ -142,6 +152,41 @@
 	self.updateDriver = nil;
 	
 	[super dealloc];
+}
+
+
+
+#pragma mark - Helper Methods
+
+- (NSString *)pathToManagerContainer {
+	
+	//	Create our path one time
+	static	NSString		*managerPath = nil;
+	static	dispatch_once_t	once;
+	dispatch_once(&once, ^{ 
+		NSString	*testPath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+		BOOL		managerFound = NO;
+		
+		//	Get the plugin manager
+		NSURL		*managerURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:kMBMMailPluginManagerBundleID];
+		if (managerURL != nil) {
+		
+			NSString	*managerName = [[managerURL absoluteString] lastPathComponent];
+			NSString	*lastComponent = nil;
+			for (NSString *pathItem in [[testPath pathComponents] reverseObjectEnumerator]) {
+				if ([lastComponent isEqualToString:@"Contents"] && [[pathItem lastPathComponent] isEqualToString:managerName]) {
+					managerFound = YES;
+					break;
+				}
+				lastComponent = pathItem;
+				testPath = [testPath stringByDeletingLastPathComponent];
+			}
+			
+			managerPath = managerFound?testPath:nil;
+		}
+	});
+	
+	return managerPath;
 }
 
 

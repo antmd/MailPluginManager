@@ -18,8 +18,8 @@ STR_CONST(kMBMUninstallerFileExtension, "mbremove");
 STR_CONST(kMBMManifestName, "mbm-manifest");
 STR_CONST(kMBMMailFolderName, "Mail");
 STR_CONST(kMBMBundleFolderName, "Bundles");
-STR_CONST(kMBMAppSupportFolderName, "Mail Bundle Support");
-STR_CONST(kMBMUserDefaultSharedDomainName, "com.littleknownsoftware.MailBundleShared");
+STR_CONST(kMBMMailPluginManagerBundleID, "com.littleknownsoftware.MailPluginManager");
+STR_CONST(kMBMUserDefaultSharedDomainName, "com.littleknownsoftware.MailPluginShared");
 STR_CONST(kMBMGenericBundleIcon, "GenericPlugin");
 
 //	Keys for top level of manifest
