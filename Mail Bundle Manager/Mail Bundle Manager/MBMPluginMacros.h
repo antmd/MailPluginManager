@@ -45,40 +45,50 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #define	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, mbmNeedsActivate, mbmFrequency) \
 { \
-	/*	Then actually launch the app to get the information back	*/ \
-	NSDictionary	*scriptErrors = nil; \
-	NSMutableString	*appleScript = [NSMutableString stringWithString:MBT_TELL_APPLICATION_OPEN]; \
-	if (mbmNeedsActivate) { \
-		[appleScript appendString:MBT_ACTIVATE_APP]; \
+	if (mbmMailBundle != nil) { \
+		/*	Then actually launch the app to get the information back	*/ \
+		NSDictionary	*scriptErrors = nil; \
+		NSMutableString	*appleScript = [NSMutableString stringWithString:MBT_TELL_APPLICATION_OPEN]; \
+		if (mbmNeedsActivate) { \
+			[appleScript appendString:MBT_ACTIVATE_APP]; \
+		} \
+		[appleScript appendFormat:MBT_SCRIPT_FORMAT, mbmCommand, [mbmMailBundle bundlePath]]; \
+		if (mbmFrequency != nil) { \
+			[appleScript appendFormat:MBT_FREQUENCY_FORMAT, mbmFrequency]; \
+		} \
+		[appleScript appendString:MBT_END_TELL]; \
+		NSAppleScript	*theScript = [[[NSAppleScript alloc] initWithSource:appleScript] autorelease]; \
+		NSAppleEventDescriptor	*desc = [theScript executeAndReturnError:&scriptErrors]; \
+		if (!desc) { \
+			NSLog(@"Script (%@) to call MailBundleTool failed:%@", appleScript, scriptErrors); \
+		} \
 	} \
-	[appleScript appendFormat:MBT_SCRIPT_FORMAT, mbmCommand, [mbmMailBundle bundlePath]]; \
-	if (mbmFrequency != nil) { \
-		[appleScript appendFormat:MBT_FREQUENCY_FORMAT, mbmFrequency]; \
-	} \
-	[appleScript appendString:MBT_END_TELL]; \
-	NSAppleScript	*theScript = [[[NSAppleScript alloc] initWithSource:appleScript] autorelease]; \
-	NSAppleEventDescriptor	*desc = [theScript executeAndReturnError:&scriptErrors]; \
-	if (!desc) { \
-		NSLog(@"Script (%@) to call MailBundleTool failed:%@", appleScript, scriptErrors); \
+	else { \
+		NSLog(@"ERROR in MBMLaunchCommandForBundle() Macro: Cannot pass a nil bundle"); \
 	} \
 }
 
 
 #define	MBMCallToolCommandForBundleWithBlock(mbmCommand, mbmMailBundle, mbmNotificationBlock) \
 { \
-	NSString	*mbmNotificationName = [mbmCommand isEqualToString:MBT_SEND_MAIL_INFO_TEXT]?MBM_SYSTEM_INFO_NOTIFICATION:MBM_UUID_LIST_NOTIFICATION; \
-	/*	Set up the notification watch	*/ \
-	NSOperationQueue	*mbmQueue = [[[NSOperationQueue alloc] init] autorelease]; \
-	__block id mbmObserver; \
-	mbmObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:mbmNotificationName object:nil queue:mbmQueue usingBlock:^(NSNotification *note) { \
-		/*	If this was aimed at us, then perform the block and remove the observer	*/ \
-		if ([[note object] isEqualToString:[mbmMailBundle bundleIdentifier]]) { \
-			mbmNotificationBlock([note userInfo]); \
-			[[NSDistributedNotificationCenter defaultCenter] removeObserver:mbmObserver]; \
-		} \
-	}]; \
-	/*	Then actually launch the app to get the information back	*/ \
-	MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, NO, nil); \
+	if (mbmMailBundle != nil) { \
+		NSString	*mbmNotificationName = [mbmCommand isEqualToString:MBT_SEND_MAIL_INFO_TEXT]?MBM_SYSTEM_INFO_NOTIFICATION:MBM_UUID_LIST_NOTIFICATION; \
+		/*	Set up the notification watch	*/ \
+		NSOperationQueue	*mbmQueue = [[[NSOperationQueue alloc] init] autorelease]; \
+		__block id mbmObserver; \
+		mbmObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:mbmNotificationName object:nil queue:mbmQueue usingBlock:^(NSNotification *note) { \
+			/*	If this was aimed at us, then perform the block and remove the observer	*/ \
+			if ([[note object] isEqualToString:[mbmMailBundle bundleIdentifier]]) { \
+				mbmNotificationBlock([note userInfo]); \
+				[[NSDistributedNotificationCenter defaultCenter] removeObserver:mbmObserver]; \
+			} \
+		}]; \
+		/*	Then actually launch the app to get the information back	*/ \
+		MBMLaunchCommandForBundle(mbmCommand, mbmMailBundle, NO, nil); \
+	} \
+	else { \
+		NSLog(@"ERROR in MBMCallToolCommandForBundleWithBlock() Macro: Cannot pass a nil bundle"); \
+	} \
 }
 
 #pragma mark - Plugin Macros

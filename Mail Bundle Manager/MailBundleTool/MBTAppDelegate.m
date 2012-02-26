@@ -199,6 +199,9 @@
 	
 	if ([arguments count] > 0) {
 		bundlePath = [arguments objectAtIndex:0];
+		if ([bundlePath isEqualToString:@"(null)"]) {
+			bundlePath = nil;
+		}
 	}
 	if ([arguments count] > 1) {
 		if ([[arguments objectAtIndex:1] isEqualToString:kMBMCommandLineFrequencyOptionKey]) {
@@ -219,6 +222,15 @@
 	MBMMailBundle	*mailBundle = nil;
 	if (bundlePath) {
 		mailBundle = [[[MBMMailBundle alloc] initWithPath:bundlePath shouldLoadUpdateInfo:NO] autorelease];
+	}
+	
+	//	If there is no bundle for one of the tasks that require it, just quit
+	if ((bundlePath == nil) &&
+		([kMBMCommandLineUninstallKey isEqualToString:action] || [kMBMCommandLineUpdateKey isEqualToString:action] ||
+		 [kMBMCommandLineCheckCrashReportsKey isEqualToString:action] || [kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action])) {
+			
+			[AppDel quittingNowIsReasonable];
+			return;
 	}
 	
 	//	Look at the first argument (after executable name) and test for one of our types

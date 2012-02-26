@@ -74,7 +74,7 @@ void	MBMCallToolCommandForBundleWithBlock2(NSString *mbmCommand, NSBundle *mbmMa
 	
 	MBMCheckForUpdatesForBundle(mailBundle);
 	
-	
+	[NSApp terminate:nil];
 }
 
 @end

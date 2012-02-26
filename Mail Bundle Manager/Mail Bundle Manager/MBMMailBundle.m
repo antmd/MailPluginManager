@@ -423,6 +423,10 @@ typedef enum {
 
 - (void)updateIfNecessary {
 	
+	if (![self supportsSparkleUpdates]) {
+		return;
+	}
+	
 	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
 	SUUpdater	*updater = [SUUpdater updaterForBundle:self.bundle];
 	if (updater) {
