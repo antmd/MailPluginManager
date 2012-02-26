@@ -106,7 +106,7 @@
 	//	Always use App Support Folder of user
 	NSString	*appSupportFolder = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 	NSString	*fileName = [[self filename] stringByAppendingPathExtension:kMBMPlistExtension];
-	NSString	*localFilePath = [[appSupportFolder stringByAppendingPathComponent:kMBMAppSupportFolderName] stringByAppendingPathComponent:fileName];
+	NSString	*localFilePath = [[appSupportFolder stringByAppendingPathComponent:[[[NSBundle mainBundle] infoDictionary] valueForKey:(NSString *)kCFBundleNameKey]] stringByAppendingPathComponent:fileName];
 	return localFilePath;
 }
 
