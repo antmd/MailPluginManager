@@ -241,6 +241,11 @@
 	
 	[[self window] center];
 	[[self window] makeKeyAndOrderFront:self];
+	
+	//	Add notification to quit when the window is closed
+	[[NSNotificationCenter defaultCenter] addObserverForName:NSWindowWillCloseNotification object:[self window] queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		[self quittingNowIsReasonable];
+	}];
 }
 
 - (void)adjustWindowSizeForBundleList:(NSArray *)bundleList animate:(BOOL)animate {

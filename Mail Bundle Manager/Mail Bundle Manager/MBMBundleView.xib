@@ -51,6 +51,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 4}, {210, 14}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:161</string>
 						<bool key="NSEnabled">YES</bool>
@@ -78,6 +79,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{17, 19}, {216, 14}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="728623758"/>
 						<string key="NSReuseIdentifierKey">_NS:3936</string>
 						<bool key="NSEnabled">YES</bool>
@@ -112,6 +114,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{141, 33}, {95, 32}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="829670092"/>
 						<string key="NSReuseIdentifierKey">_NS:161</string>
 						<bool key="NSEnabled">YES</bool>
@@ -139,6 +142,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{17, 33}, {90, 32}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="307513451"/>
 						<string key="NSReuseIdentifierKey">_NS:161</string>
 						<bool key="NSEnabled">YES</bool>
@@ -162,6 +166,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{154, 69}, {79, 17}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="208146219"/>
 						<string key="NSReuseIdentifierKey">_NS:3936</string>
 						<bool key="NSEnabled">YES</bool>
@@ -189,6 +194,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{17, 69}, {132, 17}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="523998315"/>
 						<string key="NSReuseIdentifierKey">_NS:3936</string>
 						<bool key="NSEnabled">YES</bool>
@@ -208,6 +214,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{154, 94}, {79, 17}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="633232755"/>
 						<string key="NSReuseIdentifierKey">_NS:3936</string>
 						<bool key="NSEnabled">YES</bool>
@@ -227,6 +234,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{17, 94}, {132, 17}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="775824527"/>
 						<string key="NSReuseIdentifierKey">_NS:3936</string>
 						<bool key="NSEnabled">YES</bool>
@@ -246,6 +254,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{97, 132}, {135, 18}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="228814536"/>
 						<string key="NSReuseIdentifierKey">_NS:239</string>
 						<bool key="NSEnabled">YES</bool>
@@ -276,6 +285,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{97, 152}, {135, 18}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="354495586"/>
 						<string key="NSReuseIdentifierKey">_NS:239</string>
 						<bool key="NSEnabled">YES</bool>
@@ -313,6 +323,7 @@
 						</object>
 						<string key="NSFrame">{{20, 119}, {64, 64}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="643855897"/>
 						<string key="NSReuseIdentifierKey">_NS:1658</string>
 						<bool key="NSEnabled">YES</bool>
@@ -336,6 +347,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 188}, {210, 23}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="367386457"/>
 						<string key="NSReuseIdentifierKey">_NS:1566</string>
 						<bool key="NSEnabled">YES</bool>
@@ -363,6 +375,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 188}, {210, 23}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="179296049"/>
 						<string key="NSReuseIdentifierKey">_NS:3936</string>
 						<bool key="NSEnabled">YES</bool>
@@ -398,6 +411,7 @@
 						</object>
 						<string key="NSFrameSize">{250, 230}</string>
 						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="732773932"/>
 						<string key="NSReuseIdentifierKey">_NS:1658</string>
 						<bool key="NSEnabled">YES</bool>
@@ -415,6 +429,7 @@
 				</object>
 				<string key="NSFrameSize">{250, 230}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="391191594"/>
 				<string key="NSReuseIdentifierKey">_NS:499</string>
 				<string key="NSClassName">NSView</string>
@@ -697,7 +712,7 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">161</int>
+					<int key="connectionID">168</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1125,7 +1140,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">166</int>
+			<int key="maxID">168</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
@@ -1146,7 +1161,7 @@
 			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{15, 15}</string>
-				<string>{128, 128}</string>
+				<string>{512, 512}</string>
 			</object>
 		</object>
 	</data>
