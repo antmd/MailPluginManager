@@ -163,9 +163,6 @@ typedef enum {
 	if (self.runningFromInstallDisk) {
 		NSString	*otherInstaller = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
 		
-		MBMMySparkleDelegate	*sparkleDelegate = [[[MBMMySparkleDelegate alloc] init] autorelease];
-		sparkleDelegate.pathToReplace = otherInstaller;
-		
 		//	Get the version in Applications and compare that to this one
 		NSString	*otherVersion = [[[NSBundle bundleWithPath:otherInstaller] infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey];
 		NSString	*myVersion = [[[NSBundle bundleForClass:[self class]] infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey];

@@ -10,7 +10,6 @@
 
 #import "MBAppDelegate.h"
 #import "MBMManifestModel.h"
-#import "MBMMySparkleDelegate.h"
 
 @interface MBMAppDelegate : MBAppDelegate {
 }
