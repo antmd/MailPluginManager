@@ -12,7 +12,7 @@
 
 
 - (NSDictionary *)defaultsForMailBundle:(MBMMailBundle *)mailBundle {
-	//	Get the defaults from the shared domain name nand return the value for the bundle
+	//	Get the defaults from the shared domain name and return the value for the bundle
 	NSDictionary	*defaultsDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMUserDefaultSharedDomainName];
 	return [defaultsDict valueForKey:mailBundle.identifier];
 }

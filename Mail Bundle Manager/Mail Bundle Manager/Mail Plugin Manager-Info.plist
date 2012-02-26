@@ -65,10 +65,8 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SUFeedKey</key>
-	<string>https://littleknownsoftware.com/mpm/Appcast.xml</string>
 	<key>SUFeedURL</key>
-	<string>https://littleknownsoftware.com/mpm/Appcast.xml</string>
+	<string>https://raw.github.com/lksoft/MailPluginManager/master/Remote/Appcast.xml</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

@@ -58,7 +58,7 @@
 		D24AF64F147D4CAD000EDC6F /* MBTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */; };
 		D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */; };
 		D24DA331142CD92300720631 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D24DA330142CD92300720631 /* Localizable.strings */; };
-		D256CF1514F92D4A001BA72D /* MailBundleTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailBundleTool.app */; };
+		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
 		D256CF2F14F99D00001BA72D /* MBTSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
 		D2730FD9142921B200EB5CB7 /* MBMManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */; };
@@ -171,7 +171,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				D256CF1514F92D4A001BA72D /* MailBundleTool.app in Copy Bundle Tool */,
+				D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */,
 			);
 			name = "Copy Bundle Tool";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -293,8 +293,8 @@
 		D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = InstallAnimationBackground.png; path = "Mail Bundle Manager/InstallAnimationBackground.png"; sourceTree = "<group>"; };
 		D273100F142CB1E400EB5CB7 /* MBMConfirmationStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMConfirmationStep.h; sourceTree = "<group>"; };
 		D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConfirmationStep.m; sourceTree = "<group>"; };
-		D2779BC014336287003F7BE0 /* MailBundleTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailBundleTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2779BC514336287003F7BE0 /* MailBundleTool-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MailBundleTool-Info.plist"; sourceTree = "<group>"; };
+		D2779BC014336287003F7BE0 /* MailPluginTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailPluginTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2779BC514336287003F7BE0 /* MailPluginTool-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MailPluginTool-Info.plist"; sourceTree = "<group>"; };
 		D2779BC714336287003F7BE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D2779BC914336287003F7BE0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D2779BCD14336287003F7BE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -383,8 +383,8 @@
 			isa = PBXGroup;
 			children = (
 				D2779BD9143364C9003F7BE0 /* Common Source */,
-				D216B344141DFDE1003788DC /* Mail Bundle Manager */,
-				D2779BC314336287003F7BE0 /* MailBundleTool */,
+				D216B344141DFDE1003788DC /* Mail Plugin Manager */,
+				D2779BC314336287003F7BE0 /* MailPluginTool */,
 				D22CC056146BD87F0055CFBE /* ToolTestHarness */,
 				D216B361141DFDE2003788DC /* Mail Bundle ManagerTests */,
 				D216B33D141DFDE1003788DC /* Frameworks */,
@@ -397,7 +397,7 @@
 			children = (
 				D216B33A141DFDE1003788DC /* Mail Plugin Manager.app */,
 				D216B35B141DFDE2003788DC /* Mail Plugin ManagerTests.octest */,
-				D2779BC014336287003F7BE0 /* MailBundleTool.app */,
+				D2779BC014336287003F7BE0 /* MailPluginTool.app */,
 				D22CC053146BD87F0055CFBE /* ToolTestHarness.app */,
 			);
 			name = Products;
@@ -426,7 +426,7 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		D216B344141DFDE1003788DC /* Mail Bundle Manager */ = {
+		D216B344141DFDE1003788DC /* Mail Plugin Manager */ = {
 			isa = PBXGroup;
 			children = (
 				D216B350141DFDE1003788DC /* MBMAppDelegate.h */,
@@ -434,6 +434,7 @@
 				D2E9029D141E63D10058618F /* Resources */,
 				D2E9029B141E638B0058618F /* Project */,
 			);
+			name = "Mail Plugin Manager";
 			path = "Mail Bundle Manager";
 			sourceTree = "<group>";
 		};
@@ -504,7 +505,7 @@
 			path = "Mail Bundle Manager";
 			sourceTree = "<group>";
 		};
-		D2779BC314336287003F7BE0 /* MailBundleTool */ = {
+		D2779BC314336287003F7BE0 /* MailPluginTool */ = {
 			isa = PBXGroup;
 			children = (
 				D2779BCF14336287003F7BE0 /* MBTAppDelegate.h */,
@@ -521,13 +522,14 @@
 				D2779BC414336287003F7BE0 /* Project */,
 				D256CF0814F7DB97001BA72D /* External Headers */,
 			);
+			name = MailPluginTool;
 			path = MailBundleTool;
 			sourceTree = "<group>";
 		};
 		D2779BC414336287003F7BE0 /* Project */ = {
 			isa = PBXGroup;
 			children = (
-				D2779BC514336287003F7BE0 /* MailBundleTool-Info.plist */,
+				D2779BC514336287003F7BE0 /* MailPluginTool-Info.plist */,
 				D2779BC914336287003F7BE0 /* main.m */,
 			);
 			name = Project;
@@ -751,9 +753,9 @@
 			productReference = D22CC053146BD87F0055CFBE /* ToolTestHarness.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D2779BBF14336287003F7BE0 /* MailBundleTool */ = {
+		D2779BBF14336287003F7BE0 /* MailPluginTool */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailBundleTool" */;
+			buildConfigurationList = D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailPluginTool" */;
 			buildPhases = (
 				D2779BBC14336287003F7BE0 /* Sources */,
 				D2779BBD14336287003F7BE0 /* Frameworks */,
@@ -764,9 +766,9 @@
 			);
 			dependencies = (
 			);
-			name = MailBundleTool;
+			name = MailPluginTool;
 			productName = MailBundleTool;
-			productReference = D2779BC014336287003F7BE0 /* MailBundleTool.app */;
+			productReference = D2779BC014336287003F7BE0 /* MailPluginTool.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -792,7 +794,7 @@
 			projectRoot = "";
 			targets = (
 				D216B339141DFDE1003788DC /* Mail Plugin Manager */,
-				D2779BBF14336287003F7BE0 /* MailBundleTool */,
+				D2779BBF14336287003F7BE0 /* MailPluginTool */,
 				D216B35A141DFDE2003788DC /* Mail Plugin ManagerTests */,
 				D22CC052146BD87F0055CFBE /* ToolTestHarness */,
 			);
@@ -984,7 +986,7 @@
 		};
 		D24AF646147D177A000EDC6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2779BBF14336287003F7BE0 /* MailBundleTool */;
+			target = D2779BBF14336287003F7BE0 /* MailPluginTool */;
 			targetProxy = D24AF645147D177A000EDC6F /* PBXContainerItemProxy */;
 		};
 		D256CF0F14F92CDA001BA72D /* PBXTargetDependency */ = {
@@ -994,7 +996,7 @@
 		};
 		D256CF1214F92D12001BA72D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2779BBF14336287003F7BE0 /* MailBundleTool */;
+			target = D2779BBF14336287003F7BE0 /* MailPluginTool */;
 			targetProxy = D256CF1114F92D12001BA72D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1233,7 +1235,7 @@
 					"$(inherited)",
 					MB_TOOL,
 				);
-				INFOPLIST_FILE = "MailBundleTool/MailBundleTool-Info.plist";
+				INFOPLIST_FILE = "MailBundleTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1252,7 +1254,7 @@
 					"$(inherited)",
 					MB_TOOL,
 				);
-				INFOPLIST_FILE = "MailBundleTool/MailBundleTool-Info.plist";
+				INFOPLIST_FILE = "MailBundleTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1297,7 +1299,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailBundleTool" */ = {
+		D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailPluginTool" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D2779BD614336287003F7BE0 /* Debug */,

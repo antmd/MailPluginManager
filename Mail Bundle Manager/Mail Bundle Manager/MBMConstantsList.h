@@ -97,7 +97,7 @@ STR_CONST(kMBMMailBundleExtension, "mailbundle");
 STR_CONST(kMBMMailBundleUUIDKey, "PluginCompatibilityUUID");
 STR_CONST(kMBMMailBundleUUIDListKey, "SupportedPluginCompatibilityUUIDs");
 //	Other info.plist keys and values
-STR_CONST(kMBMBundleUsesMBMKey, "PluginUsesMailBundleManager");
+STR_CONST(kMBMBundleUsesMBMKey, "PluginUsesMailPluginManager");
 STR_CONST(kMBMCompanyNameKey, "MBMCompanyName");
 STR_CONST(kMBMCompanyURLKey, "MBMCompanyURL");
 STR_CONST(kMBMProductURLKey, "MBMProductURL");
@@ -127,7 +127,7 @@ STR_CONST(kMBMAnimationBackgroundImageName, "InstallAnimationBackground");
 STR_CONST(kMBMWindowBackgroundImageName, "MBMBackgroundImage");
 
 //	Paths
-STR_CONST(kMBMRemoteUpdateableListPathURL, "https://raw.github.com/lksoft/BundleManager/master/Remote/");
+STR_CONST(kMBMRemoteUpdateableListPathURL, "https://raw.github.com/lksoft/MailPluginManager/master/Remote/");
 STR_CONST(kMBMCompaniesInfoFileName, "companies");
 
 //	Mail Compatibility
