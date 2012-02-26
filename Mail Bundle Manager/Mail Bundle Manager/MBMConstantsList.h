@@ -115,6 +115,7 @@ STR_CONST(kMBMDoneUpdatingMailBundleNotification, "MBMDoneUpdatingMailBundleNoti
 STR_CONST(kMBMCancelledUpdatingMailBundleNotification, "MBMCancelledUpdatingMailBundleNotification");
 STR_CONST(kMBMDoneSendingCrashReportsMailBundleNotification, "MBMDoneSendingCrashReportsMailBundleNotification");
 STR_CONST(kMBMSUUpdateDriverDoneNotification, "SUUpdateDriverFinished");
+STR_CONST(kMBTSparkleTestDoneNotification, "MBTSparkleTestDoneNotification");
 
 STR_CONST(kMBMNotificationWaitNote, "note");
 STR_CONST(kMBMNotificationWaitObject, "object");

@@ -58,6 +58,8 @@
 		D24AF64F147D4CAD000EDC6F /* MBTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */; };
 		D24DA32E142CD0CB00720631 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */; };
 		D24DA331142CD92300720631 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D24DA330142CD92300720631 /* Localizable.strings */; };
+		D256CF1514F92D4A001BA72D /* MailBundleTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailBundleTool.app */; };
+		D256CF2F14F99D00001BA72D /* MBTSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
 		D2730FD9142921B200EB5CB7 /* MBMManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */; };
 		D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */; };
@@ -137,6 +139,20 @@
 			remoteGlobalIDString = D2779BBF14336287003F7BE0;
 			remoteInfo = MailBundleTool;
 		};
+		D256CF0E14F92CDA001BA72D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D216B339141DFDE1003788DC;
+			remoteInfo = "Mail Plugin Manager";
+		};
+		D256CF1114F92D12001BA72D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2779BBF14336287003F7BE0;
+			remoteInfo = MailBundleTool;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -149,6 +165,17 @@
 				D24248A7148E542400DE7E6A /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D256CF1414F92D2B001BA72D /* Copy Bundle Tool */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				D256CF1514F92D4A001BA72D /* MailBundleTool.app in Copy Bundle Tool */,
+			);
+			name = "Copy Bundle Tool";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D2779BEF14337344003F7BE0 /* Copy Frameworks */ = {
@@ -252,6 +279,8 @@
 		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
+		D256CF2D14F99CFF001BA72D /* MBTSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; path = MBTSparkleAsyncOperation.h; sourceTree = "<group>"; };
+		D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSparkleAsyncOperation.m; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
 		D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSClickableURLTextField.m; sourceTree = "<group>"; };
 		D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMManifestModel.m; sourceTree = "<group>"; };
@@ -487,6 +516,8 @@
 				D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */,
 				D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */,
 				D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */,
+				D256CF2D14F99CFF001BA72D /* MBTSparkleAsyncOperation.h */,
+				D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */,
 				D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */,
 				D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */,
 				D2779BD8143363DF003F7BE0 /* Resources */,
@@ -672,10 +703,12 @@
 				D216B337141DFDE1003788DC /* Frameworks */,
 				D216B379141E0071003788DC /* Copy Frameworks */,
 				D216B338141DFDE1003788DC /* Resources */,
+				D256CF1414F92D2B001BA72D /* Copy Bundle Tool */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D256CF1214F92D12001BA72D /* PBXTargetDependency */,
 			);
 			name = "Mail Plugin Manager";
 			productName = "Mail Bundle Manager";
@@ -714,6 +747,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D256CF0F14F92CDA001BA72D /* PBXTargetDependency */,
 				D24AF646147D177A000EDC6F /* PBXTargetDependency */,
 			);
 			name = ToolTestHarness;
@@ -942,6 +976,7 @@
 				D2EB825B148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 				D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */,
+				D256CF2F14F99D00001BA72D /* MBTSparkleAsyncOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,6 +992,16 @@
 			isa = PBXTargetDependency;
 			target = D2779BBF14336287003F7BE0 /* MailBundleTool */;
 			targetProxy = D24AF645147D177A000EDC6F /* PBXContainerItemProxy */;
+		};
+		D256CF0F14F92CDA001BA72D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D216B339141DFDE1003788DC /* Mail Plugin Manager */;
+			targetProxy = D256CF0E14F92CDA001BA72D /* PBXContainerItemProxy */;
+		};
+		D256CF1214F92D12001BA72D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2779BBF14336287003F7BE0 /* MailBundleTool */;
+			targetProxy = D256CF1114F92D12001BA72D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

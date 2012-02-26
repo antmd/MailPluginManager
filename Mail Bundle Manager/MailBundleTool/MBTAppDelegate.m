@@ -17,13 +17,16 @@
 
 #import "SUBasicUpdateDriver.h"
 
+#import "MBTSparkleAsyncOperation.h"
 
 #define HOURS_AGO	(-1 * 60 * 60)
 
-@interface MBTAppDelegate ()
-@property	(nonatomic, assign)	BOOL			savedAutomaticallyDownloadsUpdates;
-@property	(nonatomic, assign)	BOOL			savedSendsSystemProfile;
-@property	(nonatomic, retain)	NSInvocation	*updateInvocation;
+@interface MBTAppDelegate () 
+@property	(nonatomic, assign)	BOOL						savedAutomaticallyDownloadsUpdates;
+@property	(nonatomic, assign)	BOOL						savedSendsSystemProfile;
+@property	(nonatomic, assign)	BOOL						installUpdateOnQuit;
+@property	(nonatomic, assign) MBTSparkleAsyncOperation	*sparkleOperation;
+@property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
@@ -33,8 +36,9 @@
 
 @synthesize savedAutomaticallyDownloadsUpdates = _savedAutomaticallyDownloadsUpdates;
 @synthesize savedSendsSystemProfile = _savedSendsSystemProfile;
-@synthesize updateInvocation = _updateInvocation;
-
+@synthesize installUpdateOnQuit = _installUpdateOnQuit;
+@synthesize sparkleOperation = _sparkleOperation;
+@synthesize updateDriver = _updateDriver;
 
 
 #pragma mark - Handler Methods
@@ -63,41 +67,52 @@
 	[self doAction:action withArguments:arguments];
 }
 
+
 #pragma mark - Sparkle Delegate Methods
+
+- (void)cleanupWithUpdater:(SUUpdater *)updater install:(BOOL)shouldInstall {
+	self.installUpdateOnQuit = shouldInstall;
+	[self resetSparkleValuesInHostForUpdater:updater];
+	[self processArguments];
+	[self.sparkleOperation finish];
+}
 
 - (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)updater {
 	return NO;
 }
 
-- (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
-	//	Prevents any relaunch after an update, since we are just going to wait until the app quits to do it.
-	return @"/Users/scott/Public/SfI Installer/Mail Plugin Manager.app";
-}
-
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
-	self.updateInvocation = invocation;
-	[self processArguments];
+	LKLog(@"Update found with invocation:%@", invocation);
+	[self cleanupWithUpdater:updater install:YES];
 	return YES;
 }
 
-- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
-	[self resetSparkleValuesInHostForUpdater:updater];
-}
-
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
-	[self resetSparkleValuesInHostForUpdater:updater];
-
-	[self processArguments];
+	LKLog(@"No Update found");
+	[self cleanupWithUpdater:updater install:NO];
 }
+
+#pragma mark - Application Events
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	NSLog(@"Inside the MailBundleTool");
+	NSLog(@"Inside the MailBundleTool - Path is:'%@'", [[NSBundle mainBundle] bundlePath]);
 
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
 	//	Get update for main application (MPM)
-	NSBundle	*managerBundle = [NSBundle bundleWithPath:@"/Users/scott/Public/SfI Installer/Mail Plugin Manager.app"];
+	NSURL		*bundleURL = [NSURL URLWithString:@"file:///Users/scott/Public/SfI Installer/Mail Plugin Manager.app"];
+	NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
+	
+	//	Test to see if this bundle is running
+	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
+		if ([[app bundleURL] isEqual:bundleURL]) {
+			//	If so, just call process and leave.
+			[self processArguments];
+			return;
+		}
+	}
+	
 	SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
 	[managerUpdater resetUpdateCycle];
 	managerUpdater.delegate = self;
@@ -108,25 +123,23 @@
 	managerUpdater.sendsSystemProfile = YES;
 	
 	//	Run a background thread to see if we need to update this app, using the basic updater directly.
-	SUUpdateDriver	*theUpdateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
-	[NSThread detachNewThreadSelector:NSSelectorFromString(@"checkForUpdatesInBgReachabilityCheckWithDriver:") toTarget:managerUpdater withObject:theUpdateDriver];
-	
+	self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
+	self.sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
+	[self addMaintenanceOperation:self.sparkleOperation];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	LKLog(@"Terminating with invoke:%@", self.updateInvocation);
-	if (self.updateInvocation != nil) {
-		NSInvocation	*localInvocation = self.updateInvocation;
-		self.updateInvocation = nil;
-		[localInvocation invoke];
-		LKLog(@"Returning Cancel");
+	LKLog(@"Terminating with install:%@", self.installUpdateOnQuit?@"YES":@"NO");
+	if (self.installUpdateOnQuit) {
+		self.installUpdateOnQuit = NO;
+		[self.updateDriver installWithToolAndRelaunch:NO];
 		return NSTerminateCancel;
 	}
-	LKLog(@"Returning Now");
 	return NSTerminateNow;
 }
 
 - (void)dealloc {
+	self.updateDriver = nil;
 	
 	[super dealloc];
 }
@@ -197,14 +210,13 @@
 		//	Then send the information
 		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 		[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
+		LKLog(@"Sent notification");
 		[AppDel quittingNowIsReasonable];
 	}
 	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
-		[self performWhenMaintenanceIsFinishedUsingBlock:^{
-			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-			[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
-			[AppDel quittingNowIsReasonable];
-		}];
+		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+		[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+		[AppDel quittingNowIsReasonable];
 	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
 		[self validateAllBundles];
