@@ -10,7 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "MBMMailBundle.h"
-#import "MBMConfirmationStep.h"
 #import "MBMSystemInfo.h"
 #import "MBMUUIDList.h"
 #import "LKError.h"
@@ -71,7 +70,7 @@ typedef enum {
 @synthesize displayErrorMessage = _displayErrorMessage;
 
 @synthesize backgroundImageView = _backgroundImageView;
-@synthesize confirmationStepsView = _installStepsView;
+@synthesize confirmationStepsView = _confirmationStepsView;
 @synthesize titleTextField = _titleTextField;
 @synthesize displayWebView = _displayWebView;
 @synthesize displayProgressTextView = _displayProgressTextView;

@@ -122,7 +122,9 @@
 		if ([manifestDict valueForKey:kMBMMinOSVersionKey]) {
 			_minOSVersion = [[manifestDict valueForKey:kMBMMinOSVersionKey] retain];
 			NSScanner	*versionScanner = [NSScanner scannerWithString:_minOSVersion];
-			[versionScanner scanDouble:&_minVersionMinor];
+			double	scanValue;
+			[versionScanner scanDouble:&scanValue];
+			_minVersionMinor = (CGFloat)scanValue;
 			[versionScanner scanString:@"." intoString:NULL];
 			if (![versionScanner isAtEnd]) {
 				[versionScanner scanInteger:&_minVersionBugFix];
@@ -131,7 +133,9 @@
 		if ([manifestDict valueForKey:kMBMMaxOSVersionKey]) {
 			_maxOSVersion = [[manifestDict valueForKey:kMBMMaxOSVersionKey] retain];
 			NSScanner	*versionScanner = [NSScanner scannerWithString:_maxOSVersion];
-			[versionScanner scanDouble:&_maxVersionMinor];
+			double	scanValue;
+			[versionScanner scanDouble:&scanValue];
+			_maxVersionMinor = (CGFloat)scanValue;
 			[versionScanner scanString:@"." intoString:NULL];
 			if (![versionScanner isAtEnd]) {
 				[versionScanner scanInteger:&_maxVersionBugFix];

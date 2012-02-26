@@ -19,7 +19,7 @@
 
 @implementation MBAppDelegate
 
-@synthesize bundleUnistallObserver;
+@synthesize bundleUninstallObserver = _bundleUninstallObserver;
 
 @synthesize window = _window;
 @synthesize collectionItem = _collectionItem;
@@ -27,7 +27,7 @@
 @synthesize mailBundleList = _mailBundleList;
 @synthesize currentController = _currentController;
 
-@synthesize isMailRunning;
+@synthesize isMailRunning = _isMailRunning;
 @synthesize maintenanceCounterQueue = _maintenanceCounterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
 @synthesize maintenanceCounter = _maintenanceCounter;
@@ -69,9 +69,9 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
-	if (self.bundleUnistallObserver != nil) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self.bundleUnistallObserver];
-		self.bundleUnistallObserver = nil;
+	if (self.bundleUninstallObserver != nil) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self.bundleUninstallObserver];
+		self.bundleUninstallObserver = nil;
 	}
 }
 

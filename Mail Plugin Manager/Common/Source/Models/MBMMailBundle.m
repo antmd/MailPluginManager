@@ -767,4 +767,41 @@ typedef enum {
 	return [NSSet setWithObject:@"bundle"];
 }
 
+
+#pragma mark - Description
+
+- (NSString *)description {
+	NSMutableString	*newString = [NSMutableString string];
+	
+	[newString appendString:@"\n>>MBMMailBundle Values<<"];
+	[newString appendString:@"\nname:"];
+	[newString appendString:self.name];
+	[newString appendString:@"\npath:"];
+	[newString appendString:self.path];
+	[newString appendString:@"\nidentifier:"];
+	[newString appendString:self.identifier];
+	[newString appendString:@"\nversion:"];
+	[newString appendString:self.version];
+	[newString appendString:@"\nincompatibleString:"];
+	[newString appendString:self.incompatibleString];
+	[newString appendString:@"\nincompatibleWithCurrentMail:"];
+	[newString appendString:self.incompatibleWithCurrentMail?@"YES":@"NO"];
+	[newString appendString:@"\nincompatibleWithFutureMail:"];
+	[newString appendString:self.incompatibleWithFutureMail?@"YES":@"NO"];
+	[newString appendString:@"\nusesBundleManager:"];
+	[newString appendString:self.usesBundleManager?@"YES":@"NO"];
+	[newString appendString:@"\nenabled:"];
+	[newString appendString:self.enabled?@"YES":@"NO"];
+	[newString appendString:@"\ninstalled:"];
+	[newString appendString:self.installed?@"YES":@"NO"];
+	[newString appendString:@"\ninLocalDomain:"];
+	[newString appendString:self.inLocalDomain?@"YES":@"NO"];
+	[newString appendString:@"\nhasUpdate:"];
+	[newString appendString:self.hasUpdate?@"YES":@"NO"];
+	[newString appendString:@"\nlatestVersion:"];
+	[newString appendString:self.latestVersion];
+	
+	return [NSString stringWithString:newString];
+}
+
 @end

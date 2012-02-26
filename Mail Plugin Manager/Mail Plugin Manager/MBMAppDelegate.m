@@ -128,7 +128,7 @@ typedef enum {
 		[self showCollectionWindowForBundles:[MBMMailBundle allMailBundlesLoadInfo]];
 		
 		//	Add a notification watcher to handle uninstalls
-		self.bundleUnistallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
 				self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
 				[self adjustWindowSizeForBundleList:self.mailBundleList animate:YES];

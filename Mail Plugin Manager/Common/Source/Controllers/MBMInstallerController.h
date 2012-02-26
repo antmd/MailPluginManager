@@ -11,8 +11,34 @@
 
 #import "MBMManifestModel.h"
 #import "MBMAnimatedListController.h"
+#import "MBMConfirmationStep.h"
 
 @interface MBMInstallerController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
+@private
+	MBMManifestModel			*_manifestModel;
+	MBMAnimatedListController	*_animatedListController;
+	NSUInteger					_currentStep;
+	
+	NSImageView					*_backgroundImageView;
+	NSView						*_confirmationStepsView;
+	NSTextField					*_titleTextField;
+	WebView						*_displayWebView;
+	NSButton					*_previousStepButton;
+	NSButton					*_actionButton;
+	
+	NSText						*_displayTextView;
+	NSScrollView				*_displayTextScrollView;
+	NSView						*_displayProgressView;
+	NSScrollView				*_actionSummaryView;
+	NSProgressIndicator			*_progressBar;
+	NSTextField					*_displayProgressTextView;
+	NSTextField					*_displayProgressLabel;
+	NSTableView					*_actionSummaryTable;
+	
+	NSWindow					*_agreementDialog;
+
+	id							_notificationObserver;
+	NSString					*_displayErrorMessage;
 }
 
 @property	(nonatomic, retain)	MBMManifestModel			*manifestModel;

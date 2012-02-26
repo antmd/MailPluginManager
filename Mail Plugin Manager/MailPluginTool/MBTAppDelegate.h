@@ -10,6 +10,16 @@
 
 #import "MBAppDelegate.h"
 
-@interface MBTAppDelegate : MBAppDelegate 
+#import "SUBasicUpdateDriver.h"
+#import "MBTSparkleAsyncOperation.h"
+
+@interface MBTAppDelegate : MBAppDelegate {
+@private	
+	BOOL						_savedAutomaticallyDownloadsUpdates;
+	BOOL						_savedSendsSystemProfile;
+	BOOL						_installUpdateOnQuit;
+	MBTSparkleAsyncOperation	*_sparkleOperation;
+	SUBasicUpdateDriver			*_updateDriver;
+}
 - (void)doAction:(NSString *)action withArguments:(NSArray *)arguments;
 @end

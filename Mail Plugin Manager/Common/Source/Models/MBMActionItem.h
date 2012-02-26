@@ -8,7 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MBMActionItem : NSObject
+@interface MBMActionItem : NSObject {
+@private	
+	NSString	*_name;
+	NSString	*_itemDescription;
+	NSArray		*_permissions;
+	NSString	*_path;
+	NSString	*_destinationPath;
+	BOOL		_isMailBundle;
+	BOOL		_isBundleManager;
+	BOOL		_useLibraryDomain;
+	
+	NSSearchPathDomainMask	_domainMask;
+}
 
 @property	(nonatomic, copy, readonly)		NSString	*name;
 @property	(nonatomic, copy, readonly)		NSString	*itemDescription;

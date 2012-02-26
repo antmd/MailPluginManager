@@ -11,9 +11,26 @@
 #import "MBMBackgroundableView.h"
 
 @interface MBAppDelegate : NSObject <NSApplicationDelegate> {
+@private
+	id						_bundleUninstallObserver;
+	
+	NSWindow				*_window;
+	NSCollectionViewItem	*_collectionItem;
+	
+	NSViewController		*_bundleViewController;
+	NSArray					*_mailBundleList;
+	NSWindowController		*_currentController;
+	
+	BOOL					_isMailRunning;
+	NSOperationQueue		*_maintenanceCounterQueue;
+	NSOperationQueue		*_maintenanceQueue;
+	NSInteger				_maintenanceCounter;
+	
+	MBMBackgroundableView	*_backgroundView;
+	NSScrollView			*_scrollView;
 }
 
-@property (assign)				id						bundleUnistallObserver;
+@property (assign)				id						bundleUninstallObserver;
 
 @property (assign)	IBOutlet	NSWindow				*window;
 @property (assign)	IBOutlet	NSCollectionViewItem	*collectionItem;

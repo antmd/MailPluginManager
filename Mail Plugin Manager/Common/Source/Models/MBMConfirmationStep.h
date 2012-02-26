@@ -8,7 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MBMConfirmationStep : NSObject
+@interface MBMConfirmationStep : NSObject {
+@private
+	MBMConfirmationType	_type;
+	NSString			*_bulletTitle;
+	NSString			*_title;
+	NSString			*_path;
+	BOOL				_requiresAgreement;
+	BOOL				_hasHTMLContent;
+	BOOL				_agreementAccepted;
+
+	NSDictionary		*_originalValues;
+}
+
 @property	(nonatomic, assign, readonly)	MBMConfirmationType	type;
 @property	(nonatomic, copy, readonly)		NSString			*bulletTitle;
 @property	(nonatomic, copy, readonly)		NSString			*title;

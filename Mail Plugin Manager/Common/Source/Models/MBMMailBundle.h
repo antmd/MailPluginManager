@@ -10,7 +10,28 @@
 
 #import "MBMSparkleDelegate.h"
 
-@interface MBMMailBundle : NSObject
+@interface MBMMailBundle : NSObject {
+@private
+	NSString		*_name;
+	NSString		*_company;
+	NSString		*_companyURL;
+	NSString		*_productURL;
+	NSString		*_iconPath;
+	NSImage			*_icon;
+	NSBundle		*_bundle;
+	BOOL			_incompatibleWithCurrentMail;
+	BOOL			_incompatibleWithFutureMail;
+	BOOL			_usesBundleManager;
+	
+	NSString		*_latestVersion;
+	BOOL			_hasUpdate;
+	
+	BOOL			_enabled;
+	BOOL			_installed;
+	BOOL			_inLocalDomain;
+	
+	MBMSparkleDelegate	*_sparkleDelegate;
+}
 
 @property	(nonatomic, copy, readonly)		NSString		*name;
 @property	(nonatomic, copy, readonly)		NSString		*path;

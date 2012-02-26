@@ -11,7 +11,13 @@
 
 @class MBMMailBundle;
 
-@interface MBMSparkleDelegate : NSObject
+@interface MBMSparkleDelegate : NSObject {
+@private	
+	MBMMailBundle	*_mailBundle;
+//	NSString		*_relaunchPath;
+//	BOOL			_quitMail;
+//	BOOL			_quitManager;
+}
 
 @property	(nonatomic, retain, readonly)	MBMMailBundle	*mailBundle;
 //@property	(nonatomic, copy)				NSString		*relaunchPath;

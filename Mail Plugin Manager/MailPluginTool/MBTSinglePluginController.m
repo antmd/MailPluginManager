@@ -10,25 +10,6 @@
 #import "MBTAppDelegate.h"
 
 typedef enum {
-	kMBTButtonLayoutUpdate = 0,
-	//	[hidden]			[Not Now]	[Update]
-	kMBTButtonLayoutUpdateIncompatible,
-	//	[Disable]			[Not Now]	[Update]
-	kMBTButtonLayoutUpdateIncompatibleDisabled,
-	//	[hidden]			[Not Now]	[Update]
-	kMBTButtonLayoutUpdateFutureIncompatible,
-	//	[hidden]			[Thanks]	[Update]
-	kMBTButtonLayoutIncompatibleOnly,
-	//	[Remove]			[Disable]	[Thanks]
-	kMBTButtonLayoutIncompatibleOnlyDisabled,
-	//	[Remove]			[hidden]	[Thanks]
-	kMBTButtonLayoutFutureIncompatibleOnly,
-	//	[Disable]			[hidden]	[Thanks]
-	kMBTButtonLayoutFutureIncompatibleOnlyDisabled
-	//	[hidden]			[hidden]	[Thanks]
-} MBTButtonLayoutType;
-
-typedef enum {
 	kMBTButtonRight = 0,
 	kMBTButtonCenter,
 	kMBTButtonLeft

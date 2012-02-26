@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MBMRemoteUpdatableList : NSObject
+@interface MBMRemoteUpdatableList : NSObject {
+@private	
+	NSDictionary	*_contents;
+	NSDate			*_date;
+}
 @property	(nonatomic, retain)		NSDictionary	*contents;
 @property	(nonatomic, retain)		NSDate			*date;
 + (void)loadListFromCloud;

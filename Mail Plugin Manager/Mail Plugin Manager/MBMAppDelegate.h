@@ -12,6 +12,15 @@
 #import "MBMManifestModel.h"
 
 @interface MBMAppDelegate : MBAppDelegate {
+@private
+	BOOL				_installing;
+	BOOL				_uninstalling;
+	BOOL				_managing;
+	
+	BOOL				_runningFromInstallDisk;
+	NSString			*_executablePath;
+	NSString			*_singleBundlePath;
+	MBMManifestModel	*_manifestModel;
 }
 
 

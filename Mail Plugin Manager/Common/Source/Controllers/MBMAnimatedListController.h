@@ -10,7 +10,12 @@
 
 #define kMBMInvalidStep	((NSUInteger)-1)
 
-@interface MBMAnimatedListController : NSViewController
+@interface MBMAnimatedListController : NSViewController {
+@private	
+	NSArray		*_subviewList;
+	NSView		*_animatorView;
+	NSUInteger	_selectedStep;
+}
 @property	(nonatomic, copy)	NSArray		*subviewList;
 @property	(nonatomic, retain)	NSView		*animatorView;
 @property	(nonatomic, assign)	NSUInteger	selectedStep;

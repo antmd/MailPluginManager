@@ -15,13 +15,10 @@
 #import "NSUserDefaults+MBMShared.h"
 #import <Sparkle/Sparkle.h>
 
-#import "SUBasicUpdateDriver.h"
-
-#import "MBTSparkleAsyncOperation.h"
 
 #define HOURS_AGO	(-1 * 60 * 60)
 
-@interface MBTAppDelegate () 
+@interface MBTAppDelegate ()
 @property	(nonatomic, assign)	BOOL						savedAutomaticallyDownloadsUpdates;
 @property	(nonatomic, assign)	BOOL						savedSendsSystemProfile;
 @property	(nonatomic, assign)	BOOL						installUpdateOnQuit;
@@ -359,7 +356,7 @@
 		[self showCollectionWindowForBundles:badBundles];
 		
 		//	Add a notification watcher to handle uninstalls
-		self.bundleUnistallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
 				NSMutableArray	*change = [self.mailBundleList mutableCopy];
 				[change removeObjectIdenticalTo:[note object]];

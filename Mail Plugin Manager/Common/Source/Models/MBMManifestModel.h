@@ -17,7 +17,31 @@ typedef enum {
 } MBMOSSupportResult;
 	
 
-@interface MBMManifestModel : NSObject
+@interface MBMManifestModel : NSObject {
+@private	
+	MBMManifestType	_manifestType;
+	NSString		*_displayName;
+	NSString		*_backgroundImagePath;
+	NSString		*_minOSVersion;
+	NSString		*_maxOSVersion;
+	CGFloat			_minMailVersion;
+	MBMActionItem	*_bundleManager;
+	NSArray			*_confirmationStepList;
+	NSArray			*_actionItemList;
+	NSUInteger		_totalActionItemCount;
+	NSUInteger		_confirmationStepCount;
+	BOOL			_canDeleteManagerIfNotUsedByOthers;	//	Default is NO
+	BOOL			_canDeleteManagerIfNoBundlesLeft;	//	Default is YES
+	BOOL			_shouldConfigureMail;	//	Default is NO
+	NSUInteger		_configureMailVersion;
+	NSString		*_completionMessage;		//	Default is @""
+
+	//	Internal only
+	CGFloat			_minVersionMinor;
+	NSInteger		_minVersionBugFix;
+	CGFloat			_maxVersionMinor;
+	NSInteger		_maxVersionBugFix;
+}
 
 @property	(nonatomic, assign, readonly)	MBMManifestType	manifestType;
 @property	(nonatomic, copy, readonly)		NSString		*displayName;

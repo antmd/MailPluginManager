@@ -10,7 +10,11 @@
 
 #import "MBMRemoteUpdatableList.h"
 
-@interface MBMUUIDList : MBMRemoteUpdatableList
+@interface MBMUUIDList : MBMRemoteUpdatableList {
+@private	
+	NSString	*_mailUUID;
+	NSString	*_messageUUID;
+}
 + (NSString *)currentMailUUID;
 + (NSString *)currentMessageUUID;
 + (NSString *)latestOSVersionFromSupportedList:(NSArray *)supportedUUIDs;

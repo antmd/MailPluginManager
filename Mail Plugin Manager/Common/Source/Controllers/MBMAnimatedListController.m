@@ -150,7 +150,7 @@
 	if (fromItem == kMBMInvalidStep) {
 		offsetCount = 0.0f;
 	}
-	CGRect	aRect = LKRectByOffsettingY(self.animatorView.frame, (offsetCount * (ANIMATOR_VIEW_HEIGHT + ANIMATOR_TOP_OFFSET)));
+	NSRect	aRect = LKRectByOffsettingY(self.animatorView.frame, (offsetCount * (ANIMATOR_VIEW_HEIGHT + ANIMATOR_TOP_OFFSET)));
 	[[self.animatorView animator] setFrame:aRect];
 	
 }
