@@ -25,8 +25,7 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Internal Values
 
-//#define MBT_TELL_APPLICATION_FORMAT				@"tell application \"MailBundleTool\" to %@ \"%@\""
-#define MBT_TELL_APPLICATION_OPEN				@"tell application \"MailBundleTool\"\n"
+#define MBT_TELL_APPLICATION_OPEN				@"tell application \"MailPluginTool\"\n"
 #define MBT_ACTIVATE_APP						@"activate\n"
 #define MBT_SCRIPT_FORMAT						@" %@ \"%@\""
 #define MBT_END_TELL							@"\nend tell"
@@ -35,8 +34,8 @@ typedef void(^MBMResultNotificationBlock)(NSDictionary *);
 
 #define MBM_SYSTEM_INFO_NOTIFICATION			@"MBMSystemInfoDistNotification"
 #define MBM_UUID_LIST_NOTIFICATION				@"MBMUUIDListDistNotification"
-#define MBM_TOOL_NAME							@"MailBundleTool"
-#define MBM_TOOL_IDENTIFIER						@"com.littleknownsoftware.MailBundleTool"
+#define MBM_TOOL_NAME							@"MailPluginTool"
+#define MBM_TOOL_IDENTIFIER						@"com.littleknownsoftware.MailPluginTool"
 #define MBM_APP_CONTENTS_PATH					@"Contents/MacOS"
 #define MBM_SENDER_ID_KEY						@"sender-id"
 
