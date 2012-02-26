@@ -98,7 +98,6 @@
 }
 
 - (void)quittingNowIsReasonable {
-	LKLog(@"Quitting called");
 	[self performWhenMaintenanceIsFinishedUsingBlock:^{
 		[NSApp terminate:nil];
 	}];
@@ -370,17 +369,16 @@
 
 - (void)addMaintenanceOperation:(NSOperation *)operation {
 	
-	//	Quickly start our maintenance
-	[self startMaintenance];
-	
-	//	Create blocks for main and end
+	//	Create blocks for start and end
+	NSBlockOperation	*start = [NSBlockOperation blockOperationWithBlock:^{[self startMaintenance];}];
 	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self endMaintenance];}];
 	
 	//	Create the dependencies
+	[operation addDependency:start];
 	[end addDependency:operation];
 	
 	//	Then add the operations
-	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:operation, end, nil] waitUntilFinished:NO];
+	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:start, operation, end, nil] waitUntilFinished:NO];
 }
 
 - (void)startMaintenance {
