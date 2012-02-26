@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
       <title>Mail Plugin Manager's Changelog</title>
-      <link>https://littleknownsoftware.com/mpm/Appcast.xml</link>
+      <link>https://raw.github.com/lksoft/BundleManager/master/Remote/Appcast.xml</link>
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
 

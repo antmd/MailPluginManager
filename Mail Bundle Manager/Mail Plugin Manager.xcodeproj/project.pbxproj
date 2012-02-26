@@ -212,7 +212,7 @@
 
 /* Begin PBXFileReference section */
 		D20537B614361EB6002F0157 /* GenericPlugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GenericPlugin.png; path = "Mail Bundle Manager/GenericPlugin.png"; sourceTree = "<group>"; };
-		D20537B91436223D002F0157 /* uuids.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = uuids.plist; path = "Mail Bundle Manager/uuids.plist"; sourceTree = "<group>"; };
+		D20537B91436223D002F0157 /* uuids.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = uuids.plist; path = ../Remote/uuids.plist; sourceTree = "<group>"; };
 		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BundleBackgroundRed.png; path = "Mail Bundle Manager/BundleBackgroundRed.png"; sourceTree = "<group>"; };
 		D20537C51439CD3E002F0157 /* BundleBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BundleBackground.png; path = "Mail Bundle Manager/BundleBackground.png"; sourceTree = "<group>"; };
 		D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSinglePluginController.h; sourceTree = "<group>"; };
@@ -257,7 +257,7 @@
 		D231F44C1428ED5E002DB999 /* LKLogHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKLogHelper.m; path = ../../LKKit/Helpers/LKLogHelper.m; sourceTree = "<group>"; };
 		D231F44E1428EE7B002DB999 /* LKInclude.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKInclude.pch; path = ../LKKit/LKInclude.pch; sourceTree = "<group>"; };
 		D231F44F1428F035002DB999 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.markdown; path = ../README.markdown; sourceTree = SOURCE_ROOT; };
-		D23D3150144216E3007D30F8 /* companies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = companies.plist; path = "Mail Bundle Manager/companies.plist"; sourceTree = "<group>"; };
+		D23D3150144216E3007D30F8 /* companies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = companies.plist; path = ../Remote/companies.plist; sourceTree = "<group>"; };
 		D23D3153144234B4007D30F8 /* MBMCompanyList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMCompanyList.h; sourceTree = "<group>"; };
 		D23D3154144234B4007D30F8 /* MBMCompanyList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMCompanyList.m; sourceTree = "<group>"; };
 		D23D31571442573A007D30F8 /* MBMUUIDList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMUUIDList.h; sourceTree = "<group>"; };
@@ -279,6 +279,7 @@
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF2D14F99CFF001BA72D /* MBTSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSparkleAsyncOperation.h; sourceTree = "<group>"; };
 		D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSparkleAsyncOperation.m; sourceTree = "<group>"; };
+		D256CF3014FA6F11001BA72D /* Appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Appcast.xml; path = ../../Remote/Appcast.xml; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
 		D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSClickableURLTextField.m; sourceTree = "<group>"; };
 		D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMManifestModel.m; sourceTree = "<group>"; };
@@ -605,6 +606,7 @@
 		D2E9029B141E638B0058618F /* Project */ = {
 			isa = PBXGroup;
 			children = (
+				D256CF3014FA6F11001BA72D /* Appcast.xml */,
 				D216B346141DFDE1003788DC /* Mail Plugin Manager-Info.plist */,
 				D216B34A141DFDE1003788DC /* main.m */,
 			);
