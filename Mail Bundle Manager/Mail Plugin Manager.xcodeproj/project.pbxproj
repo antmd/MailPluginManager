@@ -87,7 +87,6 @@
 		D2779BE61433665D003F7BE0 /* MBMManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */; };
 		D2779BE71433665D003F7BE0 /* MBMActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMActionItem.m */; };
 		D2779BE81433665D003F7BE0 /* MBMConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */; };
-		D2779BE9143366CC003F7BE0 /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
 		D2779BEA14336DDC003F7BE0 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D2779BEB14336DDC003F7BE0 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
 		D2779BEC14336DDC003F7BE0 /* LKCGStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */; };
@@ -103,7 +102,6 @@
 		D2D1E6DA1431C171002FF1B1 /* mbm-manifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6D91431C171002FF1B1 /* mbm-manifest.plist */; };
 		D2D1E6DD1431EC2A002FF1B1 /* MailBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */; };
 		D2D1E73014320D1C002FF1B1 /* ExamplePlugin.mailbundle in Copy Test Data */ = {isa = PBXBuildFile; fileRef = D2D1E72F14320D1B002FF1B1 /* ExamplePlugin.mailbundle */; };
-		D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90293141E36110058618F /* MBMMySparkleDelegate.m */; };
 		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
 		D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */; };
 		D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MBMSparkleDelegate.m */; };
@@ -279,7 +277,7 @@
 		D24DA330142CD92300720631 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
-		D256CF2D14F99CFF001BA72D /* MBTSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; path = MBTSparkleAsyncOperation.h; sourceTree = "<group>"; };
+		D256CF2D14F99CFF001BA72D /* MBTSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSparkleAsyncOperation.h; sourceTree = "<group>"; };
 		D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSparkleAsyncOperation.m; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
 		D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSClickableURLTextField.m; sourceTree = "<group>"; };
@@ -317,8 +315,6 @@
 		D2D1E6DB1431EC29002FF1B1 /* MailBundleTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailBundleTests.h; sourceTree = "<group>"; };
 		D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailBundleTests.m; sourceTree = "<group>"; };
 		D2D1E72F14320D1B002FF1B1 /* ExamplePlugin.mailbundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExamplePlugin.mailbundle; sourceTree = "<group>"; };
-		D2E90292141E36110058618F /* MBMMySparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMMySparkleDelegate.h; path = "Mail Bundle Manager/MBMMySparkleDelegate.h"; sourceTree = "<group>"; };
-		D2E90293141E36110058618F /* MBMMySparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMMySparkleDelegate.m; path = "Mail Bundle Manager/MBMMySparkleDelegate.m"; sourceTree = "<group>"; };
 		D2E90295141E4C7F0058618F /* MBMMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMailBundle.h; sourceTree = "<group>"; };
 		D2E90296141E4C7F0058618F /* MBMMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMailBundle.m; sourceTree = "<group>"; };
 		D2E90298141E5EF90058618F /* NSBundle+MBMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+MBMAdditions.h"; sourceTree = "<group>"; };
@@ -542,8 +538,8 @@
 				D24AF648147D3565000EDC6F /* MBT Scripting.sdef */,
 				D2779BD214336287003F7BE0 /* MainMenu.xib */,
 				D20537F4143B161C002F0157 /* MBTSinglePluginWindow.xib */,
-				D2779BCC14336287003F7BE0 /* Credits.rtf */,
 				D2779BC614336287003F7BE0 /* InfoPlist.strings */,
+				D2779BCC14336287003F7BE0 /* Credits.rtf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -553,8 +549,6 @@
 			children = (
 				D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */,
 				D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */,
-				D2E90292141E36110058618F /* MBMMySparkleDelegate.h */,
-				D2E90293141E36110058618F /* MBMMySparkleDelegate.m */,
 				D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */,
 				D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */,
 				D24248A4148E515700DE7E6A /* MBMConstantsList.h */,
@@ -574,13 +568,13 @@
 		D2779BDA14336588003F7BE0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */,
 				D2730FDF1429322A00EB5CB7 /* MBMInstallerWindow.xib */,
 				D24DA32D142CD0CB00720631 /* MBMAgreementWindow.xib */,
 				D20A3EDD1434B3520083B10A /* MBMBundleView.xib */,
 				D2D1E6C0142FD8B4002FF1B1 /* errors.strings */,
 				D20537B91436223D002F0157 /* uuids.plist */,
 				D23D3150144216E3007D30F8 /* companies.plist */,
+				D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */,
 				D20537B614361EB6002F0157 /* GenericPlugin.png */,
 				D20537C51439CD3E002F0157 /* BundleBackground.png */,
 				D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */,
@@ -647,10 +641,10 @@
 			isa = PBXGroup;
 			children = (
 				D216B353141DFDE2003788DC /* MainMenu.xib */,
+				D216B347141DFDE1003788DC /* InfoPlist.strings */,
 				D24DA330142CD92300720631 /* Localizable.strings */,
 				D2EFB28414F44B8E00DEA922 /* InstallDocument.icns */,
 				D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */,
-				D216B347141DFDE1003788DC /* InfoPlist.strings */,
 				D216B34D141DFDE1003788DC /* Credits.rtf */,
 			);
 			name = Resources;
@@ -897,7 +891,6 @@
 				D216B34B141DFDE1003788DC /* main.m in Sources */,
 				D216B352141DFDE1003788DC /* MBMAppDelegate.m in Sources */,
 				D216B37D141E1676003788DC /* MBMConstants.m in Sources */,
-				D2E90294141E36120058618F /* MBMMySparkleDelegate.m in Sources */,
 				D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */,
 				D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */,
 				D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */,
@@ -957,7 +950,6 @@
 				D2779BE61433665D003F7BE0 /* MBMManifestModel.m in Sources */,
 				D2779BE71433665D003F7BE0 /* MBMActionItem.m in Sources */,
 				D2779BE81433665D003F7BE0 /* MBMConfirmationStep.m in Sources */,
-				D2779BE9143366CC003F7BE0 /* MBMMySparkleDelegate.m in Sources */,
 				D2779BEA14336DDC003F7BE0 /* NSString+LKStructUtils.m in Sources */,
 				D2779BEB14336DDC003F7BE0 /* NSString+LKHelper.m in Sources */,
 				D2779BEC14336DDC003F7BE0 /* LKCGStructs.m in Sources */,
