@@ -236,8 +236,8 @@
 		D216B35C141DFDE2003788DC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D216B363141DFDE2003788DC /* Mail Plugin ManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mail Plugin ManagerTests-Info.plist"; sourceTree = "<group>"; };
 		D216B365141DFDE2003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstants.h; path = "Mail Bundle Manager/MBMConstants.h"; sourceTree = "<group>"; };
-		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = "Mail Bundle Manager/MBMConstants.m"; sourceTree = "<group>"; };
+		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MBMConstants.h; path = Common/MBMConstants.h; sourceTree = "<group>"; };
+		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; name = MBMConstants.m; path = Common/MBMConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
 		D222073B14F143E400881515 /* MBMBackgroundImage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = MBMBackgroundImage.pdf; path = "Mail Bundle Manager/MBMBackgroundImage.pdf"; sourceTree = "<group>"; };
 		D222073E14F1B04000881515 /* NSObject+LKObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+LKObject.h"; path = "../../LKKit/Categories/NSObject+LKObject.h"; sourceTree = "<group>"; };
@@ -264,12 +264,12 @@
 		D23D31581442573A007D30F8 /* MBMUUIDList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMUUIDList.m; sourceTree = "<group>"; };
 		D23D315B1442575F007D30F8 /* MBMRemoteUpdatableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMRemoteUpdatableList.h; sourceTree = "<group>"; };
 		D23D315C1442575F007D30F8 /* MBMRemoteUpdatableList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMRemoteUpdatableList.m; sourceTree = "<group>"; };
-		D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMPluginMacros.h; path = "Mail Bundle Manager/MBMPluginMacros.h"; sourceTree = "<group>"; };
+		D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MBMPluginMacros.h; path = Common/MBMPluginMacros.h; sourceTree = "<group>"; };
 		D23D316C1444DD7A007D30F8 /* MBMSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSystemInfo.h; sourceTree = "<group>"; };
 		D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSystemInfo.m; sourceTree = "<group>"; };
 		D23D31701445B979007D30F8 /* NSUserDefaults+MBMShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MBMShared.h"; sourceTree = "<group>"; };
 		D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MBMShared.m"; sourceTree = "<group>"; };
-		D24248A4148E515700DE7E6A /* MBMConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstantsList.h; path = "Mail Bundle Manager/MBMConstantsList.h"; sourceTree = "<group>"; };
+		D24248A4148E515700DE7E6A /* MBMConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MBMConstantsList.h; path = Common/MBMConstantsList.h; sourceTree = "<group>"; };
 		D24AF648147D3565000EDC6F /* MBT Scripting.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "MBT Scripting.sdef"; sourceTree = "<group>"; };
 		D24AF64D147D4CAD000EDC6F /* MBTSendInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSendInfoCommand.h; sourceTree = "<group>"; };
 		D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSendInfoCommand.m; sourceTree = "<group>"; };
@@ -330,10 +330,10 @@
 		D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+LKAdditions.m"; path = "../../LKKit/Categories/NSFileManager+LKAdditions.m"; sourceTree = "<group>"; };
 		D2EFB28414F44B8E00DEA922 /* InstallDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = InstallDocument.icns; sourceTree = "<group>"; };
 		D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = UninstallDocument.icns; sourceTree = "<group>"; };
-		D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAppDelegate.h; path = "Mail Bundle Manager/MBAppDelegate.h"; sourceTree = "<group>"; };
-		D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBAppDelegate.m; path = "Mail Bundle Manager/MBAppDelegate.m"; sourceTree = "<group>"; };
-		D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMBackgroundableView.h; path = "Mail Bundle Manager/MBMBackgroundableView.h"; sourceTree = "<group>"; };
-		D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMBackgroundableView.m; path = "Mail Bundle Manager/MBMBackgroundableView.m"; sourceTree = "<group>"; };
+		D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAppDelegate.h; path = Common/MBAppDelegate.h; sourceTree = "<group>"; };
+		D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; name = MBAppDelegate.m; path = Common/MBAppDelegate.m; sourceTree = "<group>"; };
+		D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MBMBackgroundableView.h; path = Common/MBMBackgroundableView.h; sourceTree = "<group>"; };
+		D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; name = MBMBackgroundableView.m; path = Common/MBMBackgroundableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
