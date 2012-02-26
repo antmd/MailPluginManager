@@ -344,7 +344,10 @@
 #pragma mark - Maintenance Task Management
 
 - (void)addMaintenanceTask:(void (^)(void))block {
-	
+
+	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
+	[self addMaintenanceOperation:main];
+	/*
 	//	Quickly start our maintenance
 	[self startMaintenance];
 	
@@ -357,6 +360,22 @@
 	
 	//	Then add the operations
 	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:main, end, nil] waitUntilFinished:NO];
+	*/
+}
+
+- (void)addMaintenanceOperation:(NSOperation *)operation {
+	
+	//	Quickly start our maintenance
+	[self startMaintenance];
+	
+	//	Create blocks for main and end
+	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self endMaintenance];}];
+	
+	//	Create the dependencies
+	[end addDependency:operation];
+	
+	//	Then add the operations
+	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:operation, end, nil] waitUntilFinished:NO];
 }
 
 - (void)startMaintenance {

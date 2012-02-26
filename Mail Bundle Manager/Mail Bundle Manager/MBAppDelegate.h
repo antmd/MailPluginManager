@@ -36,6 +36,7 @@
 
 //	Maintenance task management
 - (void)addMaintenanceTask:(void (^)(void))block;
+- (void)addMaintenanceOperation:(NSOperation *)operation;
 - (void)startMaintenance;
 - (void)endMaintenance;
 - (void)performWhenMaintenanceIsFinishedUsingBlock:(void(^)(void))block;
