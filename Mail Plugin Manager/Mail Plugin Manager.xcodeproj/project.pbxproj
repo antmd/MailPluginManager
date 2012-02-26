@@ -25,8 +25,6 @@
 		D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
-		D222073C14F143E400881515 /* MBMBackgroundImage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D222073B14F143E400881515 /* MBMBackgroundImage.pdf */; };
-		D222073D14F143E400881515 /* MBMBackgroundImage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D222073B14F143E400881515 /* MBMBackgroundImage.pdf */; };
 		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D22CC04D146B455B0055CFBE /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2C473C7146B449B00B2981D /* Sparkle.framework */; };
@@ -88,6 +86,8 @@
 		D2866E2E14FAAE420006A749 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2866E3014FAAE420006A749 /* Localizable.strings */; };
 		D2866E4814FADC790006A749 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4714FADC790006A749 /* ManagerIcon.png */; };
+		D2866E6D14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */; };
+		D2866E6E14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */; };
 		D28F77EA14209D1D0015E42F /* MBMActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMActionItem.m */; };
 		D2C473C9146B44C200B2981D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C473C7146B449B00B2981D /* Sparkle.framework */; };
 		D2C473CA146B44DA00B2981D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2779BF214337389003F7BE0 /* QuartzCore.framework */; };
@@ -240,7 +240,6 @@
 		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstants.h; path = Common/MBMConstants.h; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = Common/MBMConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
-		D222073B14F143E400881515 /* MBMBackgroundImage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = MBMBackgroundImage.pdf; path = Common/Resources/Images/MBMBackgroundImage.pdf; sourceTree = "<group>"; };
 		D222073E14F1B04000881515 /* NSObject+LKObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+LKObject.h"; path = "../../LKKit/Categories/NSObject+LKObject.h"; sourceTree = "<group>"; };
 		D222073F14F1B04000881515 /* NSObject+LKObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+LKObject.m"; path = "../../LKKit/Categories/NSObject+LKObject.m"; sourceTree = "<group>"; };
 		D22CC053146BD87F0055CFBE /* ToolTestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToolTestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -303,6 +302,7 @@
 		D2866E2F14FAAE420006A749 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D2866E4614FADC790006A749 /* ManagerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ManagerIcon.icns; sourceTree = "<group>"; };
 		D2866E4714FADC790006A749 /* ManagerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ManagerIcon.png; sourceTree = "<group>"; };
+		D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MBMBackgroundImage.png; path = Common/Resources/Images/MBMBackgroundImage.png; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MBMActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMActionItem.h; sourceTree = "<group>"; };
 		D28F77E914209D1D0015E42F /* MBMActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMActionItem.m; sourceTree = "<group>"; };
 		D2C473C7146B449B00B2981D /* Sparkle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sparkle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -602,7 +602,7 @@
 				D20537B614361EB6002F0157 /* GenericPlugin.png */,
 				D20537C51439CD3E002F0157 /* BundleBackground.png */,
 				D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */,
-				D222073B14F143E400881515 /* MBMBackgroundImage.pdf */,
+				D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -832,11 +832,11 @@
 				D20537C41439C9BB002F0157 /* BundleBackgroundRed.png in Resources */,
 				D20537C61439CD3E002F0157 /* BundleBackground.png in Resources */,
 				D23D3151144216E3007D30F8 /* companies.plist in Resources */,
-				D222073C14F143E400881515 /* MBMBackgroundImage.pdf in Resources */,
 				D2EFB28514F44B8E00DEA922 /* InstallDocument.icns in Resources */,
 				D2EFB28714F44B9500DEA922 /* UninstallDocument.icns in Resources */,
 				D2866E4814FADC790006A749 /* ManagerIcon.icns in Resources */,
 				D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */,
+				D2866E6D14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -878,7 +878,7 @@
 				D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */,
 				D23D3152144216E3007D30F8 /* companies.plist in Resources */,
 				D24AF649147D3565000EDC6F /* MBT Scripting.sdef in Resources */,
-				D222073D14F143E400881515 /* MBMBackgroundImage.pdf in Resources */,
+				D2866E6E14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
