@@ -73,7 +73,7 @@
 	}
 	
 	//	Then between the two of those, which is the earliest
-	if ([[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] > [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
+	if ([[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
 		return messageDict;
 	}
 	else {
