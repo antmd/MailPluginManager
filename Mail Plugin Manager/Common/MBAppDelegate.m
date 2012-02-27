@@ -232,8 +232,8 @@
 	self.bundleViewController = [[[NSViewController alloc] initWithNibName:@"MBMBundleView" bundle:nil] autorelease];
 	[self.bundleViewController configureForCollectionItem:self.collectionItem];
 	
-	//	Set our bundle list
-	self.mailBundleList = bundleList;
+	//	Set our bundle list, using the recommended sorting order
+	self.mailBundleList = [bundleList sortedArrayUsingDescriptors:[MBMMailBundle bestBundleSortDescriptors]];
 	
 	//	Adjust the view & window sizes, if there should only be a single row
 	[self adjustWindowSizeForBundleList:bundleList animate:NO];

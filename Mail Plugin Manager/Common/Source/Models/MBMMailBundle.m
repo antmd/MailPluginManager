@@ -752,6 +752,15 @@ typedef enum {
 	
 }
 
++ (NSArray *)bestBundleSortDescriptors {
+	NSSortDescriptor	*compatibilitySort = [NSSortDescriptor sortDescriptorWithKey:@"incompatibleWithCurrentMail" ascending:YES];
+	NSSortDescriptor	*installedSort = [NSSortDescriptor sortDescriptorWithKey:@"installed" ascending:NO];
+	NSSortDescriptor	*enabledSort = [NSSortDescriptor sortDescriptorWithKey:@"enabled" ascending:NO];
+	NSSortDescriptor	*nameSort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+
+	return [NSArray arrayWithObjects:compatibilitySort, installedSort, enabledSort, nameSort, nil];
+}
+
 
 #pragma mark - KVO Dependence
 

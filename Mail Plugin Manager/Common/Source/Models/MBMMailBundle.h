@@ -80,6 +80,7 @@
 + (NSArray *)allDisabledMailBundlesShouldLoadInfo:(BOOL)loadInfo;
 
 + (NSComparisonResult)compareVersion:(NSString *)first toVersion:(NSString *)second;
++ (NSArray *)bestBundleSortDescriptors;
 
 - (id)initWithPath:(NSString *)bundlePath;
 - (id)initWithPath:(NSString *)bundlePath shouldLoadUpdateInfo:(BOOL)loadInfo;
