@@ -39,13 +39,13 @@
 - (void)updateDriverFinished:(NSNotification *)notification {
 	
 	//	Then reomve the observer
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SUUpdateDriverFinished" object:[notification object]];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverDoneNotification object:[notification object]];
 	
 	[self postDoneNotification];
 }
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDriverFinished:) name:@"SUUpdateDriverFinished" object:[updater valueForKey:@"driver"]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDriverFinished:) name:kMBMSUUpdateDriverDoneNotification object:[updater valueForKey:@"driver"]];
 }
 
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update {
