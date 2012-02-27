@@ -309,6 +309,7 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
+* Either load Sparkle changes to github fork or use base, but make it a submodule
 * Add better error handling to the secureMoveTo methods.
 * *Would be nice*
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
@@ -326,13 +327,10 @@ The keys for the results in the dictionary are listed below.
 
 #### Tool
 
-* Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
-* What happens when a command is sent and the app is already running?
-	1. Make a queue of items as they are added?
-	2. Will happen pretty frequently with Update and Send Crash logs.
-* Ensure that the Bundle app doesn't ask if you want to Update (from Sparkle).
+* Fix the Sparkle updating for plugins to actually do the work before quitting.
 * *Would be nice*
 * Crash Reporting.
+* Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * Add an Update All Plugins button to Multi Plugin window when relevant.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
 
