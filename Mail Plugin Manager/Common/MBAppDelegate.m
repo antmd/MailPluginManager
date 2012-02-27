@@ -345,6 +345,28 @@
 }
 
 
+- (id)changePluginManagerDefaultValue:(id)value forKey:(NSString *)key {
+	
+	id	currentValue = nil;
+	
+	NSMutableDictionary	*changeDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMMailPluginManagerBundleID] mutableCopy];
+	currentValue = [changeDefaults valueForKey:key];
+	if (value == nil) {
+		[changeDefaults removeObjectForKey:key];
+	}
+	else {
+		[changeDefaults setValue:value forKey:key];
+	}
+	[[NSUserDefaults standardUserDefaults] setPersistentDomain:changeDefaults forName:kMBMMailPluginManagerBundleID];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	[changeDefaults release];
+	
+	return currentValue;
+}
+
+
+
+
 #pragma mark - Maintenance Task Management
 
 - (void)addMaintenanceTask:(void (^)(void))block {

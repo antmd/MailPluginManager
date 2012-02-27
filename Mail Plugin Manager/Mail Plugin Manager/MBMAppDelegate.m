@@ -12,6 +12,7 @@
 #import "MBMInstallerController.h"
 #import "NSViewController+LKCollectionItemFix.h"
 
+#define SU_AUTOMATIC_CHECKS_KEY	@"SUEnableAutomaticChecks"
 
 typedef enum {
 	MBMInstallerHasBadTypeCode = 401,
@@ -20,6 +21,10 @@ typedef enum {
 	MBMEndAppDelegateCode
 } MBMAppDelegateErrorCodes;
 
+
+@interface MBMAppDelegate ()
+@property	(nonatomic, retain)	NSNumber		*savedEnableAutoChecks;
+@end
 
 @implementation MBMAppDelegate
 
@@ -32,6 +37,8 @@ typedef enum {
 @synthesize executablePath = _executablePath;
 @synthesize singleBundlePath = _singleBundlePath;
 @synthesize manifestModel = _manifestModel;
+@synthesize savedEnableAutoChecks = _savedEnableAutoChecks;
+
 
 
 - (void)dealloc {
@@ -39,6 +46,7 @@ typedef enum {
 	self.executablePath = nil;
 	self.singleBundlePath = nil;
 	self.manifestModel = nil;
+	self.savedEnableAutoChecks = nil;
 	
     [super dealloc];
 }
@@ -107,6 +115,12 @@ typedef enum {
 			self.runningFromInstallDisk = YES;
 		}
 	}
+
+	if (self.installing || self.uninstalling) {
+		//	May need to save the state of this value and restore afterward
+		self.savedEnableAutoChecks = [self changePluginManagerDefaultValue:[NSNumber numberWithBool:NO] forKey:SU_AUTOMATIC_CHECKS_KEY];
+	}
+
 	
 	return NO;
 }
@@ -143,6 +157,11 @@ typedef enum {
 	
 }
 
+- (void)applicationWillTerminate:(NSNotification *)notification {
+	if (self.installing || self.uninstalling) {
+		[self changePluginManagerDefaultValue:self.savedEnableAutoChecks forKey:SU_AUTOMATIC_CHECKS_KEY];
+	}
+}
 
 #pragma mark - Action Methods
 

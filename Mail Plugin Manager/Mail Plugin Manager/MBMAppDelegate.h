@@ -21,6 +21,8 @@
 	NSString			*_executablePath;
 	NSString			*_singleBundlePath;
 	MBMManifestModel	*_manifestModel;
+	
+	NSNumber			*_savedEnableAutoChecks;
 }
 
 

@@ -64,6 +64,8 @@
 - (BOOL)restartMailWithBlock:(void (^)(void))taskBlock;
 - (IBAction)restartMail:(id)sender;
 
+- (id)changePluginManagerDefaultValue:(id)value forKey:(NSString *)key;
+
 //	Quitting only when tasks are completed
 - (void)quittingNowIsReasonable;
 - (void)quitAfterReceivingNotifications:(NSArray *)notificationList;
