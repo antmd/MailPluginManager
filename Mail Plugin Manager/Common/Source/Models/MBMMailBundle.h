@@ -42,6 +42,7 @@
 @property	(nonatomic, copy, readonly)		NSString		*version;
 @property	(nonatomic, copy, readonly)		NSString		*iconPath;
 @property	(nonatomic, copy, readonly)		NSString		*incompatibleString;
+@property	(nonatomic, copy, readonly)		NSColor			*incompatibleStringColor;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;
 @property	(nonatomic, retain, readonly)	NSBundle		*bundle;
 @property	(nonatomic, assign, readonly)	BOOL			incompatibleWithCurrentMail;

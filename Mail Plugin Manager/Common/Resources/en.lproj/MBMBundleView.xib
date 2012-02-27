@@ -348,7 +348,7 @@
 						<string key="NSFrame">{{5, 188}, {240, 23}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="732773932"/>
+						<reference key="NSNextKeyView" ref="367386457"/>
 						<string key="NSReuseIdentifierKey">_NS:1566</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="1022163545">
@@ -376,7 +376,7 @@
 						<string key="NSFrame">{{5, 188}, {240, 23}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="367386457"/>
+						<reference key="NSNextKeyView" ref="179296049"/>
 						<string key="NSReuseIdentifierKey">_NS:3936</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="1040974851">
@@ -412,7 +412,7 @@
 						<string key="NSFrameSize">{250, 230}</string>
 						<reference key="NSSuperview" ref="696709593"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="179296049"/>
+						<reference key="NSNextKeyView" ref="732773932"/>
 						<string key="NSReuseIdentifierKey">_NS:1658</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="748624935">
@@ -696,23 +696,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<string key="label">textColor: lkCVI.representedObject.incompatibleStringColor</string>
 						<reference key="source" ref="829670092"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="829670092"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">hidden: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<string key="NSBinding">hidden</string>
-							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">NSNegateBoolean</string>
-							</object>
+							<string key="NSLabel">textColor: lkCVI.representedObject.incompatibleStringColor</string>
+							<string key="NSBinding">textColor</string>
+							<string key="NSKeyPath">lkCVI.representedObject.incompatibleStringColor</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">168</int>
+					<int key="connectionID">171</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1140,7 +1136,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">168</int>
+			<int key="maxID">171</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

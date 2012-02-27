@@ -22,6 +22,9 @@ typedef enum {
 	MBMUnknownBundleCode
 } MBMBundleErrorCodes;
 
+#define CURRENT_INCOMPATIBLE_COLOR	[NSColor colorWithDeviceRed:0.800 green:0.000 blue:0.000 alpha:1.000]
+#define FUTURE_INCOMPATIBLE_COLOR	[NSColor colorWithDeviceWhite:0.600 alpha:1.000]
+
 
 @interface MBMMailBundle ()
 @property	(nonatomic, copy, readwrite)		NSString		*name;
@@ -233,7 +236,21 @@ typedef enum {
 }
 
 - (NSString *)incompatibleString {
-	return [NSString stringWithFormat:NSLocalizedString(@"Always disabled in Mac OS X > %@", @"A string as short as possible describing that the plugin is only compatible with the OS until version X"), [self latestOSVersionSupported]];
+	NSString	*compatibleString = [NSString stringWithFormat:NSLocalizedString(@"Enabled in OS X (known up to %@)", @"A string as short as possible describing that the plugin is compatible with all OS X versions"), [self latestOSVersionSupported]];
+	
+	if (self.incompatibleWithCurrentMail) {
+		compatibleString = [NSString stringWithFormat:NSLocalizedString(@"Always disabled in OS X > %@", @"A string as short as possible describing that the plugin is only compatible with the OS until version X"), [self latestOSVersionSupported]];
+	}
+	else if (self.incompatibleWithFutureMail) {
+		compatibleString = [NSString stringWithFormat:NSLocalizedString(@"Will be disabled in OS X >= %@", @"A string as short as possible describing that the plugin will become incompatible compatible with the OS with version X"), [self firstOSVersionUnsupported]];
+	}
+	
+	
+	return compatibleString;
+}
+
+- (NSColor *)incompatibleStringColor {
+	return self.incompatibleWithCurrentMail?CURRENT_INCOMPATIBLE_COLOR:FUTURE_INCOMPATIBLE_COLOR;
 }
 
 #pragma mark - Memory Management
@@ -275,7 +292,7 @@ typedef enum {
 		_icon = [[NSImage alloc] initWithContentsOfFile:_iconPath];
 
 		//	Current Dummy value for latestVersion
-		_latestVersion = [[NSString alloc] initWithString:@"12.5.8"];
+		_latestVersion = [NSLocalizedString(@"???", @"String indicating that the latest version is not known") retain];
 		
 		//	Set a fake company name to know when to try and load it
 		_company = [[NSString alloc] initWithString:kMBMUnknownCompanyValue];
@@ -386,11 +403,13 @@ typedef enum {
 }
 
 - (NSString *)latestOSVersionSupported {
-	return [MBMUUIDList latestOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	NSString	*version = [MBMUUIDList latestOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	return (!IsEmpty(version)?version:NSLocalizedString(@"Unknown", @"Text indicating that we couldn't determine the latest version of the OS that this plugin supports"));
 }
 
 - (NSString *)firstOSVersionUnsupported {
-	return [MBMUUIDList firstUnsupportedOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	NSString	*version = [MBMUUIDList firstUnsupportedOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	return (!IsEmpty(version)?version:NSLocalizedString(@"None", @"Text indicating that we couldn't find any version of the OS that this plugin does not support"));
 }
 
 
