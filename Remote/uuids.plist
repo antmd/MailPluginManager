@@ -37,31 +37,31 @@
 			<key>latest-os-version-display</key>
 			<string>10.6.8</string>
 			<key>latest-version-comparator</key>
-			<string>95</string>
+			<integer>95</integer>
 			<key>type</key>
 			<string>message</string>
 		</dict>
-		<key>4C286C70–7F18–4839-B903–6F2D58FA4C71</key>
+		<key>4C286C70-7F18-4839-B903-6F2D58FA4C71</key>
 		<dict>
 			<key>earliest-os-version-display</key>
 			<string>10.7.3</string>
 			<key>latest-os-version-display</key>
 			<string>10.7.3</string>
 			<key>latest-version-comparator</key>
-			<string>102</string>
+			<integer>102</integer>
 			<key>type</key>
 			<string>mail</string>
 			<key>type-version-display</key>
 			<string>5.2</string>
 		</dict>
-		<key>608CE00F-4576–4CAD-B362-F3CCB7DE8D67</key>
+		<key>608CE00F-4576-4CAD-B362-F3CCB7DE8D67</key>
 		<dict>
 			<key>earliest-os-version-display</key>
 			<string>10.8</string>
 			<key>latest-os-version-display</key>
 			<string>10.8</string>
 			<key>latest-version-comparator</key>
-			<string>999999</string>
+			<integer>999999</integer>
 			<key>type</key>
 			<string>mail</string>
 			<key>type-version-display</key>
@@ -74,7 +74,7 @@
 			<key>latest-os-version-display</key>
 			<string>10.7.2</string>
 			<key>latest-version-comparator</key>
-			<string>101</string>
+			<integer>101</integer>
 			<key>type</key>
 			<string>mail</string>
 			<key>type-version-display</key>
@@ -87,7 +87,7 @@
 			<key>latest-os-version-display</key>
 			<string>10.6.8</string>
 			<key>latest-version-comparator</key>
-			<string>95</string>
+			<integer>95</integer>
 			<key>type</key>
 			<string>mail</string>
 		</dict>
@@ -98,7 +98,7 @@
 			<key>latest-os-version-display</key>
 			<string>10.8</string>
 			<key>latest-version-comparator</key>
-			<string>999999</string>
+			<integer>999999</integer>
 			<key>type</key>
 			<string>message</string>
 			<key>type-version-display</key>
