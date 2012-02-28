@@ -388,7 +388,8 @@ typedef enum {
 			
 		}
 		else if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
-			displayMessage = NSLocalizedString(@"Uninstall successful.", @"Uninstall successful message in view");
+			displayMessage = NSLocalizedString(@"Uninstall successful.\n\n%@", @"Uninstall successful message in view");
+			displayMessage = [NSString stringWithFormat:displayMessage, self.manifestModel.completionMessage];
 		}
 		else if (self.displayErrorMessage != nil) {
 			displayMessage = self.displayErrorMessage;
@@ -486,7 +487,7 @@ typedef enum {
 - (BOOL)configureMail {
 	
 	//	Only need to bother if the manifest asked for it
-	if (self.manifestModel.shouldConfigureMail) {
+	if (self.manifestModel.shouldConfigureMail || self.manifestModel.shouldRestartMail) {
 		//	Get Mail settings
 		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMMailBundleIdentifier];
 		
@@ -518,8 +519,10 @@ typedef enum {
 			//	Test to see if Mail is running
 			if (AppDel.isMailRunning) {
 				//	If so, ask user to quit it
-				NSString	*messageText = NSLocalizedString(@"I need to configure Mail, which requires me to quit it.", @"Description of why Mail needs to be quit.");
-				NSString	*infoText = NSLocalizedString(@"Clicking 'Quit Mail' will complete this installation. Clicking 'Quit Mail Later' will let you delay this until later.", @"Details about how the buttons work.");
+				NSString	*messageText = NSLocalizedString(@"I need to restart Mail to finish.", @"Description of why Mail needs to be quit.");
+				NSString	*infoText = NSLocalizedString(@"Clicking 'Quit Mail' will complete this %@. Clicking 'Quit Mail Later' will let you delay this until later.", @"Details about how the buttons work.");
+				infoText = [NSString stringWithFormat:infoText, (self.manifestModel.manifestType == kMBMManifestTypeInstallation)?NSLocalizedString(@"installation", @"installation text"):NSLocalizedString(@"uninstallation", @"uninstallation text")];
+				
 				NSString	*defaultButton = NSLocalizedString(@"Quit Mail", @"Button text to quit mail");
 				NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
 				NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
@@ -532,7 +535,9 @@ typedef enum {
 			
 				//	If they denied, set an error message
 				if (mailResult == NSAlertAlternateReturn) {
-					self.displayErrorMessage = NSLocalizedString(@"The plugin has been installed, but Mail has not been completely configured correctly to recognize it.\n\nPlease quit Mail for the changes to take affect.", @"Message to indicate to the user that mail was configured but not restarted");
+					self.displayErrorMessage = NSLocalizedString(@"The plugin has been %@, but Mail has not been completely configured correctly to recognize it.\n\nPlease quit Mail for the changes to take affect.", @"Message to indicate to the user that mail was configured but not restarted");
+					self.displayErrorMessage = [NSString stringWithFormat:self.displayErrorMessage, 
+												(self.manifestModel.manifestType == kMBMManifestTypeInstallation)?NSLocalizedString(@"installed", @"Install name"):NSLocalizedString(@"uninstalled", @"Installed name")];
 				}
 				//	Otherwise restart mail and return
 				else {
@@ -630,7 +635,7 @@ typedef enum {
 
 - (BOOL)removeItem:(MBMActionItem *)anItem {
 	
-	//	Default is to *enable* it
+	//	Default is to trash it
 	NSString	*fromPath = anItem.path;
 	NSString	*toPath = [[NSHomeDirectory() stringByAppendingPathComponent:@".Trash"] stringByAppendingPathComponent:[anItem.path lastPathComponent]];
 	NSError		*error;
@@ -700,7 +705,6 @@ typedef enum {
 	//	If there is a destination already, check it's bundle id matches and version is < installing one
 	if (destBundle) {
 		NSBundle	*sourceBundle = [NSBundle bundleWithPath:model.bundleManager.path];
-		LKLog(@"Version key:%@", (NSString *)kCFBundleVersionKey);
 		
 		BOOL		isSameBundleID = [[sourceBundle bundleIdentifier] isEqualToString:[destBundle bundleIdentifier]];
 		BOOL		isSourceVersionGreater = ([MBMMailBundle compareVersion:[[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey] toVersion:[[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey]] == NSOrderedDescending);
