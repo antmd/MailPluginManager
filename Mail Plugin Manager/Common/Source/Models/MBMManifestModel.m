@@ -40,6 +40,7 @@
 @synthesize confirmationStepCount = _confirmationStepCount;
 @synthesize canDeleteManagerIfNotUsedByOthers = _canDeleteManagerIfNotUsedByOthers;
 @synthesize canDeleteManagerIfNoBundlesLeft = _canDeleteManagerIfNoBundlesLeft;
+@synthesize shouldRestartMail = _shouldRestartMail;
 @synthesize shouldConfigureMail = _shouldConfigureMail;
 @synthesize configureMailVersion = _configureMailVersion;
 @synthesize completionMessage = _completionMessage;
@@ -171,11 +172,15 @@
 		}
 		
 		//	Set values for mail configuration
+		_shouldRestartMail = YES;
 		_shouldConfigureMail = NO;
 		_configureMailVersion = kMBMDefaultMailPluginVersion;
 		if ([manifestDict valueForKey:kMBMMinMailBundleVersionKey] != nil) {
 			_shouldConfigureMail = YES;
 			_configureMailVersion = [[manifestDict valueForKey:kMBMMinMailBundleVersionKey] integerValue];
+		}
+		if ([manifestDict valueForKey:kMBMDontRestartMailKey] != nil) {
+			_shouldRestartMail = [[manifestDict valueForKey:kMBMDontRestartMailKey] boolValue];
 		}
 		
 		//	Set the completion message (default is empty string)

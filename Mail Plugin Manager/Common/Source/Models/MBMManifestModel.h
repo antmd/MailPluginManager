@@ -32,6 +32,7 @@ typedef enum {
 	NSUInteger		_confirmationStepCount;
 	BOOL			_canDeleteManagerIfNotUsedByOthers;	//	Default is NO
 	BOOL			_canDeleteManagerIfNoBundlesLeft;	//	Default is YES
+	BOOL			_shouldRestartMail;		//	Default is YES
 	BOOL			_shouldConfigureMail;	//	Default is NO
 	NSUInteger		_configureMailVersion;
 	NSString		*_completionMessage;		//	Default is @""
@@ -57,6 +58,7 @@ typedef enum {
 @property	(nonatomic, assign, readonly)	NSUInteger		confirmationStepCount;
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNotUsedByOthers;	//	Default is NO
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNoBundlesLeft;	//	Default is YES
+@property	(nonatomic, assign, readonly)	BOOL			shouldRestartMail;		//	Default is YES
 @property	(nonatomic, assign, readonly)	BOOL			shouldConfigureMail;	//	Default is NO
 @property	(nonatomic, assign, readonly)	NSUInteger		configureMailVersion;
 @property	(nonatomic, copy, readonly)		NSString		*completionMessage;		//	Default is @""

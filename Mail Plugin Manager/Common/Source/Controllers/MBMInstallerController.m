@@ -371,6 +371,7 @@ typedef enum {
 	dispatch_async(myQueue, ^(void) {
 		
 		NSString	*displayMessage = nil;
+		self.displayErrorMessage = nil;
 		if (![self processAllItems]) {
 			if (self.displayErrorMessage == nil) {
 				//	Localize the progress label
@@ -388,6 +389,9 @@ typedef enum {
 		}
 		else if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
 			displayMessage = NSLocalizedString(@"Uninstall successful.", @"Uninstall successful message in view");
+		}
+		else if (self.displayErrorMessage != nil) {
+			displayMessage = self.displayErrorMessage;
 		}
 		else {
 			displayMessage = NSLocalizedString(@"Installation complete.\n\n%@", @"Installation successful message in view");
@@ -479,46 +483,61 @@ typedef enum {
 		//	Get Mail settings
 		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMMailBundleIdentifier];
 		
+		//	Make the block for updating those values
+		void	(^configureBlock)(void) = nil;
+
 		//	Test to see if those settings are sufficient
 		if (([[mailDefaults valueForKey:kMBMEnableBundlesKey] boolValue]) &&
 			(((NSUInteger)[[mailDefaults valueForKey:kMBMBundleCompatibilityVersionKey] integerValue]) >= self.manifestModel.configureMailVersion)) {
-			//	If so, we are done
-			return YES;
-		}
-		
-		//	Make the block for updating those values
-		void	(^configureBlock)(void);
-		configureBlock = ^(void) {
-			NSMutableDictionary	*newMailDefs = [[mailDefaults mutableCopy] autorelease];
-			[newMailDefs setValue:@"YES" forKey:kMBMEnableBundlesKey];
-			[newMailDefs setValue:[NSNumber numberWithInteger:self.manifestModel.configureMailVersion] forKey:kMBMBundleCompatibilityVersionKey];
-			[[NSUserDefaults standardUserDefaults] setPersistentDomain:newMailDefs forName:kMBMMailBundleIdentifier];
-		};
-		
-		//	Test to see if Mail is running
-		if (AppDel.isMailRunning) {
-			//	If so, ask user to quit it
-			NSString	*messageText = NSLocalizedString(@"I need to configure Mail, which requires me to quit it.", @"Description of why Mail needs to be quit.");
-			NSString	*infoText = NSLocalizedString(@"Clicking 'Quit Mail' will complete this installation. Clicking 'Abort Install' will cancel the installation.", @"Details about how the buttons work.");
-			NSString	*defaultButton = NSLocalizedString(@"Quit Mail", @"Button text to quit mail");
-			NSString	*altButton = NSLocalizedString(@"Abort Install", @"Button text to abort install");
-			NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
-
-			//	Throw this back onto the main queue
-			__block NSUInteger	mailResult;
-			dispatch_sync(dispatch_get_main_queue(), ^{
-				mailResult = [quitMailAlert runModal];
-			});
-		
-			//	If they denied, return NO
-			if (mailResult == NSAlertAlternateReturn) {
-				self.displayErrorMessage = NSLocalizedString(@"The plugin has been installed, but Mail has not been configured correctly to recognize it.\n\nPlease run the installer again when you are willing to quit Mail.", @"Message to indicate to the user that mail hasn't been configured");
-				return NO;
+			
+			//	If no restart wanted,
+			if (!self.manifestModel.shouldRestartMail) {
+				//	Then we are done
+				return YES;
 			}
 		}
+		else { 
+			//	Make the block for updating those values
+			configureBlock = ^(void) {
+				NSMutableDictionary	*newMailDefs = [[mailDefaults mutableCopy] autorelease];
+				[newMailDefs setValue:@"YES" forKey:kMBMEnableBundlesKey];
+				[newMailDefs setValue:[NSNumber numberWithInteger:self.manifestModel.configureMailVersion] forKey:kMBMBundleCompatibilityVersionKey];
+				[[NSUserDefaults standardUserDefaults] setPersistentDomain:newMailDefs forName:kMBMMailBundleIdentifier];
+			};
+		}
 		
-		//	Update them using the block - If Mail isn't running, it'll just perform the block
-		return [AppDel restartMailWithBlock:configureBlock];
+		//	If we should restart mail
+		if (self.manifestModel.shouldRestartMail) {
+			//	Test to see if Mail is running
+			if (AppDel.isMailRunning) {
+				//	If so, ask user to quit it
+				NSString	*messageText = NSLocalizedString(@"I need to configure Mail, which requires me to quit it.", @"Description of why Mail needs to be quit.");
+				NSString	*infoText = NSLocalizedString(@"Clicking 'Quit Mail' will complete this installation. Clicking 'Quit Mail Later' will let you delay this until later.", @"Details about how the buttons work.");
+				NSString	*defaultButton = NSLocalizedString(@"Quit Mail", @"Button text to quit mail");
+				NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
+				NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
+
+				//	Throw this back onto the main queue
+				__block NSUInteger	mailResult;
+				dispatch_sync(dispatch_get_main_queue(), ^{
+					mailResult = [quitMailAlert runModal];
+				});
+			
+				//	If they denied, set an error message
+				if (mailResult == NSAlertAlternateReturn) {
+					self.displayErrorMessage = NSLocalizedString(@"The plugin has been installed, but Mail has not been completely configured correctly to recognize it.\n\nPlease quit Mail for the changes to take affect.", @"Message to indicate to the user that mail was configured but not restarted");
+				}
+				//	Otherwise restart mail and return
+				else {
+					return [AppDel restartMailWithBlock:configureBlock];
+				}
+			}
+		}
+
+		//	If we are here then, we just need to run the configure block if it not nil
+		if (configureBlock != nil) {
+			configureBlock();
+		}
 	}
 
 	return YES;

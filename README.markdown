@@ -309,7 +309,6 @@ The keys for the results in the dictionary are listed below.
 
 #### Common Pieces
 
-* Either load Sparkle changes to github fork or use base, but make it a submodule
 * Add better error handling to the secureMoveTo methods.
 * *Would be nice*
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
