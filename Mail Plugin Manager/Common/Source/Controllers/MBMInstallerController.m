@@ -409,6 +409,13 @@ typedef enum {
 		[self.displayProgressLabel setStringValue:displayMessage];
 		[self.progressBar setHidden:YES];
 		[self.displayProgressTextView setHidden:YES];
+		
+		//	Try to ensure that Manager is in front
+		int64_t delta = (int64_t)(NSEC_PER_SEC * 2.0f);
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), ^{
+			[NSApp activateIgnoringOtherApps:YES];
+		});
+		
 	});
 	
 }

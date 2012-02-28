@@ -315,7 +315,7 @@
 			}
 			
 			//	Launch Mail again
-			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:NSWorkspaceLaunchWithoutActivation additionalEventParamDescriptor:nil launchIdentifier:NULL];
+			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:(NSWorkspaceLaunchAsync | NSWorkspaceLaunchWithoutActivation) additionalEventParamDescriptor:nil launchIdentifier:NULL];
 			//	indicate that the maintenance is done
 			[self endMaintenance];
 			
