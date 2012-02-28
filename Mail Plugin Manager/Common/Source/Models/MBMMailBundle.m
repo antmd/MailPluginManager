@@ -543,7 +543,8 @@ typedef enum {
 #pragma mark - Paths
 
 + (NSString *)pathForActiveBundleWithName:(NSString *)aBundleName {
-	for (NSString *activeBundlePath in [self allActiveMailBundlesShouldLoadInfo:NO]) {
+	for (MBMMailBundle *activeBundle in [self allActiveMailBundlesShouldLoadInfo:NO]) {
+		NSString *activeBundlePath = activeBundle.path;
 		if ([[activeBundlePath lastPathComponent] isEqualToString:aBundleName]) {
 			return activeBundlePath;
 		}
