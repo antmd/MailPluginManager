@@ -18,9 +18,10 @@
 
 #define HOURS_AGO	(-1 * 60 * 60)
 
+
 @interface MBTAppDelegate ()
-@property	(nonatomic, assign)	BOOL						savedAutomaticallyDownloadsUpdates;
-@property	(nonatomic, assign)	BOOL						savedSendsSystemProfile;
+@property	(nonatomic, copy)	NSMutableDictionary			*savedSparkleState;
+@property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
 @property	(nonatomic, assign)	BOOL						installUpdateOnQuit;
 @property	(nonatomic, assign) MBTSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
@@ -32,8 +33,8 @@
 
 @implementation MBTAppDelegate
 
-@synthesize savedAutomaticallyDownloadsUpdates = _savedAutomaticallyDownloadsUpdates;
-@synthesize savedSendsSystemProfile = _savedSendsSystemProfile;
+@synthesize savedSparkleState = _savedSparkleState;
+@synthesize sparkleKeysValues = _sparkleKeysValues;
 @synthesize installUpdateOnQuit = _installUpdateOnQuit;
 @synthesize sparkleOperation = _sparkleOperation;
 @synthesize updateDriver = _updateDriver;
@@ -41,10 +42,26 @@
 
 #pragma mark - Handler Methods
 
-- (void)resetSparkleValuesInHostForUpdater:(SUUpdater *)updater {
-	//	Restore any changed values for the app
-	updater.automaticallyDownloadsUpdates = self.savedAutomaticallyDownloadsUpdates;
-	updater.sendsSystemProfile = self.savedSendsSystemProfile;
+
+- (void)setupSparkleEnvironment {
+	id	value = nil;
+	[self.savedSparkleState removeAllObjects];
+	for (NSDictionary *aDict in self.sparkleKeysValues) {
+		value = [self changePluginManagerDefaultValue:[aDict valueForKey:@"value"] forKey:[aDict valueForKey:@"key"]];
+		if (value == nil) {
+			value = [NSNull null];
+		}
+		LKLog(@"Saving value '%@' for key '%@'",value, [aDict valueForKey:@"key"]);
+		[self.savedSparkleState setValue:value forKey:[aDict valueForKey:@"key"]];
+	}
+}
+
+- (void)resetSparkleEnvironment {
+	for (NSDictionary *aDict in self.sparkleKeysValues) {
+		LKLog(@"Trying to reset value '%@' for key '%@'",[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]], [aDict valueForKey:@"key"]);
+		[self changePluginManagerDefaultValue:[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]] forKey:[aDict valueForKey:@"key"]];
+	}
+	[self.savedSparkleState removeAllObjects];
 }
 
 - (void)processArguments {
@@ -68,9 +85,9 @@
 
 #pragma mark - Sparkle Delegate Methods
 
-- (void)cleanupWithUpdater:(SUUpdater *)updater install:(BOOL)shouldInstall {
+- (void)cleanupWithInstall:(BOOL)shouldInstall {
 	self.installUpdateOnQuit = shouldInstall;
-	[self resetSparkleValuesInHostForUpdater:updater];
+	[self resetSparkleEnvironment];
 	[self processArguments];
 	[self.sparkleOperation finish];
 }
@@ -81,13 +98,13 @@
 
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
 	LKLog(@"Update found with invocation:%@", invocation);
-	[self cleanupWithUpdater:updater install:YES];
+	[self cleanupWithInstall:YES];
 	return YES;
 }
 
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
 	LKLog(@"No Update found");
-	[self cleanupWithUpdater:updater install:NO];
+	[self cleanupWithInstall:NO];
 }
 
 #pragma mark - Application Events
@@ -108,8 +125,11 @@
 	}
 	
 	//	Then find it's bundle
-	NSURL		*bundleURL = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@", mpmPath]];
+	LKLog(@"About to create bundleURL:%@");
+	NSURL		*bundleURL = [NSURL fileURLWithPath:mpmPath isDirectory:YES];
+	LKLog(@"Created bundleURL:%@", bundleURL);
 	NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
+	LKLog(@"Tried to create bundle:%@", bundleURL);
 	
 	//	Test to see if this bundle is running
 	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
@@ -124,11 +144,8 @@
 	SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
 	[managerUpdater resetUpdateCycle];
 	managerUpdater.delegate = self;
-	//	May need to save the state of these two and restore afterward
-	self.savedAutomaticallyDownloadsUpdates = managerUpdater.automaticallyDownloadsUpdates;
-	self.savedSendsSystemProfile = managerUpdater.sendsSystemProfile;
-	managerUpdater.automaticallyDownloadsUpdates = YES;
-	managerUpdater.sendsSystemProfile = YES;
+	//	May need to save the state of this value and restore afterward
+	[self setupSparkleEnvironment];
 	
 	//	Run a background thread to see if we need to update this app, using the basic updater directly.
 	self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
@@ -145,8 +162,24 @@
 	return NSTerminateNow;
 }
 
+- (id)init {
+	self = [super init];
+	if (self) {
+		_sparkleKeysValues = [[NSArray alloc] initWithObjects:
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUAutomaticallyUpdate", @"key", [NSNumber numberWithBool:YES], @"value", nil], 
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUEnableAutomaticChecks", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUHasLaunchedBefore", @"key", [NSNumber numberWithBool:YES], @"value", nil], 
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUSendProfileInfo", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
+							  nil];
+		_savedSparkleState = [[NSMutableDictionary alloc] initWithCapacity:[_sparkleKeysValues count]];
+	}
+	return self;
+}
+
 - (void)dealloc {
 	self.updateDriver = nil;
+	self.savedSparkleState = nil;
+	self.sparkleKeysValues = nil;
 	
 	[super dealloc];
 }
@@ -168,7 +201,7 @@
 		NSURL		*managerURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:kMBMMailPluginManagerBundleID];
 		if (managerURL != nil) {
 		
-			NSString	*managerName = [[managerURL absoluteString] lastPathComponent];
+			NSString	*managerName = [managerURL lastPathComponent];
 			NSString	*lastComponent = nil;
 			for (NSString *pathItem in [[testPath pathComponents] reverseObjectEnumerator]) {
 				if ([lastComponent isEqualToString:@"Contents"] && [[pathItem lastPathComponent] isEqualToString:managerName]) {
@@ -239,7 +272,8 @@
 	else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
 		//	Tell it to update itself, if frequency requirements met
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], nil] testType:MBMAnyNotificationReceived];
+			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], //[NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], 
+												   nil] testType:MBMAnyNotificationReceived];
 			[mailBundle updateIfNecessary];
 		}
 	}
@@ -351,7 +385,7 @@
 		[self.currentController showWindow:self];
 	}
 	else {
-
+		
 		//	Show the window
 		[self showCollectionWindowForBundles:badBundles];
 		

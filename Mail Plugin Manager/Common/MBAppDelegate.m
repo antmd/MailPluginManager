@@ -351,7 +351,7 @@
 	
 	NSMutableDictionary	*changeDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMMailPluginManagerBundleID] mutableCopy];
 	currentValue = [changeDefaults valueForKey:key];
-	if (value == nil) {
+	if ((value == nil) || (value == [NSNull null])) {
 		[changeDefaults removeObjectForKey:key];
 	}
 	else {

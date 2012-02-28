@@ -15,8 +15,8 @@
 
 @interface MBTAppDelegate : MBAppDelegate {
 @private	
-	BOOL						_savedAutomaticallyDownloadsUpdates;
-	BOOL						_savedSendsSystemProfile;
+	NSMutableDictionary			*_savedSparkleState;
+	NSArray						*_sparkleKeysValues;
 	BOOL						_installUpdateOnQuit;
 	MBTSparkleAsyncOperation	*_sparkleOperation;
 	SUBasicUpdateDriver			*_updateDriver;
