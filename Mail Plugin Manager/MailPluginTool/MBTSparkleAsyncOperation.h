@@ -14,11 +14,15 @@
 	BOOL			_isExecuting;
 	BOOL			_isFinished;
 	SUUpdateDriver	*_updateDriver;
+	SUUpdater		*_updater;
+	SEL				_selector;
 }
 
 @property	(readonly)	BOOL			isExecuting;
 @property	(readonly)	BOOL			isFinished;
-@property	(retain)	SUUpdateDriver	*updateDriver;
+@property	(assign)	SEL				selector;
+- (id)initWithUpdateDriver:(SUUpdateDriver *)anUpdateDriver updater:(SUUpdater *)anUpdater selector:(SEL)aSelector;
 - (id)initWithUpdateDriver:(SUUpdateDriver *)anUpdateDriver;
+- (id)initWithUpdater:(SUUpdater *)anUpdater;
 - (void)finish;
 @end

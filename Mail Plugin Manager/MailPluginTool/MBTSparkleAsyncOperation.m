@@ -9,23 +9,38 @@
 #import "MBTSparkleAsyncOperation.h"
 
 
+@interface MBTSparkleAsyncOperation ()
+@property	(retain)	SUUpdateDriver	*updateDriver;
+@property	(retain)	SUUpdater		*updater;
+@end
 
 @implementation MBTSparkleAsyncOperation
 
 @synthesize isExecuting = _isExecuting;
 @synthesize isFinished = _isFinished;
 @synthesize updateDriver = _updateDriver;
-
+@synthesize updater = _updater;
+@synthesize selector = _selector;
 
 
 #pragma mark - Operation Methods
 
-- (id)initWithUpdateDriver:(SUUpdateDriver *)anUpdateDriver {
+- (id)initWithUpdateDriver:(SUUpdateDriver *)anUpdateDriver updater:(SUUpdater *)anUpdater selector:(SEL)aSelector {
 	self = [super init];
 	if (self) {
 		_updateDriver = [anUpdateDriver retain];
+		_updater = [anUpdater retain];
+		_selector = aSelector;
 	}
 	return self;
+}
+
+- (id)initWithUpdateDriver:(SUUpdateDriver *)anUpdateDriver {
+	return [self initWithUpdateDriver:anUpdateDriver updater:[anUpdateDriver valueForKey:@"updater"] selector:NSSelectorFromString(@"checkForUpdatesInBgReachabilityCheckWithDriver:")];
+}
+
+- (id)initWithUpdater:(SUUpdater *)anUpdater {
+	return [self initWithUpdateDriver:nil updater:anUpdater selector:NSSelectorFromString(@"checkForUpdatesInBackground")];
 }
 
 - (void)dealloc {
@@ -45,7 +60,7 @@
     [self didChangeValueForKey:@"isExecuting"];
 	
 	//	Run a background thread to see if we need to update this app, using the basic updater directly.
-	[NSThread detachNewThreadSelector:NSSelectorFromString(@"checkForUpdatesInBgReachabilityCheckWithDriver:") toTarget:[self.updateDriver valueForKey:@"updater"] withObject:self.updateDriver];
+	[NSThread detachNewThreadSelector:self.selector toTarget:self.updater withObject:self.updateDriver];
 }
 
 
