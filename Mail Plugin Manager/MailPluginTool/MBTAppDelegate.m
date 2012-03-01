@@ -22,7 +22,6 @@
 @interface MBTAppDelegate ()
 @property	(nonatomic, copy)	NSMutableDictionary			*savedSparkleState;
 @property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
-@property	(nonatomic, assign)	BOOL						installUpdateOnQuit;
 @property	(nonatomic, assign) MBTSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
 @property	(nonatomic, copy)	NSMutableArray				*bundleSparkleOperations;
@@ -58,7 +57,6 @@
 
 @synthesize savedSparkleState = _savedSparkleState;
 @synthesize sparkleKeysValues = _sparkleKeysValues;
-@synthesize installUpdateOnQuit = _installUpdateOnQuit;
 @synthesize sparkleOperation = _sparkleOperation;
 @synthesize updateDriver = _updateDriver;
 @synthesize bundleSparkleOperations = _bundleSparkleOperations;
@@ -114,10 +112,8 @@
 	[self.savedSparkleState removeAllObjects];
 }
 
-- (void)cleanupWithInstall:(BOOL)shouldInstall {
-	self.installUpdateOnQuit = shouldInstall;
+- (void)cleanupSparkle {
 	[self resetSparkleEnvironment];
-	[self processArguments];
 	[self.sparkleOperation finish];
 }
 
@@ -127,13 +123,16 @@
 
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
 	LKLog(@"Update found with invocation:%@", invocation);
-	[self cleanupWithInstall:YES];
+	[self cleanupSparkle];
+	//	Do the install, but avoid a relaunch
+	[self.updateDriver installWithToolAndRelaunch:NO];
+	//	Tell Sparkle we're handling it.
 	return YES;
 }
 
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
 	LKLog(@"No Update found");
-	[self cleanupWithInstall:NO];
+	[self cleanupSparkle];
 }
 
 #pragma mark - Application Events
@@ -176,8 +175,11 @@
 	//	Run a background thread to see if we need to update this app, using the basic updater directly.
 	self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
 	self.sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
-//	[self addMaintenanceOperation:self.sparkleOperation];
 	[self addFinalizeOperation:self.sparkleOperation];
+	
+	//	Go ahead and process the arguments
+	[self processArguments];
+
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
@@ -188,11 +190,6 @@
 			SUBasicUpdateDriver	*ud = [operationDict valueForKey:@"driver"];
 			[ud installWithToolAndRelaunch:NO];
 		}
-		return NSTerminateCancel;
-	}
-	if (self.installUpdateOnQuit) {
-		self.installUpdateOnQuit = NO;
-		[self.updateDriver installWithToolAndRelaunch:NO];
 		return NSTerminateCancel;
 	}
 	return NSTerminateNow;
