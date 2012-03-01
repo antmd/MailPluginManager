@@ -22,7 +22,7 @@
 	NSWindowController		*_currentController;
 	
 	BOOL					_isMailRunning;
-	NSOperationQueue		*_maintenanceCounterQueue;
+	NSOperationQueue		*_counterQueue;
 	NSOperationQueue		*_maintenanceQueue;
 	NSInteger				_maintenanceCounter;
 	
@@ -40,7 +40,7 @@
 @property (nonatomic, retain)	NSWindowController		*currentController;
 
 @property (nonatomic, assign)	BOOL					isMailRunning;
-@property (nonatomic, retain)	NSOperationQueue		*maintenanceCounterQueue;
+@property (nonatomic, retain)	NSOperationQueue		*counterQueue;
 @property (nonatomic, retain)	NSOperationQueue		*maintenanceQueue;
 @property (assign)				NSInteger				maintenanceCounter;
 
@@ -52,24 +52,19 @@
 - (void)adjustWindowSizeForBundleList:(NSArray *)bundleList animate:(BOOL)animate;
 
 //	Maintenance task management
+- (void)addOperation:(NSOperation *)operation forQueueNamed:(NSString *)aQueueName;
 - (void)addMaintenanceTask:(void (^)(void))block;
 - (void)addMaintenanceOperation:(NSOperation *)operation;
-- (void)startMaintenance;
-- (void)endMaintenance;
-- (void)performWhenMaintenanceIsFinishedUsingBlock:(void(^)(void))block;
-- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
+
+//	Quitting only when tasks are completed
+- (void)quittingNowIsReasonable;
 
 //	Mail Application Management
 - (BOOL)quitMail;
 - (BOOL)restartMailWithBlock:(void (^)(void))taskBlock;
 - (IBAction)restartMail:(id)sender;
 
+//	Used to set default values directly for the Plugin Manager
 - (id)changePluginManagerDefaultValue:(id)value forKey:(NSString *)key;
-
-//	Quitting only when tasks are completed
-- (void)quittingNowIsReasonable;
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList;
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
-- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType;
 
 @end

@@ -28,7 +28,7 @@
 @synthesize currentController = _currentController;
 
 @synthesize isMailRunning = _isMailRunning;
-@synthesize maintenanceCounterQueue = _maintenanceCounterQueue;
+@synthesize counterQueue = _counterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
 @synthesize maintenanceCounter = _maintenanceCounter;
 
@@ -54,7 +54,8 @@
 	//	Create a new operation queues to use for maintenance tasks
 	self.maintenanceQueue = [[[NSOperationQueue alloc] init] autorelease];
 	[self.maintenanceQueue setMaxConcurrentOperationCount:1];	//	Makes this serial queue, in effect
-	self.maintenanceCounterQueue = [[[NSOperationQueue alloc] init] autorelease];
+	self.counterQueue = [[[NSOperationQueue alloc] init] autorelease];
+	[self.counterQueue setMaxConcurrentOperationCount:1];
 	
 	//	Load the process to put in place our uuids file
 	[self addMaintenanceTask:^{
@@ -98,41 +99,8 @@
 }
 
 - (void)quittingNowIsReasonable {
-	[self performWhenMaintenanceIsFinishedUsingBlock:^{
-		[NSApp terminate:nil];
-	}];
-}
-
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList {
-	__block id	mySelf = self;
-	[self performBlock:^(void) {
-		[mySelf quittingNowIsReasonable];
-	} whenNotificationsReceived:notificationList testType:MBMAllNotificationsReceived];
-}
-
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
-	__block id	mySelf = self;
-	[self performBlock:^(void) {
-		[mySelf quittingNowIsReasonable];
-	} whenNotificationsReceived:notificationList testType:testType];
-}
-
-- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType {
-	__block id	mySelf = self;
-	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationNames count]];
-	for (NSString *noteName in notificationNames) {
-		[listCopy addObject:[NSDictionary dictionaryWithObjectsAndKeys:noteName, kMBMNotificationWaitNote, object, kMBMNotificationWaitObject, nil]];
-	}
-	[self performBlock:^(void) {
-		[mySelf quittingNowIsReasonable];
-	} whenNotificationsReceived:listCopy testType:testType];
-}
-
-- (void)performWhenMaintenanceIsFinishedUsingBlock:(void(^)(void))block {
-	if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
-		block();
-	}
-	else {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 		
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
@@ -140,89 +108,18 @@
 		//	Create the timer and set it to repeat every half second
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
-			if (([self.maintenanceCounterQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+			if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
-				block();
+				[NSApp terminate:nil];
 			}
 		});
 		//	Start it
 		dispatch_resume(timer);
-	}
+		
+	});
 }
 
-
-- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
-	
-	//	Make a mutable copy of the array
-	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationList count]];
-	
-	//	Create the block that we'll use for each notification type
-	void (^testNotificationBlock)(NSNotification *) = ^(NSNotification *notification) {
-		//	Find this notification within the list
-		for (NSMutableDictionary *aNote in listCopy) {
-			if ([[aNote objectForKey:kMBMNotificationWaitNote] isEqualToString:[notification name]] &&
-				(([aNote objectForKey:kMBMNotificationWaitObject] == nil) || [[aNote objectForKey:kMBMNotificationWaitObject] isEqual:[notification object]])) {
-				
-				//	Set the received flag on the dict
-				[aNote setObject:[NSNumber numberWithBool:YES] forKey:kMBMNotificationWaitReceived];
-			}
-		}
-		
-		//	Then test to see if how many notifications have been received
-		NSUInteger	receivedCount = 0;
-		for (NSDictionary *aNote in listCopy) {
-			if ([aNote objectForKey:kMBMNotificationWaitReceived] && [[aNote objectForKey:kMBMNotificationWaitReceived] boolValue]) {
-				receivedCount++;
-			}
-		}
-		
-		//	Check the count based on the testType
-		BOOL	enoughReceived = NO;
-		switch (testType) {
-			case MBMAnyNotificationReceived:
-				enoughReceived = (receivedCount > 0);
-				break;
-				
-			case MBMAnyTwoNotificationsReceived:
-				enoughReceived = (receivedCount > 1);
-				break;
-				
-			case MBMAllNotificationsReceived:
-				enoughReceived = (receivedCount == [listCopy count]);
-				break;
-				
-			default:
-				break;
-		}
-		
-		//	If all received then run our block and remove the notifications
-		if (enoughReceived) {
-			//	Remove all the observers
-			for (NSDictionary *aNote in listCopy) {
-				id	anObserver = [aNote objectForKey:kMBMNotificationWaitObserver];
-				if (anObserver) {
-					[[NSNotificationCenter defaultCenter] removeObserver:anObserver];
-				}
-			}
-
-			//	And run the block
-			block();
-		}
-	};
-	
-	//	Then go through the notificationList and build the notifications
-	for (NSDictionary *aNote in notificationList) {
-		id	quitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:[aNote objectForKey:kMBMNotificationWaitNote] object:[aNote objectForKey:kMBMNotificationWaitObject] queue:[NSOperationQueue mainQueue] usingBlock:testNotificationBlock];
-		
-		//	Set the received flag on the dict
-		NSMutableDictionary	*dictCopy = [aNote mutableCopy];
-		[dictCopy setObject:quitObserver forKey:kMBMNotificationWaitObserver];
-		[listCopy addObject:dictCopy];
-		[dictCopy release];
-	}
-
-}
 
 #pragma mark - Window Management
 
@@ -369,50 +266,62 @@
 
 #pragma mark - Maintenance Task Management
 
-- (void)addMaintenanceTask:(void (^)(void))block {
-
-	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
-	[self addMaintenanceOperation:main];
-	/*
-	//	Quickly start our maintenance
-	[self startMaintenance];
+- (void)addOperation:(NSOperation *)operation forQueueNamed:(NSString *)aQueueName {
 	
-	//	Create blocks for main and end
-	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self endMaintenance];}];
-	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
+	//	Make the values for the queue
+	SEL	queueSelector = NSSelectorFromString([NSString stringWithFormat:@"%@Queue", [aQueueName lowercaseString]]);
+	SEL	startSelector = NSSelectorFromString([NSString stringWithFormat:@"start%@", [aQueueName capitalizedString]]);
+	SEL	endSelector = NSSelectorFromString([NSString stringWithFormat:@"end%@", [aQueueName capitalizedString]]);
+	SEL	goSelector = NSSelectorFromString([NSString stringWithFormat:@"%@IsWaitingToHappen", [aQueueName lowercaseString]]);
 	
-	//	Create the dependencies
-	[end addDependency:main];
-	
-	//	Then add the operations
-	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:main, end, nil] waitUntilFinished:NO];
-	*/
-}
-
-- (void)addMaintenanceOperation:(NSOperation *)operation {
+	//	Ensure that we have a queue and both selectors
+	if (![self respondsToSelector:queueSelector] || ![self respondsToSelector:startSelector] || ![self respondsToSelector:endSelector]) {
+		LKErr(@"Found an invalid selector for the queue '%@' - queueSel:%s, startSel:%s, endSel:%s", aQueueName, queueSelector, startSelector, endSelector);
+		return;
+	}
+	NSOperationQueue	*aQueue = [self performSelector:queueSelector];
+	if (aQueue == nil) {
+		LKErr(@"Queue not found for '%@'", aQueueName);
+		return;
+	}
 	
 	//	Create blocks for start and end
-	NSBlockOperation	*start = [NSBlockOperation blockOperationWithBlock:^{[self startMaintenance];}];
-	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self endMaintenance];}];
+	NSBlockOperation	*start = [NSBlockOperation blockOperationWithBlock:^{[self performSelector:startSelector];}];
+	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self performSelector:endSelector];}];
 	
 	//	Create the dependencies
 	[operation addDependency:start];
 	[end addDependency:operation];
 	
 	//	Then add the operations
-	[self.maintenanceQueue addOperations:[NSArray arrayWithObjects:start, operation, end, nil] waitUntilFinished:NO];
+	[aQueue addOperations:[NSArray arrayWithObjects:start, operation, end, nil] waitUntilFinished:NO];
+	//	And indicate that the queue should be started when ready, if the selector exists
+	if ([self respondsToSelector:goSelector]) {
+		[self performSelector:goSelector];
+	}
+}
+
+
+- (void)addMaintenanceTask:(void (^)(void))block {
+
+	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
+	[self addMaintenanceOperation:main];
+}
+
+- (void)addMaintenanceOperation:(NSOperation *)operation {
+	[self addOperation:operation forQueueNamed:@"Maintenance"];
 }
 
 - (void)startMaintenance {
 	__block MBAppDelegate *blockSelf = self;
-	[self.maintenanceCounterQueue addOperationWithBlock:^{
+	[self.counterQueue addOperationWithBlock:^{
 		blockSelf.maintenanceCounter++;
 	}];
 }	
 
 - (void)endMaintenance {
 	__block MBAppDelegate *blockSelf = self;
-	[self.maintenanceCounterQueue addOperationWithBlock:^{
+	[self.counterQueue addOperationWithBlock:^{
 		blockSelf.maintenanceCounter--;
 	}];
 }

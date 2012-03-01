@@ -20,6 +20,15 @@
 	BOOL						_installUpdateOnQuit;
 	MBTSparkleAsyncOperation	*_sparkleOperation;
 	SUBasicUpdateDriver			*_updateDriver;
+	NSMutableArray				*_bundleSparkleOperations;
+	
+	NSOperationQueue		*_activityQueue;
+	NSInteger				_activityCounter;
+	NSOperationQueue		*_finalizeQueue;
+	NSInteger				_finalizeCounter;
+	
 }
 - (void)doAction:(NSString *)action withArguments:(NSArray *)arguments;
+
+
 @end

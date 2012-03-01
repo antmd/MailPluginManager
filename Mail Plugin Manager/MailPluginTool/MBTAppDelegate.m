@@ -25,10 +25,33 @@
 @property	(nonatomic, assign)	BOOL						installUpdateOnQuit;
 @property	(nonatomic, assign) MBTSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
+@property	(nonatomic, copy)	NSMutableArray				*bundleSparkleOperations;
+
+@property	(nonatomic, retain)	NSOperationQueue			*activityQueue;
+@property	(atomic, assign)	NSInteger					activityCounter;
+@property	(nonatomic, retain)	NSOperationQueue			*finalizeQueue;
+@property	(atomic, assign)	NSInteger					finalizeCounter;
+
 - (NSString *)pathToManagerContainer;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
+
+//	Quitting only when tasks are completed
+- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
+- (void)quitAfterReceivingNotifications:(NSArray *)notificationList;
+- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
+- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType;
+
+//	Queue management tasks
+- (void)addActivityTask:(void (^)(void))block;
+- (void)addActivityOperation:(NSOperation *)operation;
+- (void)addFinalizeTask:(void (^)(void))block;
+- (void)addFinalizeOperation:(NSOperation *)operation;
+- (void)activityIsWaitingToHappen;
+- (void)finalizeIsWaitingToHappen;
+
+
 @end
 
 @implementation MBTAppDelegate
@@ -38,31 +61,16 @@
 @synthesize installUpdateOnQuit = _installUpdateOnQuit;
 @synthesize sparkleOperation = _sparkleOperation;
 @synthesize updateDriver = _updateDriver;
+@synthesize bundleSparkleOperations = _bundleSparkleOperations;
+
+@synthesize activityQueue = _activityQueue;
+@synthesize activityCounter = _activityCounter;
+@synthesize finalizeQueue = _finalizeQueue;
+@synthesize finalizeCounter = _finalizeCounter;
+
 
 
 #pragma mark - Handler Methods
-
-
-- (void)setupSparkleEnvironment {
-	id	value = nil;
-	[self.savedSparkleState removeAllObjects];
-	for (NSDictionary *aDict in self.sparkleKeysValues) {
-		value = [self changePluginManagerDefaultValue:[aDict valueForKey:@"value"] forKey:[aDict valueForKey:@"key"]];
-		if (value == nil) {
-			value = [NSNull null];
-		}
-		LKLog(@"Saving value '%@' for key '%@'",value, [aDict valueForKey:@"key"]);
-		[self.savedSparkleState setValue:value forKey:[aDict valueForKey:@"key"]];
-	}
-}
-
-- (void)resetSparkleEnvironment {
-	for (NSDictionary *aDict in self.sparkleKeysValues) {
-		LKLog(@"Trying to reset value '%@' for key '%@'",[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]], [aDict valueForKey:@"key"]);
-		[self changePluginManagerDefaultValue:[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]] forKey:[aDict valueForKey:@"key"]];
-	}
-	[self.savedSparkleState removeAllObjects];
-}
 
 - (void)processArguments {
 	
@@ -84,6 +92,27 @@
 
 
 #pragma mark - Sparkle Delegate Methods
+
+- (void)setupSparkleEnvironment {
+	id	value = nil;
+	[self.savedSparkleState removeAllObjects];
+	for (NSDictionary *aDict in self.sparkleKeysValues) {
+		value = [self changePluginManagerDefaultValue:[aDict valueForKey:@"value"] forKey:[aDict valueForKey:@"key"]];
+		if (value == nil) {
+			value = [NSNull null];
+		}
+		LKLog(@"Saving value '%@' for key '%@'",value, [aDict valueForKey:@"key"]);
+		[self.savedSparkleState setValue:value forKey:[aDict valueForKey:@"key"]];
+	}
+}
+
+- (void)resetSparkleEnvironment {
+	for (NSDictionary *aDict in self.sparkleKeysValues) {
+		LKLog(@"Trying to reset value '%@' for key '%@'",[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]], [aDict valueForKey:@"key"]);
+		[self changePluginManagerDefaultValue:[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]] forKey:[aDict valueForKey:@"key"]];
+	}
+	[self.savedSparkleState removeAllObjects];
+}
 
 - (void)cleanupWithInstall:(BOOL)shouldInstall {
 	self.installUpdateOnQuit = shouldInstall;
@@ -125,11 +154,8 @@
 	}
 	
 	//	Then find it's bundle
-	LKLog(@"About to create bundleURL:%@");
 	NSURL		*bundleURL = [NSURL fileURLWithPath:mpmPath isDirectory:YES];
-	LKLog(@"Created bundleURL:%@", bundleURL);
 	NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
-	LKLog(@"Tried to create bundle:%@", bundleURL);
 	
 	//	Test to see if this bundle is running
 	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
@@ -150,10 +176,20 @@
 	//	Run a background thread to see if we need to update this app, using the basic updater directly.
 	self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
 	self.sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
-	[self addMaintenanceOperation:self.sparkleOperation];
+//	[self addMaintenanceOperation:self.sparkleOperation];
+	[self addFinalizeOperation:self.sparkleOperation];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+	if ([self.bundleSparkleOperations count] > 0) {
+		NSArray	*ops = [[self.bundleSparkleOperations retain] autorelease];
+		self.bundleSparkleOperations = nil;
+		for (NSDictionary *operationDict in ops) {
+			SUBasicUpdateDriver	*ud = [operationDict valueForKey:@"driver"];
+			[ud installWithToolAndRelaunch:NO];
+		}
+		return NSTerminateCancel;
+	}
 	if (self.installUpdateOnQuit) {
 		self.installUpdateOnQuit = NO;
 		[self.updateDriver installWithToolAndRelaunch:NO];
@@ -172,6 +208,16 @@
 							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUSendProfileInfo", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
 							  nil];
 		_savedSparkleState = [[NSMutableDictionary alloc] initWithCapacity:[_sparkleKeysValues count]];
+		_bundleSparkleOperations = [[NSMutableArray alloc] init];
+		
+		//	Create a new operation queues to use for maintenance tasks
+		_activityQueue = [[NSOperationQueue alloc] init];
+		_activityQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
+		_activityQueue.suspended = YES;
+		_finalizeQueue = [[NSOperationQueue alloc] init];
+		_finalizeQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
+		_finalizeQueue.suspended = YES;
+		
 	}
 	return self;
 }
@@ -180,7 +226,11 @@
 	self.updateDriver = nil;
 	self.savedSparkleState = nil;
 	self.sparkleKeysValues = nil;
+	self.bundleSparkleOperations = nil;
 	
+	self.activityQueue = nil;
+	self.finalizeQueue = nil;
+
 	[super dealloc];
 }
 
@@ -274,7 +324,8 @@
 		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
 			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], //[NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], 
 												   nil] testType:MBMAnyNotificationReceived];
-			[mailBundle updateIfNecessary];
+//			[mailBundle updateIfNecessary];
+			[self updateMailBundle:mailBundle];
 		}
 	}
 	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
@@ -295,16 +346,20 @@
 		}
 	}
 	else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
-		//	Then send the information
-		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-		[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
-		LKLog(@"Sent notification");
-		[AppDel quittingNowIsReasonable];
+		[self addActivityTask:^{
+			//	Then send the information
+			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+			[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
+			LKLog(@"Sent notification");
+			[AppDel quittingNowIsReasonable];
+		}];
 	}
 	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
-		NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-		[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
-		[AppDel quittingNowIsReasonable];
+		[self addActivityTask:^{
+			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+			[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+			[AppDel quittingNowIsReasonable];
+		}];
 	}
 	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
 		[self validateAllBundles];
@@ -312,6 +367,60 @@
 	else {
 		[AppDel quittingNowIsReasonable];
 	}
+}
+
+- (void)completeBundleUpdate:(NSNotification *)note {
+//	kMBMDoneUpdatingMailBundleNotification
+	for (NSDictionary *aDict in self.bundleSparkleOperations) {
+		if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
+			[[aDict valueForKey:@"operation"] finish];
+			[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMDoneUpdatingMailBundleNotification object:[note object]];
+		}
+	}
+}
+
+- (void)updateMailBundle:(MBMMailBundle *)mailBundle {
+	
+	//	If the bundle doesn't support sparkle, just send a done notification and return
+	if (![mailBundle supportsSparkleUpdates]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
+		return;
+	}
+	
+	//	Simply use the standard Sparkle behavior (with an instantiation via the bundle)
+	SUUpdater	*updater = [SUUpdater updaterForBundle:mailBundle.bundle];
+	if (updater) {
+		
+		//	Set a delegate
+		MBMSparkleDelegate	*sparkleDelegate = [[[MBMSparkleDelegate alloc] initWithMailBundle:mailBundle] autorelease];
+		[updater setDelegate:sparkleDelegate];
+		
+		//	Create our driver manually, so that we have a copy to store
+		SUUpdateDriver		*updateDriver = [[[([updater automaticallyDownloadsUpdates] ? NSClassFromString(@"SUAutomaticUpdateDriver") : NSClassFromString(@"SUScheduledUpdateDriver")) alloc] initWithUpdater:updater] autorelease];
+		
+		//	Then create an operation to run the action
+		MBTSparkleAsyncOperation	*sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
+		[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];
+		
+		//	Set an observer for the bundle
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
+		
+		[self addMaintenanceOperation:sparkleOperation];
+		
+		/*		//	Set the Path to relaunch to Mail
+		 self.sparkleDelegate.relaunchPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
+		 
+		 //	Tell the delegate to quit mail when needed
+		 self.sparkleDelegate.quitMail = YES;
+		 //	And also quit this app when done
+		 self.sparkleDelegate.quitManager = YES;
+		 */		
+		//	Check for an update
+//		[updater checkForUpdatesInBackground];
+	}
+
+
+
 }
 
 
@@ -428,6 +537,236 @@
 	
 	return result;
 }
+
+
+
+#pragma mark - Handling Completion Tasks
+
+- (void)quitAfterReceivingNotifications:(NSArray *)notificationList {
+	__block id	mySelf = self;
+	[self performBlock:^(void) {
+		[mySelf quittingNowIsReasonable];
+	} whenNotificationsReceived:notificationList testType:MBMAllNotificationsReceived];
+}
+
+- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
+	__block id	mySelf = self;
+	[self performBlock:^(void) {
+		[mySelf quittingNowIsReasonable];
+	} whenNotificationsReceived:notificationList testType:testType];
+}
+
+- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType {
+	__block id	mySelf = self;
+	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationNames count]];
+	for (NSString *noteName in notificationNames) {
+		[listCopy addObject:[NSDictionary dictionaryWithObjectsAndKeys:noteName, kMBMNotificationWaitNote, object, kMBMNotificationWaitObject, nil]];
+	}
+	[self performBlock:^(void) {
+		[mySelf quittingNowIsReasonable];
+	} whenNotificationsReceived:listCopy testType:testType];
+}
+
+- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
+	
+	//	Make a mutable copy of the array
+	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationList count]];
+	
+	//	Create the block that we'll use for each notification type
+	void (^testNotificationBlock)(NSNotification *) = ^(NSNotification *notification) {
+		//	Find this notification within the list
+		for (NSMutableDictionary *aNote in listCopy) {
+			if ([[aNote objectForKey:kMBMNotificationWaitNote] isEqualToString:[notification name]] &&
+				(([aNote objectForKey:kMBMNotificationWaitObject] == nil) || [[aNote objectForKey:kMBMNotificationWaitObject] isEqual:[notification object]])) {
+				
+				//	Set the received flag on the dict
+				[aNote setObject:[NSNumber numberWithBool:YES] forKey:kMBMNotificationWaitReceived];
+			}
+		}
+		
+		//	Then test to see if how many notifications have been received
+		NSUInteger	receivedCount = 0;
+		for (NSDictionary *aNote in listCopy) {
+			if ([aNote objectForKey:kMBMNotificationWaitReceived] && [[aNote objectForKey:kMBMNotificationWaitReceived] boolValue]) {
+				receivedCount++;
+			}
+		}
+		
+		//	Check the count based on the testType
+		BOOL	enoughReceived = NO;
+		switch (testType) {
+			case MBMAnyNotificationReceived:
+				enoughReceived = (receivedCount > 0);
+				break;
+				
+			case MBMAnyTwoNotificationsReceived:
+				enoughReceived = (receivedCount > 1);
+				break;
+				
+			case MBMAllNotificationsReceived:
+				enoughReceived = (receivedCount == [listCopy count]);
+				break;
+				
+			default:
+				break;
+		}
+		
+		//	If all received then run our block and remove the notifications
+		if (enoughReceived) {
+			//	Remove all the observers
+			for (NSDictionary *aNote in listCopy) {
+				id	anObserver = [aNote objectForKey:kMBMNotificationWaitObserver];
+				if (anObserver) {
+					[[NSNotificationCenter defaultCenter] removeObserver:anObserver];
+				}
+			}
+			
+			//	And run the block
+			block();
+		}
+	};
+	
+	//	Then go through the notificationList and build the notifications
+	for (NSDictionary *aNote in notificationList) {
+		id	quitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:[aNote objectForKey:kMBMNotificationWaitNote] object:[aNote objectForKey:kMBMNotificationWaitObject] queue:[NSOperationQueue mainQueue] usingBlock:testNotificationBlock];
+		
+		//	Set the received flag on the dict
+		NSMutableDictionary	*dictCopy = [aNote mutableCopy];
+		[dictCopy setObject:quitObserver forKey:kMBMNotificationWaitObserver];
+		[listCopy addObject:dictCopy];
+		[dictCopy release];
+	}
+	
+}
+
+
+
+#pragma mark - Internal Queue Management
+
+- (void)startActivity {
+	__block MBTAppDelegate *blockSelf = self;
+	[self.counterQueue addOperationWithBlock:^{
+		blockSelf.activityCounter++;
+	}];
+}	
+
+- (void)endActivity {
+	__block MBTAppDelegate *blockSelf = self;
+	[self.counterQueue addOperationWithBlock:^{
+		blockSelf.activityCounter--;
+	}];
+}
+
+- (void)startFinalize {
+	__block MBTAppDelegate *blockSelf = self;
+	[self.counterQueue addOperationWithBlock:^{
+		blockSelf.finalizeCounter++;
+	}];
+}	
+
+- (void)endFinalize {
+	__block MBTAppDelegate *blockSelf = self;
+	[self.counterQueue addOperationWithBlock:^{
+		blockSelf.finalizeCounter--;
+	}];
+}
+
+
+
+#pragma mark - Queue Management Methods
+
+- (void)addActivityTask:(void (^)(void))block {
+	
+	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
+	[self addMaintenanceOperation:main];
+}
+
+- (void)addActivityOperation:(NSOperation *)operation {
+	[self addOperation:operation forQueueNamed:@"Activity"];
+}
+
+- (void)addFinalizeTask:(void (^)(void))block {
+	
+	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
+	[self addMaintenanceOperation:main];
+}
+
+- (void)addFinalizeOperation:(NSOperation *)operation {
+	[self addOperation:operation forQueueNamed:@"Finalize"];
+}
+
+- (void)activityIsWaitingToHappen {
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		
+		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
+		
+		//	Create the timer and set it to repeat every half second
+		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
+		dispatch_source_set_event_handler(timer, ^{
+			if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+				dispatch_source_cancel(timer);
+				dispatch_release(timer);
+				self.activityQueue.suspended = NO;
+			}
+		});
+		//	Start it
+		dispatch_resume(timer);
+		
+	});
+}
+
+- (void)finalizeIsWaitingToHappen {
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		
+		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
+		
+		//	Create the timer and set it to repeat every half second
+		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
+		dispatch_source_set_event_handler(timer, ^{
+			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
+				(([self.activityQueue operationCount] == 0) && (self.activityCounter == 0))) {
+				dispatch_source_cancel(timer);
+				dispatch_release(timer);
+				self.finalizeQueue.suspended = NO;
+			}
+		});
+		//	Start it
+		dispatch_resume(timer);
+		
+	});
+}
+
+- (void)quittingNowIsReasonable {
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		
+		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
+		
+		//	Create the timer and set it to repeat every half second
+		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
+		dispatch_source_set_event_handler(timer, ^{
+			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
+				(([self.activityQueue operationCount] == 0) && (self.activityCounter == 0)) && 
+				(([self.finalizeQueue operationCount] == 0) && (self.finalizeCounter == 0))) {
+				dispatch_source_cancel(timer);
+				dispatch_release(timer);
+				[NSApp terminate:nil];
+			}
+		});
+		//	Start it
+		dispatch_resume(timer);
+		
+	});
+}
+
 
 
 @end
