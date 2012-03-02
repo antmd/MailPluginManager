@@ -33,14 +33,15 @@
 
 - (void)postDoneNotification {
 	//	Post a new notification indicating that we are done
+	LKLog(@"Sending Sparkle Done Notification for '%@'", [[self.mailBundle path] lastPathComponent]);
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:self.mailBundle];
 }
 
 - (void)updateDriverFinished:(NSNotification *)notification {
-	
-	//	Then reomve the observer
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverDoneNotification object:[notification object]];
-	
+	//	Then remove the observer
+	if (notification != nil) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverDoneNotification object:[notification object]];
+	}
 	[self postDoneNotification];
 }
 
@@ -50,24 +51,13 @@
 
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update {
 	//	Post a new notification indicating that we are done
-	[self postDoneNotification];
-}
-
-// Sent immediately before installing the specified update.
-- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update {
-	//	If the relaunchPath is for Mail, then quit it here
-//		QuitMail();
+	[self updateDriverFinished:nil];
 }
 
 //	Always postpone (indefinitely) the relaunch, but send a notification that the update is done.
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
-	[self postDoneNotification];
-	return NO;
-}
-
-//	Return nil path for restart
-- (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
-	return nil;
+	[self updateDriverFinished:nil];
+	return YES;
 }
 
 @end

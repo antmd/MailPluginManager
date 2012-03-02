@@ -36,6 +36,8 @@
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
 
+- (void)installAnyMailBundlesPending;
+
 //	Quitting only when tasks are completed
 - (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
 - (void)quitAfterReceivingNotifications:(NSArray *)notificationList;
@@ -143,56 +145,46 @@
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
+	//	Add this method to the finalize before the Sparkle Update for the Manager
+	LKLog(@"Adding bundle installer cleanup to Finalize queue");
+	[self addFinalizeTask:^{
+		[self installAnyMailBundlesPending];
+	}];
+	
 	//	Get Path for the Mail Plugin Manager container
 	NSString	*mpmPath = [self pathToManagerContainer];
-	//	Currently don't support Sparkle updating for just the Tool, so if it is not contained with the Manager, just do the action and return
+	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager
 	LKLog(@"mpmPath is:%@", mpmPath);
-	if (mpmPath == nil) {
-		[self processArguments];
-		return;
-	}
-	
-	//	Then find it's bundle
-	NSURL		*bundleURL = [NSURL fileURLWithPath:mpmPath isDirectory:YES];
-	NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
-	
-	//	Test to see if this bundle is running
-	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
-		if ([[app bundleURL] isEqual:bundleURL]) {
-			//	If so, just call process and leave.
-			[self processArguments];
-			return;
+	if (mpmPath != nil) {
+		//	Then find it's bundle
+		NSURL		*bundleURL = [NSURL fileURLWithPath:mpmPath isDirectory:YES];
+		NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
+		
+		//	Test to see if this bundle is running
+		for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
+			if ([[app bundleURL] isEqual:bundleURL]) {
+				//	If so, just call process and leave.
+				[self processArguments];
+				return;
+			}
 		}
+		
+		//	Test for an update quietly
+		SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
+		[managerUpdater resetUpdateCycle];
+		managerUpdater.delegate = self;
+		//	May need to save the state of this value and restore afterward
+		[self setupSparkleEnvironment];
+		
+		//	Run a background thread to see if we need to update this app, using the basic updater directly.
+		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
+		self.sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
+		[self addFinalizeOperation:self.sparkleOperation];
 	}
-	
-	//	Test for an update quietly
-	SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
-	[managerUpdater resetUpdateCycle];
-	managerUpdater.delegate = self;
-	//	May need to save the state of this value and restore afterward
-	[self setupSparkleEnvironment];
-	
-	//	Run a background thread to see if we need to update this app, using the basic updater directly.
-	self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
-	self.sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
-	[self addFinalizeOperation:self.sparkleOperation];
 	
 	//	Go ahead and process the arguments
 	[self processArguments];
 
-}
-
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	if ([self.bundleSparkleOperations count] > 0) {
-		NSArray	*ops = [[self.bundleSparkleOperations retain] autorelease];
-		self.bundleSparkleOperations = nil;
-		for (NSDictionary *operationDict in ops) {
-			SUBasicUpdateDriver	*ud = [operationDict valueForKey:@"driver"];
-			[ud installWithToolAndRelaunch:NO];
-		}
-		return NSTerminateCancel;
-	}
-	return NSTerminateNow;
 }
 
 - (id)init {
@@ -306,68 +298,103 @@
 		([kMBMCommandLineUninstallKey isEqualToString:action] || [kMBMCommandLineUpdateKey isEqualToString:action] ||
 		 [kMBMCommandLineCheckCrashReportsKey isEqualToString:action] || [kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action])) {
 			
-			[AppDel quittingNowIsReasonable];
-			return;
-	}
-	
-	//	Look at the first argument (after executable name) and test for one of our types
-	if ([kMBMCommandLineUninstallKey isEqualToString:action]) {
-		//	Tell it to uninstall itself
-		[self quitAfterReceivingNotificationNames:[NSArray arrayWithObjects:kMBMMailBundleUninstalledNotification, kMBMMailBundleDisabledNotification, kMBMMailBundleNoActionTakenNotification, nil] onObject:mailBundle testType:MBMAnyNotificationReceived];
-		[mailBundle uninstall];
-	}
-	else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
-		//	Tell it to update itself, if frequency requirements met
-		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], //[NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], 
-												   nil] testType:MBMAnyNotificationReceived];
-//			[mailBundle updateIfNecessary];
-			[self updateMailBundle:mailBundle];
-		}
-	}
-	else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
-		//	Tell it to check its crash reports, if frequency requirements met
-		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-			[self quitAfterReceivingNotificationNames:[NSArray arrayWithObject:kMBMDoneSendingCrashReportsMailBundleNotification] onObject:mailBundle testType:MBMAnyNotificationReceived];
-			[mailBundle sendCrashReports];
-		}
-	}
-	else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
-		//	If frequency requirements met
-		if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], nil] testType:MBMAnyTwoNotificationsReceived];
-			//	Tell it to check its crash reports
-			[mailBundle sendCrashReports];
-			//	And update itself
-			[mailBundle updateIfNecessary];
-		}
-	}
-	else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
-		[self addActivityTask:^{
-			//	Then send the information
-			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-			[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
-			LKLog(@"Sent notification");
-			[AppDel quittingNowIsReasonable];
-		}];
-	}
-	else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
-		[self addActivityTask:^{
-			NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-			[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
-			[AppDel quittingNowIsReasonable];
-		}];
-	}
-	else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
-		[self validateAllBundles];
+			//	Release the Activity Queue
+			[self activityIsWaitingToHappen];
 	}
 	else {
-		[AppDel quittingNowIsReasonable];
+		//	Look at the first argument (after executable name) and test for one of our types
+		if ([kMBMCommandLineUninstallKey isEqualToString:action]) {
+			//	Tell it to uninstall itself
+	//		[self quitAfterReceivingNotificationNames:[NSArray arrayWithObjects:kMBMMailBundleUninstalledNotification, kMBMMailBundleDisabledNotification, kMBMMailBundleNoActionTakenNotification, nil] onObject:mailBundle testType:MBMAnyNotificationReceived];
+			[self addActivityTask:^{
+				[mailBundle uninstall];
+			}];
+		}
+		else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
+			//	Tell it to update itself, if frequency requirements met
+			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+	//			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], //[NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], 
+	//												   nil] testType:MBMAnyNotificationReceived];
+	//			[mailBundle updateIfNecessary];
+				LKLog(@"Adding an update for bundle:'%@' to the queue", [[mailBundle path] lastPathComponent]);
+				[self updateMailBundle:mailBundle];
+			}
+		}
+		else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
+			//	Tell it to check its crash reports, if frequency requirements met
+			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+				[self addActivityTask:^{
+					[mailBundle sendCrashReports];
+				}];
+	//			[self quitAfterReceivingNotificationNames:[NSArray arrayWithObject:kMBMDoneSendingCrashReportsMailBundleNotification] onObject:mailBundle testType:MBMAnyNotificationReceived];
+	//			[mailBundle sendCrashReports];
+			}
+		}
+		else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
+			//	If frequency requirements met
+			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
+				[self addActivityTask:^{
+					[mailBundle sendCrashReports];
+				}];
+				[self updateMailBundle:mailBundle];
+	//			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], nil] testType:MBMAnyTwoNotificationsReceived];
+	//			//	Tell it to check its crash reports
+	//			[mailBundle sendCrashReports];
+	//			//	And update itself
+	//			[mailBundle updateIfNecessary];
+			}
+		}
+		else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
+			[self addActivityTask:^{
+				//	Then send the information
+				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+				[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
+				LKLog(@"Sent notification");
+				[AppDel quittingNowIsReasonable];
+			}];
+		}
+		else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
+			[self addActivityTask:^{
+				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+				[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+				[AppDel quittingNowIsReasonable];
+			}];
+		}
+		else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
+			[self addActivityTask:^{
+				[self validateAllBundles];
+			}];
+		}
+		else {
+			//	Release the Activity Queue
+			[self activityIsWaitingToHappen];
+		}
+	}
+
+	//	Can always indicate that quitting is reasonable
+	[AppDel quittingNowIsReasonable];
+}
+
+- (void)installAnyMailBundlesPending {
+	
+	NSArray	*ops = [[self.bundleSparkleOperations retain] autorelease];
+	self.bundleSparkleOperations = nil;
+	BOOL	shouldRestartMail = NO;
+	LKLog(@"Finishing Installs");
+	for (NSDictionary *opDict in ops) {
+		SUBasicUpdateDriver	*ud = [opDict valueForKey:@"driver"];
+		LKLog(@"Finishing Install for '%@'", [[[opDict valueForKey:@"bundle"] path] lastPathComponent]);
+		[ud installWithToolAndRelaunch:NO];
+	}
+	
+	//	Then do the Mail restart if necessary
+	if (shouldRestartMail) {
+		
 	}
 }
 
 - (void)completeBundleUpdate:(NSNotification *)note {
-//	kMBMDoneUpdatingMailBundleNotification
+	LKLog(@"Should be completing op for bundle '%@'", [[[note object] path] lastPathComponent]);
 	for (NSDictionary *aDict in self.bundleSparkleOperations) {
 		if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
 			[[aDict valueForKey:@"operation"] finish];
@@ -375,6 +402,20 @@
 		}
 	}
 }
+
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+
+	LKLog(@"Activity Count:%d  Finalize Count:%d", [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
+	NSApplicationTerminateReply	reply = NSTerminateNow;
+	if (([self.activityQueue operationCount] > 0) || ([self.finalizeQueue operationCount] > 0)) {
+		reply = NSTerminateCancel;
+	}
+	LKLog(@"Application is terminating: trace\n\n%@", [NSThread callStackSymbols]);
+	return reply;
+}
+
+
 
 - (void)updateMailBundle:(MBMMailBundle *)mailBundle {
 	
@@ -393,7 +434,8 @@
 		[updater setDelegate:sparkleDelegate];
 		
 		//	Create our driver manually, so that we have a copy to store
-		SUUpdateDriver		*updateDriver = [[[([updater automaticallyDownloadsUpdates] ? NSClassFromString(@"SUAutomaticUpdateDriver") : NSClassFromString(@"SUScheduledUpdateDriver")) alloc] initWithUpdater:updater] autorelease];
+//		SUUpdateDriver		*updateDriver = [[[([updater automaticallyDownloadsUpdates] ? NSClassFromString(@"SUAutomaticUpdateDriver") : NSClassFromString(@"SUScheduledUpdateDriver")) alloc] initWithUpdater:updater] autorelease];
+		SUUpdateDriver		*updateDriver = [[[NSClassFromString(@"MBTScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
 		
 		//	Then create an operation to run the action
 		MBTSparkleAsyncOperation	*sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
@@ -402,22 +444,10 @@
 		//	Set an observer for the bundle
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
 		
-		[self addMaintenanceOperation:sparkleOperation];
+		LKLog(@"Update Scheduled");
+		[self addActivityOperation:sparkleOperation];
 		
-		/*		//	Set the Path to relaunch to Mail
-		 self.sparkleDelegate.relaunchPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
-		 
-		 //	Tell the delegate to quit mail when needed
-		 self.sparkleDelegate.quitMail = YES;
-		 //	And also quit this app when done
-		 self.sparkleDelegate.quitManager = YES;
-		 */		
-		//	Check for an update
-//		[updater checkForUpdatesInBackground];
 	}
-
-
-
 }
 
 
@@ -675,7 +705,7 @@
 - (void)addActivityTask:(void (^)(void))block {
 	
 	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
-	[self addMaintenanceOperation:main];
+	[self addActivityOperation:main];
 }
 
 - (void)addActivityOperation:(NSOperation *)operation {
@@ -685,7 +715,7 @@
 - (void)addFinalizeTask:(void (^)(void))block {
 	
 	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
-	[self addMaintenanceOperation:main];
+	[self addFinalizeOperation:main];
 }
 
 - (void)addFinalizeOperation:(NSOperation *)operation {
@@ -707,6 +737,7 @@
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
 				self.activityQueue.suspended = NO;
+				LKLog(@"Activities Unsuspended");
 			}
 		});
 		//	Start it
@@ -726,11 +757,12 @@
 		//	Create the timer and set it to repeat every half second
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
-			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
+			if (![self.activityQueue isSuspended] &&
 				(([self.activityQueue operationCount] == 0) && (self.activityCounter == 0))) {
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
 				self.finalizeQueue.suspended = NO;
+				LKLog(@"Finalize Unsuspended");
 			}
 		});
 		//	Start it
@@ -751,10 +783,11 @@
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
 			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
-				(([self.activityQueue operationCount] == 0) && (self.activityCounter == 0)) && 
+				(![self.activityQueue isSuspended] && ([self.activityQueue operationCount] == 0) && (self.activityCounter == 0)) && 
 				(([self.finalizeQueue operationCount] == 0) && (self.finalizeCounter == 0))) {
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
+				LKLog(@"Quitting from the NowReasonable method");
 				[NSApp terminate:nil];
 			}
 		});
