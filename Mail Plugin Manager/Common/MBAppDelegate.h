@@ -63,6 +63,7 @@
 - (BOOL)quitMail;
 - (BOOL)restartMailWithBlock:(void (^)(void))taskBlock;
 - (IBAction)restartMail:(id)sender;
+- (BOOL)askToRestartMailWithBlock:(void (^)(void))taskBlock usingIcon:(NSImage *)iconImage;
 
 //	Used to set default values directly for the Plugin Manager
 - (id)changePluginManagerDefaultValue:(id)value forKey:(NSString *)key;

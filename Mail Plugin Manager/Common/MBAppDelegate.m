@@ -263,6 +263,41 @@
 	return currentValue;
 }
 
+- (BOOL)askToRestartMailWithBlock:(void (^)(void))taskBlock usingIcon:(NSImage *)iconImage {
+	BOOL	mailWasRestartedOrNotRunning = YES;
+	if (AppDel.isMailRunning) {
+		LKLog(@"Restarting Mail");
+		//	If so, ask user to quit it
+		NSString	*messageText = NSLocalizedString(@"I need to restart Mail to finish.", @"Description of why Mail needs to be quit.");
+		NSString	*infoText = NSLocalizedString(@"Clicking 'Restart Mail' will complete this action. Clicking 'Quit Mail Later' will let you delay this until later.", @"Details about how the buttons work.");
+		
+		NSString	*defaultButton = NSLocalizedString(@"Restart Mail", @"Button text to quit mail");
+		NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
+		NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
+		if (iconImage != nil) {
+			[quitMailAlert setIcon:iconImage];
+		}
+		else {
+			[quitMailAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]]];
+		}
+		
+		//	Throw this back onto the main queue
+		__block NSUInteger	mailResult;
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			mailResult = [quitMailAlert runModal];
+		});
+		
+		//	If they said yes, restart
+		if (mailResult == NSAlertDefaultReturn) {
+			//	Otherwise restart mail and return
+			[self restartMailWithBlock:taskBlock];
+		}
+		else {
+			mailWasRestartedOrNotRunning = NO;
+		}
+	}
+	return mailWasRestartedOrNotRunning;
+}
 
 
 
