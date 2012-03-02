@@ -380,11 +380,37 @@
 		SUBasicUpdateDriver	*ud = [opDict valueForKey:@"driver"];
 		LKLog(@"Finishing Install for '%@'", [[[opDict valueForKey:@"bundle"] path] lastPathComponent]);
 		[ud installWithToolAndRelaunch:NO];
+		shouldRestartMail = YES;
 	}
 	
 	//	Then do the Mail restart if necessary
 	if (shouldRestartMail) {
-		
+		LKLog(@"Need to restart Mail");
+		BOOL	installing = YES;
+		//	Test to see if Mail is running
+		if (AppDel.isMailRunning) {
+			LKLog(@"Restarting Mail");
+			//	If so, ask user to quit it
+			NSString	*messageText = NSLocalizedString(@"I need to restart Mail to finish.", @"Description of why Mail needs to be quit.");
+			NSString	*infoText = NSLocalizedString(@"Clicking 'Restart Mail' will complete this %@. Clicking 'Quit Mail Later' will let you delay this until later.", @"Details about how the buttons work.");
+			infoText = [NSString stringWithFormat:infoText, installing?NSLocalizedString(@"installation", @"installation text"):NSLocalizedString(@"uninstallation", @"uninstallation text")];
+			
+			NSString	*defaultButton = NSLocalizedString(@"Restart Mail", @"Button text to quit mail");
+			NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
+			NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
+			
+			//	Throw this back onto the main queue
+			__block NSUInteger	mailResult;
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				mailResult = [quitMailAlert runModal];
+			});
+			
+			//	If they denied, set an error message
+			if (mailResult == NSAlertDefaultReturn) {
+			//	Otherwise restart mail and return
+				[AppDel restartMail:nil];
+			}
+		}
 	}
 }
 

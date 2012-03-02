@@ -196,7 +196,9 @@
 	//	If it is not running return
 	if (!self.isMailRunning) {
 		//	Perform the task first
-		taskBlock();
+		if (taskBlock != nil) {
+			taskBlock();
+		}
 		return YES;
 	}
 	

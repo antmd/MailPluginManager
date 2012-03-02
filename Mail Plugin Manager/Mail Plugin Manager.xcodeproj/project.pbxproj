@@ -26,6 +26,7 @@
 		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
 		D221E96D1500237600568952 /* MBTScheduledUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D221E96C1500237600568952 /* MBTScheduledUpdateDriver.m */; };
+		D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
@@ -378,8 +379,8 @@
 		D2779BD314336287003F7BE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D2779BF214337389003F7BE0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D2866E2F14FAAE420006A749 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		D2866E4614FADC790006A749 /* ManagerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ManagerIcon.icns; sourceTree = "<group>"; };
-		D2866E4714FADC790006A749 /* ManagerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ManagerIcon.png; sourceTree = "<group>"; };
+		D2866E4614FADC790006A749 /* ManagerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ManagerIcon.icns; path = "Mail Plugin Manager/ManagerIcon.icns"; sourceTree = "<group>"; };
+		D2866E4714FADC790006A749 /* ManagerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ManagerIcon.png; path = "Mail Plugin Manager/ManagerIcon.png"; sourceTree = "<group>"; };
 		D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MBMBackgroundImage.png; path = Common/Resources/Images/MBMBackgroundImage.png; sourceTree = "<group>"; };
 		D2866EF214FBC3890006A749 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Common/Sparkle.framework; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MBMActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMActionItem.h; sourceTree = "<group>"; };
@@ -706,6 +707,8 @@
 		D2C8644C14FAACF800BAFA00 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D2866E4614FADC790006A749 /* ManagerIcon.icns */,
+				D2866E4714FADC790006A749 /* ManagerIcon.png */,
 				D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */,
 				D20537B614361EB6002F0157 /* GenericPlugin.png */,
 				D20537C51439CD3E002F0157 /* BundleBackground.png */,
@@ -766,8 +769,6 @@
 				D216B347141DFDE1003788DC /* InfoPlist.strings */,
 				D2866E3014FAAE420006A749 /* Localizable.strings */,
 				D216B34D141DFDE1003788DC /* Credits.rtf */,
-				D2866E4614FADC790006A749 /* ManagerIcon.icns */,
-				D2866E4714FADC790006A749 /* ManagerIcon.png */,
 				D2EFB28414F44B8E00DEA922 /* InstallDocument.icns */,
 				D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */,
 			);
@@ -1064,6 +1065,7 @@
 				D23D3152144216E3007D30F8 /* companies.plist in Resources */,
 				D24AF649147D3565000EDC6F /* MBT Scripting.sdef in Resources */,
 				D2866E6E14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */,
+				D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
