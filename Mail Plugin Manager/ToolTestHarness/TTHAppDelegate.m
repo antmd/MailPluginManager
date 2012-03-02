@@ -73,8 +73,14 @@ void	MBMCallToolCommandForBundleWithBlock2(NSString *mbmCommand, NSBundle *mbmMa
 	MBMUUIDListForBundleWithBlock(mailBundle, myBlock);
 	
 	MBMCheckForUpdatesForBundle(mailBundle);
+	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Sidebar for Infusionsoft.mailbundle"];
+	MBMCheckForUpdatesForBundle(sisBundle);
 	
-	[NSApp terminate:nil];
+	double delayInSeconds = 5.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[NSApp terminate:nil];
+	});
 }
 
 @end
