@@ -31,18 +31,13 @@
 @property	(nonatomic, retain)	NSOperationQueue			*finalizeQueue;
 @property	(atomic, assign)	NSInteger					finalizeCounter;
 
+
+//	Actions
+- (void)installAnyMailBundlesPending;
 - (NSString *)pathToManagerContainer;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
-
-- (void)installAnyMailBundlesPending;
-
-//	Quitting only when tasks are completed
-- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList;
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType;
-- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType;
 
 //	Queue management tasks
 - (void)addActivityTask:(void (^)(void))block;
@@ -223,6 +218,17 @@
 	[super dealloc];
 }
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+	
+	LKLog(@"Activity Count:%d  Finalize Count:%d", [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
+	NSApplicationTerminateReply	reply = NSTerminateNow;
+	if (([self.activityQueue operationCount] > 0) || ([self.finalizeQueue operationCount] > 0)) {
+		reply = NSTerminateCancel;
+	}
+	LKLog(@"Application is terminating: trace\n\n%@", [NSThread callStackSymbols]);
+	return reply;
+}
+
 
 
 #pragma mark - Helper Methods
@@ -305,7 +311,6 @@
 		//	Look at the first argument (after executable name) and test for one of our types
 		if ([kMBMCommandLineUninstallKey isEqualToString:action]) {
 			//	Tell it to uninstall itself
-	//		[self quitAfterReceivingNotificationNames:[NSArray arrayWithObjects:kMBMMailBundleUninstalledNotification, kMBMMailBundleDisabledNotification, kMBMMailBundleNoActionTakenNotification, nil] onObject:mailBundle testType:MBMAnyNotificationReceived];
 			[self addActivityTask:^{
 				[mailBundle uninstall];
 			}];
@@ -313,9 +318,6 @@
 		else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
 			//	Tell it to update itself, if frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-	//			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], //[NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], 
-	//												   nil] testType:MBMAnyNotificationReceived];
-	//			[mailBundle updateIfNecessary];
 				LKLog(@"Adding an update for bundle:'%@' to the queue", [[mailBundle path] lastPathComponent]);
 				[self updateMailBundle:mailBundle];
 			}
@@ -326,8 +328,6 @@
 				[self addActivityTask:^{
 					[mailBundle sendCrashReports];
 				}];
-	//			[self quitAfterReceivingNotificationNames:[NSArray arrayWithObject:kMBMDoneSendingCrashReportsMailBundleNotification] onObject:mailBundle testType:MBMAnyNotificationReceived];
-	//			[mailBundle sendCrashReports];
 			}
 		}
 		else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
@@ -337,11 +337,6 @@
 					[mailBundle sendCrashReports];
 				}];
 				[self updateMailBundle:mailBundle];
-	//			[self quitAfterReceivingNotifications:[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneSendingCrashReportsMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMDoneUpdatingMailBundleNotification, kMBMNotificationWaitNote, mailBundle, kMBMNotificationWaitObject, nil], [NSDictionary dictionaryWithObjectsAndKeys:kMBMSUUpdateDriverDoneNotification, kMBMNotificationWaitNote, nil], nil] testType:MBMAnyTwoNotificationsReceived];
-	//			//	Tell it to check its crash reports
-	//			[mailBundle sendCrashReports];
-	//			//	And update itself
-	//			[mailBundle updateIfNecessary];
 			}
 		}
 		else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
@@ -394,27 +389,37 @@
 }
 
 - (void)completeBundleUpdate:(NSNotification *)note {
-	LKLog(@"Should be completing op for bundle '%@'", [[[note object] path] lastPathComponent]);
-	for (NSDictionary *aDict in self.bundleSparkleOperations) {
-		if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
-			[[aDict valueForKey:@"operation"] finish];
-			[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMDoneUpdatingMailBundleNotification object:[note object]];
+	NSDictionary	*theDict = nil;
+	if ([[note name] isEqualToString:kMBMDoneUpdatingMailBundleNotification ]) {
+		LKLog(@"Should be completing op for bundle '%@'", [[[note object] path] lastPathComponent]);
+		for (NSDictionary *aDict in self.bundleSparkleOperations) {
+			if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
+				theDict = aDict;
+				break;
+			}
 		}
 	}
-}
-
-
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-
-	LKLog(@"Activity Count:%d  Finalize Count:%d", [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
-	NSApplicationTerminateReply	reply = NSTerminateNow;
-	if (([self.activityQueue operationCount] > 0) || ([self.finalizeQueue operationCount] > 0)) {
-		reply = NSTerminateCancel;
+	else if ([[note name] isEqualToString:kMBMSUUpdateDriverAbortNotification]) {
+		//	Find which updater we're working with
+		for (NSDictionary *aDict in self.bundleSparkleOperations) {
+			if ([[aDict valueForKey:@"driver"] isEqual:[note object]]) {
+				theDict = aDict;
+				break;
+			}
+		}
+		//	Then remove it from the list
+		if (theDict != nil) {
+			theDict = [[theDict retain] autorelease];
+			[self.bundleSparkleOperations removeObject:theDict];
+		}
 	}
-	LKLog(@"Application is terminating: trace\n\n%@", [NSThread callStackSymbols]);
-	return reply;
+	//	Remove observers
+	if (theDict != nil) {
+		[[theDict valueForKey:@"operation"] finish];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverAbortNotification object:[note object]];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMDoneUpdatingMailBundleNotification object:[note object]];
+	}
 }
-
 
 
 - (void)updateMailBundle:(MBMMailBundle *)mailBundle {
@@ -434,7 +439,6 @@
 		[updater setDelegate:sparkleDelegate];
 		
 		//	Create our driver manually, so that we have a copy to store
-//		SUUpdateDriver		*updateDriver = [[[([updater automaticallyDownloadsUpdates] ? NSClassFromString(@"SUAutomaticUpdateDriver") : NSClassFromString(@"SUScheduledUpdateDriver")) alloc] initWithUpdater:updater] autorelease];
 		SUUpdateDriver		*updateDriver = [[[NSClassFromString(@"MBTScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
 		
 		//	Then create an operation to run the action
@@ -443,6 +447,7 @@
 		
 		//	Set an observer for the bundle
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMSUUpdateDriverAbortNotification object:updateDriver];
 		
 		LKLog(@"Update Scheduled");
 		[self addActivityOperation:sparkleOperation];
@@ -534,10 +539,7 @@
 				[change release];
 			}
 		}];
-		
-	
 	}
-	
 }
 
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle {
@@ -561,109 +563,7 @@
 	}
 	
 	//	Look to see if we need to update our Agents asynchronously
-	
 	return result;
-}
-
-
-
-#pragma mark - Handling Completion Tasks
-
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList {
-	__block id	mySelf = self;
-	[self performBlock:^(void) {
-		[mySelf quittingNowIsReasonable];
-	} whenNotificationsReceived:notificationList testType:MBMAllNotificationsReceived];
-}
-
-- (void)quitAfterReceivingNotifications:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
-	__block id	mySelf = self;
-	[self performBlock:^(void) {
-		[mySelf quittingNowIsReasonable];
-	} whenNotificationsReceived:notificationList testType:testType];
-}
-
-- (void)quitAfterReceivingNotificationNames:(NSArray *)notificationNames onObject:(NSObject *)object testType:(MBMNotificationsReceivedTestType)testType {
-	__block id	mySelf = self;
-	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationNames count]];
-	for (NSString *noteName in notificationNames) {
-		[listCopy addObject:[NSDictionary dictionaryWithObjectsAndKeys:noteName, kMBMNotificationWaitNote, object, kMBMNotificationWaitObject, nil]];
-	}
-	[self performBlock:^(void) {
-		[mySelf quittingNowIsReasonable];
-	} whenNotificationsReceived:listCopy testType:testType];
-}
-
-- (void)performBlock:(void(^)(void))block whenNotificationsReceived:(NSArray *)notificationList testType:(MBMNotificationsReceivedTestType)testType {
-	
-	//	Make a mutable copy of the array
-	NSMutableArray	*listCopy = [NSMutableArray arrayWithCapacity:[notificationList count]];
-	
-	//	Create the block that we'll use for each notification type
-	void (^testNotificationBlock)(NSNotification *) = ^(NSNotification *notification) {
-		//	Find this notification within the list
-		for (NSMutableDictionary *aNote in listCopy) {
-			if ([[aNote objectForKey:kMBMNotificationWaitNote] isEqualToString:[notification name]] &&
-				(([aNote objectForKey:kMBMNotificationWaitObject] == nil) || [[aNote objectForKey:kMBMNotificationWaitObject] isEqual:[notification object]])) {
-				
-				//	Set the received flag on the dict
-				[aNote setObject:[NSNumber numberWithBool:YES] forKey:kMBMNotificationWaitReceived];
-			}
-		}
-		
-		//	Then test to see if how many notifications have been received
-		NSUInteger	receivedCount = 0;
-		for (NSDictionary *aNote in listCopy) {
-			if ([aNote objectForKey:kMBMNotificationWaitReceived] && [[aNote objectForKey:kMBMNotificationWaitReceived] boolValue]) {
-				receivedCount++;
-			}
-		}
-		
-		//	Check the count based on the testType
-		BOOL	enoughReceived = NO;
-		switch (testType) {
-			case MBMAnyNotificationReceived:
-				enoughReceived = (receivedCount > 0);
-				break;
-				
-			case MBMAnyTwoNotificationsReceived:
-				enoughReceived = (receivedCount > 1);
-				break;
-				
-			case MBMAllNotificationsReceived:
-				enoughReceived = (receivedCount == [listCopy count]);
-				break;
-				
-			default:
-				break;
-		}
-		
-		//	If all received then run our block and remove the notifications
-		if (enoughReceived) {
-			//	Remove all the observers
-			for (NSDictionary *aNote in listCopy) {
-				id	anObserver = [aNote objectForKey:kMBMNotificationWaitObserver];
-				if (anObserver) {
-					[[NSNotificationCenter defaultCenter] removeObserver:anObserver];
-				}
-			}
-			
-			//	And run the block
-			block();
-		}
-	};
-	
-	//	Then go through the notificationList and build the notifications
-	for (NSDictionary *aNote in notificationList) {
-		id	quitObserver = [[NSNotificationCenter defaultCenter] addObserverForName:[aNote objectForKey:kMBMNotificationWaitNote] object:[aNote objectForKey:kMBMNotificationWaitObject] queue:[NSOperationQueue mainQueue] usingBlock:testNotificationBlock];
-		
-		//	Set the received flag on the dict
-		NSMutableDictionary	*dictCopy = [aNote mutableCopy];
-		[dictCopy setObject:quitObserver forKey:kMBMNotificationWaitObserver];
-		[listCopy addObject:dictCopy];
-		[dictCopy release];
-	}
-	
 }
 
 

@@ -31,32 +31,32 @@
 	[super dealloc];
 }
 
-- (void)postDoneNotification {
-	//	Post a new notification indicating that we are done
-	LKLog(@"Sending Sparkle Done Notification for '%@'", [[self.mailBundle path] lastPathComponent]);
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:self.mailBundle];
-}
-
-- (void)updateDriverFinished:(NSNotification *)notification {
-	//	Then remove the observer
-	if (notification != nil) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverDoneNotification object:[notification object]];
-	}
-	[self postDoneNotification];
-}
-
-- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDriverFinished:) name:kMBMSUUpdateDriverDoneNotification object:[updater valueForKey:@"driver"]];
-}
-
-- (void)updaterDidNotFindUpdate:(SUUpdater *)update {
-	//	Post a new notification indicating that we are done
-	[self updateDriverFinished:nil];
-}
+//- (void)postDoneNotification {
+//	//	Post a new notification indicating that we are done
+//	LKLog(@"Sending Sparkle Done Notification for '%@'", [[self.mailBundle path] lastPathComponent]);
+//	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:self.mailBundle];
+//}
+//
+//- (void)updateDriverFinished:(NSNotification *)notification {
+//	//	Then remove the observer
+//	if (notification != nil) {
+//		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverAbortNotification object:[notification object]];
+//	}
+//	[self postDoneNotification];
+//}
+//
+//- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDriverFinished:) name:kMBMSUUpdateDriverAbortNotification object:[updater valueForKey:@"driver"]];
+//}
+//
+//- (void)updaterDidNotFindUpdate:(SUUpdater *)update {
+//	//	Post a new notification indicating that we are done
+//	[self updateDriverFinished:nil];
+//}
 
 //	Always postpone (indefinitely) the relaunch, but send a notification that the update is done.
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
-	[self updateDriverFinished:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:self.mailBundle];
 	return YES;
 }
 
