@@ -11,7 +11,6 @@
 @interface MBTScheduledUpdateDriver : SUUIBasedUpdateDriver {
 @private
 	BOOL	showErrors;
-	BOOL	postponed;
 }
 
 @end

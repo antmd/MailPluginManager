@@ -133,6 +133,76 @@
 			remoteGlobalIDString = D216B339141DFDE1003788DC;
 			remoteInfo = "Mail Plugin Manager";
 		};
+		D221E98C1500499A00568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E9851500499A00568952 /* LKKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D257E25D134F675A000F2C16;
+			remoteInfo = KitTests;
+		};
+		D221E98E1500499A00568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E9851500499A00568952 /* LKKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D26436341354B45A006C7A08;
+			remoteInfo = GHTester;
+		};
+		D221E9901500499A00568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E9851500499A00568952 /* LKKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2DC0F781428B1D6005D2F90;
+			remoteInfo = MacKit;
+		};
+		D221E9921500499A00568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E9851500499A00568952 /* LKKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2DC0F921428B1D6005D2F90;
+			remoteInfo = MacKitTests;
+		};
+		D221E9A2150049E700568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E994150049E700568952 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
+		D221E9A4150049E700568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E994150049E700568952 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
+			remoteInfo = "Sparkle Test App";
+		};
+		D221E9A6150049E700568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E994150049E700568952 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 612279D90DB5470200AB99EA;
+			remoteInfo = "Sparkle Unit Tests";
+		};
+		D221E9A8150049E700568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E994150049E700568952 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D06E8D00FD68C7C005AE3F6;
+			remoteInfo = BinaryDelta;
+		};
+		D221E9AA150049E700568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E994150049E700568952 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55C14BB7136EEF1500649790;
+			remoteInfo = finish_installation;
+		};
+		D221E9AD15004A5800568952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221E994150049E700568952 /* Sparkle.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
 		D24AF645147D177A000EDC6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D216B331141DFDE1003788DC /* Project object */;
@@ -246,6 +316,8 @@
 		D221E96F1500253300568952 /* SUStatusController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUStatusController.h; sourceTree = "<group>"; };
 		D221E9701500253300568952 /* SUWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUWindowController.h; sourceTree = "<group>"; };
 		D221E971150026DA00568952 /* SUUIBasedUpdateDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUUIBasedUpdateDriver.h; sourceTree = "<group>"; };
+		D221E9851500499A00568952 /* LKKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LKKit.xcodeproj; path = ../LKKit/LKKit.xcodeproj; sourceTree = "<group>"; };
+		D221E994150049E700568952 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		D222073E14F1B04000881515 /* NSObject+LKObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+LKObject.h"; path = "../../LKKit/Categories/NSObject+LKObject.h"; sourceTree = "<group>"; };
 		D222073F14F1B04000881515 /* NSObject+LKObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+LKObject.m"; path = "../../LKKit/Categories/NSObject+LKObject.m"; sourceTree = "<group>"; };
 		D22CC053146BD87F0055CFBE /* ToolTestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToolTestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -399,6 +471,8 @@
 				D216B361141DFDE2003788DC /* Mail Plugin ManagerTests */,
 				D216B33D141DFDE1003788DC /* Frameworks */,
 				D216B33B141DFDE1003788DC /* Products */,
+				D221E9851500499A00568952 /* LKKit.xcodeproj */,
+				D221E994150049E700568952 /* Sparkle.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -468,6 +542,29 @@
 				D216B364141DFDE2003788DC /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D221E9861500499A00568952 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D221E98D1500499A00568952 /* KitTests.octest */,
+				D221E98F1500499A00568952 /* GHTester.app */,
+				D221E9911500499A00568952 /* MacKit.app */,
+				D221E9931500499A00568952 /* MacKitTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D221E995150049E700568952 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D221E9A3150049E700568952 /* Sparkle.framework */,
+				D221E9A5150049E700568952 /* Sparkle Test App.app */,
+				D221E9A7150049E700568952 /* Sparkle Unit Tests.octest */,
+				D221E9A9150049E700568952 /* BinaryDelta */,
+				D221E9AB150049E700568952 /* finish_installation.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		D22CC056146BD87F0055CFBE /* ToolTestHarness */ = {
@@ -788,6 +885,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D221E9AE15004A5800568952 /* PBXTargetDependency */,
 			);
 			name = MailPluginTool;
 			productName = MailPluginTool;
@@ -814,6 +912,16 @@
 			mainGroup = D216B32F141DFDE1003788DC;
 			productRefGroup = D216B33B141DFDE1003788DC /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D221E9861500499A00568952 /* Products */;
+					ProjectRef = D221E9851500499A00568952 /* LKKit.xcodeproj */;
+				},
+				{
+					ProductGroup = D221E995150049E700568952 /* Products */;
+					ProjectRef = D221E994150049E700568952 /* Sparkle.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D216B339141DFDE1003788DC /* Mail Plugin Manager */,
@@ -823,6 +931,72 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D221E98D1500499A00568952 /* KitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KitTests.octest;
+			remoteRef = D221E98C1500499A00568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E98F1500499A00568952 /* GHTester.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = GHTester.app;
+			remoteRef = D221E98E1500499A00568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E9911500499A00568952 /* MacKit.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = MacKit.app;
+			remoteRef = D221E9901500499A00568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E9931500499A00568952 /* MacKitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MacKitTests.octest;
+			remoteRef = D221E9921500499A00568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E9A3150049E700568952 /* Sparkle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Sparkle.framework;
+			remoteRef = D221E9A2150049E700568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E9A5150049E700568952 /* Sparkle Test App.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Sparkle Test App.app";
+			remoteRef = D221E9A4150049E700568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E9A7150049E700568952 /* Sparkle Unit Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Sparkle Unit Tests.octest";
+			remoteRef = D221E9A6150049E700568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E9A9150049E700568952 /* BinaryDelta */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = BinaryDelta;
+			remoteRef = D221E9A8150049E700568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D221E9AB150049E700568952 /* finish_installation.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = finish_installation.app;
+			remoteRef = D221E9AA150049E700568952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D216B338141DFDE1003788DC /* Resources */ = {
@@ -1009,6 +1183,11 @@
 			isa = PBXTargetDependency;
 			target = D216B339141DFDE1003788DC /* Mail Plugin Manager */;
 			targetProxy = D216B35F141DFDE2003788DC /* PBXContainerItemProxy */;
+		};
+		D221E9AE15004A5800568952 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sparkle;
+			targetProxy = D221E9AD15004A5800568952 /* PBXContainerItemProxy */;
 		};
 		D24AF646147D177A000EDC6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

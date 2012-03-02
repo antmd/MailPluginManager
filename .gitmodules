@@ -1,3 +1,6 @@
 [submodule "LKKit"]
 	path = LKKit
 	url = git@github.com:lksoft/LKKit.git
+[submodule "Sparkle"]
+	path = Sparkle
+	url = git@github.com:lksoft/Sparkle.git
