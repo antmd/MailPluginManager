@@ -30,7 +30,10 @@
 	BOOL			_installed;
 	BOOL			_inLocalDomain;
 	
+	NSInteger			_initialState;
 	MBMSparkleDelegate	*_sparkleDelegate;
+	BOOL				_hasBeenUpdated;
+	BOOL				_needsMailRestart;
 }
 
 @property	(nonatomic, copy, readonly)		NSString		*name;
@@ -57,6 +60,7 @@
 @property	(nonatomic, assign)				BOOL			inLocalDomain;
 
 @property	(nonatomic, retain)				MBMSparkleDelegate	*sparkleDelegate;
+@property	(nonatomic, assign, readonly)	BOOL				needsMailRestart;
 
 + (MBMMailBundle *)mailBundleForPath:(NSString *)aBundlePath shouldLoadInfo:(BOOL)loadInfo;
 
@@ -88,6 +92,7 @@
 
 - (NSColor *)nameColor;
 - (NSString *)backgroundImagePath;
+- (void)resetInitialState;
 
 - (BOOL)isInActiveBundlesFolder;
 - (BOOL)isInDisabledBundlesFolder;

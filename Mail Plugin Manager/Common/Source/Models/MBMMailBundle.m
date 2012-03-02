@@ -15,6 +15,8 @@
 #import "NSFileManager+LKAdditions.h"
 #import "NSObject+LKObject.h"
 
+#import "SUBasicUpdateDriver.h"
+
 typedef enum {
 	MBMGenericBundleErrorCode = 500,
 	MBMCantCreateDisabledBundleFolderErrorCode = 501,
@@ -22,18 +24,28 @@ typedef enum {
 	MBMUnknownBundleCode
 } MBMBundleErrorCodes;
 
+typedef enum {
+	MBMNoState = 0,
+	MBMEnabled = 1,
+	MBMInstalled = 2,
+	MBMInLocalDomain = 4
+} MBMBundleStateFlags;
+
 #define CURRENT_INCOMPATIBLE_COLOR	[NSColor colorWithDeviceRed:0.800 green:0.000 blue:0.000 alpha:1.000]
 #define FUTURE_INCOMPATIBLE_COLOR	[NSColor colorWithDeviceWhite:0.600 alpha:1.000]
 
 
 @interface MBMMailBundle ()
-@property	(nonatomic, copy, readwrite)		NSString		*name;
-@property	(nonatomic, copy, readwrite)		NSString		*company;
-@property	(nonatomic, copy, readwrite)		NSString		*companyURL;
-@property	(nonatomic, copy, readwrite)		NSString		*productURL;
-@property	(nonatomic, copy, readwrite)		NSString		*iconPath;
-@property	(nonatomic, retain, readwrite)		NSImage			*icon;
-@property	(nonatomic, retain, readwrite)		NSBundle		*bundle;
+@property	(nonatomic, copy, readwrite)		NSString	*name;
+@property	(nonatomic, copy, readwrite)		NSString	*company;
+@property	(nonatomic, copy, readwrite)		NSString	*companyURL;
+@property	(nonatomic, copy, readwrite)		NSString	*productURL;
+@property	(nonatomic, copy, readwrite)		NSString	*iconPath;
+@property	(nonatomic, retain, readwrite)		NSImage		*icon;
+@property	(nonatomic, retain, readwrite)		NSBundle	*bundle;
+@property	(nonatomic, assign)					NSInteger	initialState;
+@property	(nonatomic, assign, readonly)		NSInteger	currentState;
+@property	(nonatomic, assign)					BOOL		hasBeenUpdated;
 - (void)updateState;
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
 + (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath;
@@ -61,6 +73,10 @@ typedef enum {
 @synthesize installed = _installed;
 @synthesize inLocalDomain = _inLocalDomain;
 @synthesize sparkleDelegate = _sparkleDelegate;
+@synthesize needsMailRestart = _needsMailRestart;
+@synthesize initialState = _initialState;
+@synthesize hasBeenUpdated = _hasBeenUpdated;
+
 
 - (NSString *)path {
 	return [self.bundle bundlePath];
@@ -253,6 +269,29 @@ typedef enum {
 	return self.incompatibleWithCurrentMail?CURRENT_INCOMPATIBLE_COLOR:FUTURE_INCOMPATIBLE_COLOR;
 }
 
+- (BOOL)needsMailRestart {
+	return (self.hasBeenUpdated || (self.currentState != self.initialState));
+}
+
+- (NSInteger)currentState {
+	NSInteger	newState = MBMNoState;
+	if (self.enabled) {
+		newState |= MBMEnabled;
+	}
+	if (self.installed) {
+		newState |= MBMInstalled;
+	}
+	if (self.inLocalDomain) {
+		newState |= MBMInLocalDomain;
+	}
+	return newState;
+}
+
+- (void)resetInitialState {
+	_initialState = self.currentState;
+	_hasBeenUpdated = NO;
+}
+
 #pragma mark - Memory Management
 
 - (id)initWithPath:(NSString *)bundlePath {
@@ -315,6 +354,9 @@ typedef enum {
 		if ([MBMUUIDList firstUnsupportedOSVersionFromSupportedList:supportedUUIDs]) {
 			_incompatibleWithFutureMail = YES;
 		}
+		
+		//	reset the initial state
+		[self resetInitialState];
 		
     }
     
@@ -452,14 +494,12 @@ typedef enum {
 		self.sparkleDelegate = [[[MBMSparkleDelegate alloc] initWithMailBundle:self] autorelease];
 		[updater setDelegate:self.sparkleDelegate];
 		
-/*		//	Set the Path to relaunch to Mail
-		self.sparkleDelegate.relaunchPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
+		[[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneUpdatingMailBundleNotification object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+			//	Go ahead and call the install directly
+			[[[note userInfo] valueForKey:@"invoker"] invoke];
+			self.hasBeenUpdated = YES;
+		}];
 		
-		//	Tell the delegate to quit mail when needed
-		self.sparkleDelegate.quitMail = YES;
-		//	And also quit this app when done
-		self.sparkleDelegate.quitManager = YES;
-*/		
 		//	Check for an update
 		[updater checkForUpdatesInBackground];
 	}
