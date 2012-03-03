@@ -8,7 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TTHAppDelegate : NSObject <NSApplicationDelegate>
+@interface TTHAppDelegate : NSObject <NSApplicationDelegate> {
+	NSWindow	*_window;
+}
 
 @property (assign) IBOutlet NSWindow *window;
 
