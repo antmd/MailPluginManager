@@ -48,7 +48,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSCustomObject" id="976324537">
-				<string key="NSClassName">MBMAppDelegate</string>
+				<string key="NSClassName">MPMAppDelegate</string>
 			</object>
 			<object class="NSMenu" id="649796088">
 				<string key="NSTitle">AMainMenu</string>
@@ -1322,7 +1322,7 @@
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="439893737">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSCustomView" id="304264377">
@@ -1330,7 +1330,6 @@
 							<int key="NSvFlags">260</int>
 							<string key="NSFrame">{{20, 60}, {752, 462}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="900960461"/>
 							<string key="NSReuseIdentifierKey">_NS:1192</string>
 							<string key="NSClassName">MBMBackgroundableView</string>
@@ -1348,7 +1347,6 @@
 											<int key="NSvFlags">274</int>
 											<string key="NSFrameSize">{750, 460}</string>
 											<reference key="NSSuperview" ref="886495433"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="550586309"/>
 											<string key="NSReuseIdentifierKey">_NS:3876</string>
 											<string key="NSMinGridSize">{0, 0}</string>
@@ -1367,7 +1365,6 @@
 									</array>
 									<string key="NSFrame">{{1, 1}, {750, 460}}</string>
 									<reference key="NSSuperview" ref="900960461"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="770769059"/>
 									<string key="NSReuseIdentifierKey">_NS:3874</string>
 									<reference key="NSDocView" ref="770769059"/>
@@ -1387,7 +1384,6 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{234, 1}, {15, 143}}</string>
 									<reference key="NSSuperview" ref="900960461"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="319601562"/>
 									<string key="NSReuseIdentifierKey">_NS:3881</string>
 									<reference key="NSTarget" ref="900960461"/>
@@ -1400,7 +1396,6 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{1, 144}, {233, 15}}</string>
 									<reference key="NSSuperview" ref="900960461"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="828223073"/>
 									<string key="NSReuseIdentifierKey">_NS:3883</string>
 									<int key="NSsFlags">1</int>
@@ -1411,7 +1406,6 @@
 							</array>
 							<string key="NSFrame">{{20, 60}, {752, 462}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="886495433"/>
 							<string key="NSReuseIdentifierKey">_NS:3872</string>
 							<int key="NSsFlags">133682</int>
@@ -1424,8 +1418,6 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{14, 12}, {67, 32}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:161</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="227004913">
@@ -1449,8 +1441,6 @@
 						</object>
 					</array>
 					<string key="NSFrameSize">{792, 542}</string>
-					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="304264377"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
@@ -3860,65 +3850,6 @@
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">MBAppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="backgroundView">MBMBackgroundableView</string>
-						<string key="collectionItem">NSCollectionViewItem</string>
-						<string key="scrollView">NSScrollView</string>
-						<string key="window">NSWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="backgroundView">
-							<string key="name">backgroundView</string>
-							<string key="candidateClassName">MBMBackgroundableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="collectionItem">
-							<string key="name">collectionItem</string>
-							<string key="candidateClassName">NSCollectionViewItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="scrollView">
-							<string key="name">scrollView</string>
-							<string key="candidateClassName">NSScrollView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="window">
-							<string key="name">window</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MBAppDelegate.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MBMAppDelegate</string>
-					<string key="superclassName">MBAppDelegate</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="finishApplication:">id</string>
-						<string key="restartMail:">id</string>
-						<string key="showURL:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="finishApplication:">
-							<string key="name">finishApplication:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="restartMail:">
-							<string key="name">restartMail:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showURL:">
-							<string key="name">showURL:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MBMAppDelegate.h</string>
-					</object>
-				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">MBMBackgroundableView</string>
 					<string key="superclassName">NSView</string>

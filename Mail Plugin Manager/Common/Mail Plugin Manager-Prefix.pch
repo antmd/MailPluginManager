@@ -15,11 +15,11 @@
 	#import "MBMConstants.h"
 
 #ifdef MB_TOOL 
-	#import	"MBTAppDelegate.h"
-	#define	AppDel	((MBTAppDelegate *)[NSApp delegate])
+	#import	"MPTAppDelegate.h"
+	#define	AppDel	((MPTAppDelegate *)[NSApp delegate])
 #else
-	#import	"MBMAppDelegate.h"
-	#define	AppDel	((MBMAppDelegate *)[NSApp delegate])
+	#import	"MPMAppDelegate.h"
+	#define	AppDel	((MPMAppDelegate *)[NSApp delegate])
 #endif
 
 

@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MBTSendInfoCommand : NSScriptCommand
+@interface MPTSendInfoCommand : NSScriptCommand
 
 @end

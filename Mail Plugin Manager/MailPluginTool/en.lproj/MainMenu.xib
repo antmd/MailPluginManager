@@ -47,7 +47,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSCustomObject" id="976324537">
-				<string key="NSClassName">MBTAppDelegate</string>
+				<string key="NSClassName">MPTAppDelegate</string>
 			</object>
 			<object class="NSMenu" id="649796088">
 				<string key="NSTitle">AMainMenu</string>
@@ -1316,7 +1316,7 @@
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="439893737">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1325,7 +1325,6 @@
 							<int key="NSvFlags">260</int>
 							<string key="NSFrame">{{20, 60}, {502, 462}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="555481212"/>
 							<string key="NSReuseIdentifierKey">_NS:1192</string>
 							<string key="NSClassName">MBMBackgroundableView</string>
@@ -1345,7 +1344,6 @@
 											<int key="NSvFlags">274</int>
 											<string key="NSFrameSize">{500, 460}</string>
 											<reference key="NSSuperview" ref="201591915"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="854058761"/>
 											<string key="NSReuseIdentifierKey">_NS:3367</string>
 											<string key="NSMinGridSize">{0, 0}</string>
@@ -1365,7 +1363,6 @@
 									</object>
 									<string key="NSFrame">{{1, 1}, {500, 460}}</string>
 									<reference key="NSSuperview" ref="555481212"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="48987171"/>
 									<string key="NSReuseIdentifierKey">_NS:3365</string>
 									<reference key="NSDocView" ref="48987171"/>
@@ -1385,7 +1382,6 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{234, 1}, {15, 143}}</string>
 									<reference key="NSSuperview" ref="555481212"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="783589847"/>
 									<string key="NSReuseIdentifierKey">_NS:3372</string>
 									<reference key="NSTarget" ref="555481212"/>
@@ -1398,7 +1394,6 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{1, 144}, {233, 15}}</string>
 									<reference key="NSSuperview" ref="555481212"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="927056599"/>
 									<string key="NSReuseIdentifierKey">_NS:3374</string>
 									<int key="NSsFlags">1</int>
@@ -1409,7 +1404,6 @@
 							</object>
 							<string key="NSFrame">{{20, 60}, {502, 462}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="201591915"/>
 							<string key="NSReuseIdentifierKey">_NS:3363</string>
 							<int key="NSsFlags">133682</int>
@@ -1422,8 +1416,6 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{14, 12}, {67, 32}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:687</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="966704144">
@@ -1447,8 +1439,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{542, 540}</string>
-					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="381046007"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
@@ -3681,105 +3671,11 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">MBAppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>finishApplication:</string>
-							<string>showURL:</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>finishApplication:</string>
-							<string>showURL:</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">finishApplication:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showURL:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>backgroundView</string>
-							<string>collectionItem</string>
-							<string>scrollView</string>
-							<string>window</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>MBMBackgroundableView</string>
-							<string>NSCollectionViewItem</string>
-							<string>NSScrollView</string>
-							<string>NSWindow</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>backgroundView</string>
-							<string>collectionItem</string>
-							<string>scrollView</string>
-							<string>window</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">backgroundView</string>
-								<string key="candidateClassName">MBMBackgroundableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">collectionItem</string>
-								<string key="candidateClassName">NSCollectionViewItem</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">scrollView</string>
-								<string key="candidateClassName">NSScrollView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">window</string>
-								<string key="candidateClassName">NSWindow</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MBAppDelegate.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">MBMBackgroundableView</string>
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/MBMBackgroundableView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MBTAppDelegate</string>
-					<string key="superclassName">MBAppDelegate</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MBTAppDelegate.h</string>
 					</object>
 				</object>
 			</object>

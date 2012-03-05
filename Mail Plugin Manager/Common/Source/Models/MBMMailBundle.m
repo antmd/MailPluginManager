@@ -7,7 +7,7 @@
 //
 
 #import "MBMMailBundle.h"
-#import "MBMAppDelegate.h"
+#import "MPMAppDelegate.h"
 #import "MBMCompanyList.h"
 #import "MBMUUIDList.h"
 #import "NSBundle+MBMAdditions.h"

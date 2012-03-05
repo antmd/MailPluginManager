@@ -1,13 +1,13 @@
 //
-//  MBTSinglePluginController.m
+//  MPTSinglePluginController.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 04/10/2011.
 //  Copyright 2011 Little Known Software. All rights reserved.
 //
 
-#import "MBTSinglePluginController.h"
-#import "MBTAppDelegate.h"
+#import "MPTSinglePluginController.h"
+#import "MPTAppDelegate.h"
 
 typedef enum {
 	kMBTButtonRight = 0,
@@ -32,7 +32,7 @@ typedef enum {
 
 
 
-@interface MBTSinglePluginController ()
+@interface MPTSinglePluginController ()
 @property	(assign)	MBTButtonLayoutType	buttonLayout;
 @property	(retain, readonly)	NSArray		*buttonConfigurations;
 
@@ -40,7 +40,7 @@ typedef enum {
 - (void)configureButtonsForLayoutType:(MBTButtonLayoutType)layout;
 @end
 
-@implementation MBTSinglePluginController
+@implementation MPTSinglePluginController
 
 #pragma mark - Accessors
 
@@ -58,7 +58,7 @@ typedef enum {
 #pragma mark - Memory Management
 
 - (id)initWithMailBundle:(MBMMailBundle *)aMailBundle {
-    self = [super initWithWindowNibName:@"MBTSinglePluginWindow"];
+    self = [super initWithWindowNibName:@"MPTSinglePluginWindow"];
     if (self) {
         // Initialization code here.
 		_mailBundle = [aMailBundle retain];

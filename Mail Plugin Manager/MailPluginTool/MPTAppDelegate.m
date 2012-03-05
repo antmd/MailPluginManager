@@ -6,11 +6,11 @@
 //  Copyright 2011 Little Known Software. All rights reserved.
 //
 
-#import "MBTAppDelegate.h"
+#import "MPTAppDelegate.h"
 #import "MBMMailBundle.h"
 #import "MBMUUIDList.h"
 #import "MBMSystemInfo.h"
-#import "MBTSinglePluginController.h"
+#import "MPTSinglePluginController.h"
 #import "LKCGStructs.h"
 #import "NSUserDefaults+MBMShared.h"
 //#import <Sparkle/Sparkle.h>
@@ -19,7 +19,7 @@
 #define HOURS_AGO	(-1 * 60 * 60)
 
 
-@interface MBTAppDelegate ()
+@interface MPTAppDelegate ()
 @property	(nonatomic, copy)	NSMutableDictionary			*savedSparkleState;
 @property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
 @property	(nonatomic, assign) MPMSparkleAsyncOperation	*sparkleOperation;
@@ -35,7 +35,7 @@
 
 @end
 
-@implementation MBTAppDelegate
+@implementation MPTAppDelegate
 
 @synthesize savedSparkleState = _savedSparkleState;
 @synthesize sparkleKeysValues = _sparkleKeysValues;
@@ -347,7 +347,7 @@
 	//	If there is just one, special case to show a nicer presentation
 	if ([badBundles count] == 1) {
 		//	Show a view for a single item
-		self.currentController = [[[MBTSinglePluginController alloc] initWithMailBundle:[badBundles lastObject]] autorelease];
+		self.currentController = [[[MPTSinglePluginController alloc] initWithMailBundle:[badBundles lastObject]] autorelease];
 		[[self.currentController window] center];
 		[self.currentController showWindow:self];
 	}

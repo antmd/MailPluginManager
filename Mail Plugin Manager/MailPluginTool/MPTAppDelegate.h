@@ -13,7 +13,7 @@
 #import "SUBasicUpdateDriver.h"
 #import "MPMSparkleAsyncOperation.h"
 
-@interface MBTAppDelegate : MBAppDelegate {
+@interface MPTAppDelegate : MBAppDelegate {
 @private	
 	NSMutableDictionary			*_savedSparkleState;
 	NSArray						*_sparkleKeysValues;

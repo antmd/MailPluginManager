@@ -6,11 +6,11 @@
 //  Copyright (c) 2011 Little Known Software. All rights reserved.
 //
 
-#import "MBTSendInfoCommand.h"
+#import "MPTSendInfoCommand.h"
 
 #import "MBMPluginMacros.h"
 
-@implementation MBTSendInfoCommand
+@implementation MPTSendInfoCommand
 
 - (id)performDefaultImplementation {
 

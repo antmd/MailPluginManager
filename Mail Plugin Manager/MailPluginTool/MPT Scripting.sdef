@@ -64,32 +64,32 @@
 			</enumerator>
 		</enumeration>
 		<command name="uninstall" code="MBMtReMv" description="Uninstall a plugin">
-			<cocoa class="MBTSendInfoCommand"/>
+			<cocoa class="MPTSendInfoCommand"/>
 			<direct-parameter description="The plugin path to be uninstalled." type="text"/>
 		</command>
 		<command name="update" code="MBMtUpDt" description="Update a plugin">
-			<cocoa class="MBTSendInfoCommand"/>
+			<cocoa class="MPTSendInfoCommand"/>
 			<direct-parameter description="The plugin path to be updated." type="text"/>
 			<parameter name="frequency" code="freQ" description="How often should the update be checked." type="frequency" optional="yes">
 				<cocoa key="frequency"/>
 			</parameter>
 		</command>
 		<command name="crash reports" code="MBMtCrRp" description="Check for crash reports for a plugin and send them to a server.">
-			<cocoa class="MBTSendInfoCommand"/>
+			<cocoa class="MPTSendInfoCommand"/>
 			<direct-parameter description="The plugin path for which we should send crash reports." type="text"/>
 			<parameter name="frequency" code="freQ" description="How often should the reports be sent." type="frequency" optional="yes">
 				<cocoa key="frequency"/>
 			</parameter>
 		</command>
 		<command name="update and crash reports" code="MBMtBoth" description="Check for updates and crash reports for a plugin.">
-			<cocoa class="MBTSendInfoCommand"/>
+			<cocoa class="MPTSendInfoCommand"/>
 			<direct-parameter description="The plugin path for which we should update &amp; send crash reports." type="text"/>
 			<parameter name="frequency" code="freQ" description="How often should the updates &amp; reports be done." type="frequency" optional="yes">
 				<cocoa key="frequency"/>
 			</parameter>
 		</command>
 		<command name="send" code="MBMtsEnD" description="Sends the info as a dictionary using a Distributed Notification.">
-			<cocoa class="MBTSendInfoCommand"/>
+			<cocoa class="MPTSendInfoCommand"/>
 			<direct-parameter description="The type of information to be sent." type="info type"/>
 			<parameter name="plugin path" code="Plug" description="The path to the plugin that is calling and that should receive the Notification." type="text">
 				<cocoa key="pluginPath"/>

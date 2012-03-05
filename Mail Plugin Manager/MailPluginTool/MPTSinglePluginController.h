@@ -1,5 +1,5 @@
 //
-//  MBTSinglePluginController.h
+//  MPTSinglePluginController.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 04/10/2011.
@@ -30,7 +30,7 @@ typedef enum {
 } MBTButtonLayoutType;
 
 
-@interface MBTSinglePluginController : NSWindowController {
+@interface MPTSinglePluginController : NSWindowController {
 @private
 	
 	MBMMailBundle		*_mailBundle;

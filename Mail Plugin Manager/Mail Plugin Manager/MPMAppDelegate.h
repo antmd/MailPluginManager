@@ -11,7 +11,7 @@
 #import "MBAppDelegate.h"
 #import "MBMManifestModel.h"
 
-@interface MBMAppDelegate : MBAppDelegate {
+@interface MPMAppDelegate : MBAppDelegate {
 @private
 	BOOL				_installing;
 	BOOL				_uninstalling;

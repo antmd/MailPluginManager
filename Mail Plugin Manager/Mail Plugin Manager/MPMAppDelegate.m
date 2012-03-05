@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Little Known Software. All rights reserved.
 //
 
-#import "MBMAppDelegate.h"
+#import "MPMAppDelegate.h"
 
 #import "MBMMailBundle.h"
 #import "MBMInstallerController.h"
@@ -22,11 +22,11 @@ typedef enum {
 } MBMAppDelegateErrorCodes;
 
 
-@interface MBMAppDelegate ()
+@interface MPMAppDelegate ()
 @property	(nonatomic, retain)	NSNumber		*savedEnableAutoChecks;
 @end
 
-@implementation MBMAppDelegate
+@implementation MPMAppDelegate
 
 #pragma mark - Accessors & Memeory
 
