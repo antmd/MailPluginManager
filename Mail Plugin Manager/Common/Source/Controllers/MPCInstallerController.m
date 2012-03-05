@@ -126,7 +126,7 @@ typedef enum {
 	//	Initialize some text and get the localization proper for the type (install/uninstall)
 	NSString	*localizedFormat = NSLocalizedString(@"Install %@", @"");
 	NSString	*progressText = NSLocalizedString(@"Please wait while I install the plugin…", @"Title description for progress view during installation");
-	if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
+	if (self.manifestModel.manifestType == kMPCManifestTypeUninstallation) {
 		localizedFormat = NSLocalizedString(@"Uninstall %@", @"");
 		progressText = NSLocalizedString(@"Please wait while I remove your plugin…", @"Title description for progress view during UNinstallation");
 	}
@@ -271,7 +271,7 @@ typedef enum {
 		return;
 	}
 	
-	BOOL	isConfirmed = newStep.type == kMBMConfirmationTypeConfirm;
+	BOOL	isConfirmed = newStep.type == kMPCConfirmationTypeConfirm;
 	//	Load the contents 
 	//	Is it html?
 	if (newStep.hasHTMLContent) {
@@ -294,7 +294,7 @@ typedef enum {
 	//	Configure the two buttons at the bottom
 	NSString	*actionTitle = NSLocalizedString(@"Continue", @"Continue button text for installation/uninstallation");
 	if (isConfirmed) {
-		actionTitle = (self.manifestModel.manifestType==kMBMManifestTypeInstallation)?NSLocalizedString(@"Install", @"Install button text for installation"):NSLocalizedString(@"Uninstall", @"Remove button text for uninstallation");
+		actionTitle = (self.manifestModel.manifestType==kMPCManifestTypeInstallation)?NSLocalizedString(@"Install", @"Install button text for installation"):NSLocalizedString(@"Uninstall", @"Remove button text for uninstallation");
 	}
 	[self.actionButton setTitle:actionTitle];
 	[self.previousStepButton setEnabled:(toStep != 0)];
@@ -338,7 +338,7 @@ typedef enum {
 - (void)startActions {
 
 	//	Test installation requirements
-	if ((self.manifestModel.manifestType == kMBMManifestTypeInstallation) &&
+	if ((self.manifestModel.manifestType == kMPCManifestTypeInstallation) &&
 		![self validateRequirements]) {
 		return;
 	}
@@ -377,7 +377,7 @@ typedef enum {
 				//	Localize the progress label
 				NSString	*progressText = NSLocalizedString(@"The %@ was not completed successfully .\nSorry for any inconvenience.", @"Progress label after failure");
 				NSString	*actionText = NSLocalizedString(@"installation", @"Installation name");
-				if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
+				if (self.manifestModel.manifestType == kMPCManifestTypeUninstallation) {
 					actionText = NSLocalizedString(@"removal", @"Uninstallation name");
 				}
 				displayMessage = [NSString stringWithFormat:progressText, actionText];
@@ -387,7 +387,7 @@ typedef enum {
 			}
 			
 		}
-		else if (self.manifestModel.manifestType == kMBMManifestTypeUninstallation) {
+		else if (self.manifestModel.manifestType == kMPCManifestTypeUninstallation) {
 			displayMessage = NSLocalizedString(@"Uninstall successful.\n\n%@", @"Uninstall successful message in view");
 			displayMessage = [NSString stringWithFormat:displayMessage, self.manifestModel.completionMessage];
 		}
@@ -446,16 +446,16 @@ typedef enum {
 	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
 	
 	//	Ensure that the versions all check out
-	MBMOSSupportResult	supportResult = [model supportResultForManifest];
-	if (supportResult == kMBMOSIsTooLow) {
+	MPCOSSupportResult	supportResult = [model supportResultForManifest];
+	if (supportResult == kMPCOSIsTooLow) {
 		LKPresentErrorCode(MBMMinOSInsufficientCode);
 		return NO;
 	}
-	if (supportResult == kMBMOSIsTooHigh) {
+	if (supportResult == kMPCOSIsTooHigh) {
 		LKPresentErrorCode(MBMMaxOSInsufficientCode);
 		return NO;
 	}
-	if (model.minMailVersion != kMBMNoVersionRequirement) {
+	if (model.minMailVersion != kMPCNoVersionRequirement) {
 		CGFloat	currentVersion = mailVersion();
 		if (currentVersion > model.minMailVersion) {
 			LKPresentErrorCode(MBMMinMailInsufficientCode);
@@ -520,7 +520,7 @@ typedef enum {
 			if (![AppDel askToRestartMailWithBlock:configureBlock usingIcon:nil]) {
 				self.displayErrorMessage = NSLocalizedString(@"The plugin has been %@, but Mail has not been completely configured correctly to recognize it.\n\nPlease quit Mail for the changes to take affect.", @"Message to indicate to the user that mail was configured but not restarted");
 				self.displayErrorMessage = [NSString stringWithFormat:self.displayErrorMessage, 
-											(self.manifestModel.manifestType == kMBMManifestTypeInstallation)?NSLocalizedString(@"installed", @"Install name"):NSLocalizedString(@"uninstalled", @"Installed name")];
+											(self.manifestModel.manifestType == kMPCManifestTypeInstallation)?NSLocalizedString(@"installed", @"Install name"):NSLocalizedString(@"uninstalled", @"Installed name")];
 			}
 		}
 
@@ -539,7 +539,7 @@ typedef enum {
 	
 	//	Install each one
 	for (MPCActionItem *anItem in self.manifestModel.actionItemList) {
-		if (self.manifestModel.manifestType == kMBMManifestTypeInstallation) {
+		if (self.manifestModel.manifestType == kMPCManifestTypeInstallation) {
 			if (![self installItem:anItem]) {
 				return NO;
 			}
@@ -658,7 +658,7 @@ typedef enum {
 		return YES;
 	}
 	
-	if (self.manifestModel.manifestType == kMBMManifestTypeInstallation) {
+	if (self.manifestModel.manifestType == kMPCManifestTypeInstallation) {
 		return [self installBundleManager];
 	}
 	else {
@@ -863,7 +863,7 @@ typedef enum {
 #pragma mark - Error Delegate Methods
 
 - (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
-	return (self.manifestModel.manifestType==kMBMManifestTypeInstallation)?@"MPCInstallErrorDomain":@"MPCUnInstallErrorDomain";
+	return (self.manifestModel.manifestType==kMPCManifestTypeInstallation)?@"MPCInstallErrorDomain":@"MPCUnInstallErrorDomain";
 }
 
 - (NSArray *)recoveryOptionsForError:(LKError *)error {

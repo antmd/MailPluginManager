@@ -54,7 +54,7 @@ STR_CONST(kMBMConfirmationStepsKey, "confirmation-steps");
 STR_CONST(kMBMConfirmationTitleKey, "title");
 STR_CONST(kMBMConfirmationBulletTitleKey, "bullet-title");
 STR_CONST(kMBMConfirmationShouldAgreeToLicense, "license-agreement-required");
-STR_CONST(kMBMConfirmationTypeKey, "type");
+STR_CONST(kMPCConfirmationTypeKey, "type");
 //	Other error keys
 STR_CONST(kMBMErrorKey, "error");
 
@@ -88,7 +88,7 @@ STR_CONST(kMBMSysInfoInstalledMailPluginsKey, "installed");
 STR_CONST(kMBMSysInfoDisabledMailPluginsKey, "disabled");
 
 //	Progress handling
-STR_CONST(kMBMInstallationProgressNotification, "MBMInstallationProgressNotification");
+STR_CONST(kMBMInstallationProgressNotification, "MPCInstallationProgressNotification");
 STR_CONST(kMBMInstallationProgressDescriptionKey, "installation-description");
 STR_CONST(kMBMInstallationProgressValueKey, "progress-value");
 
@@ -100,22 +100,22 @@ STR_CONST(kMBMMailBundleUUIDKey, "PluginCompatibilityUUID");
 STR_CONST(kMBMMailBundleUUIDListKey, "SupportedPluginCompatibilityUUIDs");
 //	Other info.plist keys and values
 STR_CONST(kMBMBundleUsesMBMKey, "PluginUsesMailPluginManager");
-STR_CONST(kMBMCompanyNameKey, "MBMCompanyName");
-STR_CONST(kMBMCompanyURLKey, "MBMCompanyURL");
-STR_CONST(kMBMProductURLKey, "MBMProductURL");
-STR_CONST(kMBMUnknownCompanyValue, "<MBMCompanyUnknown>");
+STR_CONST(kMBMCompanyNameKey, "MPCCompanyName");
+STR_CONST(kMBMCompanyURLKey, "MPCCompanyURL");
+STR_CONST(kMBMProductURLKey, "MPCProductURL");
+STR_CONST(kMBMUnknownCompanyValue, "<MPCCompanyUnknown>");
 
 //	Notifications
-STR_CONST(kMBMMailBundleUninstalledNotification, "MBMMailBundleUninstalledNotification");
-STR_CONST(kMBMMailBundleDisabledNotification, "MBMMailBundleDisabledNotification");
-STR_CONST(kMBMMailBundleNoActionTakenNotification, "MBMMailBundleNoActionTakenNotification");
-STR_CONST(kMBMDoneLoadingSparkleNotification, "MBMDoneLoadingSparkleNotification");
-STR_CONST(kMBMMailStatusChangedNotification, "MBMMailStatusChangedNotification");
-STR_CONST(kMBMSystemInfoDistNotification, "MBMSystemInfoDistNotification");
-STR_CONST(kMBMUUIDListDistNotification, "MBMUUIDListDistNotification");
-STR_CONST(kMBMDoneUpdatingMailBundleNotification, "MBMDoneUpdatingMailBundleNotification");
-STR_CONST(kMBMCancelledUpdatingMailBundleNotification, "MBMCancelledUpdatingMailBundleNotification");
-STR_CONST(kMBMDoneSendingCrashReportsMailBundleNotification, "MBMDoneSendingCrashReportsMailBundleNotification");
+STR_CONST(kMBMMailBundleUninstalledNotification, "MPCMailBundleUninstalledNotification");
+STR_CONST(kMBMMailBundleDisabledNotification, "MPCMailBundleDisabledNotification");
+STR_CONST(kMBMMailBundleNoActionTakenNotification, "MPCMailBundleNoActionTakenNotification");
+STR_CONST(kMBMDoneLoadingSparkleNotification, "MPCDoneLoadingSparkleNotification");
+STR_CONST(kMBMMailStatusChangedNotification, "MPCMailStatusChangedNotification");
+STR_CONST(kMBMSystemInfoDistNotification, "MPTSystemInfoDistNotification");
+STR_CONST(kMBMUUIDListDistNotification, "MPTUUIDListDistNotification");
+STR_CONST(kMBMDoneUpdatingMailBundleNotification, "MPCDoneUpdatingMailBundleNotification");
+STR_CONST(kMBMCancelledUpdatingMailBundleNotification, "MPCCancelledUpdatingMailBundleNotification");
+STR_CONST(kMBMDoneSendingCrashReportsMailBundleNotification, "MPCDoneSendingCrashReportsMailBundleNotification");
 STR_CONST(kMBMSUUpdateDriverAbortNotification, "SUUpdateDriverFinished");
 
 STR_CONST(kMBMNotificationWaitNote, "note");

@@ -11,15 +11,15 @@
 #import "MPCActionItem.h"
 
 typedef enum {
-	kMBMOSIsSupported = 0,
-	kMBMOSIsTooLow,
-	kMBMOSIsTooHigh
-} MBMOSSupportResult;
+	kMPCOSIsSupported = 0,
+	kMPCOSIsTooLow,
+	kMPCOSIsTooHigh
+} MPCOSSupportResult;
 	
 
 @interface MPCManifestModel : NSObject {
 @private	
-	MBMManifestType	_manifestType;
+	MPCManifestType	_manifestType;
 	NSString		*_displayName;
 	NSString		*_backgroundImagePath;
 	NSString		*_minOSVersion;
@@ -44,7 +44,7 @@ typedef enum {
 	NSInteger		_maxVersionBugFix;
 }
 
-@property	(nonatomic, assign, readonly)	MBMManifestType	manifestType;
+@property	(nonatomic, assign, readonly)	MPCManifestType	manifestType;
 @property	(nonatomic, copy, readonly)		NSString		*displayName;
 @property	(nonatomic, copy, readonly)		NSString		*backgroundImagePath;
 @property	(nonatomic, assign, readonly)	NSString		*minOSVersion;
@@ -64,7 +64,7 @@ typedef enum {
 @property	(nonatomic, copy, readonly)		NSString		*completionMessage;		//	Default is @""
 
 - (id)initWithPackageAtPath:(NSString *)packageFilePath;
-- (MBMOSSupportResult)supportResultForManifest;
+- (MPCOSSupportResult)supportResultForManifest;
 
 @end
 

@@ -1,5 +1,5 @@
 //
-//  MBMMailBundle.m
+//  MPCMailBundle.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 12/09/2011.
@@ -18,18 +18,18 @@
 #import "SUBasicUpdateDriver.h"
 
 typedef enum {
-	MBMGenericBundleErrorCode = 500,
-	MBMCantCreateDisabledBundleFolderErrorCode = 501,
+	MPCGenericBundleErrorCode = 500,
+	MPCCantCreateDisabledBundleFolderErrorCode = 501,
 	
-	MBMUnknownBundleCode
-} MBMBundleErrorCodes;
+	MPCUnknownBundleCode
+} MPCBundleErrorCodes;
 
 typedef enum {
-	MBMNoState = 0,
-	MBMEnabled = 1,
-	MBMInstalled = 2,
-	MBMInLocalDomain = 4
-} MBMBundleStateFlags;
+	MPCNoState = 0,
+	MPCEnabled = 1,
+	MPCInstalled = 2,
+	MPCInLocalDomain = 4
+} MPCBundleStateFlags;
 
 #define CURRENT_INCOMPATIBLE_COLOR	[NSColor colorWithDeviceRed:0.800 green:0.000 blue:0.000 alpha:1.000]
 #define FUTURE_INCOMPATIBLE_COLOR	[NSColor colorWithDeviceWhite:0.600 alpha:1.000]
@@ -275,15 +275,15 @@ typedef enum {
 }
 
 - (NSInteger)currentState {
-	NSInteger	newState = MBMNoState;
+	NSInteger	newState = MPCNoState;
 	if (self.enabled) {
-		newState |= MBMEnabled;
+		newState |= MPCEnabled;
 	}
 	if (self.installed) {
-		newState |= MBMInstalled;
+		newState |= MPCInstalled;
 	}
 	if (self.inLocalDomain) {
-		newState |= MBMInLocalDomain;
+		newState |= MPCInLocalDomain;
 	}
 	return newState;
 }
@@ -312,7 +312,7 @@ typedef enum {
 		}
 		_name = [tempName copy];
 		
-		//	Look to see if it has the key indicating that it uses MBM
+		//	Look to see if it has the key indicating that it uses MPC
 		if ([[_bundle infoDictionary] valueForKey:kMBMBundleUsesMBMKey]) {
 			_usesBundleManager = [[[_bundle infoDictionary] valueForKey:kMBMBundleUsesMBMKey] boolValue];
 		}
@@ -555,7 +555,7 @@ typedef enum {
 #pragma mark - Error Delegate Methods
 
 - (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
-	return @"MBMMailBundleErrorDomain";
+	return @"MPCMailBundleErrorDomain";
 }
 
 
@@ -620,7 +620,7 @@ typedef enum {
 		NSError		*error;
 		if (shouldCreate && ![manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
 			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:path, kMBMPathKey, error, kMBMErrorKey, nil];
-			LKPresentErrorCodeUsingDict(MBMCantCreateDisabledBundleFolderErrorCode, theDict);
+			LKPresentErrorCodeUsingDict(MPCCantCreateDisabledBundleFolderErrorCode, theDict);
 			LKErr(@"Couldn't create the Disabled Bundle folder:%@", error);
 			return nil;
 		}
@@ -828,7 +828,7 @@ typedef enum {
 - (NSString *)description {
 	NSMutableString	*newString = [NSMutableString string];
 	
-	[newString appendString:@"\n>>MBMMailBundle Values<<"];
+	[newString appendString:@"\n>>MPCMailBundle Values<<"];
 	[newString appendString:@"\nname:"];
 	[newString appendString:self.name];
 	[newString appendString:@"\npath:"];

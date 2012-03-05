@@ -543,7 +543,6 @@
 		//	Create the timer and set it to repeat every half second
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 200ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
-			LKLog(@"Testing if quitting is reasonable");
 			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
 				(![self.activityQueue isSuspended] && ([self.activityQueue operationCount] == 0) && (self.activityCounter == 0)) && 
 				(![self.finalizeQueue isSuspended] && ([self.finalizeQueue operationCount] == 0) && (self.finalizeCounter == 0))) {

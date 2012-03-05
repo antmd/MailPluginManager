@@ -1,5 +1,5 @@
 //
-//  MBMAppDelegate.m
+//  MPMAppDelegate.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 12/09/2011.
@@ -15,11 +15,11 @@
 #define SU_AUTOMATIC_CHECKS_KEY	@"SUEnableAutomaticChecks"
 
 typedef enum {
-	MBMInstallerHasBadTypeCode = 401,
-	MBMUninstallerHasBadTypeCode = 402,
+	MPMInstallerHasBadTypeCode = 401,
+	MPMUninstallerHasBadTypeCode = 402,
 	
-	MBMEndAppDelegateCode
-} MBMAppDelegateErrorCodes;
+	MPMEndAppDelegateCode
+} MPMAppDelegateErrorCodes;
 
 
 @interface MPMAppDelegate ()
@@ -118,8 +118,8 @@ typedef enum {
 		//	Determine the type (install/uninstall)
 		NSString	*extension = [filename pathExtension];
 		if ([extension isEqualToString:kMBMInstallerFileExtension]) {
-			if (self.manifestModel.manifestType != kMBMManifestTypeInstallation) {
-				LKPresentErrorCode(MBMInstallerHasBadTypeCode);
+			if (self.manifestModel.manifestType != kMPCManifestTypeInstallation) {
+				LKPresentErrorCode(MPMInstallerHasBadTypeCode);
 				[self quittingNowIsReasonable];
 				return NO;
 			}
@@ -127,8 +127,8 @@ typedef enum {
 			self.managing = NO;
 		}
 		else if ([extension isEqualToString:kMBMUninstallerFileExtension]) {
-			if (self.manifestModel.manifestType != kMBMManifestTypeUninstallation) {
-				LKPresentErrorCode(MBMUninstallerHasBadTypeCode);
+			if (self.manifestModel.manifestType != kMPCManifestTypeUninstallation) {
+				LKPresentErrorCode(MPMUninstallerHasBadTypeCode);
 				[self quittingNowIsReasonable];
 				return NO;
 			}
@@ -189,7 +189,7 @@ typedef enum {
 #pragma mark - Error Delegate Methods
 
 - (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
-	return @"MBMAppDelegateErrorDomain";
+	return @"MPMAppDelegateErrorDomain";
 }
 
 - (NSArray *)recoveryOptionsForError:(LKError *)error {

@@ -10,7 +10,7 @@
 
 @interface MPCConfirmationStep : NSObject {
 @private
-	MBMConfirmationType	_type;
+	MPCConfirmationType	_type;
 	NSString			*_bulletTitle;
 	NSString			*_title;
 	NSString			*_path;
@@ -21,7 +21,7 @@
 	NSDictionary		*_originalValues;
 }
 
-@property	(nonatomic, assign, readonly)	MBMConfirmationType	type;
+@property	(nonatomic, assign, readonly)	MPCConfirmationType	type;
 @property	(nonatomic, copy, readonly)		NSString			*bulletTitle;
 @property	(nonatomic, copy, readonly)		NSString			*title;
 @property	(nonatomic, copy, readonly)		NSString			*path;

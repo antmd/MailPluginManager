@@ -77,10 +77,10 @@
 		
 		//	Set the manifest type first
 		if ([[manifestDict valueForKey:kMBMManifestTypeKey] isEqualToString:kMBMManifestTypeInstallValue]) {
-			_manifestType = kMBMManifestTypeInstallation;
+			_manifestType = kMPCManifestTypeInstallation;
 		}
 		else if ([[manifestDict valueForKey:kMBMManifestTypeKey] isEqualToString:kMBMManifestTypeUninstallValue]) {
-			_manifestType = kMBMManifestTypeUninstallation;
+			_manifestType = kMPCManifestTypeUninstallation;
 		}
 		
 		//	Get the confirmation steps
@@ -117,9 +117,9 @@
 		//	See if there are any version requirements - set defaults first
 		_minOSVersion = nil;
 		_maxOSVersion = nil;
-		_minVersionMinor = kMBMNoVersionRequirement;
-		_maxVersionMinor = kMBMNoVersionRequirement;
-		_minMailVersion = kMBMNoVersionRequirement;
+		_minVersionMinor = kMPCNoVersionRequirement;
+		_maxVersionMinor = kMPCNoVersionRequirement;
+		_minMailVersion = kMPCNoVersionRequirement;
 		if ([manifestDict valueForKey:kMBMMinOSVersionKey]) {
 			_minOSVersion = [[manifestDict valueForKey:kMBMMinOSVersionKey] retain];
 			NSScanner	*versionScanner = [NSScanner scannerWithString:_minOSVersion];
@@ -148,7 +148,7 @@
 		
 		//	set the display name and background if there is one
 		if ([manifestDict valueForKey:kMBMDisplayNameKey]) {
-			_displayName = [MBMLocalizedStringFromPackageFile([manifestDict valueForKey:kMBMDisplayNameKey], packageFilePath) copy];
+			_displayName = [MPCLocalizedStringFromPackageFile([manifestDict valueForKey:kMBMDisplayNameKey], packageFilePath) copy];
 		}
 		if ([manifestDict valueForKey:kMBMBackgroundImagePathKey]) {
 			_backgroundImagePath = [[packageFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMBackgroundImagePathKey]] copy];
@@ -174,7 +174,7 @@
 		//	Set values for mail configuration
 		_shouldRestartMail = YES;
 		_shouldConfigureMail = NO;
-		_configureMailVersion = kMBMDefaultMailPluginVersion;
+		_configureMailVersion = kMPCDefaultMailPluginVersion;
 		if ([manifestDict valueForKey:kMBMMinMailBundleVersionKey] != nil) {
 			_shouldConfigureMail = YES;
 			_configureMailVersion = [[manifestDict valueForKey:kMBMMinMailBundleVersionKey] integerValue];
@@ -208,24 +208,24 @@
 #pragma mark - Helpful Methods
 
 
-- (MBMOSSupportResult)supportResultForManifest {
+- (MPCOSSupportResult)supportResultForManifest {
 	
 	//	Ensure that the versions all check out
 	CGFloat		currentVersion = macOSXVersion();
 	NSInteger	currentBugFixVersion = macOSXBugFixVersion();
 	
-	if ((self.minVersionMinor != kMBMNoVersionRequirement) && 
+	if ((self.minVersionMinor != kMPCNoVersionRequirement) && 
 		((currentVersion < self.minVersionMinor) ||
 		 ((fabs(currentVersion - self.minVersionMinor) < 0.01f) && (currentBugFixVersion < self.minVersionBugFix)))) {
-		return kMBMOSIsTooLow;
+		return kMPCOSIsTooLow;
 	}
-	if ((self.maxVersionMinor != kMBMNoVersionRequirement) && 
+	if ((self.maxVersionMinor != kMPCNoVersionRequirement) && 
 		((currentVersion > self.maxVersionMinor) || 
 		 ((fabs(currentVersion - self.maxVersionMinor) < 0.01f) && (currentBugFixVersion > self.maxVersionBugFix)))) {
-		return kMBMOSIsTooHigh;
+		return kMPCOSIsTooHigh;
 	}
 
-	return kMBMOSIsSupported;
+	return kMPCOSIsSupported;
 }
 
 - (NSString *)description {

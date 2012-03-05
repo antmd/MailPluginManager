@@ -291,9 +291,9 @@ These macros allow you to get information back from MBT by having a block run wh
 		MBMMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
 		MBMUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
 
-The first argument is the bundle of your plugin, as with the macros above. The second argument is the block that you want to run when the results are returned. It is defined as a `MBMResultNotificationBlock` and has been `typedef`'d like this:
+The first argument is the bundle of your plugin, as with the macros above. The second argument is the block that you want to run when the results are returned. It is defined as a `MPTResultNotificationBlock` and has been `typedef`'d like this:
 
-		typedef void(^MBMResultNotificationBlock)(NSDictionary *);
+		typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 It takes the single argument of the dictionary of results and has a void result.
 

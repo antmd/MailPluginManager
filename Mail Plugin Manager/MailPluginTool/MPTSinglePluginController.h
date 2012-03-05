@@ -11,23 +11,23 @@
 #import "MPCMailBundle.h"
 
 typedef enum {
-	kMBTButtonLayoutUpdate = 0,
+	kMPTButtonLayoutUpdate = 0,
 	//	[hidden]			[Not Now]	[Update]
-	kMBTButtonLayoutUpdateIncompatible,
+	kMPTButtonLayoutUpdateIncompatible,
 	//	[Disable]			[Not Now]	[Update]
-	kMBTButtonLayoutUpdateIncompatibleDisabled,
+	kMPTButtonLayoutUpdateIncompatibleDisabled,
 	//	[hidden]			[Not Now]	[Update]
-	kMBTButtonLayoutUpdateFutureIncompatible,
+	kMPTButtonLayoutUpdateFutureIncompatible,
 	//	[hidden]			[Thanks]	[Update]
-	kMBTButtonLayoutIncompatibleOnly,
+	kMPTButtonLayoutIncompatibleOnly,
 	//	[Remove]			[Disable]	[Thanks]
-	kMBTButtonLayoutIncompatibleOnlyDisabled,
+	kMPTButtonLayoutIncompatibleOnlyDisabled,
 	//	[Remove]			[hidden]	[Thanks]
-	kMBTButtonLayoutFutureIncompatibleOnly,
+	kMPTButtonLayoutFutureIncompatibleOnly,
 	//	[Disable]			[hidden]	[Thanks]
-	kMBTButtonLayoutFutureIncompatibleOnlyDisabled
+	kMPTButtonLayoutFutureIncompatibleOnlyDisabled
 	//	[hidden]			[hidden]	[Thanks]
-} MBTButtonLayoutType;
+} MPTButtonLayoutType;
 
 
 @interface MPTSinglePluginController : NSWindowController {
@@ -42,7 +42,7 @@ typedef enum {
 	NSButton			*_leftButton;
 	
 	NSArray				*_buttonConfigurations;
-	MBTButtonLayoutType	_buttonLayout;
+	MPTButtonLayoutType	_buttonLayout;
 }
 
 @property (nonatomic, retain)	MPCMailBundle	*mailBundle;

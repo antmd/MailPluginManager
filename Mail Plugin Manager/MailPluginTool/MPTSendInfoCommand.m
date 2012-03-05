@@ -8,7 +8,7 @@
 
 #import "MPTSendInfoCommand.h"
 
-#import "MBMPluginMacros.h"
+#import "MPTPluginMacros.h"
 
 @implementation MPTSendInfoCommand
 
@@ -43,7 +43,7 @@
 	}
 	NSArray		*arguments = [NSArray arrayWithObject:pluginPath];
 	if ([[self evaluatedArguments] valueForKey:@"frequency"]) {
-		arguments = [arguments arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MBT_FREQUENCY_OPTION, [[self evaluatedArguments] valueForKey:@"frequency"], nil]];
+		arguments = [arguments arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MPT_FREQUENCY_OPTION, [[self evaluatedArguments] valueForKey:@"frequency"], nil]];
 	}
 	LKLog(@"Action='%@' args=%@", command, arguments);
 	[AppDel doAction:command withArguments:arguments];

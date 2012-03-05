@@ -33,16 +33,16 @@
 
 #pragma mark - Memory Management
 
-- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath manifestType:(MBMManifestType)type {
+- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath manifestType:(MPCManifestType)type {
 
 	self = [super init];
     if (self) {
         // Initialization code here.
-		_name = [MBMLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMNameKey], packageFilePath) copy];
+		_name = [MPCLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMNameKey], packageFilePath) copy];
 		
 		//	Get the path, ensuring to take into account the manifestType
 		NSString	*tempPath = [itemDictionary valueForKey:kMBMPathKey];
-		if (type == kMBMManifestTypeInstallation) {
+		if (type == kMPCManifestTypeInstallation) {
 			tempPath = [packageFilePath stringByAppendingPathComponent:tempPath];
 		}
 		else {	//	Uninstall package
@@ -75,7 +75,7 @@
 		
 		//	Description is optional
 		if ([itemDictionary valueForKey:kMBMDescriptionKey]) {
-			_itemDescription = [MBMLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMDescriptionKey], packageFilePath) copy];
+			_itemDescription = [MPCLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMDescriptionKey], packageFilePath) copy];
 		}
 		
 		//	If there are permissions specific to this action, see what they will be

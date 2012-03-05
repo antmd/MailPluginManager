@@ -33,7 +33,7 @@
 
 @property	(nonatomic, assign)	NSSearchPathDomainMask	domainMask;
 
-- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath manifestType:(MBMManifestType)type;
+- (id)initWithDictionary:(NSDictionary *)itemDictionary fromPackageFilePath:(NSString *)packageFilePath manifestType:(MPCManifestType)type;
 
 @end
 

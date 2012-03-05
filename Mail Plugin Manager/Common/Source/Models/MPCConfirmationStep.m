@@ -14,7 +14,7 @@
 
 
 @interface MPCConfirmationStep ()
-@property	(nonatomic, assign, readwrite)	MBMConfirmationType	type;
+@property	(nonatomic, assign, readwrite)	MPCConfirmationType	type;
 @property	(nonatomic, copy, readwrite)	NSString			*bulletTitle;
 @property	(nonatomic, copy, readwrite)	NSString			*title;
 @property	(nonatomic, copy, readwrite)	NSString			*path;
@@ -47,15 +47,15 @@
 		_originalValues = [aDictionary copy];
 		
 		//	Set the type
-		NSString	*typeString = [aDictionary valueForKey:kMBMConfirmationTypeKey];
+		NSString	*typeString = [aDictionary valueForKey:kMPCConfirmationTypeKey];
 		if ([typeString isEqualToString:kLicenseTypeKey]) {
-			_type = kMBMConfirmationTypeLicense;
+			_type = kMPCConfirmationTypeLicense;
 		}
 		else if ([typeString isEqualToString:kInformationTypeKey]) {
-			_type = kMBMConfirmationTypeInformation;
+			_type = kMPCConfirmationTypeInformation;
 		}
 		else if ([typeString isEqualToString:kConfirmTypeKey]) {
-			_type = kMBMConfirmationTypeConfirm;
+			_type = kMPCConfirmationTypeConfirm;
 		}
 		
 		//	Set the flag for is the content of this part html
@@ -75,10 +75,10 @@
 		}
 		
 		//	Localized the two titles
-		NSString	*localizedTitle = MBMLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationTitleKey], packageFilePath);
+		NSString	*localizedTitle = MPCLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationTitleKey], packageFilePath);
 		_title = [localizedTitle copy];
 		if ([aDictionary valueForKey:kMBMConfirmationBulletTitleKey]) {
-			_bulletTitle = [MBMLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationBulletTitleKey], packageFilePath) copy];
+			_bulletTitle = [MPCLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationBulletTitleKey], packageFilePath) copy];
 		}
 		else {
 			_bulletTitle = [localizedTitle copy];
@@ -110,7 +110,7 @@
 	NSMutableString	*result = [NSMutableString string];
 	
 	[result appendFormat:@">>%@ [%p] (", [self className], self];
-	[result appendFormat:@"type:%d(%@)  ", self.type, (self.type == kMBMConfirmationTypeLicense?@"License":(self.type == kMBMConfirmationTypeInformation?@"Information":@"Confirm"))];
+	[result appendFormat:@"type:%d(%@)  ", self.type, (self.type == kMPCConfirmationTypeLicense?@"License":(self.type == kMPCConfirmationTypeInformation?@"Information":@"Confirm"))];
 	[result appendFormat:@"title:%@  ", self.title];
 	[result appendFormat:@"bulletTitle:%@\n", self.bulletTitle];
 	[result appendFormat:@"requiresAgreement:%@  ", [NSString stringWithBool:self.requiresAgreement]];

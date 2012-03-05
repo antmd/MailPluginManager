@@ -99,7 +99,7 @@
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
-	STAssertEquals(aStep.type, kMBMConfirmationTypeInformation, nil);
+	STAssertEquals(aStep.type, kMPCConfirmationTypeInformation, nil);
 	STAssertEqualObjects(aStep.bulletTitle, @"What's New", nil);
 	STAssertEqualObjects(aStep.title, @"Release Notes", nil);
 	STAssertEqualObjects(aStep.path, @"file:///Short/Something.html", nil);
@@ -114,7 +114,7 @@
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
-	STAssertEquals(aStep.type, kMBMConfirmationTypeLicense, nil);
+	STAssertEquals(aStep.type, kMPCConfirmationTypeLicense, nil);
 	STAssertEqualObjects(aStep.bulletTitle, @"License", nil);
 	STAssertEqualObjects(aStep.title, @"License", nil);
 	STAssertEqualObjects(aStep.path, @"/Short/MyLicense.rtf", nil);
@@ -128,7 +128,7 @@
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
-	STAssertEquals(aStep.type, kMBMConfirmationTypeLicense, nil);
+	STAssertEquals(aStep.type, kMPCConfirmationTypeLicense, nil);
 	STAssertEqualObjects(aStep.bulletTitle, @"License", nil);
 	STAssertEqualObjects(aStep.title, @"User License", nil);
 	STAssertEqualObjects(aStep.path, @"file:///Short/Second License.html", nil);
@@ -142,7 +142,7 @@
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
-	STAssertEquals(aStep.type, kMBMConfirmationTypeConfirm, nil);
+	STAssertEquals(aStep.type, kMPCConfirmationTypeConfirm, nil);
 	STAssertEqualObjects(aStep.bulletTitle, @"Install", nil);
 	STAssertEqualObjects(aStep.title, @"Install Summary", nil);
 	STAssertNil(aStep.path, nil);

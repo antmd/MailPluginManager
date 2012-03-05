@@ -24,7 +24,7 @@
 		D216B35D141DFDE2003788DC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B35C141DFDE2003788DC /* SenTestingKit.framework */; };
 		D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
-		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
+		D216B37D141E1676003788DC /* MPCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MPCConstants.m */; };
 		D221E96D1500237600568952 /* MPCScheduledUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */; };
 		D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
@@ -68,7 +68,7 @@
 		D2779BCE14336287003F7BE0 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D2779BCC14336287003F7BE0 /* Credits.rtf */; };
 		D2779BD114336287003F7BE0 /* MPTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2779BD014336287003F7BE0 /* MPTAppDelegate.m */; };
 		D2779BD414336287003F7BE0 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2779BD214336287003F7BE0 /* MainMenu.xib */; };
-		D2779BDC14336639003F7BE0 /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
+		D2779BDC14336639003F7BE0 /* MPCConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MPCConstants.m */; };
 		D2779BDD14336641003F7BE0 /* InstallAnimationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */; };
 		D2779BE114336649003F7BE0 /* NSBundle+MPCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MPCAdditions.m */; };
 		D2779BE214336651003F7BE0 /* MPCInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MPCInstallerController.m */; };
@@ -311,8 +311,8 @@
 		D216B35C141DFDE2003788DC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D216B363141DFDE2003788DC /* Mail Plugin ManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mail Plugin ManagerTests-Info.plist"; sourceTree = "<group>"; };
 		D216B365141DFDE2003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstants.h; path = Common/MBMConstants.h; sourceTree = "<group>"; };
-		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = Common/MBMConstants.m; sourceTree = "<group>"; };
+		D216B37B141E1676003788DC /* MPCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConstants.h; path = Common/MPCConstants.h; sourceTree = "<group>"; };
+		D216B37C141E1676003788DC /* MPCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCConstants.m; path = Common/MPCConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MPCManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCManifestModel.h; sourceTree = "<group>"; };
 		D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCScheduledUpdateDriver.h; path = MailPluginTool/MPCScheduledUpdateDriver.h; sourceTree = "<group>"; };
 		D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCScheduledUpdateDriver.m; path = MailPluginTool/MPCScheduledUpdateDriver.m; sourceTree = "<group>"; };
@@ -345,12 +345,12 @@
 		D23D31581442573A007D30F8 /* MPCUUIDList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCUUIDList.m; sourceTree = "<group>"; };
 		D23D315B1442575F007D30F8 /* MPCRemoteUpdatableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCRemoteUpdatableList.h; sourceTree = "<group>"; };
 		D23D315C1442575F007D30F8 /* MPCRemoteUpdatableList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCRemoteUpdatableList.m; sourceTree = "<group>"; };
-		D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMPluginMacros.h; path = Common/MBMPluginMacros.h; sourceTree = "<group>"; };
+		D23D31601442FFE2007D30F8 /* MPTPluginMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTPluginMacros.h; sourceTree = "<group>"; };
 		D23D316C1444DD7A007D30F8 /* MPCSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCSystemInfo.h; sourceTree = "<group>"; };
 		D23D316D1444DD7A007D30F8 /* MPCSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCSystemInfo.m; sourceTree = "<group>"; };
 		D23D31701445B979007D30F8 /* NSUserDefaults+MPCShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MPCShared.h"; sourceTree = "<group>"; };
 		D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MPCShared.m"; sourceTree = "<group>"; };
-		D24248A4148E515700DE7E6A /* MBMConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstantsList.h; path = Common/MBMConstantsList.h; sourceTree = "<group>"; };
+		D24248A4148E515700DE7E6A /* MPCConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConstantsList.h; path = Common/MPCConstantsList.h; sourceTree = "<group>"; };
 		D24AF648147D3565000EDC6F /* MPT Scripting.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "MPT Scripting.sdef"; sourceTree = "<group>"; };
 		D24AF64D147D4CAD000EDC6F /* MPTSendInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTSendInfoCommand.h; sourceTree = "<group>"; };
 		D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTSendInfoCommand.m; sourceTree = "<group>"; };
@@ -620,6 +620,7 @@
 		D2779BC314336287003F7BE0 /* MailPluginTool */ = {
 			isa = PBXGroup;
 			children = (
+				D23D31601442FFE2007D30F8 /* MPTPluginMacros.h */,
 				D2779BCF14336287003F7BE0 /* MPTAppDelegate.h */,
 				D2779BD014336287003F7BE0 /* MPTAppDelegate.m */,
 				D24AF64D147D4CAD000EDC6F /* MPTSendInfoCommand.h */,
@@ -667,10 +668,9 @@
 				D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */,
 				D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */,
 				D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */,
-				D24248A4148E515700DE7E6A /* MBMConstantsList.h */,
-				D216B37B141E1676003788DC /* MBMConstants.h */,
-				D216B37C141E1676003788DC /* MBMConstants.m */,
-				D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */,
+				D24248A4148E515700DE7E6A /* MPCConstantsList.h */,
+				D216B37B141E1676003788DC /* MPCConstants.h */,
+				D216B37C141E1676003788DC /* MPCConstants.m */,
 				D2730FE214293EE600EB5CB7 /* Controllers */,
 				D2E9029C141E63990058618F /* Model */,
 				D2E9029E141E63F70058618F /* Categories */,
@@ -1097,7 +1097,7 @@
 			files = (
 				D216B34B141DFDE1003788DC /* main.m in Sources */,
 				D216B352141DFDE1003788DC /* MPMAppDelegate.m in Sources */,
-				D216B37D141E1676003788DC /* MBMConstants.m in Sources */,
+				D216B37D141E1676003788DC /* MPCConstants.m in Sources */,
 				D2E90297141E4C800058618F /* MPCMailBundle.m in Sources */,
 				D2E9029A141E5EFA0058618F /* NSBundle+MPCAdditions.m in Sources */,
 				D2E902AD141E72470058618F /* MPCSparkleDelegate.m in Sources */,
@@ -1150,7 +1150,7 @@
 			files = (
 				D2779BCA14336287003F7BE0 /* main.m in Sources */,
 				D2779BD114336287003F7BE0 /* MPTAppDelegate.m in Sources */,
-				D2779BDC14336639003F7BE0 /* MBMConstants.m in Sources */,
+				D2779BDC14336639003F7BE0 /* MPCConstants.m in Sources */,
 				D2779BE114336649003F7BE0 /* NSBundle+MPCAdditions.m in Sources */,
 				D2779BE214336651003F7BE0 /* MPCInstallerController.m in Sources */,
 				D2779BE314336651003F7BE0 /* MPCAnimatedListController.m in Sources */,

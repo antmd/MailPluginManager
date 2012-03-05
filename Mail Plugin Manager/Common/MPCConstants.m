@@ -1,5 +1,5 @@
 //
-//  MBMConstants.m
+//  MPCConstants.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 12/09/2011.
@@ -10,5 +10,5 @@
 #undef STR_CONST
 #endif
 #define STR_CONST(name, value) NSString* const name = @ value
-#include "MBMConstantsList.h"
+#include "MPCConstantsList.h"
 
