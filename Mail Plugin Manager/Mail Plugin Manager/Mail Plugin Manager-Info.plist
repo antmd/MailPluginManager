@@ -81,7 +81,7 @@
 			<key>UTTypeIdentifier</key>
 			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbinstall</string>
 			<key>UTTypeReferenceURL</key>
-			<string>http://littleknownsoftware.com/mbm</string>
+			<string>http://littleknownsoftware.com/mpm</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -102,7 +102,7 @@
 			<key>UTTypeIdentifier</key>
 			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbremove</string>
 			<key>UTTypeReferenceURL</key>
-			<string>http://littleknownsoftware.com/mbm</string>
+			<string>http://littleknownsoftware.com/mpm</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

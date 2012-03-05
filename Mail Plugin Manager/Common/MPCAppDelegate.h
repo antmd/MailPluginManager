@@ -49,9 +49,6 @@
 @property (nonatomic, retain)	NSWindowController		*currentController;
 
 @property (nonatomic, assign)	BOOL					isMailRunning;
-@property (nonatomic, retain)	NSOperationQueue		*counterQueue;
-@property (nonatomic, retain)	NSOperationQueue		*maintenanceQueue;
-@property (assign)				NSInteger				maintenanceCounter;
 @property (nonatomic, assign)	BOOL					finalizeQueueRequiresExplicitRelease;
 
 @property (assign)	IBOutlet	MPCBackgroundableView	*backgroundView;

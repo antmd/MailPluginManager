@@ -1,5 +1,5 @@
 //
-//  MBMRemoteUpdatableList.m
+//  MPCRemoteUpdatableList.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 10/10/2011.
@@ -22,7 +22,7 @@
 
 + (void)loadListFromCloud {
 	
-	NSURL			*theURL = [NSURL URLWithString:[[kMBMRemoteUpdateableListPathURL stringByAppendingPathComponent:[self filename]] stringByAppendingPathExtension:kMBMPlistExtension]];
+	NSURL			*theURL = [NSURL URLWithString:[[kMPCRemoteUpdateableListPathURL stringByAppendingPathComponent:[self filename]] stringByAppendingPathExtension:kMPCPlistExtension]];
 
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*localFilePath = [self localSupportPath];
@@ -44,7 +44,7 @@
 		}
 		
 		//	Then copy over the default one from the package
-		NSString	*packageCompanyFile = [[NSBundle mainBundle] pathForResource:[self filename] ofType:kMBMPlistExtension];
+		NSString	*packageCompanyFile = [[NSBundle mainBundle] pathForResource:[self filename] ofType:kMPCPlistExtension];
 		if (![manager copyItemAtPath:packageCompanyFile toPath:localFilePath error:&theError]) {
 			ALog(@"Couldn't put a copy of the default %@ file into place:%@" , [localFilePath lastPathComponent], theError);
 			return;
@@ -52,7 +52,7 @@
 	}
 	
 	//	Test to see if the last load was within our time limit.
-	NSDictionary	*defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMUserDefaultSharedDomainName];
+	NSDictionary	*defaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCUserDefaultSharedDomainName];
 	NSDate	*previousLoad = [defaults objectForKey:[theURL absoluteString]];
 	if ((previousLoad != nil) && [previousLoad laterDate:[NSDate dateWithTimeIntervalSinceNow:ONE_DAY_AGO]]) {
 		return;
@@ -74,7 +74,7 @@
 		//	Note that we have loaded this file in the user defaults
 		NSMutableDictionary	*changedDefaults = [defaults mutableCopy];
 		[changedDefaults setObject:[NSDate date] forKey:[theURL absoluteString]];
-		[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMBMUserDefaultSharedDomainName];
+		[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMPCUserDefaultSharedDomainName];
 		[changedDefaults release];
 	}
 }
@@ -105,8 +105,8 @@
 + (NSString *)localSupportPath {
 	//	Always use App Support Folder of user
 	NSString	*appSupportFolder = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-	NSString	*fileName = [[self filename] stringByAppendingPathExtension:kMBMPlistExtension];
-	NSString	*localFilePath = [[appSupportFolder stringByAppendingPathComponent:kMBMSharedApplicationSupportName] stringByAppendingPathComponent:fileName];
+	NSString	*fileName = [[self filename] stringByAppendingPathExtension:kMPCPlistExtension];
+	NSString	*localFilePath = [[appSupportFolder stringByAppendingPathComponent:kMPCSharedApplicationSupportName] stringByAppendingPathComponent:fileName];
 	return localFilePath;
 }
 

@@ -1,5 +1,5 @@
 //
-//  MBMCompanyList.h
+//  MPCCompanyList.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 09/10/2011.

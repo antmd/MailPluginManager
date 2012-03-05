@@ -1,5 +1,5 @@
 //
-//  MBMConfirmationStep.h
+//  MPCConfirmationStep.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 23/09/2011.

@@ -2,136 +2,138 @@
 //	Constant Definitions
 
 //	Command line keys
-STR_CONST(kMBMCommandLineUninstallKey, "-uninstall");
-STR_CONST(kMBMCommandLineUpdateKey, "-update");
-STR_CONST(kMBMCommandLineCheckCrashReportsKey, "-send-crash-reports");
-STR_CONST(kMBMCommandLineUpdateAndCrashReportsKey, "-update-and-crash-reports");
-STR_CONST(kMBMCommandLineSystemInfoKey, "-mail-info");
-STR_CONST(kMBMCommandLineUUIDListKey, "-uuid-list");
-STR_CONST(kMBMCommandLineFrequencyOptionKey, "-freq");
-STR_CONST(kMBMCommandLineValidateAllKey, "-validate-all");
+STR_CONST(kMPCCommandLineUninstallKey, "-uninstall");
+STR_CONST(kMPCCommandLineUpdateKey, "-update");
+STR_CONST(kMPCCommandLineCheckCrashReportsKey, "-send-crash-reports");
+STR_CONST(kMPCCommandLineUpdateAndCrashReportsKey, "-update-and-crash-reports");
+STR_CONST(kMPCCommandLineSystemInfoKey, "-mail-info");
+STR_CONST(kMPCCommandLineUUIDListKey, "-uuid-list");
+STR_CONST(kMPCCommandLineFrequencyOptionKey, "-freq");
+STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
 
 //	Extensions and commonly used values
-STR_CONST(kMBMPlistExtension, "plist");
-STR_CONST(kMBMInstallerFileExtension, "mbinstall");
-STR_CONST(kMBMUninstallerFileExtension, "mbremove");
-STR_CONST(kMBMManifestName, "mbm-manifest");
-STR_CONST(kMBMMailFolderName, "Mail");
-STR_CONST(kMBMBundleFolderName, "Bundles");
-STR_CONST(kMBMMailPluginManagerBundleID, "com.littleknownsoftware.MailPluginManager");
-STR_CONST(kMBMUserDefaultSharedDomainName, "com.littleknownsoftware.MailPluginShared");
-STR_CONST(kMBMSharedApplicationSupportName, "MailPluginShared");
-STR_CONST(kMBMGenericBundleIcon, "GenericPlugin");
+STR_CONST(kMPCPlistExtension, "plist");
+STR_CONST(kMPCInstallerFileExtension, "mbinstall");
+STR_CONST(kMPCUninstallerFileExtension, "mbremove");
+STR_CONST(kMPCManifestName, "mpm-manifest");
+STR_CONST(kMPCMailFolderName, "Mail");
+STR_CONST(kMPCBundleFolderName, "Bundles");
+STR_CONST(kMPCMailPluginManagerBundleID, "com.littleknownsoftware.MailPluginManager");
+STR_CONST(kMPCUserDefaultSharedDomainName, "com.littleknownsoftware.MailPluginShared");
+STR_CONST(kMPCSharedApplicationSupportName, "MailPluginShared");
+STR_CONST(kMPCGenericBundleIcon, "GenericPlugin");
 
 //	Keys for top level of manifest
-STR_CONST(kMBMManifestTypeKey, "manifest-type");
-STR_CONST(kMBMManifestTypeInstallValue, "install");
-STR_CONST(kMBMManifestTypeUninstallValue, "uninstall");
-STR_CONST(kMBMBackgroundImagePathKey, "background-image-path");
-STR_CONST(kMBMDisplayNameKey, "display-name");
-STR_CONST(kMBMMinOSVersionKey, "min-os-major-version");
-STR_CONST(kMBMMaxOSVersionKey, "max-os-major-version");
-STR_CONST(kMBMMinMailVersionKey, "min-mail-version");
-STR_CONST(kMBMCanDeleteManagerIfNotUsedByOthersKey, "can-delete-bundle-manager-if-no-other-plugins-use");
-STR_CONST(kMBMCanDeleteManagerIfNoBundlesKey, "can-delete-bundle-manager-if-no-plugins-left");
-STR_CONST(kMBMMinMailBundleVersionKey, "configure-mail-min-bundle-version");
-STR_CONST(kMBMDontRestartMailKey, "do-not-ever-restart-mail");
-STR_CONST(kMBMCompletionMessageKey, "completion-message");
+STR_CONST(kMPCManifestTypeKey, "manifest-type");
+STR_CONST(kMPCManifestTypeInstallValue, "install");
+STR_CONST(kMPCManifestTypeUninstallValue, "uninstall");
+STR_CONST(kMPCBackgroundImagePathKey, "background-image-path");
+STR_CONST(kMPCDisplayNameKey, "display-name");
+STR_CONST(kMPCMinOSVersionKey, "min-os-major-version");
+STR_CONST(kMPCMaxOSVersionKey, "max-os-major-version");
+STR_CONST(kMPCMinMailVersionKey, "min-mail-version");
+STR_CONST(kMPCCanDeleteManagerIfNotUsedByOthersKey, "can-delete-bundle-manager-if-no-other-plugins-use");
+STR_CONST(kMPCCanDeleteManagerIfNoBundlesKey, "can-delete-bundle-manager-if-no-plugins-left");
+STR_CONST(kMPCMinMailBundleVersionKey, "configure-mail-min-bundle-version");
+STR_CONST(kMPCDontRestartMailKey, "do-not-ever-restart-mail");
+STR_CONST(kMPCCompletionMessageKey, "completion-message");
 
 //	Keys for the action items and sub objects
-STR_CONST(kMBMActionItemsKey, "action-items");
-STR_CONST(kMBMPathKey, "path");
-STR_CONST(kMBMNameKey, "name");
-STR_CONST(kMBMVersionKey, "version");
-STR_CONST(kMBMDestinationPathKey, "destination-path");
-STR_CONST(kMBMDestinationDomainKey, "<LibraryDomain>");
-STR_CONST(kMBMDescriptionKey, "description");
-STR_CONST(kMBMPermissionsKey, "permissions-needed");
-STR_CONST(kMBMIsBundleManagerKey, "is-bundle-manager");
-STR_CONST(kMBMUserCanChooseDomainKey, "user-can-choose-domain");
+STR_CONST(kMPCActionItemsKey, "action-items");
+STR_CONST(kMPCPathKey, "path");
+STR_CONST(kMPCNameKey, "name");
+STR_CONST(kMPCVersionKey, "version");
+STR_CONST(kMPCDestinationPathKey, "destination-path");
+STR_CONST(kMPCDestinationDomainKey, "<LibraryDomain>");
+STR_CONST(kMPCDescriptionKey, "description");
+STR_CONST(kMPCPermissionsKey, "permissions-needed");
+STR_CONST(kMPCIsBundleManagerKey, "is-bundle-manager");
+STR_CONST(kMPCUserCanChooseDomainKey, "user-can-choose-domain");
 //	Keys for the action items and sub objects
-STR_CONST(kMBMConfirmationStepsKey, "confirmation-steps");
-STR_CONST(kMBMConfirmationTitleKey, "title");
-STR_CONST(kMBMConfirmationBulletTitleKey, "bullet-title");
-STR_CONST(kMBMConfirmationShouldAgreeToLicense, "license-agreement-required");
+STR_CONST(kMPCConfirmationStepsKey, "confirmation-steps");
+STR_CONST(kMPCConfirmationTitleKey, "title");
+STR_CONST(kMPCConfirmationBulletTitleKey, "bullet-title");
+STR_CONST(kMPCConfirmationShouldAgreeToLicense, "license-agreement-required");
 STR_CONST(kMPCConfirmationTypeKey, "type");
 //	Other error keys
-STR_CONST(kMBMErrorKey, "error");
+STR_CONST(kMPCErrorKey, "error");
 
 //	Keys for historical UUID plist
-STR_CONST(kMBMUUIDTypeKey, "type");
-STR_CONST(kMBMUUIDEarliestOSVersionDisplayKey, "earliest-os-version-display");
-STR_CONST(kMBMUUIDEarliestOSVersionKey, "earliest-os-version");
-STR_CONST(kMBMUUIDLatestOSVersionDisplayKey, "latest-os-version-display");
-STR_CONST(kMBMUUIDLatestOSVersionKey, "latest-os-version");
-STR_CONST(kMBMUUIDMailMessageVersionKey, "types-version");
-STR_CONST(kMBMUUIDMailMessageVersionDisplayKey, "type-version-display");
-STR_CONST(kMBMUUIDLatestVersionTestKey, "latest-version-comparator");
-STR_CONST(kMBMUUIDTypeValueMail, "mail");
-STR_CONST(kMBMUUIDTypeValueMessage, "message");
-STR_CONST(kMBMUUIDListFileName, "uuids");
-STR_CONST(kMBMUUIDAllUUIDListKey, "all-uuids");
-STR_CONST(kMBMUUIDLatestUUIDDictKey, "latest-supported-uuid-dict");
-STR_CONST(kMBMUUIDFirstUnsupportedUUIDDictKey, "first-unsupported-uuid-dict");
-STR_CONST(kMBMUUIDNotificationSenderKey, "sender-id");
+STR_CONST(kMPCUUIDTypeKey, "type");
+STR_CONST(kMPCUUIDEarliestOSVersionDisplayKey, "earliest-os-version-display");
+STR_CONST(kMPCUUIDEarliestOSVersionKey, "earliest-os-version");
+STR_CONST(kMPCUUIDLatestOSVersionDisplayKey, "latest-os-version-display");
+STR_CONST(kMPCUUIDLatestOSVersionKey, "latest-os-version");
+STR_CONST(kMPCUUIDMailMessageVersionKey, "types-version");
+STR_CONST(kMPCUUIDMailMessageVersionDisplayKey, "type-version-display");
+STR_CONST(kMPCUUIDLatestVersionTestKey, "latest-version-comparator");
+STR_CONST(kMPCUUIDTypeValueMail, "mail");
+STR_CONST(kMPCUUIDTypeValueMessage, "message");
+STR_CONST(kMPCUUIDListFileName, "uuids");
+STR_CONST(kMPCUUIDAllUUIDListKey, "all-uuids");
+STR_CONST(kMPCUUIDLatestUUIDDictKey, "latest-supported-uuid-dict");
+STR_CONST(kMPCUUIDFirstUnsupportedUUIDDictKey, "first-unsupported-uuid-dict");
+STR_CONST(kMPCUUIDNotificationSenderKey, "sender-id");
 
 //	Keys for System Information dictionary
-STR_CONST(kMBMSysInfoKey, "system-info");
-STR_CONST(kMBMSysInfoSystemKey, "system");
-STR_CONST(kMBMSysInfoMailKey, "mail");
-STR_CONST(kMBMSysInfoMessageKey, "message");
-STR_CONST(kMBMSysInfoVersionKey, "version");
-STR_CONST(kMBMSysInfoBuildKey, "build");
-STR_CONST(kMBMSysInfoUUIDKey, "uuid");
-STR_CONST(kMBMSysInfoHardwareKey, "hardware");
-STR_CONST(kMBMSysInfoInstalledMailPluginsKey, "installed");
-STR_CONST(kMBMSysInfoDisabledMailPluginsKey, "disabled");
+STR_CONST(kMPCSysInfoKey, "system-info");
+STR_CONST(kMPCSysInfoSystemKey, "system");
+STR_CONST(kMPCSysInfoMailKey, "mail");
+STR_CONST(kMPCSysInfoMessageKey, "message");
+STR_CONST(kMPCSysInfoVersionKey, "version");
+STR_CONST(kMPCSysInfoBuildKey, "build");
+STR_CONST(kMPCSysInfoUUIDKey, "uuid");
+STR_CONST(kMPCSysInfoHardwareKey, "hardware");
+STR_CONST(kMPCSysInfoInstalledMailPluginsKey, "installed");
+STR_CONST(kMPCSysInfoDisabledMailPluginsKey, "disabled");
 
 //	Progress handling
-STR_CONST(kMBMInstallationProgressNotification, "MPCInstallationProgressNotification");
-STR_CONST(kMBMInstallationProgressDescriptionKey, "installation-description");
-STR_CONST(kMBMInstallationProgressValueKey, "progress-value");
+STR_CONST(kMPCInstallationProgressNotification, "MPCInstallationProgressNotification");
+STR_CONST(kMPCInstallationProgressDescriptionKey, "installation-description");
+STR_CONST(kMPCInstallationProgressValueKey, "progress-value");
 
 //	Useful values based on Mail
-STR_CONST(kMBMMessageBundlePath, "Frameworks/Message.framework");
-STR_CONST(kMBMMailBundleIdentifier, "com.apple.mail");
-STR_CONST(kMBMMailBundleExtension, "mailbundle");
-STR_CONST(kMBMMailBundleUUIDKey, "PluginCompatibilityUUID");
-STR_CONST(kMBMMailBundleUUIDListKey, "SupportedPluginCompatibilityUUIDs");
+STR_CONST(kMPCMessageBundlePath, "Frameworks/Message.framework");
+STR_CONST(kMPCMailBundleIdentifier, "com.apple.mail");
+STR_CONST(kMPCMailBundleExtension, "mailbundle");
+STR_CONST(kMPCMailBundleUUIDKey, "PluginCompatibilityUUID");
+STR_CONST(kMPCMailBundleUUIDListKey, "SupportedPluginCompatibilityUUIDs");
 //	Other info.plist keys and values
-STR_CONST(kMBMBundleUsesMBMKey, "PluginUsesMailPluginManager");
-STR_CONST(kMBMCompanyNameKey, "MPCCompanyName");
-STR_CONST(kMBMCompanyURLKey, "MPCCompanyURL");
-STR_CONST(kMBMProductURLKey, "MPCProductURL");
-STR_CONST(kMBMUnknownCompanyValue, "<MPCCompanyUnknown>");
+STR_CONST(kMPCBundleUsesMPMKey, "PluginUsesMailPluginManager");
+STR_CONST(kMPCCompanyNameKey, "MPCCompanyName");
+STR_CONST(kMPCCompanyURLKey, "MPCCompanyURL");
+STR_CONST(kMPCProductURLKey, "MPCProductURL");
+STR_CONST(kMPCUnknownCompanyValue, "<MPCCompanyUnknown>");
 
 //	Notifications
-STR_CONST(kMBMMailBundleUninstalledNotification, "MPCMailBundleUninstalledNotification");
-STR_CONST(kMBMMailBundleDisabledNotification, "MPCMailBundleDisabledNotification");
-STR_CONST(kMBMMailBundleNoActionTakenNotification, "MPCMailBundleNoActionTakenNotification");
-STR_CONST(kMBMDoneLoadingSparkleNotification, "MPCDoneLoadingSparkleNotification");
-STR_CONST(kMBMMailStatusChangedNotification, "MPCMailStatusChangedNotification");
-STR_CONST(kMBMSystemInfoDistNotification, "MPTSystemInfoDistNotification");
-STR_CONST(kMBMUUIDListDistNotification, "MPTUUIDListDistNotification");
-STR_CONST(kMBMDoneUpdatingMailBundleNotification, "MPCDoneUpdatingMailBundleNotification");
-STR_CONST(kMBMCancelledUpdatingMailBundleNotification, "MPCCancelledUpdatingMailBundleNotification");
-STR_CONST(kMBMDoneSendingCrashReportsMailBundleNotification, "MPCDoneSendingCrashReportsMailBundleNotification");
-STR_CONST(kMBMSUUpdateDriverAbortNotification, "SUUpdateDriverFinished");
+STR_CONST(kMPCMailBundleUninstalledNotification, "MPCMailBundleUninstalledNotification");
+STR_CONST(kMPCMailBundleDisabledNotification, "MPCMailBundleDisabledNotification");
+STR_CONST(kMPCMailBundleNoActionTakenNotification, "MPCMailBundleNoActionTakenNotification");
+STR_CONST(kMPCDoneLoadingSparkleNotification, "MPCDoneLoadingSparkleNotification");
+STR_CONST(kMPCMailStatusChangedNotification, "MPCMailStatusChangedNotification");
+STR_CONST(kMPCDoneUpdatingMailBundleNotification, "MPCDoneUpdatingMailBundleNotification");
+STR_CONST(kMPCCancelledUpdatingMailBundleNotification, "MPCCancelledUpdatingMailBundleNotification");
+STR_CONST(kMPCDoneSendingCrashReportsMailBundleNotification, "MPCDoneSendingCrashReportsMailBundleNotification");
+STR_CONST(kMPCSUUpdateDriverAbortNotification, "SUUpdateDriverFinished");
 
-STR_CONST(kMBMNotificationWaitNote, "note");
-STR_CONST(kMBMNotificationWaitObject, "object");
-STR_CONST(kMBMNotificationWaitReceived, "received");
-STR_CONST(kMBMNotificationWaitObserver, "observer");
+//	Tool Distributed Notifications
+STR_CONST(kMPTSystemInfoDistNotification, "com.littleknownsoftware.MPTSystemInfoDistNotification");
+STR_CONST(kMPTUUIDListDistNotification, "com.littleknownsoftware.MPTUUIDListDistNotification");
 
-//	Names for objects in MBM
-STR_CONST(kMBMAnimationBackgroundImageName, "InstallAnimationBackground");
-STR_CONST(kMBMWindowBackgroundImageName, "MPCBackgroundImage");
+STR_CONST(kMPCNotificationWaitNote, "note");
+STR_CONST(kMPCNotificationWaitObject, "object");
+STR_CONST(kMPCNotificationWaitReceived, "received");
+STR_CONST(kMPCNotificationWaitObserver, "observer");
+
+//	Names for objects in MPM
+STR_CONST(kMPCAnimationBackgroundImageName, "InstallAnimationBackground");
+STR_CONST(kMPCWindowBackgroundImageName, "MPCBackgroundImage");
 
 //	Paths
-STR_CONST(kMBMRemoteUpdateableListPathURL, "https://raw.github.com/lksoft/MailPluginManager/master/Remote/");
-STR_CONST(kMBMCompaniesInfoFileName, "companies");
+STR_CONST(kMPCRemoteUpdateableListPathURL, "https://raw.github.com/lksoft/MailPluginManager/master/Remote/");
+STR_CONST(kMPCCompaniesInfoFileName, "companies");
 
 //	Mail Compatibility
-STR_CONST(kMBMBundleCompatibilityVersionKey, "BundleCompatibilityVersion");
-STR_CONST(kMBMEnableBundlesKey, "EnableBundles");
+STR_CONST(kMPCBundleCompatibilityVersionKey, "BundleCompatibilityVersion");
+STR_CONST(kMPCEnableBundlesKey, "EnableBundles");
 

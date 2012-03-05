@@ -16,22 +16,22 @@
 #import "NSFileManager+LKAdditions.h"
 
 typedef enum {
-	MBMMinOSInsufficientCode = 101,
-	MBMMaxOSInsufficientCode = 102,
-	MBMMinMailInsufficientCode = 103,
+	MPCMinOSInsufficientCode = 101,
+	MPCMaxOSInsufficientCode = 102,
+	MPCMinMailInsufficientCode = 103,
 	
-	MBMGenericFileCode = 200,
-	MBMInvalidSourcePath = 201,
-	MBMDifferentDestinationBundleManager = 202,
-	MBMTryingToInstallOverFile = 203,
-	MBMUnableToMoveFileToTrash = 204,
+	MPCGenericFileCode = 200,
+	MPCInvalidSourcePath = 201,
+	MPCDifferentDestinationBundleManager = 202,
+	MPCTryingToInstallOverFile = 203,
+	MPCUnableToMoveFileToTrash = 204,
 	
-	MBMCantCreateFolder = 211,
-	MBMCopyFailed = 212,
+	MPCCantCreateFolder = 211,
+	MPCCopyFailed = 212,
 	
-	MBMPluginDoesNotWorkWithMailVersion = 221,
+	MPCPluginDoesNotWorkWithMailVersion = 221,
 	
-	MBMUnknownInstallCode
+	MPCUnknownInstallCode
 } MPCInstallErrorCodes;
 
 
@@ -86,7 +86,7 @@ typedef enum {
 @synthesize agreementDialog = _agreementDialog;
 
 - (MPCConfirmationStep *)currentInstallationStep {
-	if (self.currentStep == kMBMInvalidStep) {
+	if (self.currentStep == kMPCInvalidStep) {
 		return nil;
 	}
 	return [self.manifestModel.confirmationStepList objectAtIndex:self.currentStep];
@@ -99,7 +99,7 @@ typedef enum {
     if (self) {
         // Initialization code here.
 		_manifestModel = [aModel retain];
-		_currentStep = kMBMInvalidStep;
+		_currentStep = kMPCInvalidStep;
     }
     
     return self;
@@ -355,14 +355,14 @@ typedef enum {
 	[self.progressBar setMaxValue:self.manifestModel.totalActionItemCount];
 	
 	//	Set up some notification watches
-	self.notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMInstallationProgressNotification object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+	self.notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMPCInstallationProgressNotification object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 		//	Update the UI
 		NSDictionary	*info = [note userInfo];
-		if ([info valueForKey:kMBMInstallationProgressDescriptionKey]) {
-			[self.displayProgressTextView setStringValue:[info valueForKey:kMBMInstallationProgressDescriptionKey]];
+		if ([info valueForKey:kMPCInstallationProgressDescriptionKey]) {
+			[self.displayProgressTextView setStringValue:[info valueForKey:kMPCInstallationProgressDescriptionKey]];
 		}
-		if ([info valueForKey:kMBMInstallationProgressValueKey]) {
-			[self.progressBar incrementBy:[[info valueForKey:kMBMInstallationProgressValueKey] doubleValue]];
+		if ([info valueForKey:kMPCInstallationProgressValueKey]) {
+			[self.progressBar incrementBy:[[info valueForKey:kMPCInstallationProgressValueKey] doubleValue]];
 		}
 	}];
 	
@@ -448,17 +448,17 @@ typedef enum {
 	//	Ensure that the versions all check out
 	MPCOSSupportResult	supportResult = [model supportResultForManifest];
 	if (supportResult == kMPCOSIsTooLow) {
-		LKPresentErrorCode(MBMMinOSInsufficientCode);
+		LKPresentErrorCode(MPCMinOSInsufficientCode);
 		return NO;
 	}
 	if (supportResult == kMPCOSIsTooHigh) {
-		LKPresentErrorCode(MBMMaxOSInsufficientCode);
+		LKPresentErrorCode(MPCMaxOSInsufficientCode);
 		return NO;
 	}
 	if (model.minMailVersion != kMPCNoVersionRequirement) {
 		CGFloat	currentVersion = mailVersion();
 		if (currentVersion > model.minMailVersion) {
-			LKPresentErrorCode(MBMMinMailInsufficientCode);
+			LKPresentErrorCode(MPCMinMailInsufficientCode);
 			return NO;
 		}
 	}
@@ -466,8 +466,8 @@ typedef enum {
 	//	First just ensure that the all items are there to copy
 	for (MPCActionItem *anItem in model.actionItemList) {
 		if (![manager fileExistsAtPath:anItem.path]) {
-			NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.path, kMBMPathKey, nil];
-			LKPresentErrorCodeUsingDict(MBMInvalidSourcePath, dict);
+			NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, anItem.path, kMPCPathKey, nil];
+			LKPresentErrorCodeUsingDict(MPCInvalidSourcePath, dict);
 			LKErr(@"The source path for the item (%@) [%@] is invalid.", anItem.name, anItem.path);
 			return NO;
 		}
@@ -475,8 +475,8 @@ typedef enum {
 
 	//	Ensure that the source bundle is where we think it is
 	if ((model.bundleManager != nil) && (![manager fileExistsAtPath:model.bundleManager.path] || ![workspace isFilePackageAtPath:model.bundleManager.path])) {
-		NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:model.bundleManager.name, kMBMNameKey, model.bundleManager.path, kMBMPathKey, nil];
-		LKPresentErrorCodeUsingDict(MBMInvalidSourcePath, dict);
+		NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:model.bundleManager.name, kMPCNameKey, model.bundleManager.path, kMPCPathKey, nil];
+		LKPresentErrorCodeUsingDict(MPCInvalidSourcePath, dict);
 		LKErr(@"The source path for the bundle manager (%@) is invalid.", model.bundleManager.path);
 		return NO;
 	}
@@ -489,14 +489,14 @@ typedef enum {
 	//	Only need to bother if the manifest asked for it
 	if (self.manifestModel.shouldConfigureMail || self.manifestModel.shouldRestartMail) {
 		//	Get Mail settings
-		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMMailBundleIdentifier];
+		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCMailBundleIdentifier];
 		
 		//	Make the block for updating those values
 		void	(^configureBlock)(void) = nil;
 
 		//	Test to see if those settings are sufficient
-		if (([[mailDefaults valueForKey:kMBMEnableBundlesKey] boolValue]) &&
-			(((NSUInteger)[[mailDefaults valueForKey:kMBMBundleCompatibilityVersionKey] integerValue]) >= self.manifestModel.configureMailVersion)) {
+		if (([[mailDefaults valueForKey:kMPCEnableBundlesKey] boolValue]) &&
+			(((NSUInteger)[[mailDefaults valueForKey:kMPCBundleCompatibilityVersionKey] integerValue]) >= self.manifestModel.configureMailVersion)) {
 			
 			//	If no restart wanted,
 			if (!self.manifestModel.shouldRestartMail) {
@@ -508,9 +508,9 @@ typedef enum {
 			//	Make the block for updating those values
 			configureBlock = ^(void) {
 				NSMutableDictionary	*newMailDefs = [[mailDefaults mutableCopy] autorelease];
-				[newMailDefs setValue:@"YES" forKey:kMBMEnableBundlesKey];
-				[newMailDefs setValue:[NSNumber numberWithInteger:self.manifestModel.configureMailVersion] forKey:kMBMBundleCompatibilityVersionKey];
-				[[NSUserDefaults standardUserDefaults] setPersistentDomain:newMailDefs forName:kMBMMailBundleIdentifier];
+				[newMailDefs setValue:@"YES" forKey:kMPCEnableBundlesKey];
+				[newMailDefs setValue:[NSNumber numberWithInteger:self.manifestModel.configureMailVersion] forKey:kMPCBundleCompatibilityVersionKey];
+				[[NSUserDefaults standardUserDefaults] setPersistentDomain:newMailDefs forName:kMPCMailBundleIdentifier];
 			};
 		}
 		
@@ -565,23 +565,23 @@ typedef enum {
 		MPCMailBundle	*mailBundle = [[[MPCMailBundle alloc] initWithPath:anItem.path shouldLoadUpdateInfo:NO] autorelease];
 		//	Test to ensure that the plugin is actually compatible
 		if ([mailBundle incompatibleWithCurrentMail]) {
-			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:[MPCSystemInfo mailVersion], kMBMVersionKey, nil];
-			LKPresentErrorCodeUsingDict(MBMPluginDoesNotWorkWithMailVersion, theDict);
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:[MPCSystemInfo mailVersion], kMPCVersionKey, nil];
+			LKPresentErrorCodeUsingDict(MPCPluginDoesNotWorkWithMailVersion, theDict);
 			LKErr(@"This Mail Plugin will not work with this version of Mail:mailUUID:%@ messageUUID:%@", [MPCUUIDList currentMailUUID], [MPCUUIDList currentMessageUUID]);
 			return NO;
 		}
 	}
 	
 	//	Notification for what we are copying
-	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMInstallationProgressDescriptionKey, nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCInstallationProgressDescriptionKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCInstallationProgressNotification object:self userInfo:myDict];
 	
 	//	Make sure that the destination folder exists
 	NSError	*error;
 	if (![manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent]]) {
 		if (![manager createDirectoryAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error]) {
-			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, error, kMBMErrorKey, nil];
-			LKPresentErrorCodeUsingDict(MBMCantCreateFolder, theDict);
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, error, kMPCErrorKey, nil];
+			LKPresentErrorCodeUsingDict(MPCCantCreateFolder, theDict);
 			LKErr(@"Couldn't create folder to copy item '%@' into:%@", anItem.name, error);
 			return NO;
 		}
@@ -590,23 +590,23 @@ typedef enum {
 	BOOL	isFolder;
 	[manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] isDirectory:&isFolder];
 	if (!isFolder) {
-		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, [anItem.destinationPath stringByDeletingLastPathComponent], kMBMPathKey, nil];
-		LKPresentErrorCodeUsingDict(MBMTryingToInstallOverFile, theDict);
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, [anItem.destinationPath stringByDeletingLastPathComponent], kMPCPathKey, nil];
+		LKPresentErrorCodeUsingDict(MPCTryingToInstallOverFile, theDict);
 		LKErr(@"Can't copy item '%@' to location that is actually a file:%@", anItem.name, [anItem.destinationPath stringByDeletingLastPathComponent]);
 		return NO;
 	}
 	
 	//	Now do the copy, replacing anything that is already there
 	if (![manager copyWithAuthenticationIfNeededFromPath:anItem.path toPath:anItem.destinationPath error:&error]) {
-		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, anItem.destinationPath, kMBMPathKey, error, kMBMErrorKey, nil];
-		LKPresentErrorCodeUsingDict(MBMCopyFailed, theDict);
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, anItem.destinationPath, kMPCPathKey, error, kMPCErrorKey, nil];
+		LKPresentErrorCodeUsingDict(MPCCopyFailed, theDict);
 		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
 		return NO;
 	}
 
 	//	Notification for progress bar
-	myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1.0f], kMBMInstallationProgressValueKey, nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+	myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1.0f], kMPCInstallationProgressValueKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCInstallationProgressNotification object:self userInfo:myDict];
 
 	return YES;
 }
@@ -629,23 +629,23 @@ typedef enum {
 	}
 	
 	//	Notification for what we are deleting
-	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMInstallationProgressDescriptionKey, nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCInstallationProgressDescriptionKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCInstallationProgressNotification object:self userInfo:myDict];
 	
 	//	Move the plugin to the trash
 	if ([[NSFileManager defaultManager] moveWithAuthenticationIfNeededFromPath:fromPath toPath:toPath overwrite:NO error:&error]) {
 		//	Send a notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleUninstalledNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCMailBundleUninstalledNotification object:self];
 	}
 	else {
-		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMBMNameKey, error, kMBMErrorKey, nil];
-		LKPresentErrorCodeUsingDict(MBMUnableToMoveFileToTrash, theDict);
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, error, kMPCErrorKey, nil];
+		LKPresentErrorCodeUsingDict(MPCUnableToMoveFileToTrash, theDict);
 		return NO;
 	}
 
 	//	Notification for progress bar
-	myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1.0f], kMBMInstallationProgressValueKey, nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMInstallationProgressNotification object:self userInfo:myDict];
+	myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1.0f], kMPCInstallationProgressValueKey, nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCInstallationProgressNotification object:self userInfo:myDict];
 	
 	return YES;
 }
@@ -689,8 +689,8 @@ typedef enum {
 		
 		//	There is a serious problem if the bundle ids are different
 		if (!isSameBundleID) {
-			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:[[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], kMBMNameKey, [sourceBundle bundleIdentifier], @"bundleid", [[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], @"dest-name", [destBundle bundleIdentifier], @"bundleid2", nil];
-			LKPresentErrorCodeUsingDict(MBMGenericFileCode, theDict);
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:[[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], kMPCNameKey, [sourceBundle bundleIdentifier], @"bundleid", [[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], @"dest-name", [destBundle bundleIdentifier], @"bundleid2", nil];
+			LKPresentErrorCodeUsingDict(MPCGenericFileCode, theDict);
 			LKErr(@"Trying to install a bundle manager (%@) with different BundleID [%@] over existing app (%@) [%@]", [[sourceBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [sourceBundle bundleIdentifier], [[destBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey], [destBundle bundleIdentifier]);
 			return NO;
 		}
@@ -873,19 +873,19 @@ typedef enum {
 - (NSArray *)formatDescriptionValuesForError:(LKError *)error {
 	NSMutableArray	*values = [NSMutableArray array];
 	switch ([error code]) {
-		case MBMMinOSInsufficientCode:
+		case MPCMinOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
 			[values addObject:self.manifestModel.minOSVersion];
 			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
 			break;
 			
-		case MBMMaxOSInsufficientCode:
+		case MPCMaxOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
 			[values addObject:self.manifestModel.maxOSVersion];
 			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
 			break;
 			
-		case MBMMinMailInsufficientCode:
+		case MPCMinMailInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
 			[values addObject:[NSString stringWithFormat:@"%3.1f", self.manifestModel.minMailVersion]];
 			[values addObject:[NSString stringWithFormat:@"%3.1f", mailVersion()]];

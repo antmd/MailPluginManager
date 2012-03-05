@@ -1,5 +1,5 @@
 //
-//  MBMSystemInfo.m
+//  MPCSystemInfo.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 11/10/2011.
@@ -58,7 +58,7 @@
 
 - (NSString *)mailShortVersion {
 	if (_mailShortVersion == nil) {
-		NSBundle	*aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
+		NSBundle	*aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]];
 		_mailShortVersion = [[NSString alloc] initWithString:[[aBundle infoDictionary] valueForKey:@"CFBundleShortVersionString"]];
 	}
 	return _mailShortVersion;
@@ -66,7 +66,7 @@
 
 - (NSString *)mailVersion {
 	if (_mailVersion == nil) {
-		NSBundle	*aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
+		NSBundle	*aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]];
 		_mailVersion = [[NSString alloc] initWithString:[[aBundle infoDictionary] valueForKey:@"CFBundleVersion"]];
 	}
 	return _mailVersion;
@@ -74,7 +74,7 @@
 
 - (NSString *)messageShortVersion {
 	if (_messageShortVersion == nil) {
-		NSString	*frameworkPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject] stringByAppendingPathComponent:kMBMMessageBundlePath];
+		NSString	*frameworkPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject] stringByAppendingPathComponent:kMPCMessageBundlePath];
 		NSBundle	*aBundle = [NSBundle bundleWithPath:frameworkPath];
 		_messageShortVersion = [[NSString alloc] initWithString:[[aBundle infoDictionary] valueForKey:@"CFBundleShortVersionString"]];
 	}
@@ -83,7 +83,7 @@
 
 - (NSString *)messageVersion {
 	if (_messageVersion == nil) {
-		NSString	*frameworkPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject] stringByAppendingPathComponent:kMBMMessageBundlePath];
+		NSString	*frameworkPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject] stringByAppendingPathComponent:kMPCMessageBundlePath];
 		NSBundle	*aBundle = [NSBundle bundleWithPath:frameworkPath];
 		_messageVersion = [[NSString alloc] initWithString:[[aBundle infoDictionary] valueForKey:@"CFBundleVersion"]];
 	}
@@ -114,22 +114,22 @@
 		NSMutableDictionary	*sysInfo = [NSMutableDictionary dictionaryWithCapacity:6];
 		
 		//	[System, Mail, Message.framework (version & build)], hardware device, [plugins installed, plugins disabled (including paths)]
-		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self systemVersion], kMBMSysInfoVersionKey, [self systemBuild], kMBMSysInfoBuildKey, nil] forKey:kMBMSysInfoSystemKey];
-		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self mailShortVersion], kMBMSysInfoVersionKey, [self mailVersion], kMBMSysInfoBuildKey, [MPCUUIDList currentMailUUID], kMBMSysInfoUUIDKey, nil] forKey:kMBMSysInfoMailKey];
-		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self messageShortVersion], kMBMSysInfoVersionKey, [self messageVersion], kMBMSysInfoBuildKey, [MPCUUIDList currentMessageUUID], kMBMSysInfoUUIDKey, nil] forKey:kMBMSysInfoMessageKey];
-		[sysInfo setObject:[self hardware] forKey:kMBMSysInfoHardwareKey];
+		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self systemVersion], kMPCSysInfoVersionKey, [self systemBuild], kMPCSysInfoBuildKey, nil] forKey:kMPCSysInfoSystemKey];
+		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self mailShortVersion], kMPCSysInfoVersionKey, [self mailVersion], kMPCSysInfoBuildKey, [MPCUUIDList currentMailUUID], kMPCSysInfoUUIDKey, nil] forKey:kMPCSysInfoMailKey];
+		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self messageShortVersion], kMPCSysInfoVersionKey, [self messageVersion], kMPCSysInfoBuildKey, [MPCUUIDList currentMessageUUID], kMPCSysInfoUUIDKey, nil] forKey:kMPCSysInfoMessageKey];
+		[sysInfo setObject:[self hardware] forKey:kMPCSysInfoHardwareKey];
 		NSArray				*bundles = [MPCMailBundle allActiveMailBundlesShouldLoadInfo:NO];
 		NSMutableArray		*bundleInfoList = [NSMutableArray arrayWithCapacity:[bundles count]];
 		for (MPCMailBundle *aBundle in bundles) {
-			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.path, kMBMPathKey, aBundle.version, kMBMVersionKey, aBundle.name, kMBMNameKey, nil]];
+			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.path, kMPCPathKey, aBundle.version, kMPCVersionKey, aBundle.name, kMPCNameKey, nil]];
 		}
-		[sysInfo setObject:bundleInfoList forKey:kMBMSysInfoInstalledMailPluginsKey];
+		[sysInfo setObject:bundleInfoList forKey:kMPCSysInfoInstalledMailPluginsKey];
 		bundles = [MPCMailBundle allDisabledMailBundlesShouldLoadInfo:NO];
 		bundleInfoList = [NSMutableArray arrayWithCapacity:[bundles count]];
 		for (MPCMailBundle *aBundle in bundles) {
-			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.path, kMBMPathKey, aBundle.version, kMBMVersionKey, aBundle.name, kMBMNameKey, nil]];
+			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.path, kMPCPathKey, aBundle.version, kMPCVersionKey, aBundle.name, kMPCNameKey, nil]];
 		}
-		[sysInfo setObject:bundleInfoList forKey:kMBMSysInfoDisabledMailPluginsKey];
+		[sysInfo setObject:bundleInfoList forKey:kMPCSysInfoDisabledMailPluginsKey];
 		
 		_completeInfo = [[NSDictionary alloc] initWithDictionary:sysInfo];
 	}

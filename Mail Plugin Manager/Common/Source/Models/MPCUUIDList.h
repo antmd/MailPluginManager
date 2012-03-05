@@ -1,5 +1,5 @@
 //
-//  MBMUUIDList.h
+//  MPCUUIDList.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 10/10/2011.

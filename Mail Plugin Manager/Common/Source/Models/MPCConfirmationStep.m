@@ -1,5 +1,5 @@
 //
-//  MBMConfirmationStep.m
+//  MPCConfirmationStep.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 23/09/2011.
@@ -59,26 +59,26 @@
 		}
 		
 		//	Set the flag for is the content of this part html
-		_hasHTMLContent = [[[aDictionary valueForKey:kMBMPathKey] pathExtension] isEqualToString:@"html"];
+		_hasHTMLContent = [[[aDictionary valueForKey:kMPCPathKey] pathExtension] isEqualToString:@"html"];
 		
 		//	Save the full path
 		//	If it is html, ensure it has a full URL
 		if (_hasHTMLContent) {
 			//	Update the path to include the packageFilePath, and make it a full URL
-			if (![[aDictionary valueForKey:kMBMPathKey] hasPrefix:@"http"]) {
-				_path = [[NSString stringWithFormat:@"file://%@", [packageFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]]] copy];
+			if (![[aDictionary valueForKey:kMPCPathKey] hasPrefix:@"http"]) {
+				_path = [[NSString stringWithFormat:@"file://%@", [packageFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMPCPathKey]]] copy];
 			}
 		}
 		//	Otherwise if there is a path just make it a full path
-		else if ([aDictionary valueForKey:kMBMPathKey]) {
-			_path = [[packageFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMBMPathKey]] copy];
+		else if ([aDictionary valueForKey:kMPCPathKey]) {
+			_path = [[packageFilePath stringByAppendingPathComponent:[aDictionary valueForKey:kMPCPathKey]] copy];
 		}
 		
 		//	Localized the two titles
-		NSString	*localizedTitle = MPCLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationTitleKey], packageFilePath);
+		NSString	*localizedTitle = MPCLocalizedStringFromPackageFile([aDictionary valueForKey:kMPCConfirmationTitleKey], packageFilePath);
 		_title = [localizedTitle copy];
-		if ([aDictionary valueForKey:kMBMConfirmationBulletTitleKey]) {
-			_bulletTitle = [MPCLocalizedStringFromPackageFile([aDictionary valueForKey:kMBMConfirmationBulletTitleKey], packageFilePath) copy];
+		if ([aDictionary valueForKey:kMPCConfirmationBulletTitleKey]) {
+			_bulletTitle = [MPCLocalizedStringFromPackageFile([aDictionary valueForKey:kMPCConfirmationBulletTitleKey], packageFilePath) copy];
 		}
 		else {
 			_bulletTitle = [localizedTitle copy];
@@ -86,8 +86,8 @@
 		
 		//	Agreement requirement
 		_requiresAgreement = NO;
-		if ([aDictionary valueForKey:kMBMConfirmationShouldAgreeToLicense]) {
-			_requiresAgreement = [[aDictionary valueForKey:kMBMConfirmationShouldAgreeToLicense] boolValue];
+		if ([aDictionary valueForKey:kMPCConfirmationShouldAgreeToLicense]) {
+			_requiresAgreement = [[aDictionary valueForKey:kMPCConfirmationShouldAgreeToLicense] boolValue];
 		}
 
 		

@@ -1,5 +1,5 @@
 //
-//  MBMManifestModel.m
+//  MPCManifestModel.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 12/09/2011.
@@ -59,9 +59,9 @@
 - (id)initWithPackageAtPath:(NSString *)packageFilePath {
 
 	//	If there is no manifest inside, return nil
-	NSString	*manifestPath = [[packageFilePath stringByAppendingPathComponent:kMBMManifestName] stringByAppendingPathExtension:kMBMPlistExtension];
+	NSString	*manifestPath = [[packageFilePath stringByAppendingPathComponent:kMPCManifestName] stringByAppendingPathExtension:kMPCPlistExtension];
 	if (![[NSFileManager defaultManager] fileExistsAtPath:manifestPath]) {
-		ALog(@"Error: Package doesn't have a %@.%@ file.", kMBMManifestName, kMBMPlistExtension);
+		ALog(@"Error: Package doesn't have a %@.%@ file.", kMPCManifestName, kMPCPlistExtension);
 		return nil;
 	}
 
@@ -71,15 +71,15 @@
 		
 		//	Get the installation manifest contents and the items
 		NSDictionary	*manifestDict = [NSDictionary dictionaryWithContentsOfFile:manifestPath];
-		NSArray			*actionItems = [manifestDict valueForKey:kMBMActionItemsKey];
-		NSArray			*confirmationSteps = [manifestDict valueForKey:kMBMConfirmationStepsKey];
+		NSArray			*actionItems = [manifestDict valueForKey:kMPCActionItemsKey];
+		NSArray			*confirmationSteps = [manifestDict valueForKey:kMPCConfirmationStepsKey];
 		NSMutableArray	*newItems = nil;
 		
 		//	Set the manifest type first
-		if ([[manifestDict valueForKey:kMBMManifestTypeKey] isEqualToString:kMBMManifestTypeInstallValue]) {
+		if ([[manifestDict valueForKey:kMPCManifestTypeKey] isEqualToString:kMPCManifestTypeInstallValue]) {
 			_manifestType = kMPCManifestTypeInstallation;
 		}
-		else if ([[manifestDict valueForKey:kMBMManifestTypeKey] isEqualToString:kMBMManifestTypeUninstallValue]) {
+		else if ([[manifestDict valueForKey:kMPCManifestTypeKey] isEqualToString:kMPCManifestTypeUninstallValue]) {
 			_manifestType = kMPCManifestTypeUninstallation;
 		}
 		
@@ -120,8 +120,8 @@
 		_minVersionMinor = kMPCNoVersionRequirement;
 		_maxVersionMinor = kMPCNoVersionRequirement;
 		_minMailVersion = kMPCNoVersionRequirement;
-		if ([manifestDict valueForKey:kMBMMinOSVersionKey]) {
-			_minOSVersion = [[manifestDict valueForKey:kMBMMinOSVersionKey] retain];
+		if ([manifestDict valueForKey:kMPCMinOSVersionKey]) {
+			_minOSVersion = [[manifestDict valueForKey:kMPCMinOSVersionKey] retain];
 			NSScanner	*versionScanner = [NSScanner scannerWithString:_minOSVersion];
 			double	scanValue;
 			[versionScanner scanDouble:&scanValue];
@@ -131,8 +131,8 @@
 				[versionScanner scanInteger:&_minVersionBugFix];
 			}
 		}
-		if ([manifestDict valueForKey:kMBMMaxOSVersionKey]) {
-			_maxOSVersion = [[manifestDict valueForKey:kMBMMaxOSVersionKey] retain];
+		if ([manifestDict valueForKey:kMPCMaxOSVersionKey]) {
+			_maxOSVersion = [[manifestDict valueForKey:kMPCMaxOSVersionKey] retain];
 			NSScanner	*versionScanner = [NSScanner scannerWithString:_maxOSVersion];
 			double	scanValue;
 			[versionScanner scanDouble:&scanValue];
@@ -142,16 +142,16 @@
 				[versionScanner scanInteger:&_maxVersionBugFix];
 			}
 		}
-		if ([manifestDict valueForKey:kMBMMinMailVersionKey]) {
-			_minMailVersion = [[manifestDict valueForKey:kMBMMinMailVersionKey] floatValue];
+		if ([manifestDict valueForKey:kMPCMinMailVersionKey]) {
+			_minMailVersion = [[manifestDict valueForKey:kMPCMinMailVersionKey] floatValue];
 		}
 		
 		//	set the display name and background if there is one
-		if ([manifestDict valueForKey:kMBMDisplayNameKey]) {
-			_displayName = [MPCLocalizedStringFromPackageFile([manifestDict valueForKey:kMBMDisplayNameKey], packageFilePath) copy];
+		if ([manifestDict valueForKey:kMPCDisplayNameKey]) {
+			_displayName = [MPCLocalizedStringFromPackageFile([manifestDict valueForKey:kMPCDisplayNameKey], packageFilePath) copy];
 		}
-		if ([manifestDict valueForKey:kMBMBackgroundImagePathKey]) {
-			_backgroundImagePath = [[packageFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMBMBackgroundImagePathKey]] copy];
+		if ([manifestDict valueForKey:kMPCBackgroundImagePathKey]) {
+			_backgroundImagePath = [[packageFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMPCBackgroundImagePathKey]] copy];
 		}
 		
 		//	Set the action item total count
@@ -164,29 +164,29 @@
 		//	Set manager deletion flags
 		_canDeleteManagerIfNotUsedByOthers = NO;
 		_canDeleteManagerIfNoBundlesLeft = YES;
-		if ([manifestDict valueForKey:kMBMCanDeleteManagerIfNotUsedByOthersKey]) {
-			_canDeleteManagerIfNotUsedByOthers = [[manifestDict valueForKey:kMBMCanDeleteManagerIfNotUsedByOthersKey] boolValue];
+		if ([manifestDict valueForKey:kMPCCanDeleteManagerIfNotUsedByOthersKey]) {
+			_canDeleteManagerIfNotUsedByOthers = [[manifestDict valueForKey:kMPCCanDeleteManagerIfNotUsedByOthersKey] boolValue];
 		}
-		if ([manifestDict valueForKey:kMBMCanDeleteManagerIfNoBundlesKey]) {
-			_canDeleteManagerIfNoBundlesLeft = [[manifestDict valueForKey:kMBMCanDeleteManagerIfNoBundlesKey] boolValue];
+		if ([manifestDict valueForKey:kMPCCanDeleteManagerIfNoBundlesKey]) {
+			_canDeleteManagerIfNoBundlesLeft = [[manifestDict valueForKey:kMPCCanDeleteManagerIfNoBundlesKey] boolValue];
 		}
 		
 		//	Set values for mail configuration
 		_shouldRestartMail = YES;
 		_shouldConfigureMail = NO;
 		_configureMailVersion = kMPCDefaultMailPluginVersion;
-		if ([manifestDict valueForKey:kMBMMinMailBundleVersionKey] != nil) {
+		if ([manifestDict valueForKey:kMPCMinMailBundleVersionKey] != nil) {
 			_shouldConfigureMail = YES;
-			_configureMailVersion = [[manifestDict valueForKey:kMBMMinMailBundleVersionKey] integerValue];
+			_configureMailVersion = [[manifestDict valueForKey:kMPCMinMailBundleVersionKey] integerValue];
 		}
-		if ([manifestDict valueForKey:kMBMDontRestartMailKey] != nil) {
-			_shouldRestartMail = [[manifestDict valueForKey:kMBMDontRestartMailKey] boolValue];
+		if ([manifestDict valueForKey:kMPCDontRestartMailKey] != nil) {
+			_shouldRestartMail = [[manifestDict valueForKey:kMPCDontRestartMailKey] boolValue];
 		}
 		
 		//	Set the completion message (default is empty string)
 		_completionMessage = @"";
-		if ([manifestDict valueForKey:kMBMCompletionMessageKey] != nil) {
-			_completionMessage = [[manifestDict valueForKey:kMBMCompletionMessageKey] copy];
+		if ([manifestDict valueForKey:kMPCCompletionMessageKey] != nil) {
+			_completionMessage = [[manifestDict valueForKey:kMPCCompletionMessageKey] copy];
 		}
 		
 	}
@@ -289,7 +289,7 @@ NSInteger macOSXBugFixVersion(void) {
 CGFloat mailVersion(void) {
 	static CGFloat mailVer = 1.0;
 	if (mailVer == 1.0) {
-		NSBundle	*mailBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
+		NSBundle	*mailBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]];
 		NSString	*mailVersionString = [[mailBundle infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey];
 		mailVer = [mailVersionString floatValue];
 	}

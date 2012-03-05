@@ -1,5 +1,5 @@
 //
-//  MBMAnimatedListController.h
+//  MPCAnimatedListController.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 20/09/2011.
@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define kMBMInvalidStep	((NSUInteger)-1)
+#define kMPCInvalidStep	((NSUInteger)-1)
 
 @interface MPCAnimatedListController : NSViewController {
 @private	

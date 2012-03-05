@@ -150,7 +150,7 @@
 		BOOL		managerFound = NO;
 		
 		//	Get the plugin manager
-		NSURL		*managerURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:kMBMMailPluginManagerBundleID];
+		NSURL		*managerURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:kMPCMailPluginManagerBundleID];
 		if (managerURL != nil) {
 		
 			NSString	*managerName = [managerURL lastPathComponent];
@@ -186,7 +186,7 @@
 		}
 	}
 	if ([arguments count] > 1) {
-		if ([[arguments objectAtIndex:1] isEqualToString:kMBMCommandLineFrequencyOptionKey]) {
+		if ([[arguments objectAtIndex:1] isEqualToString:kMPCCommandLineFrequencyOptionKey]) {
 			NSString	*frequencyType = [arguments objectAtIndex:4];
 			if ([frequencyType isEqualToString:@"daily"]) {
 				frequencyInHours = 24;
@@ -208,28 +208,28 @@
 	
 	//	If there is no bundle for one of the tasks that require it, just quit
 	if ((bundlePath == nil) &&
-		([kMBMCommandLineUninstallKey isEqualToString:action] || [kMBMCommandLineUpdateKey isEqualToString:action] ||
-		 [kMBMCommandLineCheckCrashReportsKey isEqualToString:action] || [kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action])) {
+		([kMPCCommandLineUninstallKey isEqualToString:action] || [kMPCCommandLineUpdateKey isEqualToString:action] ||
+		 [kMPCCommandLineCheckCrashReportsKey isEqualToString:action] || [kMPCCommandLineUpdateAndCrashReportsKey isEqualToString:action])) {
 			
 			//	Release the Activity Queue
 			[self releaseActivityQueue];
 	}
 	else {
 		//	Look at the first argument (after executable name) and test for one of our types
-		if ([kMBMCommandLineUninstallKey isEqualToString:action]) {
+		if ([kMPCCommandLineUninstallKey isEqualToString:action]) {
 			//	Tell it to uninstall itself
 			[self addActivityTask:^{
 				[mailBundle uninstall];
 			}];
 		}
-		else if ([kMBMCommandLineUpdateKey isEqualToString:action]) {
+		else if ([kMPCCommandLineUpdateKey isEqualToString:action]) {
 			//	Tell it to update itself, if frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
 				LKLog(@"Adding an update for bundle:'%@' to the queue", [[mailBundle path] lastPathComponent]);
 				[self updateMailBundle:mailBundle];
 			}
 		}
-		else if ([kMBMCommandLineCheckCrashReportsKey isEqualToString:action]) {
+		else if ([kMPCCommandLineCheckCrashReportsKey isEqualToString:action]) {
 			//	Tell it to check its crash reports, if frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
 				[self addActivityTask:^{
@@ -237,7 +237,7 @@
 				}];
 			}
 		}
-		else if ([kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
+		else if ([kMPCCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
 			//	If frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
 				[self addActivityTask:^{
@@ -246,23 +246,23 @@
 				[self updateMailBundle:mailBundle];
 			}
 		}
-		else if ([kMBMCommandLineSystemInfoKey isEqualToString:action]) {
+		else if ([kMPCCommandLineSystemInfoKey isEqualToString:action]) {
 			[self addActivityTask:^{
 				//	Then send the information
 				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-				[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MPCSystemInfo completeInfo] deliverImmediately:YES];
+				[center postNotificationName:kMPTSystemInfoDistNotification object:mailBundle.identifier userInfo:[MPCSystemInfo completeInfo] deliverImmediately:YES];
 				LKLog(@"Sent notification");
 				[self quittingNowIsReasonable];
 			}];
 		}
-		else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
+		else if ([kMPCCommandLineUUIDListKey isEqualToString:action]) {
 			[self addActivityTask:^{
 				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-				[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MPCUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+				[center postNotificationName:kMPTUUIDListDistNotification object:mailBundle.identifier userInfo:[MPCUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
 				[self quittingNowIsReasonable];
 			}];
 		}
-		else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
+		else if ([kMPCCommandLineValidateAllKey isEqualToString:action]) {
 			//	Note that this does NOT get added to the Activity queue, since it will run as an event driven interface
 			[self validateAllBundles];
 		}
@@ -302,7 +302,7 @@
 		//	Otherwise setup an observer to ensure that all updates happen before processing
 		__block	NSUInteger	countDown = [updatingBundles count];
 		__block	id			observerHolder;
-		observerHolder = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneLoadingSparkleNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		observerHolder = [[NSNotificationCenter defaultCenter] addObserverForName:kMPCDoneLoadingSparkleNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 			
 			//	If the object is in our list decrement counter
 			if ([updatingBundles containsObject:[note object]]) {
@@ -356,7 +356,7 @@
 		[self showCollectionWindowForBundles:badBundles];
 		
 		//	Add a notification watcher to handle uninstalls
-		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMPCMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 			if ([[note object] isKindOfClass:[MPCMailBundle class]]) {
 				NSMutableArray	*change = [self.mailBundleList mutableCopy];
 				[change removeObjectIdenticalTo:[note object]];

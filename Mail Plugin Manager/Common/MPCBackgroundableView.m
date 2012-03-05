@@ -21,7 +21,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
 	
-	NSString	*imagePath = [[NSBundle mainBundle] pathForImageResource:kMBMWindowBackgroundImageName];
+	NSString	*imagePath = [[NSBundle mainBundle] pathForImageResource:kMPCWindowBackgroundImageName];
 	NSImage		*image = [[[NSImage alloc] initWithContentsOfFile:imagePath] autorelease];
 	
 	[[NSColor colorWithPatternImage:image] set];

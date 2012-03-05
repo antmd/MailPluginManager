@@ -42,14 +42,14 @@
 
 "221-description" = "This Mail Plugin will not work with the current version of Mail (%<version>@)";
 
-//	Messages from the MBM AppDelegate
+//	Messages from the MPM AppDelegate
 "400-description" = "Undefined error from the Mail Plugin Manager";
 "400-recovery-suggestion" = "Please let us know about this problem.";
 "400-button-1" = "Quit";
 "401-description" = "This Installation file is corrupted";
 "402-description" = "This Uninstallation file is corrupted";
 
-//	Messages from the MBMBundle class
+//	Messages from the MPCBundle class
 "500-description" = "Undefined error from the Plugin Bundle";
 "501-description" = "Couldn't create the Disabled Bundle folder at %<path>@.\n%<error>@";
 

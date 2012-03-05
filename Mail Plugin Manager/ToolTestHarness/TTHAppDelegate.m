@@ -15,19 +15,19 @@
 
 @synthesize window = _window;
 
-void	MBMLaunchCommandForBundle2(NSString *mbmCommand, NSBundle *mbmMailBundle, BOOL needsActivate, NSString *mbmFrequency);
-void	MBMCallToolCommandForBundleWithBlock2(NSString *mbmCommand, NSBundle *mbmMailBundle, MPTResultNotificationBlock mbmNotificationBlock);
+void	MPTLaunchCommandForBundle2(NSString *mptCommand, NSBundle *mptMailBundle, BOOL needsActivate, NSString *mptFrequency);
+void	MPTCallToolCommandForBundleWithBlock2(NSString *mptCommand, NSBundle *mptMailBundle, MPTResultNotificationBlock mptNotificationBlock);
 
-void	MBMLaunchCommandForBundle2(NSString *mbmCommand, NSBundle *mbmMailBundle, BOOL mbmNeedsActivate, NSString *mbmFrequency) \
+void	MPTLaunchCommandForBundle2(NSString *mptCommand, NSBundle *mptMailBundle, BOOL mptNeedsActivate, NSString *mptFrequency) \
 { \
 	NSDictionary	*scriptErrors = nil; \
 	NSMutableString	*appleScript = [NSMutableString stringWithString:MPT_TELL_APPLICATION_OPEN]; \
-	if (mbmNeedsActivate) {
+	if (mptNeedsActivate) {
 		[appleScript appendString:MPT_ACTIVATE_APP];
 	}
-	[appleScript appendFormat:MPT_SCRIPT_FORMAT, mbmCommand, [mbmMailBundle bundlePath]]; \
-	if (mbmFrequency != nil) { \
-		[appleScript appendFormat:MPT_FREQUENCY_FORMAT, mbmFrequency]; \
+	[appleScript appendFormat:MPT_SCRIPT_FORMAT, mptCommand, [mptMailBundle bundlePath]]; \
+	if (mptFrequency != nil) { \
+		[appleScript appendFormat:MPT_FREQUENCY_FORMAT, mptFrequency]; \
 	} \
 	[appleScript appendString:MPT_END_TELL]; \
 	NSAppleScript	*theScript = [[[NSAppleScript alloc] initWithSource:appleScript] autorelease]; \
@@ -37,21 +37,21 @@ void	MBMLaunchCommandForBundle2(NSString *mbmCommand, NSBundle *mbmMailBundle, B
 	} \
 }
 
-void	MBMCallToolCommandForBundleWithBlock2(NSString *mbmCommand, NSBundle *mbmMailBundle, MPTResultNotificationBlock mbmNotificationBlock) \
+void	MPTCallToolCommandForBundleWithBlock2(NSString *mptCommand, NSBundle *mptMailBundle, MPTResultNotificationBlock mptNotificationBlock) \
 { \
-	NSString	*mbmNotificationName = [mbmCommand isEqualToString:MPT_SEND_MAIL_INFO_TEXT]?MPT_SYSTEM_INFO_NOTIFICATION:MPT_UUID_LIST_NOTIFICATION; \
+	NSString	*mptNotificationName = [mptCommand isEqualToString:MPT_SEND_MAIL_INFO_TEXT]?MPT_SYSTEM_INFO_NOTIFICATION:MPT_UUID_LIST_NOTIFICATION; \
 	/*	Set up the notification watch	*/ \
-	NSOperationQueue	*mbmQueue = [[[NSOperationQueue alloc] init] autorelease]; \
-	__block id mbmObserver; \
-	mbmObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:mbmNotificationName object:nil queue:mbmQueue usingBlock:^(NSNotification *note) { \
+	NSOperationQueue	*mptQueue = [[[NSOperationQueue alloc] init] autorelease]; \
+	__block id mptObserver; \
+	mptObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:mptNotificationName object:nil queue:mptQueue usingBlock:^(NSNotification *note) { \
 		/*	If this was aimed at us, then perform the block and remove the observer	*/ \
-		if ([[note object] isEqualToString:[mbmMailBundle bundleIdentifier]]) { \
-			mbmNotificationBlock([note userInfo]); \
-			[[NSDistributedNotificationCenter defaultCenter] removeObserver:mbmObserver]; \
+		if ([[note object] isEqualToString:[mptMailBundle bundleIdentifier]]) { \
+			mptNotificationBlock([note userInfo]); \
+			[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptObserver]; \
 		} \
 	}]; \
 	/*	Then actually launch the app to get the information back	*/ \
-	MBMLaunchCommandForBundle2(mbmCommand, mbmMailBundle, NO, nil); \
+	MPTLaunchCommandForBundle2(mptCommand, mptMailBundle, NO, nil); \
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

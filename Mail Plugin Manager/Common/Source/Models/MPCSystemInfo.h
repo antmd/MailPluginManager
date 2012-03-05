@@ -1,5 +1,5 @@
 //
-//  MBMSystemInfo.h
+//  MPCSystemInfo.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 11/10/2011.

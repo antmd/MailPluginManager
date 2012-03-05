@@ -21,19 +21,19 @@
 	NSString	*pluginPath = [self directParameter];
 	switch ([[self appleEvent] eventID]) {
 		case 'ReMv':
-			command = kMBMCommandLineUninstallKey;
+			command = kMPCCommandLineUninstallKey;
 			break;
 			
 		case 'UpDt':
-			command = kMBMCommandLineUpdateKey;
+			command = kMPCCommandLineUpdateKey;
 			break;
 			
 		case 'CrRp':
-			command = kMBMCommandLineCheckCrashReportsKey;
+			command = kMPCCommandLineCheckCrashReportsKey;
 			break;
 			
 		case 'Both':
-			command = kMBMCommandLineUpdateAndCrashReportsKey;
+			command = kMPCCommandLineUpdateAndCrashReportsKey;
 			break;
 			
 		default:

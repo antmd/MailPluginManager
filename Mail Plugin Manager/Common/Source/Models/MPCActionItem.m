@@ -1,5 +1,5 @@
 //
-//  MBMActionItem.m
+//  MPCActionItem.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 14/09/2011.
@@ -38,16 +38,16 @@
 	self = [super init];
     if (self) {
         // Initialization code here.
-		_name = [MPCLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMNameKey], packageFilePath) copy];
+		_name = [MPCLocalizedStringFromPackageFile([itemDictionary valueForKey:kMPCNameKey], packageFilePath) copy];
 		
 		//	Get the path, ensuring to take into account the manifestType
-		NSString	*tempPath = [itemDictionary valueForKey:kMBMPathKey];
+		NSString	*tempPath = [itemDictionary valueForKey:kMPCPathKey];
 		if (type == kMPCManifestTypeInstallation) {
 			tempPath = [packageFilePath stringByAppendingPathComponent:tempPath];
 		}
 		else {	//	Uninstall package
 			//	if the is only one component and it ends with mailbundle, build full path to bundles folder
-			if (([[tempPath pathComponents] count] == 1) && [[tempPath pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+			if (([[tempPath pathComponents] count] == 1) && [[tempPath pathExtension] isEqualToString:kMPCMailBundleExtension]) {
 				tempPath = [MPCMailBundle pathForActiveBundleWithName:tempPath];
 			}
 			else {
@@ -58,7 +58,7 @@
 		_path = [tempPath copy];
 		
 		//	Ensure that the destination path includes the filename if one wasn't attached
-		tempPath = [[itemDictionary valueForKey:kMBMDestinationPathKey] stringByExpandingTildeInPath];
+		tempPath = [[itemDictionary valueForKey:kMPCDestinationPathKey] stringByExpandingTildeInPath];
 		//	But only if it doesn't already have an extension (it case the file is being given a different name)
 		if (IsEmpty([tempPath pathExtension])) {
 			NSString	*fileName = [_path lastPathComponent];
@@ -67,27 +67,27 @@
 			}
 		}
 		//	See if the dest has the "<LibraryDomain>" value at the beginning
-		if ([tempPath hasPrefix:kMBMDestinationDomainKey]) {
+		if ([tempPath hasPrefix:kMPCDestinationDomainKey]) {
 			_useLibraryDomain = YES;
-			tempPath = [tempPath substringFromIndex:[kMBMDestinationDomainKey length]];
+			tempPath = [tempPath substringFromIndex:[kMPCDestinationDomainKey length]];
 		}
 		_destinationPath = [tempPath copy];
 		
 		//	Description is optional
-		if ([itemDictionary valueForKey:kMBMDescriptionKey]) {
-			_itemDescription = [MPCLocalizedStringFromPackageFile([itemDictionary valueForKey:kMBMDescriptionKey], packageFilePath) copy];
+		if ([itemDictionary valueForKey:kMPCDescriptionKey]) {
+			_itemDescription = [MPCLocalizedStringFromPackageFile([itemDictionary valueForKey:kMPCDescriptionKey], packageFilePath) copy];
 		}
 		
 		//	If there are permissions specific to this action, see what they will be
-		if ([itemDictionary valueForKey:kMBMPermissionsKey]) {
-			_permissions = [[itemDictionary valueForKey:kMBMPermissionsKey] copy];
+		if ([itemDictionary valueForKey:kMPCPermissionsKey]) {
+			_permissions = [[itemDictionary valueForKey:kMPCPermissionsKey] copy];
 		}
 		
 		//	Check to see if this is a mail bundle
-		_isMailBundle = [[_path pathExtension] isEqualToString:kMBMMailBundleExtension];
+		_isMailBundle = [[_path pathExtension] isEqualToString:kMPCMailBundleExtension];
 		
 		//	If there is a bundle manager key, set it otherwise set as NO
-		_isBundleManager = ([itemDictionary valueForKey:kMBMIsBundleManagerKey] != nil)?[[itemDictionary valueForKey:kMBMIsBundleManagerKey] boolValue]:NO;
+		_isBundleManager = ([itemDictionary valueForKey:kMPCIsBundleManagerKey] != nil)?[[itemDictionary valueForKey:kMPCIsBundleManagerKey] boolValue]:NO;
 		
 		_domainMask = NSUserDomainMask;
 	}

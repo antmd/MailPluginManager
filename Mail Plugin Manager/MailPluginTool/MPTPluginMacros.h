@@ -33,8 +33,8 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define MPT_FREQUENCY_FORMAT					@" frequency %@"
 #define MPT_FREQUENCY_OPTION					@"-freq"
 
-#define MPT_SYSTEM_INFO_NOTIFICATION			@"MPTSystemInfoDistNotification"
-#define MPT_UUID_LIST_NOTIFICATION				@"MPTUUIDListDistNotification"
+#define MPT_SYSTEM_INFO_NOTIFICATION			@"com.littleknownsoftware.MPTSystemInfoDistNotification"
+#define MPT_UUID_LIST_NOTIFICATION				@"com.littleknownsoftware.MPTUUIDListDistNotification"
 #define MPT_TOOL_NAME							@"MailPluginTool"
 #define MPT_TOOL_IDENTIFIER						@"com.littleknownsoftware.MailPluginTool"
 #define MPT_MANAGER_IDENTIFIER					@"com.littleknownsoftware.MailPluginManager"

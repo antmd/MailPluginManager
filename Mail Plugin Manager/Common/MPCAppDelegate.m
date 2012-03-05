@@ -18,12 +18,15 @@
 
 @interface MPCAppDelegate ()
 
-@property	(nonatomic, retain)	NSOperationQueue			*activityQueue;
-@property	(atomic, assign)	NSInteger					activityCounter;
-@property	(nonatomic, retain)	NSOperationQueue			*finalizeQueue;
-@property	(atomic, assign)	NSInteger					finalizeCounter;
+@property	(nonatomic, retain)	NSOperationQueue		*counterQueue;
+@property	(nonatomic, retain)	NSOperationQueue		*maintenanceQueue;
+@property	(assign)			NSInteger				maintenanceCounter;
+@property	(nonatomic, retain)	NSOperationQueue		*activityQueue;
+@property	(atomic, assign)	NSInteger				activityCounter;
+@property	(nonatomic, retain)	NSOperationQueue		*finalizeQueue;
+@property	(atomic, assign)	NSInteger				finalizeCounter;
 
-@property	(nonatomic, copy)	NSMutableArray				*bundleSparkleOperations;
+@property	(nonatomic, copy)	NSMutableArray			*bundleSparkleOperations;
 
 //	App delegation
 - (void)applicationChangeForNotification:(NSNotification *)note;
@@ -52,13 +55,13 @@
 @synthesize currentController = _currentController;
 
 @synthesize isMailRunning = _isMailRunning;
-@synthesize counterQueue = _counterQueue;
-@synthesize maintenanceQueue = _maintenanceQueue;
-@synthesize maintenanceCounter = _maintenanceCounter;
 
 @synthesize backgroundView = _backgroundView;
 @synthesize scrollView = _scrollView;
 
+@synthesize counterQueue = _counterQueue;
+@synthesize maintenanceQueue = _maintenanceQueue;
+@synthesize maintenanceCounter = _maintenanceCounter;
 @synthesize activityQueue = _activityQueue;
 @synthesize activityCounter = _activityCounter;
 @synthesize finalizeQueue = _finalizeQueue;
@@ -79,13 +82,17 @@
 
 		//	Create new operation queues to use for task types
 		_maintenanceQueue = [[NSOperationQueue alloc] init];
+		[_maintenanceQueue setName:@"com.littleknownsoftware.MPCMaintenanceQueue"];
 		_maintenanceQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
 		_counterQueue = [[NSOperationQueue alloc] init];
+		[_counterQueue setName:@"com.littleknownsoftware.MPCCounterQueue"];
 		_counterQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
 		_activityQueue = [[NSOperationQueue alloc] init];
+		[_activityQueue setName:@"com.littleknownsoftware.MPCActivityQueue"];
 		_activityQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
 		_activityQueue.suspended = YES;
 		_finalizeQueue = [[NSOperationQueue alloc] init];
+		[_finalizeQueue setName:@"com.littleknownsoftware.MPCFinalizeQueue"];
 		_finalizeQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
 		_finalizeQueue.suspended = YES;
 		
@@ -126,7 +133,7 @@
 	
 	//	Set default for mail is running
 	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
-		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+		if ([[app bundleIdentifier] isEqualToString:kMPCMailBundleIdentifier]) {
 			self.isMailRunning = YES;
 		}
 	}
@@ -165,11 +172,11 @@
 
 - (void)applicationChangeForNotification:(NSNotification *)note {
 	//	If this is Mail
-	if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+	if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMPCMailBundleIdentifier]) {
 		//	See if it launched or terminated
 		self.isMailRunning = [[note name] isEqualToString:NSWorkspaceDidLaunchApplicationNotification];
 		//	Post a notification for other observers to have a simplified notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailStatusChangedNotification object:[NSNumber numberWithBool:self.isMailRunning]];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCMailStatusChangedNotification object:[NSNumber numberWithBool:self.isMailRunning]];
 	}
 }
 
@@ -257,7 +264,7 @@
 	//	Using the workspace, doesn't work for a restart
 	NSRunningApplication	*mailApp = nil;
 	for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
-		if ([[app bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+		if ([[app bundleIdentifier] isEqualToString:kMPCMailBundleIdentifier]) {
 			mailApp = app;
 		}
 	}
@@ -279,7 +286,7 @@
 	__block id appDoneObserver;
 	appDoneObserver = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:[NSWorkspace sharedWorkspace] queue:self.maintenanceQueue usingBlock:^(NSNotification *note) {
 		
-		if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMBMMailBundleIdentifier]) {
+		if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMPCMailBundleIdentifier]) {
 			
 			//	If there is a block, run it first
 			if (taskBlock != nil) {
@@ -287,7 +294,7 @@
 			}
 			
 			//	Launch Mail again
-			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMBMMailBundleIdentifier options:(NSWorkspaceLaunchAsync | NSWorkspaceLaunchWithoutActivation) additionalEventParamDescriptor:nil launchIdentifier:NULL];
+			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMPCMailBundleIdentifier options:(NSWorkspaceLaunchAsync | NSWorkspaceLaunchWithoutActivation) additionalEventParamDescriptor:nil launchIdentifier:NULL];
 			//	indicate that the maintenance is done
 			[self endMaintenance];
 			
@@ -329,7 +336,7 @@
 				[quitMailAlert setIcon:iconImage];
 			}
 			else {
-				[quitMailAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]]];
+				[quitMailAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]]];
 			}
 			LKLog(@"Alert built");
 			
@@ -356,7 +363,7 @@
 	
 	id	currentValue = nil;
 	
-	NSMutableDictionary	*changeDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:kMBMMailPluginManagerBundleID] mutableCopy];
+	NSMutableDictionary	*changeDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCMailPluginManagerBundleID] mutableCopy];
 	currentValue = [changeDefaults valueForKey:key];
 	if ((value == nil) || (value == [NSNull null])) {
 		[changeDefaults removeObjectForKey:key];
@@ -364,7 +371,7 @@
 	else {
 		[changeDefaults setValue:value forKey:key];
 	}
-	[[NSUserDefaults standardUserDefaults] setPersistentDomain:changeDefaults forName:kMBMMailPluginManagerBundleID];
+	[[NSUserDefaults standardUserDefaults] setPersistentDomain:changeDefaults forName:kMPCMailPluginManagerBundleID];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	[changeDefaults release];
 	
@@ -379,7 +386,7 @@
 	
 	//	If the bundle doesn't support sparkle, just send a done notification and return
 	if (![mailBundle supportsSparkleUpdates]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCDoneUpdatingMailBundleNotification object:mailBundle];
 		return;
 	}
 	
@@ -399,8 +406,8 @@
 		[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];
 		
 		//	Set an observer for the bundle
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMSUUpdateDriverAbortNotification object:updateDriver];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMPCDoneUpdatingMailBundleNotification object:mailBundle];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMPCSUUpdateDriverAbortNotification object:updateDriver];
 		
 		LKLog(@"Update Scheduled");
 		[self addActivityOperation:sparkleOperation];
@@ -449,7 +456,7 @@
 
 - (void)completeBundleUpdate:(NSNotification *)note {
 	NSDictionary	*theDict = nil;
-	if ([[note name] isEqualToString:kMBMDoneUpdatingMailBundleNotification ]) {
+	if ([[note name] isEqualToString:kMPCDoneUpdatingMailBundleNotification ]) {
 		LKLog(@"Should be completing op for bundle '%@'", [[[note object] path] lastPathComponent]);
 		for (NSDictionary *aDict in self.bundleSparkleOperations) {
 			if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
@@ -458,7 +465,7 @@
 			}
 		}
 	}
-	else if ([[note name] isEqualToString:kMBMSUUpdateDriverAbortNotification]) {
+	else if ([[note name] isEqualToString:kMPCSUUpdateDriverAbortNotification]) {
 		//	Find which updater we're working with
 		for (NSDictionary *aDict in self.bundleSparkleOperations) {
 			if ([[aDict valueForKey:@"driver"] isEqual:[note object]]) {
@@ -475,8 +482,8 @@
 	//	Remove observers
 	if (theDict != nil) {
 		[[theDict valueForKey:@"operation"] finish];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverAbortNotification object:[note object]];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMDoneUpdatingMailBundleNotification object:[note object]];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMPCSUUpdateDriverAbortNotification object:[note object]];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMPCDoneUpdatingMailBundleNotification object:[note object]];
 	}
 }
 

@@ -1,5 +1,5 @@
 //
-//  MBMUUIDList.m
+//  MPCUUIDList.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 10/10/2011.
@@ -28,35 +28,35 @@
 
 + (NSString *)currentMailUUID {
 	if ([self sharedInstance].mailUUID == nil) {
-		NSBundle	*aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]];
-		[self sharedInstance].mailUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
+		NSBundle	*aBundle = [NSBundle bundleWithPath:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]];
+		[self sharedInstance].mailUUID = [[aBundle infoDictionary] valueForKey:kMPCMailBundleUUIDKey];
 	}
 	return [self sharedInstance].mailUUID;
 }
 
 + (NSString *)currentMessageUUID {
 	if ([self sharedInstance].messageUUID == nil) {
-		NSString	*messageBundlePath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject] stringByAppendingPathComponent:kMBMMessageBundlePath];
+		NSString	*messageBundlePath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSSystemDomainMask, NO) lastObject] stringByAppendingPathComponent:kMPCMessageBundlePath];
 		NSBundle	*aBundle = [NSBundle bundleWithPath:messageBundlePath];
-		[self sharedInstance].messageUUID = [[aBundle infoDictionary] valueForKey:kMBMMailBundleUUIDKey];
+		[self sharedInstance].messageUUID = [[aBundle infoDictionary] valueForKey:kMPCMailBundleUUIDKey];
 	}
 	return [self sharedInstance].messageUUID;
 }
 
 + (NSString *)latestOSVersionFromSupportedList:(NSArray *)supportedUUIDs {
 	NSDictionary	*latestDict = [self latestUUIDDictFromSupportedList:supportedUUIDs];
-	return [latestDict valueForKey:kMBMUUIDLatestOSVersionDisplayKey];
+	return [latestDict valueForKey:kMPCUUIDLatestOSVersionDisplayKey];
 }
 
 + (NSString *)firstUnsupportedOSVersionFromSupportedList:(NSArray *)supportedUUIDs {
 	NSDictionary	*firstUnsupportedDict = [self firstUnsupportedUUIDDictFromSupportedList:supportedUUIDs];
-	return [firstUnsupportedDict valueForKey:kMBMUUIDLatestOSVersionDisplayKey];
+	return [firstUnsupportedDict valueForKey:kMPCUUIDLatestOSVersionDisplayKey];
 }
 
 + (NSDictionary *)latestUUIDDictFromSupportedList:(NSArray *)supportedUUIDs {
 	NSDictionary	*latestDicts = [self latestVersionsInList:supportedUUIDs];
-	NSDictionary	*mailDict = [latestDicts valueForKey:kMBMUUIDTypeValueMail];
-	NSDictionary	*messageDict = [latestDicts valueForKey:kMBMUUIDTypeValueMessage];
+	NSDictionary	*mailDict = [latestDicts valueForKey:kMPCUUIDTypeValueMail];
+	NSDictionary	*messageDict = [latestDicts valueForKey:kMPCUUIDTypeValueMessage];
 	
 	//	If either is nil, we can't determine
 	if ((mailDict == nil) || (messageDict == nil)) {
@@ -64,7 +64,7 @@
 	}
 	
 	//	Then between the two of those, which is the earliest
-	if ([[messageDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue] < [[mailDict valueForKey:kMBMUUIDLatestVersionTestKey] integerValue]) {
+	if ([[messageDict valueForKey:kMPCUUIDLatestVersionTestKey] integerValue] < [[mailDict valueForKey:kMPCUUIDLatestVersionTestKey] integerValue]) {
 		return messageDict;
 	}
 	else {
@@ -74,8 +74,8 @@
 
 + (NSDictionary *)firstUnsupportedUUIDDictFromSupportedList:(NSArray *)supportedUUIDs {
 	NSDictionary	*latestDicts = [self firstUnsupportedVersionsInList:supportedUUIDs];
-	NSDictionary	*lowestFutureMailDict = [latestDicts valueForKey:kMBMUUIDTypeValueMail];
-	NSDictionary	*lowestFutureMessageDict = [latestDicts valueForKey:kMBMUUIDTypeValueMessage];
+	NSDictionary	*lowestFutureMailDict = [latestDicts valueForKey:kMPCUUIDTypeValueMail];
+	NSDictionary	*lowestFutureMessageDict = [latestDicts valueForKey:kMPCUUIDTypeValueMessage];
 	
 	//	If either is nil, we can't determine
 	if ((lowestFutureMailDict == nil) || (lowestFutureMessageDict == nil)) {
@@ -83,7 +83,7 @@
 	}
 	
 	//	Then between the two of those, which is the earliest
-	if ([[lowestFutureMessageDict valueForKey:kMBMUUIDEarliestOSVersionKey] integerValue] < [[lowestFutureMailDict valueForKey:kMBMUUIDEarliestOSVersionKey] integerValue]) {
+	if ([[lowestFutureMessageDict valueForKey:kMPCUUIDEarliestOSVersionKey] integerValue] < [[lowestFutureMailDict valueForKey:kMPCUUIDEarliestOSVersionKey] integerValue]) {
 		return lowestFutureMessageDict;
 	}
 	else {
@@ -94,27 +94,27 @@
 
 + (NSDictionary *)fullUUIDListFromSupportedList:(NSArray *)supportedUUIDs {
 	NSMutableDictionary	*fullDict = [NSMutableDictionary dictionaryWithCapacity:3];
-	[fullDict setObject:[self sharedInstance].contents forKey:kMBMUUIDAllUUIDListKey];
+	[fullDict setObject:[self sharedInstance].contents forKey:kMPCUUIDAllUUIDListKey];
 	NSDictionary	*aUUIDDict = [self latestUUIDDictFromSupportedList:supportedUUIDs];
 	if (aUUIDDict) {
-		[fullDict setObject:aUUIDDict forKey:kMBMUUIDLatestUUIDDictKey];
+		[fullDict setObject:aUUIDDict forKey:kMPCUUIDLatestUUIDDictKey];
 	}
 	aUUIDDict = [self firstUnsupportedUUIDDictFromSupportedList:supportedUUIDs];
 	if (aUUIDDict) {
-		[fullDict setObject:aUUIDDict forKey:kMBMUUIDFirstUnsupportedUUIDDictKey];
+		[fullDict setObject:aUUIDDict forKey:kMPCUUIDFirstUnsupportedUUIDDictKey];
 	}
 	return [NSDictionary dictionaryWithDictionary:fullDict];
 }
 
 + (NSDictionary *)fullUUIDListFromBundle:(NSBundle *)pluginBundle {
-	return [self fullUUIDListFromSupportedList:[[pluginBundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	return [self fullUUIDListFromSupportedList:[[pluginBundle infoDictionary] valueForKey:kMPCMailBundleUUIDListKey]];
 }
 
 
 #pragma mark - Action Methods
 
 + (NSString *)filename {
-	return kMBMUUIDListFileName;
+	return kMPCUUIDListFileName;
 }
 
 
@@ -123,7 +123,7 @@
 + (NSArray *)sortedKeysLatestFirst {
 	
 	NSArray		*sortedKeysLatestFirstList = [[self sharedInstance].contents keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-		NSComparisonResult	normalResult = [[obj1 valueForKey:kMBMUUIDLatestVersionTestKey] compare:[obj2 valueForKey:kMBMUUIDLatestVersionTestKey]];
+		NSComparisonResult	normalResult = [[obj1 valueForKey:kMPCUUIDLatestVersionTestKey] compare:[obj2 valueForKey:kMPCUUIDLatestVersionTestKey]];
 		return (normalResult==NSOrderedSame?NSOrderedSame:(normalResult==NSOrderedAscending?NSOrderedDescending:NSOrderedAscending));
 	}];
 	
@@ -139,13 +139,13 @@
 	for (NSString *uuidValue in sortedKeysLatestFirst) {
 		NSDictionary	*anInfoDict = [[self sharedInstance].contents valueForKey:uuidValue];
 		if ((mailDict == nil) && 
-			([[anInfoDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMail]) && 
+			([[anInfoDict valueForKey:kMPCUUIDTypeKey] isEqualToString:kMPCUUIDTypeValueMail]) && 
 			([uuidList containsObject:uuidValue])) {
 			
 			mailDict = anInfoDict;
 		}
 		else if ((messageDict == nil) && 
-			([[anInfoDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMessage]) && 
+			([[anInfoDict valueForKey:kMPCUUIDTypeKey] isEqualToString:kMPCUUIDTypeValueMessage]) && 
 			([uuidList containsObject:uuidValue])) {
 			
 			messageDict = anInfoDict;
@@ -155,7 +155,7 @@
 		}
 	}
 	
-	return [NSDictionary dictionaryWithObjectsAndKeys:mailDict, kMBMUUIDTypeValueMail, messageDict, kMBMUUIDTypeValueMessage, nil];
+	return [NSDictionary dictionaryWithObjectsAndKeys:mailDict, kMPCUUIDTypeValueMail, messageDict, kMPCUUIDTypeValueMessage, nil];
 }
 
 + (NSDictionary *)firstUnsupportedVersionsInList:(NSArray *)uuidList {
@@ -169,7 +169,7 @@
 	BOOL		messageMatched = NO;
 	for (NSString *uuidKey in sortedKeysLatestFirst) {
 		NSDictionary	*uuidDict = [allContents valueForKey:uuidKey];
-		if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMail]) {
+		if ([[uuidDict valueForKey:kMPCUUIDTypeKey] isEqualToString:kMPCUUIDTypeValueMail]) {
 			if ([uuidList containsObject:uuidKey]) {
 				mailMatched = YES;
 			}
@@ -177,7 +177,7 @@
 				lowestFutureMailDict = uuidDict;
 			}
 		}
-		else if ([[uuidDict valueForKey:kMBMUUIDTypeKey] isEqualToString:kMBMUUIDTypeValueMessage]) {
+		else if ([[uuidDict valueForKey:kMPCUUIDTypeKey] isEqualToString:kMPCUUIDTypeValueMessage]) {
 			if ([uuidList containsObject:uuidKey]) {
 				messageMatched = YES;
 			}
@@ -190,7 +190,7 @@
 		}
 	}
 	
-	return [NSDictionary dictionaryWithObjectsAndKeys:lowestFutureMailDict, kMBMUUIDTypeValueMail, lowestFutureMessageDict, kMBMUUIDTypeValueMessage, nil];
+	return [NSDictionary dictionaryWithObjectsAndKeys:lowestFutureMailDict, kMPCUUIDTypeValueMail, lowestFutureMessageDict, kMPCUUIDTypeValueMessage, nil];
 }
 
 + (MPCUUIDList *)sharedInstance {

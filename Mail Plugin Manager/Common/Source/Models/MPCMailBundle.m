@@ -109,7 +109,7 @@ typedef enum {
 		self.bundle = [NSBundle bundleWithPath:toPath];
 		
 		//	Send a notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleDisabledNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCMailBundleDisabledNotification object:self];
 	}
 	
 	//	Always update all the state
@@ -149,7 +149,7 @@ typedef enum {
 		self.bundle = [NSBundle bundleWithPath:toPath];
 		
 		//	Send a notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleUninstalledNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCMailBundleUninstalledNotification object:self];
 	}
 	
 	//	Update all the state
@@ -181,9 +181,9 @@ typedef enum {
 
 - (NSString *)company {
 
-	if ([_company isEqualToString:kMBMUnknownCompanyValue]) {
+	if ([_company isEqualToString:kMPCUnknownCompanyValue]) {
 		//	First look for our key
-		NSString	*aCompany = [[self.bundle infoDictionary] valueForKey:kMBMCompanyNameKey];
+		NSString	*aCompany = [[self.bundle infoDictionary] valueForKey:kMPCCompanyNameKey];
 		if (aCompany == nil) {
 			
 			//	Try our database using the bundleIdentifier
@@ -220,7 +220,7 @@ typedef enum {
 	
 	if (_companyURL == nil) {
 		//	First look for our key
-		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMBMCompanyURLKey];
+		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMPCCompanyURLKey];
 		if (aURL == nil) {
 			//	Try to get it from our list file
 			aURL = [MPCCompanyList companyURLFromIdentifier:self.identifier];
@@ -238,7 +238,7 @@ typedef enum {
 	
 	if (_productURL == nil) {
 		//	First look for our key
-		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMBMProductURLKey];
+		NSString	*aURL = [[self.bundle infoDictionary] valueForKey:kMPCProductURLKey];
 		if (aURL == nil) {
 			//	Try to get it from our list file
 			aURL = [MPCCompanyList productURLFromIdentifier:self.identifier];
@@ -313,8 +313,8 @@ typedef enum {
 		_name = [tempName copy];
 		
 		//	Look to see if it has the key indicating that it uses MPC
-		if ([[_bundle infoDictionary] valueForKey:kMBMBundleUsesMBMKey]) {
-			_usesBundleManager = [[[_bundle infoDictionary] valueForKey:kMBMBundleUsesMBMKey] boolValue];
+		if ([[_bundle infoDictionary] valueForKey:kMPCBundleUsesMPMKey]) {
+			_usesBundleManager = [[[_bundle infoDictionary] valueForKey:kMPCBundleUsesMPMKey] boolValue];
 		}
 		
 		//	Set hasUpdate to false and launch the background thread to see if we can get info
@@ -327,7 +327,7 @@ typedef enum {
 		NSString	*iconFileName = [[_bundle infoDictionary] valueForKey:@"CFBundleIconFile"];
 		_iconPath = [[_bundle pathForImageResource:iconFileName] copy];
 		if (_iconPath == nil) {
-			_iconPath = [[[NSBundle mainBundle] pathForImageResource:kMBMGenericBundleIcon] copy];
+			_iconPath = [[[NSBundle mainBundle] pathForImageResource:kMPCGenericBundleIcon] copy];
 		}
 		_icon = [[NSImage alloc] initWithContentsOfFile:_iconPath];
 
@@ -335,14 +335,14 @@ typedef enum {
 		_latestVersion = [NSLocalizedString(@"???", @"String indicating that the latest version is not known") retain];
 		
 		//	Set a fake company name to know when to try and load it
-		_company = [[NSString alloc] initWithString:kMBMUnknownCompanyValue];
+		_company = [[NSString alloc] initWithString:kMPCUnknownCompanyValue];
 		
 		//	Set the state values
 		[self updateStateNow];
 		
 		//	Set the compatibility flag
 		//	Get the values to test
-		NSArray		*supportedUUIDs = [[_bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey];
+		NSArray		*supportedUUIDs = [[_bundle infoDictionary] valueForKey:kMPCMailBundleUUIDListKey];
 		NSString	*mailUUID = [MPCUUIDList currentMailUUID];
 		NSString	*messageUUID = [MPCUUIDList currentMessageUUID];
 		
@@ -450,12 +450,12 @@ typedef enum {
 }
 
 - (NSString *)latestOSVersionSupported {
-	NSString	*version = [MPCUUIDList latestOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	NSString	*version = [MPCUUIDList latestOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMPCMailBundleUUIDListKey]];
 	return (!IsEmpty(version)?version:NSLocalizedString(@"Unknown", @"Text indicating that we couldn't determine the latest version of the OS that this plugin supports"));
 }
 
 - (NSString *)firstOSVersionUnsupported {
-	NSString	*version = [MPCUUIDList firstUnsupportedOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMBMMailBundleUUIDListKey]];
+	NSString	*version = [MPCUUIDList firstUnsupportedOSVersionFromSupportedList:[[self.bundle infoDictionary] valueForKey:kMPCMailBundleUUIDListKey]];
 	return (!IsEmpty(version)?version:NSLocalizedString(@"None", @"Text indicating that we couldn't find any version of the OS that this plugin does not support"));
 }
 
@@ -513,7 +513,7 @@ typedef enum {
 	}
 	else {
 		//	Send a notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMMailBundleNoActionTakenNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCMailBundleNoActionTakenNotification object:self];
 	}
 }
 
@@ -541,14 +541,14 @@ typedef enum {
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)appcastItem {
 	self.latestVersion = [appcastItem displayVersionString];
 	self.hasUpdate = YES;
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneLoadingSparkleNotification object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCDoneLoadingSparkleNotification object:self];
 }
 
 // Sent when a valid update is not found.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
 	self.latestVersion = self.version;
 	self.hasUpdate = NO;
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneLoadingSparkleNotification object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCDoneLoadingSparkleNotification object:self];
 }
 
 
@@ -588,13 +588,13 @@ typedef enum {
 #pragma mark Generic Methods
 
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain {
-	return [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, domain, YES) lastObject] stringByAppendingPathComponent:kMBMMailFolderName];
+	return [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, domain, YES) lastObject] stringByAppendingPathComponent:kMPCMailFolderName];
 }
 
 + (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath {
 
 	//	Designate which path to use
-	NSString	*path = [[self mailFolderPathForDomain:domain] stringByAppendingPathComponent:kMBMBundleFolderName];
+	NSString	*path = [[self mailFolderPathForDomain:domain] stringByAppendingPathComponent:kMPCBundleFolderName];
 	if (disabledPath) {
 		path = [[self disabledBundlesPathListForDomain:domain] lastObject];
 	}
@@ -619,7 +619,7 @@ typedef enum {
 		
 		NSError		*error;
 		if (shouldCreate && ![manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error]) {
-			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:path, kMBMPathKey, error, kMBMErrorKey, nil];
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:path, kMPCPathKey, error, kMPCErrorKey, nil];
 			LKPresentErrorCodeUsingDict(MPCCantCreateDisabledBundleFolderErrorCode, theDict);
 			LKErr(@"Couldn't create the Disabled Bundle folder:%@", error);
 			return nil;
@@ -690,9 +690,9 @@ typedef enum {
 #pragma mark Localized Values
 
 + (NSString *)disabledBundleFolderName {
-	NSString	*mailPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier];
+	NSString	*mailPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier];
 	NSString	*folderName = [[NSBundle bundleWithPath:mailPath] localizedStringForKey:@"DISABLED_PATH_FORMAT" value:@"Bundles (Disabled)" table:@"Alerts"];
-	return [NSString stringWithFormat:folderName, kMBMBundleFolderName, @""];
+	return [NSString stringWithFormat:folderName, kMPCBundleFolderName, @""];
 }
 	 
 + (NSString *)disabledBundleFolderPrefix {
@@ -719,7 +719,7 @@ typedef enum {
 	//	Go through every item in the active bundles folder for user
 	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPathShouldCreate:NO] error:&error]) {
 		//	If it is really a bundle, create an object and add it to our list
-		if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+		if ([[aBundleName pathExtension] isEqualToString:kMPCMailBundleExtension]) {
 			MPCMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathShouldCreate:NO] stringByAppendingPathComponent:aBundleName] shouldLoadInfo:loadInfo];
 			if (mailBundle) {
 				[bundleList addObject:mailBundle];
@@ -730,7 +730,7 @@ typedef enum {
 	//	Go through every item in the active bundles folder for local domain
 	for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:[self bundlesPathLocalShouldCreate:NO] error:&error]) {
 		//	If it is really a bundle, create an object and add it to our list
-		if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+		if ([[aBundleName pathExtension] isEqualToString:kMPCMailBundleExtension]) {
 			MPCMailBundle	*mailBundle = [self mailBundleForPath:[[self bundlesPathLocalShouldCreate:NO] stringByAppendingPathComponent:aBundleName] shouldLoadInfo:loadInfo];
 			if (mailBundle) {
 				[bundleList addObject:mailBundle];
@@ -752,7 +752,7 @@ typedef enum {
 	for (NSString *aDisabledFolder in allDisabledPaths) {
 		for (NSString *aBundleName in [manager contentsOfDirectoryAtPath:aDisabledFolder error:&error]) {
 			//	If it is really a bundle, create an object and add it to our dictionary, if it is newer than one already in there, with the same id
-			if ([[aBundleName pathExtension] isEqualToString:kMBMMailBundleExtension]) {
+			if ([[aBundleName pathExtension] isEqualToString:kMPCMailBundleExtension]) {
 				MPCMailBundle	*mailBundle = [self mailBundleForPath:[aDisabledFolder stringByAppendingPathComponent:aBundleName] shouldLoadInfo:loadInfo];
 				//	If we got a mailBundle, see if we need to update or set
 				if (mailBundle) {

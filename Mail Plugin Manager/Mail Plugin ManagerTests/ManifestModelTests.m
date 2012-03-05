@@ -8,8 +8,8 @@
 
 #import "ManifestModelTests.h"
 #import "MPCManifestModel.h"
-#import "MBMActionItem.h"
-#import "MBMConfirmationStep.h"
+#import "MPCActionItem.h"
+#import "MPCConfirmationStep.h"
 
 @implementation ManifestModelTests
 
@@ -33,7 +33,7 @@
 #pragma mark - InstallationItem
 
 - (void)test_001_Item_Complete {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem1 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
+	MPCActionItem	*anItem = [[[MPCActionItem alloc] initWithDictionary:self.actionItem1 fromPackageFilePath:@"/Short" manifestType:kMPCManifestTypeInstallation] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"user", @"system", nil];
 	
 	//	Test the item
@@ -48,7 +48,7 @@
 }
 
 - (void)test_002_Item_Mail_Bundle_Complete {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem2 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
+	MPCActionItem	*anItem = [[[MPCActionItem alloc] initWithDictionary:self.actionItem2 fromPackageFilePath:@"/Short" manifestType:kMPCManifestTypeInstallation] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"user", nil];
 	
 	//	Test the item
@@ -63,7 +63,7 @@
 }
 
 - (void)test_003_Item_Bundle_Manager_Complete {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem3 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
+	MPCActionItem	*anItem = [[[MPCActionItem alloc] initWithDictionary:self.actionItem3 fromPackageFilePath:@"/Short" manifestType:kMPCManifestTypeInstallation] autorelease];
 	NSArray				*permissionsList = [NSArray arrayWithObjects:@"admin", nil];
 	
 	//	Test the item
@@ -78,7 +78,7 @@
 }
 
 - (void)test_004_Item_Minimal_Item {
-	MBMActionItem	*anItem = [[[MBMActionItem alloc] initWithDictionary:self.actionItem4 fromPackageFilePath:@"/Short" manifestType:kMBMManifestTypeInstallation] autorelease];
+	MPCActionItem	*anItem = [[[MPCActionItem alloc] initWithDictionary:self.actionItem4 fromPackageFilePath:@"/Short" manifestType:kMPCManifestTypeInstallation] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(anItem, nil);
@@ -95,7 +95,7 @@
 #pragma mark - Confirmation Steps
 
 - (void)test_010_Step_Complete_Info {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep1 andPackageFilePath:@"/Short"] autorelease];
+	MPCConfirmationStep	*aStep = [[[MPCConfirmationStep alloc] initWithDictionary:self.confirmStep1 andPackageFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
@@ -109,7 +109,7 @@
 }
 
 - (void)test_011_Step_Complete_License {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep2 andPackageFilePath:@"/Short"] autorelease];
+	MPCConfirmationStep	*aStep = [[[MPCConfirmationStep alloc] initWithDictionary:self.confirmStep2 andPackageFilePath:@"/Short"] autorelease];
 	aStep.agreementAccepted = YES;
 	
 	//	Test the item
@@ -124,7 +124,7 @@
 }
 
 - (void)test_012_Step_Complete_License_2 {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep3 andPackageFilePath:@"/Short"] autorelease];
+	MPCConfirmationStep	*aStep = [[[MPCConfirmationStep alloc] initWithDictionary:self.confirmStep3 andPackageFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
@@ -138,7 +138,7 @@
 }
 
 - (void)test_013_Step_Complete_Confirm {
-	MBMConfirmationStep	*aStep = [[[MBMConfirmationStep alloc] initWithDictionary:self.confirmStep4 andPackageFilePath:@"/Short"] autorelease];
+	MPCConfirmationStep	*aStep = [[[MPCConfirmationStep alloc] initWithDictionary:self.confirmStep4 andPackageFilePath:@"/Short"] autorelease];
 	
 	//	Test the item
 	STAssertNotNil(aStep, nil);
@@ -183,15 +183,15 @@
     // Set-up code here.
 	self.bundleContentsPath = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"/Contents"];
 	self.userHomePath = NSHomeDirectory();
-	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:kMBMManifestName ofType:kMBMPlistExtension];
+	self.filePath = [[NSBundle bundleForClass:[self class]] pathForResource:kMPCManifestName ofType:kMPCPlistExtension];
 	self.fileContents = [NSDictionary dictionaryWithContentsOfFile:self.filePath];
-	self.actionItemContents = [self.fileContents valueForKey:kMBMActionItemsKey];
+	self.actionItemContents = [self.fileContents valueForKey:kMPCActionItemsKey];
 	for (NSUInteger i = 0; i < 4; i++) {
 		if (i < [self.actionItemContents count]) {
 			[self setValue:[self.actionItemContents objectAtIndex:i] forKey:[NSString stringWithFormat:@"actionItem%d", i+1]];
 		}
 	}
-	self.confirmStepContents = [self.fileContents valueForKey:kMBMConfirmationStepsKey];
+	self.confirmStepContents = [self.fileContents valueForKey:kMPCConfirmationStepsKey];
 	for (NSUInteger i = 0; i < 4; i++) {
 		if (i < [self.confirmStepContents count]) {
 			[self setValue:[self.confirmStepContents objectAtIndex:i] forKey:[NSString stringWithFormat:@"confirmStep%d", i+1]];

@@ -1,5 +1,5 @@
 //
-//  MBMAppDelegate.h
+//  MPMAppDelegate.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 12/09/2011.

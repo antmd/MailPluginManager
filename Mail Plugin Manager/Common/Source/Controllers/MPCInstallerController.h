@@ -1,5 +1,5 @@
 //
-//  MBMInstallerController.h
+//  MPCInstallerController.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 20/09/2011.

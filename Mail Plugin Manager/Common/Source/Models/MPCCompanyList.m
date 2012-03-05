@@ -1,5 +1,5 @@
 //
-//  MBMCompanyList.m
+//  MPCCompanyList.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 09/10/2011.
@@ -24,7 +24,7 @@
 #pragma Mark - External Methods
 
 + (NSString *)companyNameFromIdentifier:(NSString *)identifier {
-	return [[self companyDictForIdentifier:identifier] valueForKey:kMBMNameKey];
+	return [[self companyDictForIdentifier:identifier] valueForKey:kMPCNameKey];
 }
 
 + (NSString *)companyURLFromIdentifier:(NSString *)identifier {
@@ -41,7 +41,7 @@
 }
 
 + (NSString *)filename {
-	return kMBMCompaniesInfoFileName;
+	return kMPCCompaniesInfoFileName;
 }
 
 #pragma mark - Internal Methods

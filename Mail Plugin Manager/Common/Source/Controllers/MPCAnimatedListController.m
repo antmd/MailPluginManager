@@ -1,5 +1,5 @@
 //
-//  MBMAnimatedListController.m
+//  MPCAnimatedListController.m
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 20/09/2011.
@@ -47,7 +47,7 @@
 		//	Create the view hierarchy
 		//	Create the animator view for the moment that shows the step
 		NSImageView	*animatorBGView = [[NSImageView alloc] initWithFrame:NSMakeRect(ANIMATOR_VIEW_X, aView.frame.size.height - (ANIMATOR_TOP_START + ANIMATOR_VIEW_HEIGHT), ANIMATOR_VIEW_WIDTH, ANIMATOR_VIEW_HEIGHT)];
-		[animatorBGView setImage:[NSImage imageNamed:kMBMAnimationBackgroundImageName]];
+		[animatorBGView setImage:[NSImage imageNamed:kMPCAnimationBackgroundImageName]];
 		[animatorBGView setImageScaling:NSScaleNone];
 		[[self view] addSubview:animatorBGView];
 		_animatorView = animatorBGView;
@@ -97,7 +97,7 @@
 		_subviewList = [[NSArray arrayWithArray:textList] retain];
 		
 		//	Set to unreasonable value for init
-		self.selectedStep = kMBMInvalidStep;
+		self.selectedStep = kMPCInvalidStep;
 		
     
 	}
@@ -125,7 +125,7 @@
 	//	Try to get our respective views
 	NSTextField	*fromField = nil;
 	NSTextField	*toField = nil;
-	if ((fromItem != kMBMInvalidStep) && ([self.subviewList count] > fromItem)) {
+	if ((fromItem != kMPCInvalidStep) && ([self.subviewList count] > fromItem)) {
 		fromField = [self.subviewList objectAtIndex:fromItem];
 	}
 	if ([self.subviewList count] > (NSUInteger)toItem) {
@@ -147,7 +147,7 @@
 	
 	//	Move the marker background view
 	CGFloat	offsetCount = (toItem > fromItem)?-1.0f:1.0f;
-	if (fromItem == kMBMInvalidStep) {
+	if (fromItem == kMPCInvalidStep) {
 		offsetCount = 0.0f;
 	}
 	NSRect	aRect = LKRectByOffsettingY(self.animatorView.frame, (offsetCount * (ANIMATOR_VIEW_HEIGHT + ANIMATOR_TOP_OFFSET)));

@@ -86,7 +86,7 @@ typedef enum {
 		[self showCollectionWindowForBundles:[MPCMailBundle allMailBundlesLoadInfo]];
 		
 		//	Add a notification watcher to handle uninstalls
-		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMPCMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
 			if ([[note object] isKindOfClass:[MPCMailBundle class]]) {
 				self.mailBundleList = [MPCMailBundle allMailBundlesLoadInfo];
 				[self adjustWindowSizeForBundleList:self.mailBundleList animate:YES];
@@ -117,7 +117,7 @@ typedef enum {
 		
 		//	Determine the type (install/uninstall)
 		NSString	*extension = [filename pathExtension];
-		if ([extension isEqualToString:kMBMInstallerFileExtension]) {
+		if ([extension isEqualToString:kMPCInstallerFileExtension]) {
 			if (self.manifestModel.manifestType != kMPCManifestTypeInstallation) {
 				LKPresentErrorCode(MPMInstallerHasBadTypeCode);
 				[self quittingNowIsReasonable];
@@ -126,7 +126,7 @@ typedef enum {
 			self.installing = YES;
 			self.managing = NO;
 		}
-		else if ([extension isEqualToString:kMBMUninstallerFileExtension]) {
+		else if ([extension isEqualToString:kMPCUninstallerFileExtension]) {
 			if (self.manifestModel.manifestType != kMPCManifestTypeUninstallation) {
 				LKPresentErrorCode(MPMUninstallerHasBadTypeCode);
 				[self quittingNowIsReasonable];

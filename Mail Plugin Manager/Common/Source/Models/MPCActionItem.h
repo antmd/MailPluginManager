@@ -1,5 +1,5 @@
 //
-//  MBMActionItem.h
+//  MPCActionItem.h
 //  Mail Bundle Manager
 //
 //  Created by Scott Little on 14/09/2011.
