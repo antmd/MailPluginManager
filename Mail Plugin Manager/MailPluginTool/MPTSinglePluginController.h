@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MBMMailBundle.h"
+#import "MPCMailBundle.h"
 
 typedef enum {
 	kMBTButtonLayoutUpdate = 0,
@@ -33,7 +33,7 @@ typedef enum {
 @interface MPTSinglePluginController : NSWindowController {
 @private
 	
-	MBMMailBundle		*_mailBundle;
+	MPCMailBundle		*_mailBundle;
 	
 	NSTextField			*_mainDescriptionField;
 	NSTextField			*_secondaryTextField;
@@ -45,7 +45,7 @@ typedef enum {
 	MBTButtonLayoutType	_buttonLayout;
 }
 
-@property (nonatomic, retain)	MBMMailBundle	*mailBundle;
+@property (nonatomic, retain)	MPCMailBundle	*mailBundle;
 
 @property	(assign) IBOutlet	NSTextField	*mainDescriptionField;
 @property	(assign) IBOutlet	NSTextField	*secondaryTextField;
@@ -53,6 +53,6 @@ typedef enum {
 @property	(assign) IBOutlet	NSButton	*centerButton;
 @property	(assign) IBOutlet	NSButton	*leftButton;
 
-- (id)initWithMailBundle:(MBMMailBundle *)aMailBundle;
+- (id)initWithMailBundle:(MPCMailBundle *)aMailBundle;
 @end
 

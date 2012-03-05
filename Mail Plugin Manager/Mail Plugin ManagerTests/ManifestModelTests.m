@@ -7,7 +7,7 @@
 //
 
 #import "ManifestModelTests.h"
-#import "MBMManifestModel.h"
+#import "MPCManifestModel.h"
 #import "MBMActionItem.h"
 #import "MBMConfirmationStep.h"
 
@@ -155,7 +155,7 @@
 #pragma mark - Full Model
 
 - (void)test_020_Model_Full {
-	MBMManifestModel	*theModel = [[[MBMManifestModel alloc] initWithPackageAtPath:[self.filePath stringByDeletingLastPathComponent]] autorelease];
+	MPCManifestModel	*theModel = [[[MPCManifestModel alloc] initWithPackageAtPath:[self.filePath stringByDeletingLastPathComponent]] autorelease];
 
 	//	Test the item
 	STAssertNotNil(theModel, nil);

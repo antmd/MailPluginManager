@@ -7,13 +7,12 @@
 //
 
 #import "MPTAppDelegate.h"
-#import "MBMMailBundle.h"
-#import "MBMUUIDList.h"
-#import "MBMSystemInfo.h"
+#import "MPCMailBundle.h"
+#import "MPCUUIDList.h"
+#import "MPCSystemInfo.h"
 #import "MPTSinglePluginController.h"
 #import "LKCGStructs.h"
-#import "NSUserDefaults+MBMShared.h"
-//#import <Sparkle/Sparkle.h>
+#import "NSUserDefaults+MPCShared.h"
 
 
 #define HOURS_AGO	(-1 * 60 * 60)
@@ -22,7 +21,7 @@
 @interface MPTAppDelegate ()
 @property	(nonatomic, copy)	NSMutableDictionary			*savedSparkleState;
 @property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
-@property	(nonatomic, assign) MPMSparkleAsyncOperation	*sparkleOperation;
+@property	(nonatomic, assign) MPCSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
 
 
@@ -30,7 +29,7 @@
 - (NSString *)pathToManagerContainer;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
-- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
+- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MPCMailBundle *)mailBundle;
 
 
 @end
@@ -128,7 +127,7 @@
 		
 		//	Run a background thread to see if we need to update this app, using the basic updater directly.
 		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
-		self.sparkleOperation = [[[MPMSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
+		self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
 		[self addFinalizeOperation:self.sparkleOperation];
 	}
 	
@@ -202,9 +201,9 @@
 	}
 	
 	//	Get the mail bundle, if there
-	MBMMailBundle	*mailBundle = nil;
+	MPCMailBundle	*mailBundle = nil;
 	if (bundlePath) {
-		mailBundle = [[[MBMMailBundle alloc] initWithPath:bundlePath shouldLoadUpdateInfo:NO] autorelease];
+		mailBundle = [[[MPCMailBundle alloc] initWithPath:bundlePath shouldLoadUpdateInfo:NO] autorelease];
 	}
 	
 	//	If there is no bundle for one of the tasks that require it, just quit
@@ -251,7 +250,7 @@
 			[self addActivityTask:^{
 				//	Then send the information
 				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-				[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
+				[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MPCSystemInfo completeInfo] deliverImmediately:YES];
 				LKLog(@"Sent notification");
 				[self quittingNowIsReasonable];
 			}];
@@ -259,7 +258,7 @@
 		else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
 			[self addActivityTask:^{
 				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-				[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+				[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MPCUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
 				[self quittingNowIsReasonable];
 			}];
 		}
@@ -286,7 +285,7 @@
 	//	Separate all the bundles into those that can update and those that can't
 	NSMutableArray	*updatingBundles = [NSMutableArray array];
 	NSMutableArray	*otherBundles = [NSMutableArray array];
-	for (MBMMailBundle *aBundle in [MBMMailBundle allMailBundles]) {
+	for (MPCMailBundle *aBundle in [MPCMailBundle allMailBundles]) {
 		if ([aBundle supportsSparkleUpdates]) {
 			[updatingBundles addObject:aBundle];
 		}
@@ -338,7 +337,7 @@
 	
 	//	Build list of ones to show
 	NSMutableArray	*badBundles = [NSMutableArray array];
-	for (MBMMailBundle *aBundle in bundlesToTest) {
+	for (MPCMailBundle *aBundle in bundlesToTest) {
 		if (aBundle.incompatibleWithCurrentMail || aBundle.incompatibleWithFutureMail || aBundle.hasUpdate) {
 			[badBundles addObject:aBundle];
 		}
@@ -358,7 +357,7 @@
 		
 		//	Add a notification watcher to handle uninstalls
 		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
+			if ([[note object] isKindOfClass:[MPCMailBundle class]]) {
 				NSMutableArray	*change = [self.mailBundleList mutableCopy];
 				[change removeObjectIdenticalTo:[note object]];
 				self.mailBundleList = [NSArray arrayWithArray:change];
@@ -368,7 +367,7 @@
 	}
 }
 
-- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle {
+- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MPCMailBundle *)mailBundle {
 	
 	//	Default is that we have passed the frequency
 	BOOL	result = YES;

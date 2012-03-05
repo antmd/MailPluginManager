@@ -8,16 +8,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MBAppDelegate.h"
+#import "MPCAppDelegate.h"
 
 #import "SUBasicUpdateDriver.h"
-#import "MPMSparkleAsyncOperation.h"
+#import "MPCSparkleAsyncOperation.h"
 
-@interface MPTAppDelegate : MBAppDelegate {
+@interface MPTAppDelegate : MPCAppDelegate {
 @private	
 	NSMutableDictionary			*_savedSparkleState;
 	NSArray						*_sparkleKeysValues;
-	MPMSparkleAsyncOperation	*_sparkleOperation;
+	MPCSparkleAsyncOperation	*_sparkleOperation;
 	SUBasicUpdateDriver			*_updateDriver;
 	
 }

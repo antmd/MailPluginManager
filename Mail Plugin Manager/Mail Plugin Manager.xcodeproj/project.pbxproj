@@ -29,7 +29,7 @@
 		D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
-		D227F2971504E69500907524 /* MPMSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */; };
+		D227F2971504E69500907524 /* MPCSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */; };
 		D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D22CC059146BD87F0055CFBE /* InfoPlist.strings */; };
 		D22CC05D146BD87F0055CFBE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D22CC05C146BD87F0055CFBE /* main.m */; };
@@ -40,28 +40,28 @@
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
 		D23D3151144216E3007D30F8 /* companies.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23D3150144216E3007D30F8 /* companies.plist */; };
 		D23D3152144216E3007D30F8 /* companies.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23D3150144216E3007D30F8 /* companies.plist */; };
-		D23D3155144234B4007D30F8 /* MBMCompanyList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D3154144234B4007D30F8 /* MBMCompanyList.m */; };
-		D23D3156144234B4007D30F8 /* MBMCompanyList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D3154144234B4007D30F8 /* MBMCompanyList.m */; };
-		D23D31591442573A007D30F8 /* MBMUUIDList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31581442573A007D30F8 /* MBMUUIDList.m */; };
-		D23D315A1442573A007D30F8 /* MBMUUIDList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31581442573A007D30F8 /* MBMUUIDList.m */; };
-		D23D315D1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D315C1442575F007D30F8 /* MBMRemoteUpdatableList.m */; };
-		D23D315E1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D315C1442575F007D30F8 /* MBMRemoteUpdatableList.m */; };
-		D23D316E1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */; };
-		D23D316F1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */; };
-		D23D31721445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */; };
-		D23D31731445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */; };
+		D23D3155144234B4007D30F8 /* MPCCompanyList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D3154144234B4007D30F8 /* MPCCompanyList.m */; };
+		D23D3156144234B4007D30F8 /* MPCCompanyList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D3154144234B4007D30F8 /* MPCCompanyList.m */; };
+		D23D31591442573A007D30F8 /* MPCUUIDList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31581442573A007D30F8 /* MPCUUIDList.m */; };
+		D23D315A1442573A007D30F8 /* MPCUUIDList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31581442573A007D30F8 /* MPCUUIDList.m */; };
+		D23D315D1442575F007D30F8 /* MPCRemoteUpdatableList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D315C1442575F007D30F8 /* MPCRemoteUpdatableList.m */; };
+		D23D315E1442575F007D30F8 /* MPCRemoteUpdatableList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D315C1442575F007D30F8 /* MPCRemoteUpdatableList.m */; };
+		D23D316E1444DD7B007D30F8 /* MPCSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D316D1444DD7A007D30F8 /* MPCSystemInfo.m */; };
+		D23D316F1444DD7B007D30F8 /* MPCSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D316D1444DD7A007D30F8 /* MPCSystemInfo.m */; };
+		D23D31721445B979007D30F8 /* NSUserDefaults+MPCShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */; };
+		D23D31731445B979007D30F8 /* NSUserDefaults+MPCShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */; };
 		D24248A6148E53C800DE7E6A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2779BF214337389003F7BE0 /* QuartzCore.framework */; };
 		D24AF649147D3565000EDC6F /* MPT Scripting.sdef in Resources */ = {isa = PBXBuildFile; fileRef = D24AF648147D3565000EDC6F /* MPT Scripting.sdef */; };
 		D24AF64F147D4CAD000EDC6F /* MPTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */; };
 		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
-		D256CF2F14F99D00001BA72D /* MPMSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */; };
+		D256CF2F14F99D00001BA72D /* MPCSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
-		D2730FD9142921B200EB5CB7 /* MBMManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */; };
-		D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */; };
-		D2730FE614293F6100EB5CB7 /* MBMAnimatedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */; };
+		D2730FD9142921B200EB5CB7 /* MPCManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MPCManifestModel.m */; };
+		D2730FDE142931D100EB5CB7 /* MPCInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MPCInstallerController.m */; };
+		D2730FE614293F6100EB5CB7 /* MPCAnimatedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FE414293F6100EB5CB7 /* MPCAnimatedListController.m */; };
 		D2730FF1142A1F4700EB5CB7 /* LKCGStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */; };
 		D2730FF3142B539300EB5CB7 /* InstallAnimationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */; };
-		D2731011142CB1E500EB5CB7 /* MBMConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */; };
+		D2731011142CB1E500EB5CB7 /* MPCConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MPCConfirmationStep.m */; };
 		D2779BC214336287003F7BE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D2779BC814336287003F7BE0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2779BC614336287003F7BE0 /* InfoPlist.strings */; };
 		D2779BCA14336287003F7BE0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2779BC914336287003F7BE0 /* main.m */; };
@@ -70,14 +70,14 @@
 		D2779BD414336287003F7BE0 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2779BD214336287003F7BE0 /* MainMenu.xib */; };
 		D2779BDC14336639003F7BE0 /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
 		D2779BDD14336641003F7BE0 /* InstallAnimationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */; };
-		D2779BE114336649003F7BE0 /* NSBundle+MBMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */; };
-		D2779BE214336651003F7BE0 /* MBMInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */; };
-		D2779BE314336651003F7BE0 /* MBMAnimatedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */; };
-		D2779BE41433665D003F7BE0 /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
-		D2779BE51433665D003F7BE0 /* MBMSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MBMSparkleDelegate.m */; };
-		D2779BE61433665D003F7BE0 /* MBMManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */; };
-		D2779BE71433665D003F7BE0 /* MBMActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMActionItem.m */; };
-		D2779BE81433665D003F7BE0 /* MBMConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */; };
+		D2779BE114336649003F7BE0 /* NSBundle+MPCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MPCAdditions.m */; };
+		D2779BE214336651003F7BE0 /* MPCInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MPCInstallerController.m */; };
+		D2779BE314336651003F7BE0 /* MPCAnimatedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FE414293F6100EB5CB7 /* MPCAnimatedListController.m */; };
+		D2779BE41433665D003F7BE0 /* MPCMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MPCMailBundle.m */; };
+		D2779BE51433665D003F7BE0 /* MPCSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MPCSparkleDelegate.m */; };
+		D2779BE61433665D003F7BE0 /* MPCManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MPCManifestModel.m */; };
+		D2779BE71433665D003F7BE0 /* MPCActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MPCActionItem.m */; };
+		D2779BE81433665D003F7BE0 /* MPCConfirmationStep.m in Sources */ = {isa = PBXBuildFile; fileRef = D2731010142CB1E400EB5CB7 /* MPCConfirmationStep.m */; };
 		D2779BEA14336DDC003F7BE0 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D2779BEB14336DDC003F7BE0 /* NSString+LKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */; };
 		D2779BEC14336DDC003F7BE0 /* LKCGStructs.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */; };
@@ -86,20 +86,20 @@
 		D2866E2E14FAAE420006A749 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2866E3014FAAE420006A749 /* Localizable.strings */; };
 		D2866E4814FADC790006A749 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4714FADC790006A749 /* ManagerIcon.png */; };
-		D2866E6D14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */; };
-		D2866E6E14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */; };
+		D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MPCBackgroundImage.png */; };
+		D2866E6E14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MPCBackgroundImage.png */; };
 		D2866EF514FBC3C10006A749 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D2866EF614FBC3D60006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D2866EF714FBC3DB0006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D2866EF814FBC3DE0006A749 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
-		D28F77EA14209D1D0015E42F /* MBMActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MBMActionItem.m */; };
+		D28F77EA14209D1D0015E42F /* MPCActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MPCActionItem.m */; };
 		D2C473CA146B44DA00B2981D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2779BF214337389003F7BE0 /* QuartzCore.framework */; };
-		D2C8644D14FAAD9B00BAFA00 /* MBMInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645014FAAD9B00BAFA00 /* MBMInstallerWindow.xib */; };
-		D2C8644E14FAAD9B00BAFA00 /* MBMInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645014FAAD9B00BAFA00 /* MBMInstallerWindow.xib */; };
-		D2C8645114FAADB200BAFA00 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645414FAADB200BAFA00 /* MBMAgreementWindow.xib */; };
-		D2C8645214FAADB200BAFA00 /* MBMAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645414FAADB200BAFA00 /* MBMAgreementWindow.xib */; };
-		D2C8645514FAADB600BAFA00 /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645814FAADB600BAFA00 /* MBMBundleView.xib */; };
-		D2C8645614FAADB600BAFA00 /* MBMBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645814FAADB600BAFA00 /* MBMBundleView.xib */; };
+		D2C8644D14FAAD9B00BAFA00 /* MPCInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645014FAAD9B00BAFA00 /* MPCInstallerWindow.xib */; };
+		D2C8644E14FAAD9B00BAFA00 /* MPCInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645014FAAD9B00BAFA00 /* MPCInstallerWindow.xib */; };
+		D2C8645114FAADB200BAFA00 /* MPCAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645414FAADB200BAFA00 /* MPCAgreementWindow.xib */; };
+		D2C8645214FAADB200BAFA00 /* MPCAgreementWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645414FAADB200BAFA00 /* MPCAgreementWindow.xib */; };
+		D2C8645514FAADB600BAFA00 /* MPCBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645814FAADB600BAFA00 /* MPCBundleView.xib */; };
+		D2C8645614FAADB600BAFA00 /* MPCBundleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645814FAADB600BAFA00 /* MPCBundleView.xib */; };
 		D2C8645914FAADBB00BAFA00 /* errors.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645C14FAADBB00BAFA00 /* errors.strings */; };
 		D2C8645A14FAADBB00BAFA00 /* errors.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645C14FAADBB00BAFA00 /* errors.strings */; };
 		D2D1E6C914307968002FF1B1 /* LKError.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6C814307968002FF1B1 /* LKError.m */; };
@@ -108,9 +108,9 @@
 		D2D1E6DA1431C171002FF1B1 /* mbm-manifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D1E6D91431C171002FF1B1 /* mbm-manifest.plist */; };
 		D2D1E6DD1431EC2A002FF1B1 /* MailBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */; };
 		D2D1E73014320D1C002FF1B1 /* ExamplePlugin.mailbundle in Copy Test Data */ = {isa = PBXBuildFile; fileRef = D2D1E72F14320D1B002FF1B1 /* ExamplePlugin.mailbundle */; };
-		D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MBMMailBundle.m */; };
-		D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */; };
-		D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MBMSparkleDelegate.m */; };
+		D2E90297141E4C800058618F /* MPCMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MPCMailBundle.m */; };
+		D2E9029A141E5EFA0058618F /* NSBundle+MPCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MPCAdditions.m */; };
+		D2E902AD141E72470058618F /* MPCSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MPCSparkleDelegate.m */; };
 		D2EB824E148F9EE700C8B0DB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2EB824D148F9EE700C8B0DB /* Security.framework */; };
 		D2EB824F148F9EFA00C8B0DB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2EB824D148F9EE700C8B0DB /* Security.framework */; };
 		D2EB825A148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB8257148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m */; };
@@ -120,12 +120,12 @@
 		D2EFB28514F44B8E00DEA922 /* InstallDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2EFB28414F44B8E00DEA922 /* InstallDocument.icns */; };
 		D2EFB28714F44B9500DEA922 /* UninstallDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */; };
 		D2F4B6F2150527B6002C3E1D /* MPCScheduledUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */; };
-		D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
-		D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
+		D2F70F7D143F1FA5000D5CC0 /* MPCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MPCAppDelegate.m */; };
+		D2F70F7E143F1FA5000D5CC0 /* MPCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MPCAppDelegate.m */; };
 		D2F70F84143F34B7000D5CC0 /* BundleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C51439CD3E002F0157 /* BundleBackground.png */; };
 		D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */; };
-		D2F70F8B143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */; };
-		D2F70F8C143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */; };
+		D2F70F8B143F43CF000D5CC0 /* MPCBackgroundableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */; };
+		D2F70F8C143F43CF000D5CC0 /* MPCBackgroundableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -313,7 +313,7 @@
 		D216B365141DFDE2003788DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstants.h; path = Common/MBMConstants.h; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = Common/MBMConstants.m; sourceTree = "<group>"; };
-		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
+		D216B37E141E1C21003788DC /* MPCManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCManifestModel.h; sourceTree = "<group>"; };
 		D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCScheduledUpdateDriver.h; path = MailPluginTool/MPCScheduledUpdateDriver.h; sourceTree = "<group>"; };
 		D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCScheduledUpdateDriver.m; path = MailPluginTool/MPCScheduledUpdateDriver.m; sourceTree = "<group>"; };
 		D221E96F1500253300568952 /* SUStatusController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUStatusController.h; sourceTree = "<group>"; };
@@ -339,38 +339,38 @@
 		D231F44E1428EE7B002DB999 /* LKInclude.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKInclude.pch; path = ../LKKit/LKInclude.pch; sourceTree = "<group>"; };
 		D231F44F1428F035002DB999 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.markdown; path = ../README.markdown; sourceTree = SOURCE_ROOT; };
 		D23D3150144216E3007D30F8 /* companies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = companies.plist; path = ../Remote/companies.plist; sourceTree = "<group>"; };
-		D23D3153144234B4007D30F8 /* MBMCompanyList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMCompanyList.h; sourceTree = "<group>"; };
-		D23D3154144234B4007D30F8 /* MBMCompanyList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMCompanyList.m; sourceTree = "<group>"; };
-		D23D31571442573A007D30F8 /* MBMUUIDList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMUUIDList.h; sourceTree = "<group>"; };
-		D23D31581442573A007D30F8 /* MBMUUIDList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMUUIDList.m; sourceTree = "<group>"; };
-		D23D315B1442575F007D30F8 /* MBMRemoteUpdatableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMRemoteUpdatableList.h; sourceTree = "<group>"; };
-		D23D315C1442575F007D30F8 /* MBMRemoteUpdatableList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMRemoteUpdatableList.m; sourceTree = "<group>"; };
+		D23D3153144234B4007D30F8 /* MPCCompanyList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCCompanyList.h; sourceTree = "<group>"; };
+		D23D3154144234B4007D30F8 /* MPCCompanyList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCCompanyList.m; sourceTree = "<group>"; };
+		D23D31571442573A007D30F8 /* MPCUUIDList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCUUIDList.h; sourceTree = "<group>"; };
+		D23D31581442573A007D30F8 /* MPCUUIDList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCUUIDList.m; sourceTree = "<group>"; };
+		D23D315B1442575F007D30F8 /* MPCRemoteUpdatableList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCRemoteUpdatableList.h; sourceTree = "<group>"; };
+		D23D315C1442575F007D30F8 /* MPCRemoteUpdatableList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCRemoteUpdatableList.m; sourceTree = "<group>"; };
 		D23D31601442FFE2007D30F8 /* MBMPluginMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMPluginMacros.h; path = Common/MBMPluginMacros.h; sourceTree = "<group>"; };
-		D23D316C1444DD7A007D30F8 /* MBMSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSystemInfo.h; sourceTree = "<group>"; };
-		D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSystemInfo.m; sourceTree = "<group>"; };
-		D23D31701445B979007D30F8 /* NSUserDefaults+MBMShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MBMShared.h"; sourceTree = "<group>"; };
-		D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MBMShared.m"; sourceTree = "<group>"; };
+		D23D316C1444DD7A007D30F8 /* MPCSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCSystemInfo.h; sourceTree = "<group>"; };
+		D23D316D1444DD7A007D30F8 /* MPCSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCSystemInfo.m; sourceTree = "<group>"; };
+		D23D31701445B979007D30F8 /* NSUserDefaults+MPCShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MPCShared.h"; sourceTree = "<group>"; };
+		D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MPCShared.m"; sourceTree = "<group>"; };
 		D24248A4148E515700DE7E6A /* MBMConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstantsList.h; path = Common/MBMConstantsList.h; sourceTree = "<group>"; };
 		D24AF648147D3565000EDC6F /* MPT Scripting.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "MPT Scripting.sdef"; sourceTree = "<group>"; };
 		D24AF64D147D4CAD000EDC6F /* MPTSendInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTSendInfoCommand.h; sourceTree = "<group>"; };
 		D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTSendInfoCommand.m; sourceTree = "<group>"; };
 		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
-		D256CF2D14F99CFF001BA72D /* MPMSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPMSparkleAsyncOperation.h; path = MailPluginTool/MPMSparkleAsyncOperation.h; sourceTree = "<group>"; };
-		D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPMSparkleAsyncOperation.m; path = MailPluginTool/MPMSparkleAsyncOperation.m; sourceTree = "<group>"; };
+		D256CF2D14F99CFF001BA72D /* MPCSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCSparkleAsyncOperation.h; path = MailPluginTool/MPCSparkleAsyncOperation.h; sourceTree = "<group>"; };
+		D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCSparkleAsyncOperation.m; path = MailPluginTool/MPCSparkleAsyncOperation.m; sourceTree = "<group>"; };
 		D256CF3014FA6F11001BA72D /* Appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Appcast.xml; path = ../../Remote/Appcast.xml; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
 		D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSClickableURLTextField.m; sourceTree = "<group>"; };
-		D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMManifestModel.m; sourceTree = "<group>"; };
-		D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMInstallerController.h; path = ../Common/Source/Controllers/MBMInstallerController.h; sourceTree = "<group>"; };
-		D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMInstallerController.m; path = ../Common/Source/Controllers/MBMInstallerController.m; sourceTree = "<group>"; };
-		D2730FE314293F6100EB5CB7 /* MBMAnimatedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMAnimatedListController.h; path = ../Common/Source/Controllers/MBMAnimatedListController.h; sourceTree = "<group>"; };
-		D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMAnimatedListController.m; path = ../Common/Source/Controllers/MBMAnimatedListController.m; sourceTree = "<group>"; };
+		D2730FD8142921B200EB5CB7 /* MPCManifestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCManifestModel.m; sourceTree = "<group>"; };
+		D2730FDC142931D100EB5CB7 /* MPCInstallerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCInstallerController.h; path = ../Common/Source/Controllers/MPCInstallerController.h; sourceTree = "<group>"; };
+		D2730FDD142931D100EB5CB7 /* MPCInstallerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCInstallerController.m; path = ../Common/Source/Controllers/MPCInstallerController.m; sourceTree = "<group>"; };
+		D2730FE314293F6100EB5CB7 /* MPCAnimatedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCAnimatedListController.h; path = ../Common/Source/Controllers/MPCAnimatedListController.h; sourceTree = "<group>"; };
+		D2730FE414293F6100EB5CB7 /* MPCAnimatedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCAnimatedListController.m; path = ../Common/Source/Controllers/MPCAnimatedListController.m; sourceTree = "<group>"; };
 		D2730FEF142A1F4700EB5CB7 /* LKCGStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKCGStructs.h; path = ../../LKKit/Helpers/LKCGStructs.h; sourceTree = "<group>"; };
 		D2730FF0142A1F4700EB5CB7 /* LKCGStructs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKCGStructs.m; path = ../../LKKit/Helpers/LKCGStructs.m; sourceTree = "<group>"; };
 		D2730FF2142B539300EB5CB7 /* InstallAnimationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = InstallAnimationBackground.png; path = Common/Resources/Images/InstallAnimationBackground.png; sourceTree = "<group>"; };
-		D273100F142CB1E400EB5CB7 /* MBMConfirmationStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMConfirmationStep.h; sourceTree = "<group>"; };
-		D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMConfirmationStep.m; sourceTree = "<group>"; };
+		D273100F142CB1E400EB5CB7 /* MPCConfirmationStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCConfirmationStep.h; sourceTree = "<group>"; };
+		D2731010142CB1E400EB5CB7 /* MPCConfirmationStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCConfirmationStep.m; sourceTree = "<group>"; };
 		D2779BC014336287003F7BE0 /* MailPluginTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailPluginTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2779BC514336287003F7BE0 /* MailPluginTool-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MailPluginTool-Info.plist"; sourceTree = "<group>"; };
 		D2779BC714336287003F7BE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -383,13 +383,13 @@
 		D2866E2F14FAAE420006A749 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D2866E4614FADC790006A749 /* ManagerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ManagerIcon.icns; path = "Mail Plugin Manager/ManagerIcon.icns"; sourceTree = "<group>"; };
 		D2866E4714FADC790006A749 /* ManagerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ManagerIcon.png; path = "Mail Plugin Manager/ManagerIcon.png"; sourceTree = "<group>"; };
-		D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MBMBackgroundImage.png; path = Common/Resources/Images/MBMBackgroundImage.png; sourceTree = "<group>"; };
+		D2866E6C14FAF6DF0006A749 /* MPCBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MPCBackgroundImage.png; path = Common/Resources/Images/MPCBackgroundImage.png; sourceTree = "<group>"; };
 		D2866EF214FBC3890006A749 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Common/Sparkle.framework; sourceTree = "<group>"; };
-		D28F77E814209D1D0015E42F /* MBMActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMActionItem.h; sourceTree = "<group>"; };
-		D28F77E914209D1D0015E42F /* MBMActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMActionItem.m; sourceTree = "<group>"; };
-		D2C8644F14FAAD9B00BAFA00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MBMInstallerWindow.xib; sourceTree = "<group>"; };
-		D2C8645314FAADB200BAFA00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MBMAgreementWindow.xib; sourceTree = "<group>"; };
-		D2C8645714FAADB600BAFA00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MBMBundleView.xib; sourceTree = "<group>"; };
+		D28F77E814209D1D0015E42F /* MPCActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCActionItem.h; sourceTree = "<group>"; };
+		D28F77E914209D1D0015E42F /* MPCActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCActionItem.m; sourceTree = "<group>"; };
+		D2C8644F14FAAD9B00BAFA00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MPCInstallerWindow.xib; sourceTree = "<group>"; };
+		D2C8645314FAADB200BAFA00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MPCAgreementWindow.xib; sourceTree = "<group>"; };
+		D2C8645714FAADB600BAFA00 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MPCBundleView.xib; sourceTree = "<group>"; };
 		D2C8645B14FAADBB00BAFA00 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/errors.strings; sourceTree = "<group>"; };
 		D2D1E6C714307968002FF1B1 /* LKError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKError.h; path = ../../LKKit/Helpers/LKError.h; sourceTree = "<group>"; };
 		D2D1E6C814307968002FF1B1 /* LKError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKError.m; path = ../../LKKit/Helpers/LKError.m; sourceTree = "<group>"; };
@@ -401,13 +401,13 @@
 		D2D1E6DB1431EC29002FF1B1 /* MailBundleTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailBundleTests.h; sourceTree = "<group>"; };
 		D2D1E6DC1431EC29002FF1B1 /* MailBundleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailBundleTests.m; sourceTree = "<group>"; };
 		D2D1E72F14320D1B002FF1B1 /* ExamplePlugin.mailbundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExamplePlugin.mailbundle; sourceTree = "<group>"; };
-		D2E90295141E4C7F0058618F /* MBMMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMMailBundle.h; sourceTree = "<group>"; };
-		D2E90296141E4C7F0058618F /* MBMMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMMailBundle.m; sourceTree = "<group>"; };
-		D2E90298141E5EF90058618F /* NSBundle+MBMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+MBMAdditions.h"; sourceTree = "<group>"; };
-		D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+MBMAdditions.m"; sourceTree = "<group>"; };
+		D2E90295141E4C7F0058618F /* MPCMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCMailBundle.h; sourceTree = "<group>"; };
+		D2E90296141E4C7F0058618F /* MPCMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCMailBundle.m; sourceTree = "<group>"; };
+		D2E90298141E5EF90058618F /* NSBundle+MPCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+MPCAdditions.h"; sourceTree = "<group>"; };
+		D2E90299141E5EF90058618F /* NSBundle+MPCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+MPCAdditions.m"; sourceTree = "<group>"; };
 		D2E9029F141E643F0058618F /* lk-warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "lk-warnings.xcconfig"; path = "../../lk-warnings.xcconfig"; sourceTree = "<group>"; };
-		D2E902AB141E72460058618F /* MBMSparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMSparkleDelegate.h; sourceTree = "<group>"; };
-		D2E902AC141E72470058618F /* MBMSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBMSparkleDelegate.m; sourceTree = "<group>"; };
+		D2E902AB141E72460058618F /* MPCSparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCSparkleDelegate.h; sourceTree = "<group>"; };
+		D2E902AC141E72470058618F /* MPCSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCSparkleDelegate.m; sourceTree = "<group>"; };
 		D2EB824D148F9EE700C8B0DB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D2EB8256148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSViewController+LKCollectionItemFix.h"; path = "../../LKKit/Categories/NSViewController+LKCollectionItemFix.h"; sourceTree = "<group>"; };
 		D2EB8257148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSViewController+LKCollectionItemFix.m"; path = "../../LKKit/Categories/NSViewController+LKCollectionItemFix.m"; sourceTree = "<group>"; };
@@ -415,10 +415,10 @@
 		D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+LKAdditions.m"; path = "../../LKKit/Categories/NSFileManager+LKAdditions.m"; sourceTree = "<group>"; };
 		D2EFB28414F44B8E00DEA922 /* InstallDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = InstallDocument.icns; sourceTree = "<group>"; };
 		D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = UninstallDocument.icns; sourceTree = "<group>"; };
-		D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAppDelegate.h; path = Common/MBAppDelegate.h; sourceTree = "<group>"; };
-		D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBAppDelegate.m; path = Common/MBAppDelegate.m; sourceTree = "<group>"; };
-		D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMBackgroundableView.h; path = Common/MBMBackgroundableView.h; sourceTree = "<group>"; };
-		D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMBackgroundableView.m; path = Common/MBMBackgroundableView.m; sourceTree = "<group>"; };
+		D2F70F7B143F1FA5000D5CC0 /* MPCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCAppDelegate.h; path = Common/MPCAppDelegate.h; sourceTree = "<group>"; };
+		D2F70F7C143F1FA5000D5CC0 /* MPCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCAppDelegate.m; path = Common/MPCAppDelegate.m; sourceTree = "<group>"; };
+		D2F70F89143F43CF000D5CC0 /* MPCBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCBackgroundableView.h; path = Common/MPCBackgroundableView.h; sourceTree = "<group>"; };
+		D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCBackgroundableView.m; path = Common/MPCBackgroundableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -608,10 +608,10 @@
 		D2730FE214293EE600EB5CB7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D2730FDC142931D100EB5CB7 /* MBMInstallerController.h */,
-				D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */,
-				D2730FE314293F6100EB5CB7 /* MBMAnimatedListController.h */,
-				D2730FE414293F6100EB5CB7 /* MBMAnimatedListController.m */,
+				D2730FDC142931D100EB5CB7 /* MPCInstallerController.h */,
+				D2730FDD142931D100EB5CB7 /* MPCInstallerController.m */,
+				D2730FE314293F6100EB5CB7 /* MPCAnimatedListController.h */,
+				D2730FE414293F6100EB5CB7 /* MPCAnimatedListController.m */,
 			);
 			name = Controllers;
 			path = "Mail Plugin Manager";
@@ -659,12 +659,12 @@
 		D2779BD9143364C9003F7BE0 /* Common Source */ = {
 			isa = PBXGroup;
 			children = (
-				D2F70F7B143F1FA5000D5CC0 /* MBAppDelegate.h */,
-				D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */,
-				D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */,
-				D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */,
-				D256CF2D14F99CFF001BA72D /* MPMSparkleAsyncOperation.h */,
-				D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */,
+				D2F70F7B143F1FA5000D5CC0 /* MPCAppDelegate.h */,
+				D2F70F7C143F1FA5000D5CC0 /* MPCAppDelegate.m */,
+				D2F70F89143F43CF000D5CC0 /* MPCBackgroundableView.h */,
+				D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */,
+				D256CF2D14F99CFF001BA72D /* MPCSparkleAsyncOperation.h */,
+				D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */,
 				D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */,
 				D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */,
 				D24248A4148E515700DE7E6A /* MBMConstantsList.h */,
@@ -685,9 +685,9 @@
 			isa = PBXGroup;
 			children = (
 				D2C8644C14FAACF800BAFA00 /* Images */,
-				D2C8645014FAAD9B00BAFA00 /* MBMInstallerWindow.xib */,
-				D2C8645414FAADB200BAFA00 /* MBMAgreementWindow.xib */,
-				D2C8645814FAADB600BAFA00 /* MBMBundleView.xib */,
+				D2C8645014FAAD9B00BAFA00 /* MPCInstallerWindow.xib */,
+				D2C8645414FAADB200BAFA00 /* MPCAgreementWindow.xib */,
+				D2C8645814FAADB600BAFA00 /* MPCBundleView.xib */,
 				D2C8645C14FAADBB00BAFA00 /* errors.strings */,
 				D20537B91436223D002F0157 /* uuids.plist */,
 				D23D3150144216E3007D30F8 /* companies.plist */,
@@ -715,7 +715,7 @@
 				D20537B614361EB6002F0157 /* GenericPlugin.png */,
 				D20537C51439CD3E002F0157 /* BundleBackground.png */,
 				D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */,
-				D2866E6C14FAF6DF0006A749 /* MBMBackgroundImage.png */,
+				D2866E6C14FAF6DF0006A749 /* MPCBackgroundImage.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -741,24 +741,24 @@
 		D2E9029C141E63990058618F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D2E90295141E4C7F0058618F /* MBMMailBundle.h */,
-				D2E90296141E4C7F0058618F /* MBMMailBundle.m */,
-				D2E902AB141E72460058618F /* MBMSparkleDelegate.h */,
-				D2E902AC141E72470058618F /* MBMSparkleDelegate.m */,
-				D216B37E141E1C21003788DC /* MBMManifestModel.h */,
-				D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */,
-				D28F77E814209D1D0015E42F /* MBMActionItem.h */,
-				D28F77E914209D1D0015E42F /* MBMActionItem.m */,
-				D273100F142CB1E400EB5CB7 /* MBMConfirmationStep.h */,
-				D2731010142CB1E400EB5CB7 /* MBMConfirmationStep.m */,
-				D23D315B1442575F007D30F8 /* MBMRemoteUpdatableList.h */,
-				D23D315C1442575F007D30F8 /* MBMRemoteUpdatableList.m */,
-				D23D3153144234B4007D30F8 /* MBMCompanyList.h */,
-				D23D3154144234B4007D30F8 /* MBMCompanyList.m */,
-				D23D31571442573A007D30F8 /* MBMUUIDList.h */,
-				D23D31581442573A007D30F8 /* MBMUUIDList.m */,
-				D23D316C1444DD7A007D30F8 /* MBMSystemInfo.h */,
-				D23D316D1444DD7A007D30F8 /* MBMSystemInfo.m */,
+				D2E90295141E4C7F0058618F /* MPCMailBundle.h */,
+				D2E90296141E4C7F0058618F /* MPCMailBundle.m */,
+				D2E902AB141E72460058618F /* MPCSparkleDelegate.h */,
+				D2E902AC141E72470058618F /* MPCSparkleDelegate.m */,
+				D216B37E141E1C21003788DC /* MPCManifestModel.h */,
+				D2730FD8142921B200EB5CB7 /* MPCManifestModel.m */,
+				D28F77E814209D1D0015E42F /* MPCActionItem.h */,
+				D28F77E914209D1D0015E42F /* MPCActionItem.m */,
+				D273100F142CB1E400EB5CB7 /* MPCConfirmationStep.h */,
+				D2731010142CB1E400EB5CB7 /* MPCConfirmationStep.m */,
+				D23D315B1442575F007D30F8 /* MPCRemoteUpdatableList.h */,
+				D23D315C1442575F007D30F8 /* MPCRemoteUpdatableList.m */,
+				D23D3153144234B4007D30F8 /* MPCCompanyList.h */,
+				D23D3154144234B4007D30F8 /* MPCCompanyList.m */,
+				D23D31571442573A007D30F8 /* MPCUUIDList.h */,
+				D23D31581442573A007D30F8 /* MPCUUIDList.m */,
+				D23D316C1444DD7A007D30F8 /* MPCSystemInfo.h */,
+				D23D316D1444DD7A007D30F8 /* MPCSystemInfo.m */,
 			);
 			name = Model;
 			path = Common/Source/Models;
@@ -780,10 +780,10 @@
 		D2E9029E141E63F70058618F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				D2E90298141E5EF90058618F /* NSBundle+MBMAdditions.h */,
-				D2E90299141E5EF90058618F /* NSBundle+MBMAdditions.m */,
-				D23D31701445B979007D30F8 /* NSUserDefaults+MBMShared.h */,
-				D23D31711445B979007D30F8 /* NSUserDefaults+MBMShared.m */,
+				D2E90298141E5EF90058618F /* NSBundle+MPCAdditions.h */,
+				D2E90299141E5EF90058618F /* NSBundle+MPCAdditions.m */,
+				D23D31701445B979007D30F8 /* NSUserDefaults+MPCShared.h */,
+				D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */,
 			);
 			name = Categories;
 			path = Common/Source/Categories;
@@ -1009,12 +1009,12 @@
 				D216B349141DFDE1003788DC /* InfoPlist.strings in Resources */,
 				D216B34F141DFDE1003788DC /* Credits.rtf in Resources */,
 				D216B355141DFDE2003788DC /* MainMenu.xib in Resources */,
-				D2C8644D14FAAD9B00BAFA00 /* MBMInstallerWindow.xib in Resources */,
+				D2C8644D14FAAD9B00BAFA00 /* MPCInstallerWindow.xib in Resources */,
 				D2730FF3142B539300EB5CB7 /* InstallAnimationBackground.png in Resources */,
-				D2C8645114FAADB200BAFA00 /* MBMAgreementWindow.xib in Resources */,
+				D2C8645114FAADB200BAFA00 /* MPCAgreementWindow.xib in Resources */,
 				D2866E2E14FAAE420006A749 /* Localizable.strings in Resources */,
 				D2C8645914FAADBB00BAFA00 /* errors.strings in Resources */,
-				D2C8645514FAADB600BAFA00 /* MBMBundleView.xib in Resources */,
+				D2C8645514FAADB600BAFA00 /* MPCBundleView.xib in Resources */,
 				D20537B714361EB6002F0157 /* GenericPlugin.png in Resources */,
 				D20537BA1436223D002F0157 /* uuids.plist in Resources */,
 				D20537C41439C9BB002F0157 /* BundleBackgroundRed.png in Resources */,
@@ -1024,7 +1024,7 @@
 				D2EFB28714F44B9500DEA922 /* UninstallDocument.icns in Resources */,
 				D2866E4814FADC790006A749 /* ManagerIcon.icns in Resources */,
 				D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */,
-				D2866E6D14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */,
+				D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1055,18 +1055,18 @@
 				D2779BCE14336287003F7BE0 /* Credits.rtf in Resources */,
 				D2779BD414336287003F7BE0 /* MainMenu.xib in Resources */,
 				D2779BDD14336641003F7BE0 /* InstallAnimationBackground.png in Resources */,
-				D2C8644E14FAAD9B00BAFA00 /* MBMInstallerWindow.xib in Resources */,
-				D2C8645214FAADB200BAFA00 /* MBMAgreementWindow.xib in Resources */,
+				D2C8644E14FAAD9B00BAFA00 /* MPCInstallerWindow.xib in Resources */,
+				D2C8645214FAADB200BAFA00 /* MPCAgreementWindow.xib in Resources */,
 				D2C8645A14FAADBB00BAFA00 /* errors.strings in Resources */,
 				D20537B814361F95002F0157 /* GenericPlugin.png in Resources */,
 				D20537BB1436223D002F0157 /* uuids.plist in Resources */,
 				D20537F5143B161C002F0157 /* MPTSinglePluginWindow.xib in Resources */,
-				D2C8645614FAADB600BAFA00 /* MBMBundleView.xib in Resources */,
+				D2C8645614FAADB600BAFA00 /* MPCBundleView.xib in Resources */,
 				D2F70F84143F34B7000D5CC0 /* BundleBackground.png in Resources */,
 				D2F70F85143F34B7000D5CC0 /* BundleBackgroundRed.png in Resources */,
 				D23D3152144216E3007D30F8 /* companies.plist in Resources */,
 				D24AF649147D3565000EDC6F /* MPT Scripting.sdef in Resources */,
-				D2866E6E14FAF6DF0006A749 /* MBMBackgroundImage.png in Resources */,
+				D2866E6E14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
 				D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1098,30 +1098,30 @@
 				D216B34B141DFDE1003788DC /* main.m in Sources */,
 				D216B352141DFDE1003788DC /* MPMAppDelegate.m in Sources */,
 				D216B37D141E1676003788DC /* MBMConstants.m in Sources */,
-				D2E90297141E4C800058618F /* MBMMailBundle.m in Sources */,
-				D2E9029A141E5EFA0058618F /* NSBundle+MBMAdditions.m in Sources */,
-				D2E902AD141E72470058618F /* MBMSparkleDelegate.m in Sources */,
-				D28F77EA14209D1D0015E42F /* MBMActionItem.m in Sources */,
+				D2E90297141E4C800058618F /* MPCMailBundle.m in Sources */,
+				D2E9029A141E5EFA0058618F /* NSBundle+MPCAdditions.m in Sources */,
+				D2E902AD141E72470058618F /* MPCSparkleDelegate.m in Sources */,
+				D28F77EA14209D1D0015E42F /* MPCActionItem.m in Sources */,
 				D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */,
 				D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */,
-				D2730FD9142921B200EB5CB7 /* MBMManifestModel.m in Sources */,
-				D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */,
-				D2730FE614293F6100EB5CB7 /* MBMAnimatedListController.m in Sources */,
+				D2730FD9142921B200EB5CB7 /* MPCManifestModel.m in Sources */,
+				D2730FDE142931D100EB5CB7 /* MPCInstallerController.m in Sources */,
+				D2730FE614293F6100EB5CB7 /* MPCAnimatedListController.m in Sources */,
 				D2730FF1142A1F4700EB5CB7 /* LKCGStructs.m in Sources */,
-				D2731011142CB1E500EB5CB7 /* MBMConfirmationStep.m in Sources */,
+				D2731011142CB1E500EB5CB7 /* MPCConfirmationStep.m in Sources */,
 				D2D1E6C914307968002FF1B1 /* LKError.m in Sources */,
 				D2D1E6CC1430827F002FF1B1 /* NSString+LKHelper.m in Sources */,
-				D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
-				D2F70F8B143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */,
-				D23D3155144234B4007D30F8 /* MBMCompanyList.m in Sources */,
-				D23D31591442573A007D30F8 /* MBMUUIDList.m in Sources */,
-				D23D315D1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */,
-				D23D316E1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */,
-				D23D31721445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
+				D2F70F7D143F1FA5000D5CC0 /* MPCAppDelegate.m in Sources */,
+				D2F70F8B143F43CF000D5CC0 /* MPCBackgroundableView.m in Sources */,
+				D23D3155144234B4007D30F8 /* MPCCompanyList.m in Sources */,
+				D23D31591442573A007D30F8 /* MPCUUIDList.m in Sources */,
+				D23D315D1442575F007D30F8 /* MPCRemoteUpdatableList.m in Sources */,
+				D23D316E1444DD7B007D30F8 /* MPCSystemInfo.m in Sources */,
+				D23D31721445B979007D30F8 /* NSUserDefaults+MPCShared.m in Sources */,
 				D2EB825A148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2EB825C148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 				D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */,
-				D227F2971504E69500907524 /* MPMSparkleAsyncOperation.m in Sources */,
+				D227F2971504E69500907524 /* MPCSparkleAsyncOperation.m in Sources */,
 				D2F4B6F2150527B6002C3E1D /* MPCScheduledUpdateDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1151,14 +1151,14 @@
 				D2779BCA14336287003F7BE0 /* main.m in Sources */,
 				D2779BD114336287003F7BE0 /* MPTAppDelegate.m in Sources */,
 				D2779BDC14336639003F7BE0 /* MBMConstants.m in Sources */,
-				D2779BE114336649003F7BE0 /* NSBundle+MBMAdditions.m in Sources */,
-				D2779BE214336651003F7BE0 /* MBMInstallerController.m in Sources */,
-				D2779BE314336651003F7BE0 /* MBMAnimatedListController.m in Sources */,
-				D2779BE41433665D003F7BE0 /* MBMMailBundle.m in Sources */,
-				D2779BE51433665D003F7BE0 /* MBMSparkleDelegate.m in Sources */,
-				D2779BE61433665D003F7BE0 /* MBMManifestModel.m in Sources */,
-				D2779BE71433665D003F7BE0 /* MBMActionItem.m in Sources */,
-				D2779BE81433665D003F7BE0 /* MBMConfirmationStep.m in Sources */,
+				D2779BE114336649003F7BE0 /* NSBundle+MPCAdditions.m in Sources */,
+				D2779BE214336651003F7BE0 /* MPCInstallerController.m in Sources */,
+				D2779BE314336651003F7BE0 /* MPCAnimatedListController.m in Sources */,
+				D2779BE41433665D003F7BE0 /* MPCMailBundle.m in Sources */,
+				D2779BE51433665D003F7BE0 /* MPCSparkleDelegate.m in Sources */,
+				D2779BE61433665D003F7BE0 /* MPCManifestModel.m in Sources */,
+				D2779BE71433665D003F7BE0 /* MPCActionItem.m in Sources */,
+				D2779BE81433665D003F7BE0 /* MPCConfirmationStep.m in Sources */,
 				D2779BEA14336DDC003F7BE0 /* NSString+LKStructUtils.m in Sources */,
 				D2779BEB14336DDC003F7BE0 /* NSString+LKHelper.m in Sources */,
 				D2779BEC14336DDC003F7BE0 /* LKCGStructs.m in Sources */,
@@ -1166,18 +1166,18 @@
 				D2779BEE14336DDC003F7BE0 /* LKError.m in Sources */,
 				D20537F3143B15ED002F0157 /* MPTSinglePluginController.m in Sources */,
 				D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */,
-				D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */,
-				D2F70F8C143F43CF000D5CC0 /* MBMBackgroundableView.m in Sources */,
-				D23D3156144234B4007D30F8 /* MBMCompanyList.m in Sources */,
-				D23D315A1442573A007D30F8 /* MBMUUIDList.m in Sources */,
-				D23D315E1442575F007D30F8 /* MBMRemoteUpdatableList.m in Sources */,
-				D23D316F1444DD7B007D30F8 /* MBMSystemInfo.m in Sources */,
-				D23D31731445B979007D30F8 /* NSUserDefaults+MBMShared.m in Sources */,
+				D2F70F7E143F1FA5000D5CC0 /* MPCAppDelegate.m in Sources */,
+				D2F70F8C143F43CF000D5CC0 /* MPCBackgroundableView.m in Sources */,
+				D23D3156144234B4007D30F8 /* MPCCompanyList.m in Sources */,
+				D23D315A1442573A007D30F8 /* MPCUUIDList.m in Sources */,
+				D23D315E1442575F007D30F8 /* MPCRemoteUpdatableList.m in Sources */,
+				D23D316F1444DD7B007D30F8 /* MPCSystemInfo.m in Sources */,
+				D23D31731445B979007D30F8 /* NSUserDefaults+MPCShared.m in Sources */,
 				D24AF64F147D4CAD000EDC6F /* MPTSendInfoCommand.m in Sources */,
 				D2EB825B148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 				D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */,
-				D256CF2F14F99D00001BA72D /* MPMSparkleAsyncOperation.m in Sources */,
+				D256CF2F14F99D00001BA72D /* MPCSparkleAsyncOperation.m in Sources */,
 				D221E96D1500237600568952 /* MPCScheduledUpdateDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1301,30 +1301,30 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		D2C8645014FAAD9B00BAFA00 /* MBMInstallerWindow.xib */ = {
+		D2C8645014FAAD9B00BAFA00 /* MPCInstallerWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				D2C8644F14FAAD9B00BAFA00 /* en */,
 			);
-			name = MBMInstallerWindow.xib;
+			name = MPCInstallerWindow.xib;
 			path = Common/Resources;
 			sourceTree = "<group>";
 		};
-		D2C8645414FAADB200BAFA00 /* MBMAgreementWindow.xib */ = {
+		D2C8645414FAADB200BAFA00 /* MPCAgreementWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				D2C8645314FAADB200BAFA00 /* en */,
 			);
-			name = MBMAgreementWindow.xib;
+			name = MPCAgreementWindow.xib;
 			path = Common/Resources;
 			sourceTree = "<group>";
 		};
-		D2C8645814FAADB600BAFA00 /* MBMBundleView.xib */ = {
+		D2C8645814FAADB600BAFA00 /* MPCBundleView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				D2C8645714FAADB600BAFA00 /* en */,
 			);
-			name = MBMBundleView.xib;
+			name = MPCBundleView.xib;
 			path = Common/Resources;
 			sourceTree = "<group>";
 		};

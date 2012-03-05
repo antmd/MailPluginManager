@@ -8,10 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MBAppDelegate.h"
-#import "MBMManifestModel.h"
+#import "MPCAppDelegate.h"
+#import "MPCManifestModel.h"
 
-@interface MPMAppDelegate : MBAppDelegate {
+@interface MPMAppDelegate : MPCAppDelegate {
 @private
 	BOOL				_installing;
 	BOOL				_uninstalling;
@@ -20,7 +20,7 @@
 	BOOL				_runningFromInstallDisk;
 	NSString			*_executablePath;
 	NSString			*_singleBundlePath;
-	MBMManifestModel	*_manifestModel;
+	MPCManifestModel	*_manifestModel;
 	
 	NSNumber			*_savedEnableAutoChecks;
 }
@@ -33,7 +33,7 @@
 @property (assign)				BOOL				runningFromInstallDisk;
 @property (nonatomic, copy)		NSString			*executablePath;
 @property (nonatomic, copy)		NSString			*singleBundlePath;
-@property (nonatomic, retain)	MBMManifestModel	*manifestModel;
+@property (nonatomic, retain)	MPCManifestModel	*manifestModel;
 
 - (void)ensureRunningBestVersion;
 @end

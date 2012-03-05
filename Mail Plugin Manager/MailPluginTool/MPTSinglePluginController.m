@@ -57,7 +57,7 @@ typedef enum {
 
 #pragma mark - Memory Management
 
-- (id)initWithMailBundle:(MBMMailBundle *)aMailBundle {
+- (id)initWithMailBundle:(MPCMailBundle *)aMailBundle {
     self = [super initWithWindowNibName:@"MPTSinglePluginWindow"];
     if (self) {
         // Initialization code here.
@@ -216,7 +216,7 @@ typedef enum {
 	NSString	*messageText = nil;
 	NSString	*confirmButton = nil;
 	NSString	*infoText = nil;
-	NSString	*disableFolder = [MBMMailBundle disabledBundleFolderName];
+	NSString	*disableFolder = [MPCMailBundle disabledBundleFolderName];
 	switch (actionType) {
 		case kMBTActionDisable:
 			messageText = NSLocalizedString(@"Are you sure you want to disable %@?", @"");
@@ -228,8 +228,8 @@ typedef enum {
 			messageText = NSLocalizedString(@"Are you sure you want to remove %@?", @"");
 			confirmButton = NSLocalizedString(@"Remove", @"");
 			infoText = NSLocalizedString(@"%1$@ will be placed in the Trash.", @"");
-			if ([MBMMailBundle latestDisabledBundlesPathShouldCreate:NO]) {
-				disableFolder = [[MBMMailBundle latestDisabledBundlesPathShouldCreate:NO] lastPathComponent];
+			if ([MPCMailBundle latestDisabledBundlesPathShouldCreate:NO]) {
+				disableFolder = [[MPCMailBundle latestDisabledBundlesPathShouldCreate:NO] lastPathComponent];
 			}
 			break;
 			

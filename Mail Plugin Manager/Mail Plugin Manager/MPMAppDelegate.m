@@ -8,8 +8,8 @@
 
 #import "MPMAppDelegate.h"
 
-#import "MBMMailBundle.h"
-#import "MBMInstallerController.h"
+#import "MPCMailBundle.h"
+#import "MPCInstallerController.h"
 #import "NSViewController+LKCollectionItemFix.h"
 
 #define SU_AUTOMATIC_CHECKS_KEY	@"SUEnableAutomaticChecks"
@@ -83,18 +83,18 @@ typedef enum {
 	
 	//	Then test to see if we should be showing the general management window
 	if (self.managing) {
-		[self showCollectionWindowForBundles:[MBMMailBundle allMailBundlesLoadInfo]];
+		[self showCollectionWindowForBundles:[MPCMailBundle allMailBundlesLoadInfo]];
 		
 		//	Add a notification watcher to handle uninstalls
 		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
-				self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
+			if ([[note object] isKindOfClass:[MPCMailBundle class]]) {
+				self.mailBundleList = [MPCMailBundle allMailBundlesLoadInfo];
 				[self adjustWindowSizeForBundleList:self.mailBundleList animate:YES];
 			}
 		}];
 	}
 	else {	//	Either install or uninstall uses the same process
-		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
+		MPCInstallerController	*controller = [[[MPCInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
 		[controller showWindow:self];
 		self.currentController = controller;
 	}
@@ -113,7 +113,7 @@ typedef enum {
 	if ([[NSWorkspace sharedWorkspace] isFilePackageAtPath:filename]) {
 		
 		//	Load the model
-		self.manifestModel = [[[MBMManifestModel alloc] initWithPackageAtPath:filename] autorelease];
+		self.manifestModel = [[[MPCManifestModel alloc] initWithPackageAtPath:filename] autorelease];
 		
 		//	Determine the type (install/uninstall)
 		NSString	*extension = [filename pathExtension];
@@ -179,7 +179,7 @@ typedef enum {
 		NSString	*myVersion = [[[NSBundle bundleForClass:[self class]] infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey];
 		
 		//	If the currently running version (on installer), is less than the local version...
-		if ([MBMMailBundle compareVersion:myVersion toVersion:otherVersion] == NSOrderedAscending) {
+		if ([MPCMailBundle compareVersion:myVersion toVersion:otherVersion] == NSOrderedAscending) {
 			//	Use Sparkle to check the local version.
 		}
 	}

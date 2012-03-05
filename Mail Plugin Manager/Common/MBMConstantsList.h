@@ -20,6 +20,7 @@ STR_CONST(kMBMMailFolderName, "Mail");
 STR_CONST(kMBMBundleFolderName, "Bundles");
 STR_CONST(kMBMMailPluginManagerBundleID, "com.littleknownsoftware.MailPluginManager");
 STR_CONST(kMBMUserDefaultSharedDomainName, "com.littleknownsoftware.MailPluginShared");
+STR_CONST(kMBMSharedApplicationSupportName, "MailPluginShared");
 STR_CONST(kMBMGenericBundleIcon, "GenericPlugin");
 
 //	Keys for top level of manifest
@@ -124,7 +125,7 @@ STR_CONST(kMBMNotificationWaitObserver, "observer");
 
 //	Names for objects in MBM
 STR_CONST(kMBMAnimationBackgroundImageName, "InstallAnimationBackground");
-STR_CONST(kMBMWindowBackgroundImageName, "MBMBackgroundImage");
+STR_CONST(kMBMWindowBackgroundImageName, "MPCBackgroundImage");
 
 //	Paths
 STR_CONST(kMBMRemoteUpdateableListPathURL, "https://raw.github.com/lksoft/MailPluginManager/master/Remote/");
