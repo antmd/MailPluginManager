@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "MBMBackgroundableView.h"
+#import "MBMMailBundle.h"
 
 @interface MBAppDelegate : NSObject <NSApplicationDelegate> {
 @private
@@ -25,6 +26,14 @@
 	NSOperationQueue		*_counterQueue;
 	NSOperationQueue		*_maintenanceQueue;
 	NSInteger				_maintenanceCounter;
+	NSOperationQueue		*_activityQueue;
+	NSInteger				_activityCounter;
+	NSOperationQueue		*_finalizeQueue;
+	NSInteger				_finalizeCounter;
+	BOOL					_finalizeQueueRequiresExplicitRelease;
+	BOOL					_finalizedQueueReleased;
+	
+	NSMutableArray			*_bundleSparkleOperations;
 	
 	MBMBackgroundableView	*_backgroundView;
 	NSScrollView			*_scrollView;
@@ -43,6 +52,7 @@
 @property (nonatomic, retain)	NSOperationQueue		*counterQueue;
 @property (nonatomic, retain)	NSOperationQueue		*maintenanceQueue;
 @property (assign)				NSInteger				maintenanceCounter;
+@property (nonatomic, assign)	BOOL					finalizeQueueRequiresExplicitRelease;
 
 @property (assign)	IBOutlet	MBMBackgroundableView	*backgroundView;
 @property (assign)	IBOutlet	NSScrollView			*scrollView;
@@ -51,10 +61,22 @@
 - (void)showCollectionWindowForBundles:(NSArray *)bundleList;
 - (void)adjustWindowSizeForBundleList:(NSArray *)bundleList animate:(BOOL)animate;
 
-//	Maintenance task management
-- (void)addOperation:(NSOperation *)operation forQueueNamed:(NSString *)aQueueName;
+//	Action
+- (IBAction)showURL:(id)sender;
+- (IBAction)finishApplication:(id)sender;
+
+//	Bundle Management
+- (void)updateMailBundle:(MBMMailBundle *)mailBundle;
+
+//	Queue management tasks
 - (void)addMaintenanceTask:(void (^)(void))block;
 - (void)addMaintenanceOperation:(NSOperation *)operation;
+- (void)addActivityTask:(void (^)(void))block;
+- (void)addActivityOperation:(NSOperation *)operation;
+- (void)addFinalizeTask:(void (^)(void))block;
+- (void)addFinalizeOperation:(NSOperation *)operation;
+- (void)releaseActivityQueue;
+- (void)releaseFinalizeQueue;
 
 //	Quitting only when tasks are completed
 - (void)quittingNowIsReasonable;
@@ -62,7 +84,6 @@
 //	Mail Application Management
 - (BOOL)quitMail;
 - (BOOL)restartMailWithBlock:(void (^)(void))taskBlock;
-- (IBAction)restartMail:(id)sender;
 - (BOOL)askToRestartMailWithBlock:(void (^)(void))taskBlock usingIcon:(NSImage *)iconImage;
 
 //	Used to set default values directly for the Plugin Manager

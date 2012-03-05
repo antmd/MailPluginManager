@@ -13,7 +13,7 @@
 #import "MBTSinglePluginController.h"
 #import "LKCGStructs.h"
 #import "NSUserDefaults+MBMShared.h"
-#import <Sparkle/Sparkle.h>
+//#import <Sparkle/Sparkle.h>
 
 
 #define HOURS_AGO	(-1 * 60 * 60)
@@ -22,30 +22,30 @@
 @interface MBTAppDelegate ()
 @property	(nonatomic, copy)	NSMutableDictionary			*savedSparkleState;
 @property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
-@property	(nonatomic, assign) MBTSparkleAsyncOperation	*sparkleOperation;
+@property	(nonatomic, assign) MPMSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
-@property	(nonatomic, copy)	NSMutableArray				*bundleSparkleOperations;
+//@property	(nonatomic, copy)	NSMutableArray				*bundleSparkleOperations;
 
-@property	(nonatomic, retain)	NSOperationQueue			*activityQueue;
-@property	(atomic, assign)	NSInteger					activityCounter;
-@property	(nonatomic, retain)	NSOperationQueue			*finalizeQueue;
-@property	(atomic, assign)	NSInteger					finalizeCounter;
+//@property	(nonatomic, retain)	NSOperationQueue			*activityQueue;
+//@property	(atomic, assign)	NSInteger					activityCounter;
+//@property	(nonatomic, retain)	NSOperationQueue			*finalizeQueue;
+//@property	(atomic, assign)	NSInteger					finalizeCounter;
 
 
 //	Actions
-- (void)installAnyMailBundlesPending;
+//- (void)installAnyMailBundlesPending;
 - (NSString *)pathToManagerContainer;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
 
-//	Queue management tasks
-- (void)addActivityTask:(void (^)(void))block;
-- (void)addActivityOperation:(NSOperation *)operation;
-- (void)addFinalizeTask:(void (^)(void))block;
-- (void)addFinalizeOperation:(NSOperation *)operation;
-- (void)activityIsWaitingToHappen;
-- (void)finalizeIsWaitingToHappen;
+////	Queue management tasks
+//- (void)addActivityTask:(void (^)(void))block;
+//- (void)addActivityOperation:(NSOperation *)operation;
+//- (void)addFinalizeTask:(void (^)(void))block;
+//- (void)addFinalizeOperation:(NSOperation *)operation;
+//- (void)activityIsWaitingToHappen;
+//- (void)finalizeIsWaitingToHappen;
 
 
 @end
@@ -56,12 +56,12 @@
 @synthesize sparkleKeysValues = _sparkleKeysValues;
 @synthesize sparkleOperation = _sparkleOperation;
 @synthesize updateDriver = _updateDriver;
-@synthesize bundleSparkleOperations = _bundleSparkleOperations;
+//@synthesize bundleSparkleOperations = _bundleSparkleOperations;
 
-@synthesize activityQueue = _activityQueue;
-@synthesize activityCounter = _activityCounter;
-@synthesize finalizeQueue = _finalizeQueue;
-@synthesize finalizeCounter = _finalizeCounter;
+//@synthesize activityQueue = _activityQueue;
+//@synthesize activityCounter = _activityCounter;
+//@synthesize finalizeQueue = _finalizeQueue;
+//@synthesize finalizeCounter = _finalizeCounter;
 
 
 
@@ -86,7 +86,7 @@
 }
 
 
-#pragma mark - Sparkle Delegate Methods
+#pragma mark - Plugin Manager Sparkle Delegation
 
 - (void)setupSparkleEnvironment {
 	id	value = nil;
@@ -132,6 +132,48 @@
 	[self cleanupSparkle];
 }
 
+
+
+#pragma mark - Memory Management
+
+- (id)init {
+	self = [super init];
+	if (self) {
+		_sparkleKeysValues = [[NSArray alloc] initWithObjects:
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUAutomaticallyUpdate", @"key", [NSNumber numberWithBool:YES], @"value", nil], 
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUEnableAutomaticChecks", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUHasLaunchedBefore", @"key", [NSNumber numberWithBool:YES], @"value", nil], 
+							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUSendProfileInfo", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
+							  nil];
+		_savedSparkleState = [[NSMutableDictionary alloc] initWithCapacity:[_sparkleKeysValues count]];
+		//		_bundleSparkleOperations = [[NSMutableArray alloc] init];
+		
+		//		//	Create a new operation queues to use for maintenance tasks
+		//		_activityQueue = [[NSOperationQueue alloc] init];
+		//		_activityQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
+		//		_activityQueue.suspended = YES;
+		//		_finalizeQueue = [[NSOperationQueue alloc] init];
+		//		_finalizeQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
+		//		_finalizeQueue.suspended = YES;
+		
+	}
+	return self;
+}
+
+- (void)dealloc {
+	self.updateDriver = nil;
+	self.savedSparkleState = nil;
+	self.sparkleKeysValues = nil;
+	//	self.bundleSparkleOperations = nil;
+	
+	//	self.activityQueue = nil;
+	//	self.finalizeQueue = nil;
+	
+	[super dealloc];
+}
+
+
+
 #pragma mark - Application Events
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -140,11 +182,13 @@
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
-	//	Add this method to the finalize before the Sparkle Update for the Manager
-	LKLog(@"Adding bundle installer cleanup to Finalize queue");
-	[self addFinalizeTask:^{
-		[self installAnyMailBundlesPending];
-	}];
+	self.finalizeQueueRequiresExplicitRelease = NO;
+
+	//	//	Add this method to the finalize before the Sparkle Update for the Manager
+//	LKLog(@"Adding bundle installer cleanup to Finalize queue");
+//	[self addFinalizeTask:^{
+//		[self installAnyMailBundlesPending];
+//	}];
 	
 	//	Get Path for the Mail Plugin Manager container
 	NSString	*mpmPath = [self pathToManagerContainer];
@@ -173,7 +217,7 @@
 		
 		//	Run a background thread to see if we need to update this app, using the basic updater directly.
 		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
-		self.sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
+		self.sparkleOperation = [[[MPMSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
 		[self addFinalizeOperation:self.sparkleOperation];
 	}
 	
@@ -182,42 +226,7 @@
 
 }
 
-- (id)init {
-	self = [super init];
-	if (self) {
-		_sparkleKeysValues = [[NSArray alloc] initWithObjects:
-							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUAutomaticallyUpdate", @"key", [NSNumber numberWithBool:YES], @"value", nil], 
-							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUEnableAutomaticChecks", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
-							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUHasLaunchedBefore", @"key", [NSNumber numberWithBool:YES], @"value", nil], 
-							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUSendProfileInfo", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
-							  nil];
-		_savedSparkleState = [[NSMutableDictionary alloc] initWithCapacity:[_sparkleKeysValues count]];
-		_bundleSparkleOperations = [[NSMutableArray alloc] init];
-		
-		//	Create a new operation queues to use for maintenance tasks
-		_activityQueue = [[NSOperationQueue alloc] init];
-		_activityQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
-		_activityQueue.suspended = YES;
-		_finalizeQueue = [[NSOperationQueue alloc] init];
-		_finalizeQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
-		_finalizeQueue.suspended = YES;
-		
-	}
-	return self;
-}
-
-- (void)dealloc {
-	self.updateDriver = nil;
-	self.savedSparkleState = nil;
-	self.sparkleKeysValues = nil;
-	self.bundleSparkleOperations = nil;
-	
-	self.activityQueue = nil;
-	self.finalizeQueue = nil;
-
-	[super dealloc];
-}
-
+/*
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
 	
 	LKLog(@"Activity Count:%d  Finalize Count:%d", [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
@@ -228,7 +237,7 @@
 	LKLog(@"Application is terminating: trace\n\n%@", [NSThread callStackSymbols]);
 	return reply;
 }
-
+*/
 
 
 #pragma mark - Helper Methods
@@ -305,7 +314,7 @@
 		 [kMBMCommandLineCheckCrashReportsKey isEqualToString:action] || [kMBMCommandLineUpdateAndCrashReportsKey isEqualToString:action])) {
 			
 			//	Release the Activity Queue
-			[self activityIsWaitingToHappen];
+			[self releaseActivityQueue];
 	}
 	else {
 		//	Look at the first argument (after executable name) and test for one of our types
@@ -345,31 +354,31 @@
 				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 				[center postNotificationName:kMBMSystemInfoDistNotification object:mailBundle.identifier userInfo:[MBMSystemInfo completeInfo] deliverImmediately:YES];
 				LKLog(@"Sent notification");
-				[AppDel quittingNowIsReasonable];
+				[self quittingNowIsReasonable];
 			}];
 		}
 		else if ([kMBMCommandLineUUIDListKey isEqualToString:action]) {
 			[self addActivityTask:^{
 				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 				[center postNotificationName:kMBMUUIDListDistNotification object:mailBundle.identifier userInfo:[MBMUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
-				[AppDel quittingNowIsReasonable];
+				[self quittingNowIsReasonable];
 			}];
 		}
 		else if ([kMBMCommandLineValidateAllKey isEqualToString:action]) {
-			[self addActivityTask:^{
-				[self validateAllBundles];
-			}];
+			//	Note that this does NOT get added to the Activity queue, since it will run as an event driven interface
+			[self validateAllBundles];
 		}
 		else {
 			//	Release the Activity Queue
-			[self activityIsWaitingToHappen];
+			[self releaseActivityQueue];
 		}
 	}
 
 	//	Can always indicate that quitting is reasonable
-	[AppDel quittingNowIsReasonable];
+	[self quittingNowIsReasonable];
 }
 
+/*
 - (void)installAnyMailBundlesPending {
 	
 	NSArray	*ops = [[self.bundleSparkleOperations retain] autorelease];
@@ -458,9 +467,12 @@
 		
 	}
 }
-
+*/
 
 - (void)validateAllBundles {
+	
+	//	Indicate that we need an explicit release of the finalize queue
+	self.finalizeQueueRequiresExplicitRelease = YES;
 	
 	//	Separate all the bundles into those that can update and those that can't
 	NSMutableArray	*updatingBundles = [NSMutableArray array];
@@ -510,7 +522,8 @@
 	
 	//	If there are no items, just return after indicating we can quit
 	if (IsEmpty(bundlesToTest)) {
-		[AppDel quittingNowIsReasonable];
+		[self releaseFinalizeQueue];
+		[self quittingNowIsReasonable];
 		return;
 	}
 	
@@ -571,7 +584,7 @@
 }
 
 
-
+/*
 #pragma mark - Internal Queue Management
 
 - (void)startActivity {
@@ -701,7 +714,7 @@
 	});
 }
 
-
+*/
 
 @end
 

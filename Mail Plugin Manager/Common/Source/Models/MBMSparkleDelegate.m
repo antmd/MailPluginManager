@@ -56,7 +56,10 @@
 
 //	Always postpone (indefinitely) the relaunch, but send a notification that the update is done.
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:self.mailBundle];
+	//	Change the invocation to set the Relaunch value to NO
+	BOOL	relaunch = NO;
+	[invocation setArgument:&relaunch atIndex:2];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:self.mailBundle userInfo:[NSDictionary dictionaryWithObjectsAndKeys:invocation, @"invoker", nil]];
 	return YES;
 }
 

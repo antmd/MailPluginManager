@@ -57,6 +57,7 @@ typedef enum {
 //	These are the methods in the order they are called...
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
+	
 	//	Read in any command line parameters and set instance variables accordingly
 	NSArray	*arguments = [[NSProcessInfo processInfo] arguments];
 	
@@ -66,6 +67,44 @@ typedef enum {
 	//	Default to managing
 	self.managing = YES;
 	
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	
+	//	Call our super to setup stuff
+	[super applicationDidFinishLaunching:aNotification];
+	
+	//	Run the update handler for this application, if we are in any case except, running an install file that 
+	//		doesn't want to install the bundle manager
+	if (!(self.manifestModel && !self.manifestModel.shouldInstallManager)) {
+		//	Run the Check Version Scenario
+		//		[self ensureRunningBestVersion];
+	}
+	
+	//	Then test to see if we should be showing the general management window
+	if (self.managing) {
+		[self showCollectionWindowForBundles:[MBMMailBundle allMailBundlesLoadInfo]];
+		
+		//	Add a notification watcher to handle uninstalls
+		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
+				self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
+				[self adjustWindowSizeForBundleList:self.mailBundleList animate:YES];
+			}
+		}];
+	}
+	else {	//	Either install or uninstall uses the same process
+		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
+		[controller showWindow:self];
+		self.currentController = controller;
+	}
+	
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification {
+	if (self.installing || self.uninstalling) {
+		[self changePluginManagerDefaultValue:self.savedEnableAutoChecks forKey:SU_AUTOMATIC_CHECKS_KEY];
+	}
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {
@@ -125,54 +164,7 @@ typedef enum {
 	return NO;
 }
 	
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
-	//	Call our super to setup stuff
-	[super applicationDidFinishLaunching:aNotification];
-	
-	//	Run the update handler for this application, if we are in any case except, running an install file that 
-	//		doesn't want to install the bundle manager
-	if (!(self.manifestModel && !self.manifestModel.shouldInstallManager)) {
-		//	Run the Check Version Scenario
-//		[self ensureRunningBestVersion];
-	}
-	
-	//	Then test to see if we should be showing the general management window
-	if (self.managing) {
-		[self showCollectionWindowForBundles:[MBMMailBundle allMailBundlesLoadInfo]];
-		
-		//	Add a notification watcher to handle uninstalls
-		self.bundleUninstallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMBMMailBundleUninstalledNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-			if ([[note object] isKindOfClass:[MBMMailBundle class]]) {
-				self.mailBundleList = [MBMMailBundle allMailBundlesLoadInfo];
-				[self adjustWindowSizeForBundleList:self.mailBundleList animate:YES];
-			}
-		}];
-	}
-	else {	//	Either install or uninstall uses the same process
-		MBMInstallerController	*controller = [[[MBMInstallerController alloc] initWithManifestModel:self.manifestModel] autorelease];
-		[controller showWindow:self];
-		self.currentController = controller;
-	}
-	
-}
-
-- (void)applicationWillTerminate:(NSNotification *)notification {
-	if (self.installing || self.uninstalling) {
-		[self changePluginManagerDefaultValue:self.savedEnableAutoChecks forKey:SU_AUTOMATIC_CHECKS_KEY];
-	}
-}
-
-#pragma mark - Action Methods
-
-- (IBAction)showURL:(id)sender {
-	if ([sender respondsToSelector:@selector(toolTip)]) {
-		NSURL	*aURL = [NSURL URLWithString:[sender toolTip]];
-		if (aURL) {
-			[[NSWorkspace sharedWorkspace] openURL:aURL];
-		}
-	}
-}
 
 #pragma mark - This App Update Methods
 

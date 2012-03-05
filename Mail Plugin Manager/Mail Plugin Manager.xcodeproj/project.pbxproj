@@ -29,6 +29,7 @@
 		D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
+		D227F2971504E69500907524 /* MPMSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */; };
 		D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D22CC059146BD87F0055CFBE /* InfoPlist.strings */; };
 		D22CC05D146BD87F0055CFBE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D22CC05C146BD87F0055CFBE /* main.m */; };
@@ -53,7 +54,7 @@
 		D24AF649147D3565000EDC6F /* MBT Scripting.sdef in Resources */ = {isa = PBXBuildFile; fileRef = D24AF648147D3565000EDC6F /* MBT Scripting.sdef */; };
 		D24AF64F147D4CAD000EDC6F /* MBTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */; };
 		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
-		D256CF2F14F99D00001BA72D /* MBTSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */; };
+		D256CF2F14F99D00001BA72D /* MPMSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
 		D2730FD9142921B200EB5CB7 /* MBMManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MBMManifestModel.m */; };
 		D2730FDE142931D100EB5CB7 /* MBMInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MBMInstallerController.m */; };
@@ -354,8 +355,8 @@
 		D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSendInfoCommand.m; sourceTree = "<group>"; };
 		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
-		D256CF2D14F99CFF001BA72D /* MBTSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTSparkleAsyncOperation.h; sourceTree = "<group>"; };
-		D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTSparkleAsyncOperation.m; sourceTree = "<group>"; };
+		D256CF2D14F99CFF001BA72D /* MPMSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPMSparkleAsyncOperation.h; path = MailPluginTool/MPMSparkleAsyncOperation.h; sourceTree = "<group>"; };
+		D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPMSparkleAsyncOperation.m; path = MailPluginTool/MPMSparkleAsyncOperation.m; sourceTree = "<group>"; };
 		D256CF3014FA6F11001BA72D /* Appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Appcast.xml; path = ../../Remote/Appcast.xml; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
 		D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSClickableURLTextField.m; sourceTree = "<group>"; };
@@ -624,8 +625,6 @@
 				D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */,
 				D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */,
 				D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */,
-				D256CF2D14F99CFF001BA72D /* MBTSparkleAsyncOperation.h */,
-				D256CF2E14F99CFF001BA72D /* MBTSparkleAsyncOperation.m */,
 				D221E96B1500237600568952 /* MBTScheduledUpdateDriver.h */,
 				D221E96C1500237600568952 /* MBTScheduledUpdateDriver.m */,
 				D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */,
@@ -665,6 +664,8 @@
 				D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */,
 				D2F70F89143F43CF000D5CC0 /* MBMBackgroundableView.h */,
 				D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */,
+				D256CF2D14F99CFF001BA72D /* MPMSparkleAsyncOperation.h */,
+				D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */,
 				D24248A4148E515700DE7E6A /* MBMConstantsList.h */,
 				D216B37B141E1676003788DC /* MBMConstants.h */,
 				D216B37C141E1676003788DC /* MBMConstants.m */,
@@ -1119,6 +1120,7 @@
 				D2EB825A148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2EB825C148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 				D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */,
+				D227F2971504E69500907524 /* MPMSparkleAsyncOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1173,7 +1175,7 @@
 				D2EB825B148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */,
 				D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 				D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */,
-				D256CF2F14F99D00001BA72D /* MBTSparkleAsyncOperation.m in Sources */,
+				D256CF2F14F99D00001BA72D /* MPMSparkleAsyncOperation.m in Sources */,
 				D221E96D1500237600568952 /* MBTScheduledUpdateDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

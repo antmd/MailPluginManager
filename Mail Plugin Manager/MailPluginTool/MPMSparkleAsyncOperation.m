@@ -1,20 +1,20 @@
 //
-//  MBTSparkleAsyncOperation.m
+//  MPMSparkleAsyncOperation.m
 //  Mail Plugin Manager
 //
 //  Created by Scott Little on 25/02/2012.
 //  Copyright (c) 2012 Little Known Software. All rights reserved.
 //
 
-#import "MBTSparkleAsyncOperation.h"
+#import "MPMSparkleAsyncOperation.h"
 
 
-@interface MBTSparkleAsyncOperation ()
+@interface MPMSparkleAsyncOperation ()
 @property	(retain)	SUUpdateDriver	*updateDriver;
 @property	(retain)	SUUpdater		*updater;
 @end
 
-@implementation MBTSparkleAsyncOperation
+@implementation MPMSparkleAsyncOperation
 
 @synthesize isExecuting = _isExecuting;
 @synthesize isFinished = _isFinished;

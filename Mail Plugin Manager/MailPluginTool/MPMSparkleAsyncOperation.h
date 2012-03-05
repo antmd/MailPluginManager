@@ -1,5 +1,5 @@
 //
-//  MBTSparkleAsyncOperation.h
+//  MPMSparkleAsyncOperation.h
 //  Mail Plugin Manager
 //
 //  Created by Scott Little on 25/02/2012.
@@ -10,7 +10,7 @@
 #import <Sparkle/Sparkle.h>
 #import "SUUpdateDriver.h"
 
-@interface MBTSparkleAsyncOperation : NSOperation {
+@interface MPMSparkleAsyncOperation : NSOperation {
 	BOOL			_isExecuting;
 	BOOL			_isFinished;
 	SUUpdateDriver	*_updateDriver;
