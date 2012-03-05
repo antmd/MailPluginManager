@@ -1,5 +1,5 @@
 //
-//  MBTScheduledUpdateDriver.h
+//  MPCScheduledUpdateDriver.h
 //  Mail Plugin Manager
 //
 //  Created by Scott Little on 01/03/2012.
@@ -8,7 +8,7 @@
 
 #import "SUUIBasedUpdateDriver.h"
 
-@interface MBTScheduledUpdateDriver : SUUIBasedUpdateDriver {
+@interface MPCScheduledUpdateDriver : SUUIBasedUpdateDriver {
 @private
 	BOOL	showErrors;
 }

@@ -46,6 +46,7 @@ typedef enum {
 @property	(nonatomic, assign)					NSInteger	initialState;
 @property	(nonatomic, assign, readonly)		NSInteger	currentState;
 @property	(nonatomic, assign)					BOOL		hasBeenUpdated;
+- (void)updateStateNow;
 - (void)updateState;
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
 + (NSString *)pathForDomain:(NSSearchPathDomainMask)domain shouldCreate:(BOOL)createNew disabled:(BOOL)disabledPath;
@@ -337,7 +338,7 @@ typedef enum {
 		_company = [[NSString alloc] initWithString:kMBMUnknownCompanyValue];
 		
 		//	Set the state values
-		[self updateState];
+		[self updateStateNow];
 		
 		//	Set the compatibility flag
 		//	Get the values to test
@@ -401,19 +402,23 @@ typedef enum {
 
 #pragma mark - Testing
 
+- (void)updateStateNow {
+	//	Set the state values
+	[self willChangeValueForKey:@"enabled"];
+	_enabled = [self isInActiveBundlesFolder];
+	[self didChangeValueForKey:@"enabled"];
+	[self willChangeValueForKey:@"installed"];
+	_installed = [self isInActiveBundlesFolder] || [self isInDisabledBundlesFolder];
+	[self didChangeValueForKey:@"installed"];
+	[self willChangeValueForKey:@"inLocalDomain"];
+	_inLocalDomain = [self.path hasPrefix:[[self class] mailFolderPathLocal]];
+	[self didChangeValueForKey:@"inLocalDomain"];
+}
+
 - (void)updateState {
 	
 	[self performBlock:^{
-		//	Set the state values
-		[self willChangeValueForKey:@"enabled"];
-		_enabled = [self isInActiveBundlesFolder];
-		[self didChangeValueForKey:@"enabled"];
-		[self willChangeValueForKey:@"installed"];
-		_installed = [self isInActiveBundlesFolder] || [self isInDisabledBundlesFolder];
-		[self didChangeValueForKey:@"installed"];
-		[self willChangeValueForKey:@"inLocalDomain"];
-		_inLocalDomain = [self.path hasPrefix:[[self class] mailFolderPathLocal]];
-		[self didChangeValueForKey:@"inLocalDomain"];
+		[self updateStateNow];
 	} afterDelay:0.1f];
 	
 }
@@ -483,27 +488,7 @@ typedef enum {
 
 
 - (void)updateIfNecessary {
-	
-	if (![self supportsSparkleUpdates]) {
-		return;
-	}
-	
-	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
-	SUUpdater	*updater = [SUUpdater updaterForBundle:self.bundle];
-	if (updater) {
-		self.sparkleDelegate = [[[MBMSparkleDelegate alloc] initWithMailBundle:self] autorelease];
-		[updater setDelegate:self.sparkleDelegate];
-		
-		[[NSNotificationCenter defaultCenter] addObserverForName:kMBMDoneUpdatingMailBundleNotification object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-			//	Go ahead and call the install directly
-			[[[note userInfo] valueForKey:@"invoker"] invoke];
-			self.hasBeenUpdated = YES;
-		}];
-		
-		//	Check for an update
-		[updater checkForUpdatesInBackground];
-	}
-	
+	[AppDel updateMailBundle:self];
 }
 
 - (void)uninstall {
@@ -565,6 +550,14 @@ typedef enum {
 	self.hasUpdate = NO;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneLoadingSparkleNotification object:self];
 }
+
+
+#pragma mark - Error Delegate Methods
+
+- (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
+	return @"MBMMailBundleErrorDomain";
+}
+
 
 
 
@@ -781,13 +774,6 @@ typedef enum {
 }
 
 
-#pragma mark - Error Delegate Methods
-
-- (NSString *)overrideErrorDomainForCode:(NSInteger)aCode {
-	return @"MBMMailBundleErrorDomain";
-}
-
-
 
 #pragma mark - Comparator
 
@@ -867,6 +853,14 @@ typedef enum {
 	[newString appendString:self.inLocalDomain?@"YES":@"NO"];
 	[newString appendString:@"\nhasUpdate:"];
 	[newString appendString:self.hasUpdate?@"YES":@"NO"];
+	[newString appendString:@"\nhasBeenUpdated:"];
+	[newString appendString:self.hasBeenUpdated?@"YES":@"NO"];
+	[newString appendString:@"\nneedsMailRestart:"];
+	[newString appendString:self.needsMailRestart?@"YES":@"NO"];
+	[newString appendString:@"\ncurrentState:"];
+	[newString appendFormat:@"%@", [NSNumber numberWithInteger:self.currentState]];
+	[newString appendString:@"\ninitialState:"];
+	[newString appendFormat:@"%@", [NSNumber numberWithInteger:self.initialState]];
 	[newString appendString:@"\nlatestVersion:"];
 	[newString appendString:self.latestVersion];
 	

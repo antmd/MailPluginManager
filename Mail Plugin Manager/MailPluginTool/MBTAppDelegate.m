@@ -24,28 +24,13 @@
 @property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
 @property	(nonatomic, assign) MPMSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
-//@property	(nonatomic, copy)	NSMutableArray				*bundleSparkleOperations;
-
-//@property	(nonatomic, retain)	NSOperationQueue			*activityQueue;
-//@property	(atomic, assign)	NSInteger					activityCounter;
-//@property	(nonatomic, retain)	NSOperationQueue			*finalizeQueue;
-//@property	(atomic, assign)	NSInteger					finalizeCounter;
 
 
 //	Actions
-//- (void)installAnyMailBundlesPending;
 - (NSString *)pathToManagerContainer;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MBMMailBundle *)mailBundle;
-
-////	Queue management tasks
-//- (void)addActivityTask:(void (^)(void))block;
-//- (void)addActivityOperation:(NSOperation *)operation;
-//- (void)addFinalizeTask:(void (^)(void))block;
-//- (void)addFinalizeOperation:(NSOperation *)operation;
-//- (void)activityIsWaitingToHappen;
-//- (void)finalizeIsWaitingToHappen;
 
 
 @end
@@ -56,13 +41,6 @@
 @synthesize sparkleKeysValues = _sparkleKeysValues;
 @synthesize sparkleOperation = _sparkleOperation;
 @synthesize updateDriver = _updateDriver;
-//@synthesize bundleSparkleOperations = _bundleSparkleOperations;
-
-//@synthesize activityQueue = _activityQueue;
-//@synthesize activityCounter = _activityCounter;
-//@synthesize finalizeQueue = _finalizeQueue;
-//@synthesize finalizeCounter = _finalizeCounter;
-
 
 
 #pragma mark - Handler Methods
@@ -86,54 +64,6 @@
 }
 
 
-#pragma mark - Plugin Manager Sparkle Delegation
-
-- (void)setupSparkleEnvironment {
-	id	value = nil;
-	[self.savedSparkleState removeAllObjects];
-	for (NSDictionary *aDict in self.sparkleKeysValues) {
-		value = [self changePluginManagerDefaultValue:[aDict valueForKey:@"value"] forKey:[aDict valueForKey:@"key"]];
-		if (value == nil) {
-			value = [NSNull null];
-		}
-		LKLog(@"Saving value '%@' for key '%@'",value, [aDict valueForKey:@"key"]);
-		[self.savedSparkleState setValue:value forKey:[aDict valueForKey:@"key"]];
-	}
-}
-
-- (void)resetSparkleEnvironment {
-	for (NSDictionary *aDict in self.sparkleKeysValues) {
-		LKLog(@"Trying to reset value '%@' for key '%@'",[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]], [aDict valueForKey:@"key"]);
-		[self changePluginManagerDefaultValue:[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]] forKey:[aDict valueForKey:@"key"]];
-	}
-	[self.savedSparkleState removeAllObjects];
-}
-
-- (void)cleanupSparkle {
-	[self resetSparkleEnvironment];
-	[self.sparkleOperation finish];
-}
-
-- (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)updater {
-	return NO;
-}
-
-- (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
-	LKLog(@"Update found with invocation:%@", invocation);
-	[self cleanupSparkle];
-	//	Do the install, but avoid a relaunch
-	[self.updateDriver installWithToolAndRelaunch:NO];
-	//	Tell Sparkle we're handling it.
-	return YES;
-}
-
-- (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
-	LKLog(@"No Update found");
-	[self cleanupSparkle];
-}
-
-
-
 #pragma mark - Memory Management
 
 - (id)init {
@@ -146,15 +76,6 @@
 							  [NSDictionary dictionaryWithObjectsAndKeys:@"SUSendProfileInfo", @"key", [NSNumber numberWithBool:NO], @"value", nil], 
 							  nil];
 		_savedSparkleState = [[NSMutableDictionary alloc] initWithCapacity:[_sparkleKeysValues count]];
-		//		_bundleSparkleOperations = [[NSMutableArray alloc] init];
-		
-		//		//	Create a new operation queues to use for maintenance tasks
-		//		_activityQueue = [[NSOperationQueue alloc] init];
-		//		_activityQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
-		//		_activityQueue.suspended = YES;
-		//		_finalizeQueue = [[NSOperationQueue alloc] init];
-		//		_finalizeQueue.maxConcurrentOperationCount = 1;	//	Makes this serial queue, in effect
-		//		_finalizeQueue.suspended = YES;
 		
 	}
 	return self;
@@ -164,10 +85,6 @@
 	self.updateDriver = nil;
 	self.savedSparkleState = nil;
 	self.sparkleKeysValues = nil;
-	//	self.bundleSparkleOperations = nil;
-	
-	//	self.activityQueue = nil;
-	//	self.finalizeQueue = nil;
 	
 	[super dealloc];
 }
@@ -184,12 +101,6 @@
 	
 	self.finalizeQueueRequiresExplicitRelease = NO;
 
-	//	//	Add this method to the finalize before the Sparkle Update for the Manager
-//	LKLog(@"Adding bundle installer cleanup to Finalize queue");
-//	[self addFinalizeTask:^{
-//		[self installAnyMailBundlesPending];
-//	}];
-	
 	//	Get Path for the Mail Plugin Manager container
 	NSString	*mpmPath = [self pathToManagerContainer];
 	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager
@@ -226,18 +137,6 @@
 
 }
 
-/*
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	
-	LKLog(@"Activity Count:%d  Finalize Count:%d", [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
-	NSApplicationTerminateReply	reply = NSTerminateNow;
-	if (([self.activityQueue operationCount] > 0) || ([self.finalizeQueue operationCount] > 0)) {
-		reply = NSTerminateCancel;
-	}
-	LKLog(@"Application is terminating: trace\n\n%@", [NSThread callStackSymbols]);
-	return reply;
-}
-*/
 
 
 #pragma mark - Helper Methods
@@ -378,96 +277,6 @@
 	[self quittingNowIsReasonable];
 }
 
-/*
-- (void)installAnyMailBundlesPending {
-	
-	NSArray	*ops = [[self.bundleSparkleOperations retain] autorelease];
-	self.bundleSparkleOperations = nil;
-	MBMMailBundle	*lastBundle = nil;
-	LKLog(@"Finishing Installs");
-	for (NSDictionary *opDict in ops) {
-		SUBasicUpdateDriver	*ud = [opDict valueForKey:@"driver"];
-		LKLog(@"Finishing Install for '%@'", [[[opDict valueForKey:@"bundle"] path] lastPathComponent]);
-		[ud installWithToolAndRelaunch:NO];
-		lastBundle = [opDict valueForKey:@"bundle"];
-	}
-	
-	//	Then do the Mail restart if necessary
-	if (lastBundle != nil) {
-		LKLog(@"Need to restart Mail");
-		//	Test to see if Mail is running
-		NSImage	*iconImage = [[NSWorkspace sharedWorkspace] iconForFile:lastBundle.path];
-		[AppDel askToRestartMailWithBlock:nil usingIcon:iconImage];
-	}
-}
-
-- (void)completeBundleUpdate:(NSNotification *)note {
-	NSDictionary	*theDict = nil;
-	if ([[note name] isEqualToString:kMBMDoneUpdatingMailBundleNotification ]) {
-		LKLog(@"Should be completing op for bundle '%@'", [[[note object] path] lastPathComponent]);
-		for (NSDictionary *aDict in self.bundleSparkleOperations) {
-			if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
-				theDict = aDict;
-				break;
-			}
-		}
-	}
-	else if ([[note name] isEqualToString:kMBMSUUpdateDriverAbortNotification]) {
-		//	Find which updater we're working with
-		for (NSDictionary *aDict in self.bundleSparkleOperations) {
-			if ([[aDict valueForKey:@"driver"] isEqual:[note object]]) {
-				theDict = aDict;
-				break;
-			}
-		}
-		//	Then remove it from the list
-		if (theDict != nil) {
-			theDict = [[theDict retain] autorelease];
-			[self.bundleSparkleOperations removeObject:theDict];
-		}
-	}
-	//	Remove observers
-	if (theDict != nil) {
-		[[theDict valueForKey:@"operation"] finish];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMSUUpdateDriverAbortNotification object:[note object]];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMBMDoneUpdatingMailBundleNotification object:[note object]];
-	}
-}
-
-
-- (void)updateMailBundle:(MBMMailBundle *)mailBundle {
-	
-	//	If the bundle doesn't support sparkle, just send a done notification and return
-	if (![mailBundle supportsSparkleUpdates]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
-		return;
-	}
-	
-	//	Simply use the standard Sparkle behavior (with an instantiation via the bundle)
-	SUUpdater	*updater = [SUUpdater updaterForBundle:mailBundle.bundle];
-	if (updater) {
-		
-		//	Set a delegate
-		MBMSparkleDelegate	*sparkleDelegate = [[[MBMSparkleDelegate alloc] initWithMailBundle:mailBundle] autorelease];
-		[updater setDelegate:sparkleDelegate];
-		
-		//	Create our driver manually, so that we have a copy to store
-		SUUpdateDriver		*updateDriver = [[[NSClassFromString(@"MBTScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
-		
-		//	Then create an operation to run the action
-		MBTSparkleAsyncOperation	*sparkleOperation = [[[MBTSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
-		[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];
-		
-		//	Set an observer for the bundle
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMDoneUpdatingMailBundleNotification object:mailBundle];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMBMSUUpdateDriverAbortNotification object:updateDriver];
-		
-		LKLog(@"Update Scheduled");
-		[self addActivityOperation:sparkleOperation];
-		
-	}
-}
-*/
 
 - (void)validateAllBundles {
 	
@@ -584,137 +393,53 @@
 }
 
 
-/*
-#pragma mark - Internal Queue Management
+#pragma mark - Plugin Manager Sparkle Delegation
 
-- (void)startActivity {
-	__block MBTAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.activityCounter++;
-	}];
-}	
-
-- (void)endActivity {
-	__block MBTAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.activityCounter--;
-	}];
+- (void)setupSparkleEnvironment {
+	id	value = nil;
+	[self.savedSparkleState removeAllObjects];
+	for (NSDictionary *aDict in self.sparkleKeysValues) {
+		value = [self changePluginManagerDefaultValue:[aDict valueForKey:@"value"] forKey:[aDict valueForKey:@"key"]];
+		if (value == nil) {
+			value = [NSNull null];
+		}
+		LKLog(@"Saving value '%@' for key '%@'",value, [aDict valueForKey:@"key"]);
+		[self.savedSparkleState setValue:value forKey:[aDict valueForKey:@"key"]];
+	}
 }
 
-- (void)startFinalize {
-	__block MBTAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.finalizeCounter++;
-	}];
-}	
+- (void)resetSparkleEnvironment {
+	for (NSDictionary *aDict in self.sparkleKeysValues) {
+		LKLog(@"Trying to reset value '%@' for key '%@'",[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]], [aDict valueForKey:@"key"]);
+		[self changePluginManagerDefaultValue:[self.savedSparkleState valueForKey:[aDict valueForKey:@"key"]] forKey:[aDict valueForKey:@"key"]];
+	}
+	[self.savedSparkleState removeAllObjects];
+}
 
-- (void)endFinalize {
-	__block MBTAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.finalizeCounter--;
-	}];
+- (void)cleanupSparkle {
+	[self resetSparkleEnvironment];
+	[self.sparkleOperation finish];
+}
+
+- (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)updater {
+	return NO;
+}
+
+- (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
+	LKLog(@"Update found with invocation:%@", invocation);
+	[self cleanupSparkle];
+	//	Do the install, but avoid a relaunch
+	[self.updateDriver installWithToolAndRelaunch:NO];
+	//	Tell Sparkle we're handling it.
+	return YES;
+}
+
+- (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
+	LKLog(@"No Update found");
+	[self cleanupSparkle];
 }
 
 
-
-#pragma mark - Queue Management Methods
-
-- (void)addActivityTask:(void (^)(void))block {
-	
-	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
-	[self addActivityOperation:main];
-}
-
-- (void)addActivityOperation:(NSOperation *)operation {
-	[self addOperation:operation forQueueNamed:@"Activity"];
-}
-
-- (void)addFinalizeTask:(void (^)(void))block {
-	
-	NSBlockOperation	*main = [NSBlockOperation blockOperationWithBlock:block];
-	[self addFinalizeOperation:main];
-}
-
-- (void)addFinalizeOperation:(NSOperation *)operation {
-	[self addOperation:operation forQueueNamed:@"Finalize"];
-}
-
-- (void)activityIsWaitingToHappen {
-	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		
-		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
-		
-		//	Create the timer and set it to repeat every half second
-		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
-		dispatch_source_set_event_handler(timer, ^{
-			if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
-				dispatch_source_cancel(timer);
-				dispatch_release(timer);
-				self.activityQueue.suspended = NO;
-				LKLog(@"Activities Unsuspended");
-			}
-		});
-		//	Start it
-		dispatch_resume(timer);
-		
-	});
-}
-
-- (void)finalizeIsWaitingToHappen {
-	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		
-		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
-		
-		//	Create the timer and set it to repeat every half second
-		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
-		dispatch_source_set_event_handler(timer, ^{
-			if (![self.activityQueue isSuspended] &&
-				(([self.activityQueue operationCount] == 0) && (self.activityCounter == 0))) {
-				dispatch_source_cancel(timer);
-				dispatch_release(timer);
-				self.finalizeQueue.suspended = NO;
-				LKLog(@"Finalize Unsuspended");
-			}
-		});
-		//	Start it
-		dispatch_resume(timer);
-		
-	});
-}
-
-- (void)quittingNowIsReasonable {
-	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		
-		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
-		
-		//	Create the timer and set it to repeat every half second
-		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
-		dispatch_source_set_event_handler(timer, ^{
-			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
-				(![self.activityQueue isSuspended] && ([self.activityQueue operationCount] == 0) && (self.activityCounter == 0)) && 
-				(([self.finalizeQueue operationCount] == 0) && (self.finalizeCounter == 0))) {
-				dispatch_source_cancel(timer);
-				dispatch_release(timer);
-				LKLog(@"Quitting from the NowReasonable method");
-				[NSApp terminate:nil];
-			}
-		});
-		//	Start it
-		dispatch_resume(timer);
-		
-	});
-}
-
-*/
 
 @end
 

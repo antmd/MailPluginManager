@@ -1,19 +1,19 @@
 //
-//  MBTScheduledUpdateDriver.m
+//  MPCScheduledUpdateDriver.m
 //  Mail Plugin Manager
 //
 //  Created by Scott Little on 01/03/2012.
 //  Copyright (c) 2012 Little Known Software. All rights reserved.
 //
 
-#import "MBTScheduledUpdateDriver.h"
+#import "MPCScheduledUpdateDriver.h"
 
 #import "SUStatusController.h"
 
 #define SPARKLE_BUNDLE [NSBundle bundleWithIdentifier:@"org.andymatuschak.Sparkle"]
 #define SULocalizedString(key,comment) NSLocalizedStringFromTableInBundle(key, @"Sparkle", SPARKLE_BUNDLE, comment)
 
-@implementation MBTScheduledUpdateDriver
+@implementation MPCScheduledUpdateDriver
 
 - (void)unarchiverDidFinish:(SUUnarchiver *)ua {
 	SUStatusController	*aStatusController = [self valueForKey:@"statusController"];

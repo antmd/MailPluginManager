@@ -34,6 +34,7 @@
 - (void)finalizeIsWaitingToHappen;
 
 //	Bundle Updating
+- (BOOL)testForMailBundleChanges;
 - (void)installAnyMailBundlesPending;
 - (void)completeBundleUpdate:(NSNotification *)note;
 
@@ -148,27 +149,12 @@
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	
-	if (!IsEmpty(self.mailBundleList)) {
-		BOOL	restartMail = NO;
-		//	Check to see if any of those need a mail restart
-		for (MBMMailBundle *bundle in self.mailBundleList) {
-			restartMail = restartMail || bundle.needsMailRestart;
-		}
-		
-		//	If we need to restart, do it.
-		if (restartMail) {
-			[self askToRestartMailWithBlock:nil usingIcon:nil];
-			return NSTerminateLater;
-		}
-	}
 	LKLog(@"Activity Count:%d  Finalize Count:%d", [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
 	if (([self.activityQueue operationCount] > 0) || ([self.finalizeQueue operationCount] > 0)) {
 		return NSTerminateCancel;
 	}
 	return NSTerminateNow;
 }
-
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
 	if (self.bundleUninstallObserver != nil) {
@@ -187,29 +173,6 @@
 	}
 }
 
-/*
-- (void)quittingNowIsReasonable {
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		
-		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
-		
-		//	Create the timer and set it to repeat every half second
-		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
-		dispatch_source_set_event_handler(timer, ^{
-			if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
-				dispatch_source_cancel(timer);
-				dispatch_release(timer);
-				[NSApp terminate:nil];
-			}
-		});
-		//	Start it
-		dispatch_resume(timer);
-		
-	});
-}
-*/
 
 #pragma mark - Window Management
 
@@ -274,8 +237,10 @@
 }
 
 - (IBAction)finishApplication:(id)sender {
+	//	Indicate that we can quit, *then* release the activity && finalize queues
+	[self quittingNowIsReasonable];
+	[self releaseActivityQueue];
 	[self releaseFinalizeQueue];
-	[NSApp terminate:sender];
 }
 
 
@@ -348,37 +313,41 @@
 }
 
 - (BOOL)askToRestartMailWithBlock:(void (^)(void))taskBlock usingIcon:(NSImage *)iconImage {
-	BOOL	mailWasRestartedOrNotRunning = YES;
+	__block BOOL	mailWasRestartedOrNotRunning = NO;
 	if (AppDel.isMailRunning) {
-		LKLog(@"Restarting Mail");
-		//	If so, ask user to quit it
-		NSString	*messageText = NSLocalizedString(@"I need to restart Mail to finish.", @"Description of why Mail needs to be quit.");
-		NSString	*infoText = NSLocalizedString(@"Clicking 'Restart Mail' will complete this action. Clicking 'Quit Mail Later' will let you delay this until later.", @"Details about how the buttons work.");
-		
-		NSString	*defaultButton = NSLocalizedString(@"Restart Mail", @"Button text to quit mail");
-		NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
-		NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
-		if (iconImage != nil) {
-			[quitMailAlert setIcon:iconImage];
-		}
-		else {
-			[quitMailAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]]];
-		}
-		
-		//	Throw this back onto the main queue
-		__block NSUInteger	mailResult;
-		dispatch_sync(dispatch_get_main_queue(), ^{
-			mailResult = [quitMailAlert runModal];
+		static dispatch_once_t onceToken;
+		dispatch_once(&onceToken, ^{
+			LKLog(@"Restarting Mail");
+			//	If so, ask user to quit it
+			NSString	*messageText = NSLocalizedString(@"I need to restart Mail to finish.", @"Description of why Mail needs to be quit.");
+			NSString	*infoText = NSLocalizedString(@"Clicking 'Restart Mail' will complete this action. Clicking 'Quit Mail Later' will let you delay this until later.", @"Details about how the buttons work.");
+			
+			NSString	*defaultButton = NSLocalizedString(@"Restart Mail", @"Button text to quit mail");
+			NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
+			NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
+			if (iconImage != nil) {
+				[quitMailAlert setIcon:iconImage];
+			}
+			else {
+				[quitMailAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMBMMailBundleIdentifier]]];
+			}
+			LKLog(@"Alert built");
+			
+			//	Throw this back onto the main queue
+			__block NSUInteger	mailResult;
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				mailResult = [quitMailAlert runModal];
+			});
+			
+			//	If they said yes, restart
+			if (mailResult == NSAlertDefaultReturn) {
+				//	Otherwise restart mail and return as a finalize task
+				[self addActivityTask:^{
+					[self restartMailWithBlock:taskBlock];
+				}];
+				mailWasRestartedOrNotRunning = YES;
+			}
 		});
-		
-		//	If they said yes, restart
-		if (mailResult == NSAlertDefaultReturn) {
-			//	Otherwise restart mail and return
-			[self restartMailWithBlock:taskBlock];
-		}
-		else {
-			mailWasRestartedOrNotRunning = NO;
-		}
 	}
 	return mailWasRestartedOrNotRunning;
 }
@@ -423,7 +392,7 @@
 		[updater setDelegate:sparkleDelegate];
 		
 		//	Create our driver manually, so that we have a copy to store
-		SUUpdateDriver		*updateDriver = [[[NSClassFromString(@"MBTScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
+		SUUpdateDriver		*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
 		
 		//	Then create an operation to run the action
 		MPMSparkleAsyncOperation	*sparkleOperation = [[[MPMSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
@@ -438,6 +407,23 @@
 		
 	}
 }
+
+- (BOOL)testForMailBundleChanges {
+	if (!IsEmpty(self.mailBundleList)) {
+		BOOL	restartMail = NO;
+		//	Check to see if any of those need a mail restart
+		for (MBMMailBundle *bundle in self.mailBundleList) {
+			restartMail = restartMail || bundle.needsMailRestart;
+		}
+		
+		//	If we need to restart, do it.
+		if (restartMail) {
+			return [self askToRestartMailWithBlock:nil usingIcon:nil];
+		}
+	}
+	return NO;
+}
+
 
 - (void)installAnyMailBundlesPending {
 	
@@ -543,23 +529,30 @@
 	@synchronized (_finalizeQueue) {
 		_finalizedQueueReleased = YES;
 	}
-	[self finalizeIsWaitingToHappen];
 }
 
 - (void)quittingNowIsReasonable {
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
+		LKLog(@"quitting timer being seet");
 		
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
 		
 		//	Create the timer and set it to repeat every half second
-		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
+		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 200ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
+			LKLog(@"Testing if quitting is reasonable");
 			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
 				(![self.activityQueue isSuspended] && ([self.activityQueue operationCount] == 0) && (self.activityCounter == 0)) && 
-				(([self.finalizeQueue operationCount] == 0) && (self.finalizeCounter == 0))) {
+				(![self.finalizeQueue isSuspended] && ([self.finalizeQueue operationCount] == 0) && (self.finalizeCounter == 0))) {
+
+				LKLog(@"Calling testForMailBundleChanges");
+				if ([self testForMailBundleChanges]) {
+					//	User is restarting mail, let that happen
+					return;
+				}
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
 				LKLog(@"Quitting from the NowReasonable method");

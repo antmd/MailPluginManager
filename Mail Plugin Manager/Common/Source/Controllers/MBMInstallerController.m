@@ -404,7 +404,7 @@ typedef enum {
 		[self.actionButton setTitle:actionTitle];
 		[self.actionButton setEnabled:YES];
 		[self.actionButton setTarget:AppDel];
-		[self.actionButton setAction:@selector(quittingNowIsReasonable)];
+		[self.actionButton setAction:@selector(finishApplication:)];
 		[self.previousStepButton setHidden:YES];
 
 		[self.displayProgressLabel setStringValue:displayMessage];
@@ -515,7 +515,7 @@ typedef enum {
 		}
 		
 		//	If we should restart mail
-		if (self.manifestModel.shouldRestartMail) {
+		if (self.manifestModel.shouldRestartMail && AppDel.isMailRunning) {
 			//	Test to see if Mail is running
 			if (![AppDel askToRestartMailWithBlock:configureBlock usingIcon:nil]) {
 				self.displayErrorMessage = NSLocalizedString(@"The plugin has been %@, but Mail has not been completely configured correctly to recognize it.\n\nPlease quit Mail for the changes to take affect.", @"Message to indicate to the user that mail was configured but not restarted");

@@ -25,7 +25,7 @@
 		D216B35E141DFDE2003788DC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D216B366141DFDE2003788DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D216B364141DFDE2003788DC /* InfoPlist.strings */; };
 		D216B37D141E1676003788DC /* MBMConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = D216B37C141E1676003788DC /* MBMConstants.m */; };
-		D221E96D1500237600568952 /* MBTScheduledUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D221E96C1500237600568952 /* MBTScheduledUpdateDriver.m */; };
+		D221E96D1500237600568952 /* MPCScheduledUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */; };
 		D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
@@ -119,6 +119,7 @@
 		D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */; };
 		D2EFB28514F44B8E00DEA922 /* InstallDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2EFB28414F44B8E00DEA922 /* InstallDocument.icns */; };
 		D2EFB28714F44B9500DEA922 /* UninstallDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */; };
+		D2F4B6F2150527B6002C3E1D /* MPCScheduledUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */; };
 		D2F70F7D143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
 		D2F70F7E143F1FA5000D5CC0 /* MBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F70F7C143F1FA5000D5CC0 /* MBAppDelegate.m */; };
 		D2F70F84143F34B7000D5CC0 /* BundleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537C51439CD3E002F0157 /* BundleBackground.png */; };
@@ -313,8 +314,8 @@
 		D216B37B141E1676003788DC /* MBMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBMConstants.h; path = Common/MBMConstants.h; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MBMConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBMConstants.m; path = Common/MBMConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MBMManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBMManifestModel.h; sourceTree = "<group>"; };
-		D221E96B1500237600568952 /* MBTScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBTScheduledUpdateDriver.h; sourceTree = "<group>"; };
-		D221E96C1500237600568952 /* MBTScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBTScheduledUpdateDriver.m; sourceTree = "<group>"; };
+		D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCScheduledUpdateDriver.h; path = MailPluginTool/MPCScheduledUpdateDriver.h; sourceTree = "<group>"; };
+		D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCScheduledUpdateDriver.m; path = MailPluginTool/MPCScheduledUpdateDriver.m; sourceTree = "<group>"; };
 		D221E96F1500253300568952 /* SUStatusController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUStatusController.h; sourceTree = "<group>"; };
 		D221E9701500253300568952 /* SUWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUWindowController.h; sourceTree = "<group>"; };
 		D221E971150026DA00568952 /* SUUIBasedUpdateDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUUIBasedUpdateDriver.h; sourceTree = "<group>"; };
@@ -625,8 +626,6 @@
 				D24AF64E147D4CAD000EDC6F /* MBTSendInfoCommand.m */,
 				D20537F1143B15ED002F0157 /* MBTSinglePluginController.h */,
 				D20537F2143B15ED002F0157 /* MBTSinglePluginController.m */,
-				D221E96B1500237600568952 /* MBTScheduledUpdateDriver.h */,
-				D221E96C1500237600568952 /* MBTScheduledUpdateDriver.m */,
 				D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */,
 				D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */,
 				D2779BD8143363DF003F7BE0 /* Resources */,
@@ -666,6 +665,8 @@
 				D2F70F8A143F43CF000D5CC0 /* MBMBackgroundableView.m */,
 				D256CF2D14F99CFF001BA72D /* MPMSparkleAsyncOperation.h */,
 				D256CF2E14F99CFF001BA72D /* MPMSparkleAsyncOperation.m */,
+				D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */,
+				D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */,
 				D24248A4148E515700DE7E6A /* MBMConstantsList.h */,
 				D216B37B141E1676003788DC /* MBMConstants.h */,
 				D216B37C141E1676003788DC /* MBMConstants.m */,
@@ -1121,6 +1122,7 @@
 				D2EB825C148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 				D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */,
 				D227F2971504E69500907524 /* MPMSparkleAsyncOperation.m in Sources */,
+				D2F4B6F2150527B6002C3E1D /* MPCScheduledUpdateDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1176,7 +1178,7 @@
 				D2EB825D148FA79300C8B0DB /* NSFileManager+LKAdditions.m in Sources */,
 				D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */,
 				D256CF2F14F99D00001BA72D /* MPMSparkleAsyncOperation.m in Sources */,
-				D221E96D1500237600568952 /* MBTScheduledUpdateDriver.m in Sources */,
+				D221E96D1500237600568952 /* MPCScheduledUpdateDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
