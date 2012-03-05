@@ -10,6 +10,8 @@
 
 #import "MPCBackgroundableView.h"
 #import "MPCMailBundle.h"
+#import "MPCRestartAsyncOperation.h"
+
 
 @interface MPCAppDelegate : NSObject <NSApplicationDelegate> {
 @private
@@ -25,11 +27,8 @@
 	BOOL					_isMailRunning;
 	NSOperationQueue		*_counterQueue;
 	NSOperationQueue		*_maintenanceQueue;
-	NSInteger				_maintenanceCounter;
 	NSOperationQueue		*_activityQueue;
-	NSInteger				_activityCounter;
 	NSOperationQueue		*_finalizeQueue;
-	NSInteger				_finalizeCounter;
 	BOOL					_finalizeQueueRequiresExplicitRelease;
 	BOOL					_finalizedQueueReleased;
 	
@@ -80,7 +79,7 @@
 
 //	Mail Application Management
 - (BOOL)quitMail;
-- (BOOL)restartMailWithBlock:(void (^)(void))taskBlock;
+- (void)restartMailExecutingBlock:(MPCAsyncRestartBlock)taskBlock;
 - (BOOL)askToRestartMailWithBlock:(void (^)(void))taskBlock usingIcon:(NSImage *)iconImage;
 
 //	Used to set default values directly for the Plugin Manager

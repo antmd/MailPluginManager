@@ -12,7 +12,6 @@
 #import "MPCCompanyList.h"
 #import "MPCUUIDList.h"
 
-//#import <Sparkle/Sparkle.h>
 #import "SUBasicUpdateDriver.h"
 #import "MPCSparkleAsyncOperation.h"
 
@@ -20,11 +19,8 @@
 
 @property	(nonatomic, retain)	NSOperationQueue		*counterQueue;
 @property	(nonatomic, retain)	NSOperationQueue		*maintenanceQueue;
-@property	(assign)			NSInteger				maintenanceCounter;
 @property	(nonatomic, retain)	NSOperationQueue		*activityQueue;
-@property	(atomic, assign)	NSInteger				activityCounter;
 @property	(nonatomic, retain)	NSOperationQueue		*finalizeQueue;
-@property	(atomic, assign)	NSInteger				finalizeCounter;
 
 @property	(nonatomic, copy)	NSMutableArray			*bundleSparkleOperations;
 
@@ -61,11 +57,8 @@
 
 @synthesize counterQueue = _counterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
-@synthesize maintenanceCounter = _maintenanceCounter;
 @synthesize activityQueue = _activityQueue;
-@synthesize activityCounter = _activityCounter;
 @synthesize finalizeQueue = _finalizeQueue;
-@synthesize finalizeCounter = _finalizeCounter;
 @synthesize finalizeQueueRequiresExplicitRelease = _finalizeQueueRequiresExplicitRelease;
 
 @synthesize bundleSparkleOperations = _bundleSparkleOperations;
@@ -115,6 +108,8 @@
 	self.mailBundleList = nil;
 	self.bundleViewController = nil;
 	
+	self.maintenanceQueue = nil;
+	self.counterQueue = nil;
 	self.activityQueue = nil;
 	self.finalizeQueue = nil;
 	
@@ -271,53 +266,23 @@
 	return [mailApp terminate];
 }
 
-- (BOOL)restartMailWithBlock:(void (^)(void))taskBlock {
+- (void)restartMailExecutingBlock:(MPCAsyncRestartBlock)taskBlock {
 	
 	//	If it is not running return
 	if (!self.isMailRunning) {
 		//	Perform the task first
 		if (taskBlock != nil) {
-			taskBlock();
-		}
-		return YES;
-	}
-	
-	//	Set up an observer for app termination watch
-	__block id appDoneObserver;
-	appDoneObserver = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:[NSWorkspace sharedWorkspace] queue:self.maintenanceQueue usingBlock:^(NSNotification *note) {
-		
-		if ([[[[note userInfo] valueForKey:NSWorkspaceApplicationKey] bundleIdentifier] isEqualToString:kMPCMailBundleIdentifier]) {
-			
-			//	If there is a block, run it first
-			if (taskBlock != nil) {
+			[self addActivityTask:^{
 				taskBlock();
-			}
-			
-			//	Launch Mail again
-			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMPCMailBundleIdentifier options:(NSWorkspaceLaunchAsync | NSWorkspaceLaunchWithoutActivation) additionalEventParamDescriptor:nil launchIdentifier:NULL];
-			//	indicate that the maintenance is done
-			[self endMaintenance];
-			
-			//	Remove this observer
-			[[NSNotificationCenter defaultCenter] removeObserver:appDoneObserver];
+			}];
 		}
-	}];
-	
-	//	Quit it and if that was successful, try to restart it
-	if ([self quitMail]) {
-		
-		//	Indicate that a maintenance task is running
-		[self startMaintenance];
-		
 	}
 	else {
-		//	Otherwise just remove the observer
-		[[NSNotificationCenter defaultCenter] removeObserver:appDoneObserver];
-		return NO;
+		MPCRestartAsyncOperation	*operation = [[[MPCRestartAsyncOperation alloc] initWithTaskBlock:taskBlock] autorelease];
+		[self addActivityOperation:operation];
 	}
-	
-	return YES;
 }
+
 
 - (BOOL)askToRestartMailWithBlock:(void (^)(void))taskBlock usingIcon:(NSImage *)iconImage {
 	__block BOOL	mailWasRestartedOrNotRunning = NO;
@@ -350,7 +315,7 @@
 			if (mailResult == NSAlertDefaultReturn) {
 				//	Otherwise restart mail and return as a finalize task
 				[self addActivityTask:^{
-					[self restartMailWithBlock:taskBlock];
+					[self restartMailExecutingBlock:taskBlock];
 				}];
 				mailWasRestartedOrNotRunning = YES;
 			}
@@ -542,7 +507,7 @@
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		LKLog(@"quitting timer being seet");
+		LKLog(@"quitting timer being sent");
 		
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
@@ -550,9 +515,9 @@
 		//	Create the timer and set it to repeat every half second
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 200ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
-			if ((([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) &&
-				(![self.activityQueue isSuspended] && ([self.activityQueue operationCount] == 0) && (self.activityCounter == 0)) && 
-				(![self.finalizeQueue isSuspended] && ([self.finalizeQueue operationCount] == 0) && (self.finalizeCounter == 0))) {
+			if (([self.maintenanceQueue operationCount] == 0) &&
+				(![self.activityQueue isSuspended] && ([self.activityQueue operationCount] == 0)) && 
+				(![self.finalizeQueue isSuspended] && ([self.finalizeQueue operationCount] == 0))) {
 
 				LKLog(@"Calling testForMailBundleChanges");
 				if ([self testForMailBundleChanges]) {
@@ -582,7 +547,7 @@
 		//	Create the timer and set it to repeat every half second
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 500ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
-			if (([self.maintenanceQueue operationCount] == 0) && (self.maintenanceCounter == 0)) {
+			if ([self.maintenanceQueue operationCount] == 0) {
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
 				self.activityQueue.suspended = NO;
@@ -608,8 +573,8 @@
 		dispatch_source_set_event_handler(timer, ^{
 			if ((!self.finalizeQueueRequiresExplicitRelease || 
 				 (self.finalizeQueueRequiresExplicitRelease && _finalizedQueueReleased)) && 
-				![self.activityQueue isSuspended] &&
-				(([self.activityQueue operationCount] == 0) && (self.activityCounter == 0))) {
+				(![self.activityQueue isSuspended] &&
+				 ([self.activityQueue operationCount] == 0))) {
 				dispatch_source_cancel(timer);
 				dispatch_release(timer);
 				self.finalizeQueue.suspended = NO;
@@ -630,13 +595,11 @@
 	
 	//	Make the values for the queue
 	SEL	queueSelector = NSSelectorFromString([NSString stringWithFormat:@"%@Queue", [aQueueName lowercaseString]]);
-	SEL	startSelector = NSSelectorFromString([NSString stringWithFormat:@"start%@", [aQueueName capitalizedString]]);
-	SEL	endSelector = NSSelectorFromString([NSString stringWithFormat:@"end%@", [aQueueName capitalizedString]]);
 	SEL	goSelector = NSSelectorFromString([NSString stringWithFormat:@"%@IsWaitingToHappen", [aQueueName lowercaseString]]);
 	
-	//	Ensure that we have a queue and both selectors
-	if (![self respondsToSelector:queueSelector] || ![self respondsToSelector:startSelector] || ![self respondsToSelector:endSelector]) {
-		LKErr(@"Found an invalid selector for the queue '%@' - queueSel:%s, startSel:%s, endSel:%s", aQueueName, queueSelector, startSelector, endSelector);
+	//	Ensure that we have a queue
+	if (![self respondsToSelector:queueSelector]) {
+		LKErr(@"Found an invalid selector for the queue '%@' - queueSel:%s", aQueueName, queueSelector);
 		return;
 	}
 	NSOperationQueue	*aQueue = [self performSelector:queueSelector];
@@ -645,66 +608,14 @@
 		return;
 	}
 	
-	//	Create blocks for start and end
-	NSBlockOperation	*start = [NSBlockOperation blockOperationWithBlock:^{[self performSelector:startSelector];}];
-	NSBlockOperation	*end = [NSBlockOperation blockOperationWithBlock:^{[self performSelector:endSelector];}];
-	
-	//	Create the dependencies
-	[operation addDependency:start];
-	[end addDependency:operation];
-	
-	//	Then add the operations
-	[aQueue addOperations:[NSArray arrayWithObjects:start, operation, end, nil] waitUntilFinished:NO];
+	//	Then add the operation
+	[aQueue addOperations:[NSArray arrayWithObjects:operation, nil] waitUntilFinished:NO];
 	//	And indicate that the queue should be started when ready, if the selector exists
 	if ([self respondsToSelector:goSelector]) {
+		LKLog(@"Calling selector %s", goSelector);
 		[self performSelector:goSelector];
 	}
 }
-
-
-- (void)startMaintenance {
-	__block MPCAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.maintenanceCounter++;
-	}];
-}	
-
-- (void)endMaintenance {
-	__block MPCAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.maintenanceCounter--;
-	}];
-}
-
-- (void)startActivity {
-	__block MPCAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.activityCounter++;
-	}];
-}	
-
-- (void)endActivity {
-	__block MPCAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.activityCounter--;
-	}];
-}
-
-- (void)startFinalize {
-	__block MPCAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.finalizeCounter++;
-	}];
-}	
-
-- (void)endFinalize {
-	__block MPCAppDelegate *blockSelf = self;
-	[self.counterQueue addOperationWithBlock:^{
-		blockSelf.finalizeCounter--;
-	}];
-}
-
-
 
 
 @end

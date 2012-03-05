@@ -51,6 +51,8 @@
 		D23D31721445B979007D30F8 /* NSUserDefaults+MPCShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */; };
 		D23D31731445B979007D30F8 /* NSUserDefaults+MPCShared.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */; };
 		D24248A6148E53C800DE7E6A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2779BF214337389003F7BE0 /* QuartzCore.framework */; };
+		D2487F2A150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */; };
+		D2487F2B150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */; };
 		D24AF649147D3565000EDC6F /* MPT Scripting.sdef in Resources */ = {isa = PBXBuildFile; fileRef = D24AF648147D3565000EDC6F /* MPT Scripting.sdef */; };
 		D24AF64F147D4CAD000EDC6F /* MPTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */; };
 		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
@@ -351,6 +353,8 @@
 		D23D31701445B979007D30F8 /* NSUserDefaults+MPCShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MPCShared.h"; sourceTree = "<group>"; };
 		D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MPCShared.m"; sourceTree = "<group>"; };
 		D24248A4148E515700DE7E6A /* MPCConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConstantsList.h; path = Common/MPCConstantsList.h; sourceTree = "<group>"; };
+		D2487F28150579E90064C1AE /* MPCRestartAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCRestartAsyncOperation.h; path = Common/Source/MPCRestartAsyncOperation.h; sourceTree = "<group>"; };
+		D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCRestartAsyncOperation.m; path = Common/Source/MPCRestartAsyncOperation.m; sourceTree = "<group>"; };
 		D24AF648147D3565000EDC6F /* MPT Scripting.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "MPT Scripting.sdef"; sourceTree = "<group>"; };
 		D24AF64D147D4CAD000EDC6F /* MPTSendInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTSendInfoCommand.h; sourceTree = "<group>"; };
 		D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTSendInfoCommand.m; sourceTree = "<group>"; };
@@ -666,6 +670,8 @@
 				D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */,
 				D256CF2D14F99CFF001BA72D /* MPCSparkleAsyncOperation.h */,
 				D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */,
+				D2487F28150579E90064C1AE /* MPCRestartAsyncOperation.h */,
+				D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */,
 				D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */,
 				D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */,
 				D24248A4148E515700DE7E6A /* MPCConstantsList.h */,
@@ -1123,6 +1129,7 @@
 				D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */,
 				D227F2971504E69500907524 /* MPCSparkleAsyncOperation.m in Sources */,
 				D2F4B6F2150527B6002C3E1D /* MPCScheduledUpdateDriver.m in Sources */,
+				D2487F2A150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1179,6 +1186,7 @@
 				D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */,
 				D256CF2F14F99D00001BA72D /* MPCSparkleAsyncOperation.m in Sources */,
 				D221E96D1500237600568952 /* MPCScheduledUpdateDriver.m in Sources */,
+				D2487F2B150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
