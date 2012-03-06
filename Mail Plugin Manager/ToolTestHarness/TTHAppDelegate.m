@@ -72,9 +72,13 @@ void	MPTCallToolCommandForBundleWithBlock2(NSString *mptCommand, NSBundle *mptMa
 	MPTMailInformationForBundleWithBlock(mailBundle, myBlock);
 	MPTUUIDListForBundleWithBlock(mailBundle, myBlock);
 	
-	MPTCheckForUpdatesForBundle(mailBundle);
+//	MPTUninstallForBundle(mailBundle);
+	
+//	MPTCheckForUpdatesForBundle(mailBundle);
 	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Sidebar for Infusionsoft.mailbundle"];
-	MPTCheckForUpdatesForBundle(sisBundle);
+//	MPTCheckForUpdatesForBundle(sisBundle);
+//	MPTUninstallForBundle(sisBundle);
+	MPTSendCrashReportsForBundle(sisBundle);
 	
 	double delayInSeconds = 10.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);

@@ -12,6 +12,7 @@
 #import "MPCSystemInfo.h"
 #import "MPTSinglePluginController.h"
 #import "LKCGStructs.h"
+#import "NSString+LKHelper.h"
 #import "NSUserDefaults+MPCShared.h"
 
 
@@ -102,9 +103,9 @@
 
 	//	Get Path for the Mail Plugin Manager container
 	NSString	*mpmPath = [self pathToManagerContainer];
-	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager
+	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager and if that is writable by the user.
 	LKLog(@"mpmPath is:%@", mpmPath);
-	if (mpmPath != nil) {
+	if ((mpmPath != nil) && [mpmPath userHasAccessRights]) {
 		//	Then find it's bundle
 		NSURL		*bundleURL = [NSURL fileURLWithPath:mpmPath isDirectory:YES];
 		NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
@@ -219,7 +220,9 @@
 		if ([kMPCCommandLineUninstallKey isEqualToString:action]) {
 			//	Tell it to uninstall itself
 			[self addActivityTask:^{
-				[mailBundle uninstall];
+				if ([mailBundle uninstall]) {
+					[self askToRestartMailWithBlock:nil usingIcon:[mailBundle icon]];
+				}
 			}];
 		}
 		else if ([kMPCCommandLineUpdateKey isEqualToString:action]) {

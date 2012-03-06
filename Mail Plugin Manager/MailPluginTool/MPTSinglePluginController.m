@@ -294,7 +294,6 @@ typedef enum {
 		//	If we have an alternate button, then they asked to restart Mail
 		if (alternateButton != nil) {
 			[AppDel restartMailExecutingBlock:nil];
-//			[AppDel restartMailWithBlock:nil];
 		}
 	}
 	

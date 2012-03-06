@@ -476,22 +476,13 @@ typedef enum {
 	
 }
 
-- (void)updateInteractive {
-	
-	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
-	SUUpdater	*updater = [SUUpdater updaterForBundle:self.bundle];
-	if (updater) {
-		[updater setDelegate:self];
-		[updater checkForUpdates:nil];
-	}
-}
-
-
 - (void)updateIfNecessary {
 	[AppDel updateMailBundle:self];
 }
 
-- (void)uninstall {
+- (BOOL)uninstall {
+	
+	BOOL	somethingHappened = YES;
 	
 	//	Present a dialog to the user to confirm that they want to remove the plugin
 	NSString	*messageText = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to uninstall the %@ Mail Plugin?", @"Question about if the uesr wants to delete the plugin"), self.name];
@@ -503,7 +494,10 @@ typedef enum {
 	[confirmAlert setIcon:self.icon];
 	
 	//	Run the alert
-	NSInteger	result = [confirmAlert runModal];
+	__block NSInteger	result;
+	dispatch_sync(dispatch_get_main_queue(), ^{
+		result = [confirmAlert runModal];
+	});
 	if (result == NSAlertDefaultReturn) {
 		self.installed = NO;
 	}
@@ -514,7 +508,10 @@ typedef enum {
 	else {
 		//	Send a notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCMailBundleNoActionTakenNotification object:self];
+		somethingHappened = NO;
 	}
+	
+	return somethingHappened;
 }
 
 - (void)sendCrashReports {

@@ -316,7 +316,7 @@
 		D216B37B141E1676003788DC /* MPCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConstants.h; path = Common/MPCConstants.h; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MPCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCConstants.m; path = Common/MPCConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MPCManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCManifestModel.h; sourceTree = "<group>"; };
-		D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MPCScheduledUpdateDriver.h; path = Common/Source/MPCScheduledUpdateDriver.h; sourceTree = "<group>"; };
+		D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCScheduledUpdateDriver.h; path = Common/Source/MPCScheduledUpdateDriver.h; sourceTree = "<group>"; };
 		D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCScheduledUpdateDriver.m; path = Common/Source/MPCScheduledUpdateDriver.m; sourceTree = "<group>"; };
 		D221E96F1500253300568952 /* SUStatusController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUStatusController.h; sourceTree = "<group>"; };
 		D221E9701500253300568952 /* SUWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUWindowController.h; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 		D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = UninstallDocument.icns; sourceTree = "<group>"; };
 		D2F70F7B143F1FA5000D5CC0 /* MPCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCAppDelegate.h; path = Common/Source/MPCAppDelegate.h; sourceTree = "<group>"; };
 		D2F70F7C143F1FA5000D5CC0 /* MPCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCAppDelegate.m; path = Common/Source/MPCAppDelegate.m; sourceTree = "<group>"; };
-		D2F70F89143F43CF000D5CC0 /* MPCBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MPCBackgroundableView.h; path = Common/Source/MPCBackgroundableView.h; sourceTree = "<group>"; };
+		D2F70F89143F43CF000D5CC0 /* MPCBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCBackgroundableView.h; path = Common/Source/MPCBackgroundableView.h; sourceTree = "<group>"; };
 		D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCBackgroundableView.m; path = Common/Source/MPCBackgroundableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 

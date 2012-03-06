@@ -102,9 +102,8 @@
 - (BOOL)supportsSparkleUpdates;
 
 - (void)loadUpdateInformation;
-- (void)updateInteractive;
 - (void)updateIfNecessary;
-- (void)uninstall;
+- (BOOL)uninstall;
 - (void)sendCrashReports;
 
 @end
