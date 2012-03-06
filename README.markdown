@@ -326,7 +326,6 @@ The keys for the results in the dictionary are listed below.
 
 #### Tool
 
-* Fix the Sparkle updating for plugins to actually do the work before quitting.
 * *Would be nice*
 * Crash Reporting.
 * Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
