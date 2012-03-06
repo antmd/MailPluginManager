@@ -13,8 +13,8 @@ STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
 
 //	Extensions and commonly used values
 STR_CONST(kMPCPlistExtension, "plist");
-STR_CONST(kMPCInstallerFileExtension, "mbinstall");
-STR_CONST(kMPCUninstallerFileExtension, "mbremove");
+STR_CONST(kMPCInstallerFileExtension, "mpinstall");
+STR_CONST(kMPCUninstallerFileExtension, "mpremove");
 STR_CONST(kMPCManifestName, "mpm-manifest");
 STR_CONST(kMPCMailFolderName, "Mail");
 STR_CONST(kMPCBundleFolderName, "Bundles");

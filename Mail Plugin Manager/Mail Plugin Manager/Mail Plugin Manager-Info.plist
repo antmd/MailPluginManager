@@ -12,12 +12,12 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>InstallDocument</string>
 			<key>CFBundleTypeName</key>
-			<string>Mail Bundle Installer Package</string>
+			<string>Mail Plugin Installer Package</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbinstall</string>
+				<string>com.littleknownsoftware.MailPluginManager.mpinstall</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<true/>
@@ -28,12 +28,12 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>UninstallDocument</string>
 			<key>CFBundleTypeName</key>
-			<string>Mail Bundle Uninstaller Package</string>
+			<string>Mail Plugin Uninstaller Package</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbremove</string>
+				<string>com.littleknownsoftware.MailPluginManager.mpremove</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<true/>
@@ -52,11 +52,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0b1</string>
+	<string>1.0b2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
@@ -79,14 +79,14 @@
 			<key>UTTypeIconFile</key>
 			<string>InstallDocument</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbinstall</string>
+			<string>com.littleknownsoftware.MailPluginManager.mpinstall</string>
 			<key>UTTypeReferenceURL</key>
 			<string>http://littleknownsoftware.com/mpm</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>mbinstall</string>
+					<string>mpinstall</string>
 				</array>
 			</dict>
 		</dict>
@@ -100,14 +100,14 @@
 			<key>UTTypeIconFile</key>
 			<string>UninstallDocument</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.littleknownsoftware.${PRODUCT_NAME:rfc1034identifier}.mbremove</string>
+			<string>com.littleknownsoftware.MailPluginManager.mpremove</string>
 			<key>UTTypeReferenceURL</key>
 			<string>http://littleknownsoftware.com/mpm</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>mbremove</string>
+					<string>mpremove</string>
 				</array>
 			</dict>
 		</dict>
