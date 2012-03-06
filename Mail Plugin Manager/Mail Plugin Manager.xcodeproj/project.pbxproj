@@ -316,8 +316,8 @@
 		D216B37B141E1676003788DC /* MPCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConstants.h; path = Common/MPCConstants.h; sourceTree = "<group>"; };
 		D216B37C141E1676003788DC /* MPCConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCConstants.m; path = Common/MPCConstants.m; sourceTree = "<group>"; };
 		D216B37E141E1C21003788DC /* MPCManifestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCManifestModel.h; sourceTree = "<group>"; };
-		D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCScheduledUpdateDriver.h; path = MailPluginTool/MPCScheduledUpdateDriver.h; sourceTree = "<group>"; };
-		D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCScheduledUpdateDriver.m; path = MailPluginTool/MPCScheduledUpdateDriver.m; sourceTree = "<group>"; };
+		D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MPCScheduledUpdateDriver.h; path = Common/Source/MPCScheduledUpdateDriver.h; sourceTree = "<group>"; };
+		D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCScheduledUpdateDriver.m; path = Common/Source/MPCScheduledUpdateDriver.m; sourceTree = "<group>"; };
 		D221E96F1500253300568952 /* SUStatusController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUStatusController.h; sourceTree = "<group>"; };
 		D221E9701500253300568952 /* SUWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUWindowController.h; sourceTree = "<group>"; };
 		D221E971150026DA00568952 /* SUUIBasedUpdateDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUUIBasedUpdateDriver.h; sourceTree = "<group>"; };
@@ -360,8 +360,8 @@
 		D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTSendInfoCommand.m; sourceTree = "<group>"; };
 		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
-		D256CF2D14F99CFF001BA72D /* MPCSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCSparkleAsyncOperation.h; path = MailPluginTool/MPCSparkleAsyncOperation.h; sourceTree = "<group>"; };
-		D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCSparkleAsyncOperation.m; path = MailPluginTool/MPCSparkleAsyncOperation.m; sourceTree = "<group>"; };
+		D256CF2D14F99CFF001BA72D /* MPCSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCSparkleAsyncOperation.h; path = Common/Source/MPCSparkleAsyncOperation.h; sourceTree = "<group>"; };
+		D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCSparkleAsyncOperation.m; path = Common/Source/MPCSparkleAsyncOperation.m; sourceTree = "<group>"; };
 		D256CF3014FA6F11001BA72D /* Appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Appcast.xml; path = ../../Remote/Appcast.xml; sourceTree = "<group>"; };
 		D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSClickableURLTextField.h; sourceTree = "<group>"; };
 		D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSClickableURLTextField.m; sourceTree = "<group>"; };
@@ -385,8 +385,8 @@
 		D2779BD314336287003F7BE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D2779BF214337389003F7BE0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D2866E2F14FAAE420006A749 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		D2866E4614FADC790006A749 /* ManagerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ManagerIcon.icns; path = "Mail Plugin Manager/ManagerIcon.icns"; sourceTree = "<group>"; };
-		D2866E4714FADC790006A749 /* ManagerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ManagerIcon.png; path = "Mail Plugin Manager/ManagerIcon.png"; sourceTree = "<group>"; };
+		D2866E4614FADC790006A749 /* ManagerIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ManagerIcon.icns; path = Common/Resources/Images/ManagerIcon.icns; sourceTree = "<group>"; };
+		D2866E4714FADC790006A749 /* ManagerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ManagerIcon.png; path = Common/Resources/Images/ManagerIcon.png; sourceTree = "<group>"; };
 		D2866E6C14FAF6DF0006A749 /* MPCBackgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MPCBackgroundImage.png; path = Common/Resources/Images/MPCBackgroundImage.png; sourceTree = "<group>"; };
 		D2866EF214FBC3890006A749 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Common/Sparkle.framework; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MPCActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCActionItem.h; sourceTree = "<group>"; };
@@ -419,10 +419,10 @@
 		D2EB8259148FA79300C8B0DB /* NSFileManager+LKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+LKAdditions.m"; path = "../../LKKit/Categories/NSFileManager+LKAdditions.m"; sourceTree = "<group>"; };
 		D2EFB28414F44B8E00DEA922 /* InstallDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = InstallDocument.icns; sourceTree = "<group>"; };
 		D2EFB28614F44B9500DEA922 /* UninstallDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = UninstallDocument.icns; sourceTree = "<group>"; };
-		D2F70F7B143F1FA5000D5CC0 /* MPCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCAppDelegate.h; path = Common/MPCAppDelegate.h; sourceTree = "<group>"; };
-		D2F70F7C143F1FA5000D5CC0 /* MPCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCAppDelegate.m; path = Common/MPCAppDelegate.m; sourceTree = "<group>"; };
-		D2F70F89143F43CF000D5CC0 /* MPCBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCBackgroundableView.h; path = Common/MPCBackgroundableView.h; sourceTree = "<group>"; };
-		D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCBackgroundableView.m; path = Common/MPCBackgroundableView.m; sourceTree = "<group>"; };
+		D2F70F7B143F1FA5000D5CC0 /* MPCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCAppDelegate.h; path = Common/Source/MPCAppDelegate.h; sourceTree = "<group>"; };
+		D2F70F7C143F1FA5000D5CC0 /* MPCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCAppDelegate.m; path = Common/Source/MPCAppDelegate.m; sourceTree = "<group>"; };
+		D2F70F89143F43CF000D5CC0 /* MPCBackgroundableView.h */ = {isa = PBXFileReference; fileEncoding = 4; name = MPCBackgroundableView.h; path = Common/Source/MPCBackgroundableView.h; sourceTree = "<group>"; };
+		D2F70F8A143F43CF000D5CC0 /* MPCBackgroundableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCBackgroundableView.m; path = Common/Source/MPCBackgroundableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
