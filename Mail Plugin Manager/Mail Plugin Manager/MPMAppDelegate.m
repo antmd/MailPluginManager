@@ -201,6 +201,12 @@ typedef enum {
 	return nil;
 }
 
+- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
+	[self quittingNowIsReasonable];
+	[self releaseActivityQueue];
+	[self releaseFinalizeQueue];
+}
+
 
 #pragma mark - Error Delegate Methods
 
