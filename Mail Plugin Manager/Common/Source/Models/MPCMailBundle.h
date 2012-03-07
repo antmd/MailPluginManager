@@ -24,6 +24,7 @@
 	BOOL			_usesBundleManager;
 	
 	NSString		*_latestVersion;
+	NSString		*_latestShortVersion;
 	BOOL			_hasUpdate;
 	
 	BOOL			_enabled;
@@ -43,6 +44,7 @@
 @property	(nonatomic, copy, readonly)		NSString		*companyURL;
 @property	(nonatomic, copy, readonly)		NSString		*productURL;
 @property	(nonatomic, copy, readonly)		NSString		*version;
+@property	(nonatomic, copy, readonly)		NSString		*shortVersion;
 @property	(nonatomic, copy, readonly)		NSString		*iconPath;
 @property	(nonatomic, copy, readonly)		NSString		*incompatibleString;
 @property	(nonatomic, copy, readonly)		NSColor			*incompatibleStringColor;
@@ -53,6 +55,7 @@
 @property	(nonatomic, assign, readonly)	BOOL			usesBundleManager;
 
 @property	(nonatomic, copy)				NSString		*latestVersion;
+@property	(nonatomic, copy)				NSString		*latestShortVersion;
 @property	(nonatomic, assign)				BOOL			hasUpdate;
 
 @property	(nonatomic, assign)				BOOL			enabled;

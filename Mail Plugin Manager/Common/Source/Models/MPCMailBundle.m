@@ -70,6 +70,7 @@ typedef enum {
 @synthesize incompatibleWithFutureMail = _incompatibleWithFutureMail;
 @synthesize hasUpdate = _hasUpdate;
 @synthesize latestVersion = _latestVersion;
+@synthesize latestShortVersion = _latestShortVersion;
 @synthesize enabled = _enabled;
 @synthesize installed = _installed;
 @synthesize inLocalDomain = _inLocalDomain;
@@ -89,6 +90,10 @@ typedef enum {
 
 - (NSString *)version {
 	return [self.bundle versionString];
+}
+
+- (NSString *)shortVersion {
+	return [self.bundle shortVersionString];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -374,6 +379,7 @@ typedef enum {
 	self.iconPath = nil;
 	self.bundle = nil;
 	self.latestVersion = nil;
+	self.latestShortVersion = nil;
 	self.sparkleDelegate = nil;
 	[super dealloc];
 }
@@ -536,7 +542,8 @@ typedef enum {
 
 // Sent when a valid update is found by the update driver.
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)appcastItem {
-	self.latestVersion = [appcastItem displayVersionString];
+	self.latestVersion = [appcastItem versionString];
+	self.latestShortVersion = [appcastItem displayVersionString];
 	self.hasUpdate = YES;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCDoneLoadingSparkleNotification object:self];
 }
@@ -544,6 +551,7 @@ typedef enum {
 // Sent when a valid update is not found.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
 	self.latestVersion = self.version;
+	self.latestShortVersion = self.shortVersion;
 	self.hasUpdate = NO;
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCDoneLoadingSparkleNotification object:self];
 }
@@ -816,6 +824,10 @@ typedef enum {
 }
 
 + (NSSet *)keyPathsForValuesAffectingVersion {
+	return [NSSet setWithObject:@"bundle"];
+}
+
++ (NSSet *)keyPathsForValuesAffectingShortVersion {
 	return [NSSet setWithObject:@"bundle"];
 }
 

@@ -11,6 +11,7 @@
 @interface NSBundle (NSBundle_MPCAdditions)
 
 - (NSString *)versionString;
+- (NSString *)shortVersionString;
 
 - (BOOL)hasLaterVersionNumberThanBundle:(NSBundle *)otherBundle;
 

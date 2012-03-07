@@ -16,6 +16,10 @@
 	return [[self infoDictionary] valueForKey:(NSString *)kCFBundleVersionKey];
 }
 
+- (NSString *)shortVersionString {
+	return [[self infoDictionary] valueForKey:@"CFBundleShortVersionString"];
+}
+
 - (BOOL)hasLaterVersionNumberThanBundle:(NSBundle *)otherBundle {
 
 	if (otherBundle == nil) {
