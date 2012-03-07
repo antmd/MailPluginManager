@@ -44,15 +44,18 @@
 //	}
 //	[self postDoneNotification];
 //}
-//
-//- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDriverFinished:) name:kMPCSUUpdateDriverAbortNotification object:[updater valueForKey:@"driver"]];
-//}
-//
-//- (void)updaterDidNotFindUpdate:(SUUpdater *)update {
-//	//	Post a new notification indicating that we are done
-//	[self updateDriverFinished:nil];
-//}
+
+- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
+	//	Post a distributed notification indicating that the bundle is up-to-date
+	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+	[center postNotificationName:kMPCBundleUpdateStatusDistNotification object:self.mailBundle.identifier userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"uptodate"] deliverImmediately:NO];
+}
+
+- (void)updaterDidNotFindUpdate:(SUUpdater *)update {
+	//	Post a distributed notification indicating that the bundle is up-to-date
+	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+	[center postNotificationName:kMPCBundleUpdateStatusDistNotification object:self.mailBundle.identifier userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:@"uptodate"] deliverImmediately:NO];
+}
 
 //	Always postpone (indefinitely) the relaunch, but send a notification that the update is done.
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {

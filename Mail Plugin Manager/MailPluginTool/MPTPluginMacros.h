@@ -33,6 +33,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define MPT_FREQUENCY_FORMAT					@" frequency %@"
 #define MPT_FREQUENCY_OPTION					@"-freq"
 
+#define MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION	@"com.littleknownsoftware.MPCBundleUpdateStatusDistNotification"
 #define MPT_SYSTEM_INFO_NOTIFICATION			@"com.littleknownsoftware.MPTSystemInfoDistNotification"
 #define MPT_UUID_LIST_NOTIFICATION				@"com.littleknownsoftware.MPTUUIDListDistNotification"
 #define MPT_TOOL_NAME							@"MailPluginTool"
@@ -108,7 +109,39 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 	} \
 }
 
+
+#define	MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow) \
+{ \
+	NSOperationQueue	*mptQueue = [[[NSOperationQueue alloc] init] autorelease]; \
+	[mptQueue setName:@"com.littleknownsoftware.BundleUpdateStatusQueue"]; \
+	__block id mptBundleObserver; \
+	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
+		/*	Test to see if the plugin is up to date	*/ \
+		if ([[[note userInfo] valueForKey:@"uptodate"] boolValue]) { \
+			NSString	*messageText = [NSString stringWithFormat:PluginLocalizedString(@"You have the most recent version of %@.", @"Text telling user the plugin is up to date"), [[mptBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey]]; \
+			NSAlert	*mptBundleUpToDateAlert = [NSAlert alertWithMessageText:messageText defaultButton:PluginLocalizedString(@"OK", @"Okay button") alternateButton:nil otherButton:nil informativeTextWithFormat:@""]; \
+			[mptBundleUpToDateAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[mptBundle bundlePath]]]; \
+			if (mptSheetWindow != nil) { \
+				dispatch_async(dispatch_get_main_queue(), ^{ \
+					[mptBundleUpToDateAlert beginSheetModalForWindow:mptSheetWindow modalDelegate:nil didEndSelector:NULL contextInfo:NULL]; \
+				}); \
+			} \
+			else { \
+				dispatch_sync(dispatch_get_main_queue(), ^{ \
+					[mptBundleUpToDateAlert runModal]; \
+				}); \
+			} \
+		} \
+		/*	Always remove the observer	*/ \
+		[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptBundleObserver]; \
+	}]; \
+}
+
+
 #pragma mark - Plugin Macros
+
+#pragma mark UpToDate Dialog
+#define MPTPresentModalDialogWhenUpToDate(mptBundle)							MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, nil);
 
 #pragma mark Launch and Forget
 
