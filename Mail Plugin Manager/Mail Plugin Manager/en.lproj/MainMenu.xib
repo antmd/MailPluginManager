@@ -1461,7 +1461,7 @@
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{283, 869}, {267, 141}}</string>
-				<int key="NSWTFlags">611845120</int>
+				<int key="NSWTFlags">1685586944</int>
 				<string key="NSWindowTitle">Preferences</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
@@ -1548,18 +1548,7 @@
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
-								<object class="NSMenuItem" key="NSMenuItem" id="609408670">
-									<reference key="NSMenu" ref="863720072"/>
-									<string key="NSTitle">Monthly</string>
-									<string key="NSKeyEquiv"/>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<int key="NSState">1</int>
-									<reference key="NSOnImage" ref="35465992"/>
-									<reference key="NSMixedImage" ref="502551668"/>
-									<string key="NSAction">_popUpItemAction:</string>
-									<int key="NSTag">2629800</int>
-									<reference key="NSTarget" ref="289346654"/>
-								</object>
+								<nil key="NSMenuItem"/>
 								<bool key="NSMenuItemRespectAlignment">YES</bool>
 								<object class="NSMenu" key="NSMenu" id="863720072">
 									<string key="NSTitle">OtherViews</string>
@@ -1600,11 +1589,21 @@
 											<int key="NSTag">604800</int>
 											<reference key="NSTarget" ref="289346654"/>
 										</object>
-										<reference ref="609408670"/>
+										<object class="NSMenuItem" id="609408670">
+											<reference key="NSMenu" ref="863720072"/>
+											<string key="NSTitle">Monthly</string>
+											<string key="NSKeyEquiv"/>
+											<int key="NSMnemonicLoc">2147483647</int>
+											<reference key="NSOnImage" ref="35465992"/>
+											<reference key="NSMixedImage" ref="502551668"/>
+											<string key="NSAction">_popUpItemAction:</string>
+											<int key="NSTag">2629800</int>
+											<reference key="NSTarget" ref="289346654"/>
+										</object>
 									</array>
 									<reference key="NSMenuFont" ref="286611634"/>
 								</object>
-								<int key="NSSelectedIndex">3</int>
+								<int key="NSSelectedIndex">-1</int>
 								<int key="NSPreferredEdge">1</int>
 								<bool key="NSUsesItemFromMenu">YES</bool>
 								<bool key="NSAltersState">YES</bool>
@@ -2457,14 +2456,6 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">checkForUpdates:</string>
 						<reference key="source" ref="770207541"/>
-						<reference key="destination" ref="587137475"/>
-					</object>
-					<int key="connectionID">621</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">checkForUpdates:</string>
-						<reference key="source" ref="770207541"/>
 						<reference key="destination" ref="848439412"/>
 					</object>
 					<int key="connectionID">641</int>
@@ -2479,11 +2470,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
+						<string key="label">checkForUpdates:</string>
+						<reference key="source" ref="770207541"/>
+						<reference key="destination" ref="587137475"/>
+					</object>
+					<int key="connectionID">654</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
 						<string key="label">makeKeyAndOrderFront:</string>
 						<reference key="source" ref="381741284"/>
 						<reference key="destination" ref="609285721"/>
 					</object>
-					<int key="connectionID">643</int>
+					<int key="connectionID">657</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2512,10 +2511,14 @@
 							<string key="NSLabel">selectedTag: updateCheckInterval</string>
 							<string key="NSBinding">selectedTag</string>
 							<string key="NSKeyPath">updateCheckInterval</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">636</int>
+					<int key="connectionID">659</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3921,7 +3924,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">653</int>
+			<int key="maxID">659</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
