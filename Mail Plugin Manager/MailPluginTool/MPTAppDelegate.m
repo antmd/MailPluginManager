@@ -421,27 +421,25 @@
 	[self.savedSparkleState removeAllObjects];
 }
 
-- (void)cleanupSparkle {
-	[self resetSparkleEnvironment];
-	[self.sparkleOperation finish];
-}
-
 - (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)updater {
 	return NO;
 }
 
 - (BOOL)updater:(SUUpdater *)updater shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update untilInvoking:(NSInvocation *)invocation {
 	LKLog(@"Update found with invocation:%@", invocation);
-	[self cleanupSparkle];
+	[self resetSparkleEnvironment];
 	//	Do the install, but avoid a relaunch
 	[self.updateDriver installWithToolAndRelaunch:NO];
+	//	Finish our operation
+	[self.sparkleOperation finish];
 	//	Tell Sparkle we're handling it.
 	return YES;
 }
 
 - (void)managerSparkleCompleted:(NSNotification *)note {
 	LKLog(@"Manager sparkle completed");
-	[self cleanupSparkle];
+	[self resetSparkleEnvironment];
+	[self.sparkleOperation finish];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:[note name] object:[note object]];
 }
 
