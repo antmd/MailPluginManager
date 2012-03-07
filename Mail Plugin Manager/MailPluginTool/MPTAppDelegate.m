@@ -32,6 +32,7 @@
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
 - (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MPCMailBundle *)mailBundle;
 
+- (void)managerSparkleCompleted:(NSNotification *)note;
 
 @end
 
@@ -129,6 +130,7 @@
 		//	Run a background thread to see if we need to update this app, using the basic updater directly.
 		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
 		self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managerSparkleCompleted:) name:kMPCSUUpdateDriverAbortNotification object:self.updateDriver];
 		[self addFinalizeOperation:self.sparkleOperation];
 	}
 	
@@ -276,6 +278,7 @@
 	}
 
 	//	Can always indicate that quitting is reasonable
+	LKLog(@"Reached the end of doAction - calling quittingNow...");
 	[self quittingNowIsReasonable];
 }
 
@@ -436,11 +439,11 @@
 	return YES;
 }
 
-- (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
-	LKLog(@"No Update found");
+- (void)managerSparkleCompleted:(NSNotification *)note {
+	LKLog(@"Manager sparkle completed");
 	[self cleanupSparkle];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:[note name] object:[note object]];
 }
-
 
 
 @end

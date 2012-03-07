@@ -287,8 +287,8 @@
 - (BOOL)askToRestartMailWithBlock:(void (^)(void))taskBlock usingIcon:(NSImage *)iconImage {
 	__block BOOL	mailWasRestartedOrNotRunning = NO;
 	if (AppDel.isMailRunning) {
-		static dispatch_once_t onceToken;
-		dispatch_once(&onceToken, ^{
+		static dispatch_once_t onceTokenMailRestart;
+		dispatch_once(&onceTokenMailRestart, ^{
 			LKLog(@"Restarting Mail");
 			//	If so, ask user to quit it
 			NSString	*messageText = NSLocalizedString(@"I need to restart Mail to finish.", @"Description of why Mail needs to be quit.");
@@ -505,16 +505,18 @@
 
 - (void)quittingNowIsReasonable {
 	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		LKLog(@"quitting timer being sent");
+	static dispatch_once_t onceTokenQuitting;
+	dispatch_once(&onceTokenQuitting, ^{
 		
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
 		
+		LKLog(@"quitting timer being set");
+
 		//	Create the timer and set it to repeat every half second
 		dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 200ull*NSEC_PER_MSEC, 5000ull);
 		dispatch_source_set_event_handler(timer, ^{
+			LKLog(@"Testing quit:MaintQ:%d, ActQ:%d,  FinalQ:%d", [self.maintenanceQueue operationCount], [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
 			if (([self.maintenanceQueue operationCount] == 0) &&
 				(![self.activityQueue isSuspended] && ([self.activityQueue operationCount] == 0)) && 
 				(![self.finalizeQueue isSuspended] && ([self.finalizeQueue operationCount] == 0))) {
@@ -538,8 +540,8 @@
 
 - (void)activityIsWaitingToHappen {
 	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
+	static dispatch_once_t onceTokenActivity;
+	dispatch_once(&onceTokenActivity, ^{
 		
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
@@ -562,8 +564,8 @@
 
 - (void)finalizeIsWaitingToHappen {
 	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
+	static dispatch_once_t onceTokenFinalize;
+	dispatch_once(&onceTokenFinalize, ^{
 		
 		dispatch_queue_t	globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_source_t	timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
