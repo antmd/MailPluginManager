@@ -9,6 +9,7 @@
 #import "MPMAppDelegate.h"
 
 #import "MPCMailBundle.h"
+#import "MPCSystemInfo.h"
 #import "MPCInstallerController.h"
 #import "NSViewController+LKCollectionItemFix.h"
 
@@ -183,6 +184,21 @@ typedef enum {
 			//	Use Sparkle to check the local version.
 		}
 	}
+}
+
+
+#pragma mark - Sparkle Delegate Methods
+
+- (NSArray *)feedParametersForUpdater:(SUUpdater *)updater sendingSystemProfile:(BOOL)sendingProfile {
+	if (sendingProfile) {
+		NSMutableArray	*params = [NSMutableArray arrayWithCapacity:4];
+		[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"mv", @"key", [MPCSystemInfo mailVersion], @"value", @"Mail Version", @"displayKey", [MPCSystemInfo mailVersion], @"displayValue", nil]];
+		[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"msv", @"key", [MPCSystemInfo mailShortVersion], @"value", @"Mail Short Version", @"displayKey", [MPCSystemInfo mailShortVersion], @"displayValue", nil]];
+		[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"mfv", @"key", [MPCSystemInfo messageVersion], @"value", @"Message Framework Version", @"displayKey", [MPCSystemInfo messageVersion], @"displayValue", nil]];
+		[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"mfsv", @"key", [MPCSystemInfo messageShortVersion], @"value", @"Message Framework Short Version", @"displayKey", [MPCSystemInfo messageShortVersion], @"displayValue", nil]];
+		return params;
+	}
+	return nil;
 }
 
 

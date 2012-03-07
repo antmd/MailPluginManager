@@ -104,6 +104,7 @@ STR_CONST(kMPCCompanyNameKey, "MPCCompanyName");
 STR_CONST(kMPCCompanyURLKey, "MPCCompanyURL");
 STR_CONST(kMPCProductURLKey, "MPCProductURL");
 STR_CONST(kMPCUnknownCompanyValue, "<MPCCompanyUnknown>");
+STR_CONST(kMPCSupplementalSparkleFeedParametersKey, "MPCSupplementalSparkleFeedParameters");
 
 //	Notifications
 STR_CONST(kMPCMailBundleUninstalledNotification, "MPCMailBundleUninstalledNotification");
