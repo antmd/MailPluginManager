@@ -490,6 +490,9 @@ typedef enum {
 	if (self.manifestModel.shouldConfigureMail || self.manifestModel.shouldRestartMail) {
 		//	Get Mail settings
 		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCMailBundleIdentifier];
+		if (mailDefaults == nil) {
+			mailDefaults = [NSDictionary dictionary];
+		}
 		
 		//	Make the block for updating those values
 		void	(^configureBlock)(void) = nil;
@@ -580,7 +583,7 @@ typedef enum {
 	NSError	*error;
 	if (![manager fileExistsAtPath:[anItem.destinationPath stringByDeletingLastPathComponent]]) {
 		if (![manager createDirectoryAtPath:[anItem.destinationPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error]) {
-			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, error, kMPCErrorKey, nil];
+			NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, [error localizedDescription], kMPCErrorKey, nil];
 			LKPresentErrorCodeUsingDict(MPCCantCreateFolder, theDict);
 			LKErr(@"Couldn't create folder to copy item '%@' into:%@", anItem.name, error);
 			return NO;
@@ -598,7 +601,7 @@ typedef enum {
 	
 	//	Now do the copy, replacing anything that is already there
 	if (![manager copyWithAuthenticationIfNeededFromPath:anItem.path toPath:anItem.destinationPath error:&error]) {
-		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, anItem.destinationPath, kMPCPathKey, error, kMPCErrorKey, nil];
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, anItem.destinationPath, kMPCPathKey, [error localizedDescription], kMPCErrorKey, nil];
 		LKPresentErrorCodeUsingDict(MPCCopyFailed, theDict);
 		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
 		return NO;
@@ -638,7 +641,7 @@ typedef enum {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kMPCMailBundleUninstalledNotification object:self];
 	}
 	else {
-		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, error, kMPCErrorKey, nil];
+		NSDictionary	*theDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, [error localizedDescription], kMPCErrorKey, nil];
 		LKPresentErrorCodeUsingDict(MPCUnableToMoveFileToTrash, theDict);
 		return NO;
 	}

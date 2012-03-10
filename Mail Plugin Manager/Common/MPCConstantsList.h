@@ -57,7 +57,7 @@ STR_CONST(kMPCConfirmationBulletTitleKey, "bullet-title");
 STR_CONST(kMPCConfirmationShouldAgreeToLicense, "license-agreement-required");
 STR_CONST(kMPCConfirmationTypeKey, "type");
 //	Other error keys
-STR_CONST(kMPCErrorKey, "error");
+STR_CONST(kMPCErrorKey, "mpc-error");
 
 //	Keys for historical UUID plist
 STR_CONST(kMPCUUIDTypeKey, "type");
