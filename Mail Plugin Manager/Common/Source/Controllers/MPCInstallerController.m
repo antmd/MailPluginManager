@@ -703,7 +703,15 @@ typedef enum {
 	}
 	
 	//	Install the bundle
-	return [self installItem:model.bundleManager];
+	BOOL	bundleSuccess = [self installItem:model.bundleManager];
+	if (bundleSuccess) {
+		//	Unquarantine the tool inside the bundle so that the user doesn't get these messages during updates.
+		NSString		*toolPath = [model.bundleManager.destinationPath stringByAppendingPathComponent:kMPCRelativeToolPath];
+		if ([manager fileExistsAtPath:toolPath]) {
+			[manager releaseFromQuarantine:toolPath];
+		}
+	}
+	return bundleSuccess;
 }
 
 - (BOOL)removeBundleManagerIfReasonable {

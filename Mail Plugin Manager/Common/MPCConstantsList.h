@@ -21,6 +21,7 @@ STR_CONST(kMPCBundleFolderName, "Bundles");
 STR_CONST(kMPCMailPluginManagerBundleID, "com.littleknownsoftware.MailPluginManager");
 STR_CONST(kMPCUserDefaultSharedDomainName, "com.littleknownsoftware.MailPluginShared");
 STR_CONST(kMPCSharedApplicationSupportName, "MailPluginShared");
+STR_CONST(kMPCRelativeToolPath, "Contents/Resources/MailPluginTool.app");
 STR_CONST(kMPCGenericBundleIcon, "GenericPlugin");
 
 //	Keys for top level of manifest
