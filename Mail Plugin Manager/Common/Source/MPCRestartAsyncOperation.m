@@ -35,6 +35,16 @@
 	[super dealloc];
 }
 
+
+- (void)complete {
+	
+	//	Launch Mail again
+	[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMPCMailBundleIdentifier options:(NSWorkspaceLaunchAsync | NSWorkspaceLaunchWithoutActivation) additionalEventParamDescriptor:nil launchIdentifier:NULL];
+	
+	//	Indicate that the operation is finished.
+	[self finish];
+}
+
 - (void)start {
     if (![NSThread isMainThread]) {
         [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
@@ -55,16 +65,13 @@
 			if (_taskBlock != nil) {
 				_taskBlock();
 			}
-			
-			//	Launch Mail again
-			[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMPCMailBundleIdentifier options:(NSWorkspaceLaunchAsync | NSWorkspaceLaunchWithoutActivation) additionalEventParamDescriptor:nil launchIdentifier:NULL];
-			//	indicate that the maintenance is done
+
+			//	Setup a timer to complete the task after a second - this gives Mail a better time of relaunching
+			[NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(complete) userInfo:nil repeats:NO];
 			
 			//	Remove this observer
 			[[NSNotificationCenter defaultCenter] removeObserver:appDoneObserver];
 			
-			//	Indicate that the operation is finished.
-			[self finish];
 		}
 	}];
 	
