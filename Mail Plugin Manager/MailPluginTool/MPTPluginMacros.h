@@ -27,7 +27,6 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #define MPT_TELL_APPLICATION_OPEN				@"tell application \"%@\"\n"
 #define MPT_TELL_APPLICATION_OPEN_0				@"tell application \"MailPluginTool\"\n"
-#define MPT_ACTIVATE_APP						@"activate\n"
 #define MPT_SCRIPT_FORMAT						@" %@ \"%@\""
 #define MPT_END_TELL							@"\nend tell"
 #define MPT_FREQUENCY_FORMAT					@" frequency %@"
@@ -46,7 +45,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #pragma mark - Reused Macros
 
-#define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptNeedsActivate, mptFrequency) \
+#define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptFrequency) \
 { \
 	if (mptMailBundle != nil) { \
 		NSString	*pluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
@@ -63,9 +62,6 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 			/*	Then actually launch the app to get the information back	*/ \
 			NSDictionary	*scriptErrors = nil; \
 			NSMutableString	*appleScript = [NSMutableString stringWithFormat:MPT_TELL_APPLICATION_OPEN, pluginToolPath]; \
-			if (mptNeedsActivate) { \
-				[appleScript appendString:MPT_ACTIVATE_APP]; \
-			} \
 			[appleScript appendFormat:MPT_SCRIPT_FORMAT, mptCommand, [mptMailBundle bundlePath]]; \
 			if (mptFrequency != nil) { \
 				[appleScript appendFormat:MPT_FREQUENCY_FORMAT, mptFrequency]; \
@@ -102,7 +98,7 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 			} \
 		}]; \
 		/*	Then actually launch the app to get the information back	*/ \
-		MPTLaunchCommandForBundle(mptCommand, mptMailBundle, NO, nil); \
+		MPTLaunchCommandForBundle(mptCommand, mptMailBundle, nil); \
 	} \
 	else { \
 		NSLog(@"ERROR in MPTCallToolCommandForBundleWithBlock() Macro: Cannot pass a nil bundle"); \
@@ -145,13 +141,13 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 
 #pragma mark Launch and Forget
 
-#define	MPTUninstallForBundle(mptMailBundle)									MPTLaunchCommandForBundle(MPT_UNINSTALL_TEXT, mptMailBundle, YES, nil);
-#define	MPTCheckForUpdatesForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, YES, nil);
-#define	MPTSendCrashReportsForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, NO, nil);
-#define	MPTUpdateAndSendReportsForBundle(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, YES, nil);
-#define	MPTCheckForUpdatesForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, YES, mptFreq);
-#define	MPTSendCrashReportsForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, NO, mptFreq);
-#define	MPTUpdateAndSendReportsForBundleWithFrequency(mptMailBundle, mptFreq)	MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, YES, mptFreq);
+#define	MPTUninstallForBundle(mptMailBundle)									MPTLaunchCommandForBundle(MPT_UNINSTALL_TEXT, mptMailBundle, nil);
+#define	MPTCheckForUpdatesForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, nil);
+#define	MPTSendCrashReportsForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, nil);
+#define	MPTUpdateAndSendReportsForBundle(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, nil);
+#define	MPTCheckForUpdatesForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, mptFreq);
+#define	MPTSendCrashReportsForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, mptFreq);
+#define	MPTUpdateAndSendReportsForBundleWithFrequency(mptMailBundle, mptFreq)	MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, mptFreq);
 
 #pragma mark Notification Block
 
