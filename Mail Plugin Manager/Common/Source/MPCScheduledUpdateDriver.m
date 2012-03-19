@@ -47,4 +47,25 @@
 		[self abortUpdate];
 }
 
+- (BOOL)isPastSchedule {
+	
+	// How long has it been since last we checked for an update?
+	NSDate			*lastCheckDate = [updater lastUpdateCheckDate];
+	if (!lastCheckDate) {
+		lastCheckDate = [NSDate distantPast];
+	}
+	NSTimeInterval	intervalSinceCheck = [[NSDate date] timeIntervalSinceDate:lastCheckDate];
+	
+	// Now we want to figure out how long until we check again.
+	NSTimeInterval updateCheckInterval = [updater updateCheckInterval];
+	if (updateCheckInterval < SU_MIN_CHECK_INTERVAL)
+		updateCheckInterval = SU_MIN_CHECK_INTERVAL;
+	if (intervalSinceCheck < updateCheckInterval) {
+		//	Not yet due for a check so just finish the operation
+		return NO;
+	}
+
+	return YES;
+}
+
 @end

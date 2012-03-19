@@ -14,6 +14,7 @@
 
 #import "SUBasicUpdateDriver.h"
 #import "MPCSparkleAsyncOperation.h"
+#import "MPCScheduledUpdateDriver.h"
 
 @interface MPCAppDelegate ()
 
@@ -364,19 +365,21 @@
 		[updater setDelegate:sparkleDelegate];
 		
 		//	Create our driver manually, so that we have a copy to store
-		SUUpdateDriver		*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
+		MPCScheduledUpdateDriver	*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
 		
-		//	Then create an operation to run the action
-		MPCSparkleAsyncOperation	*sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
-		[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];
-		
-		//	Set an observer for the bundle
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMPCDoneUpdatingMailBundleNotification object:mailBundle];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMPCSUUpdateDriverAbortNotification object:updateDriver];
-		
-		LKLog(@"Update Scheduled");
-		[self addActivityOperation:sparkleOperation];
-		
+		//	Only start the update if the schedule requires it
+		if ([updateDriver isPastSchedule]) {
+			//	Then create an operation to run the action
+			MPCSparkleAsyncOperation	*sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
+			[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];
+			
+			//	Set an observer for the bundle
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMPCDoneUpdatingMailBundleNotification object:mailBundle];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completeBundleUpdate:) name:kMPCSUUpdateDriverAbortNotification object:updateDriver];
+			
+			LKLog(@"Update Scheduled");
+			[self addActivityOperation:sparkleOperation];
+		}
 	}
 }
 

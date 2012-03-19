@@ -13,4 +13,6 @@
 	BOOL	showErrors;
 }
 
+- (BOOL)isPastSchedule;
+
 @end
