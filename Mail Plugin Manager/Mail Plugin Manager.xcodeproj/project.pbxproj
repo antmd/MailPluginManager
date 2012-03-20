@@ -831,6 +831,8 @@
 				D216B379141E0071003788DC /* Copy Frameworks */,
 				D216B338141DFDE1003788DC /* Resources */,
 				D256CF1414F92D2B001BA72D /* Copy Bundle Tool */,
+				D2344AAF1518E197005B3B0F /* Set Build Number */,
+				D2344A871518D83B005B3B0F /* Package for Sparkle */,
 			);
 			buildRules = (
 			);
@@ -1093,6 +1095,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		D2344A871518D83B005B3B0F /* Package for Sparkle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Package for Sparkle";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here\n\nif [ $CONFIGURATION != \"Release\" ]; then\n#exit \"Can't package for Non-Deployment Style\"\necho \"nothing\"\nfi\n\nexport REAL_PRODUCT=\"Mail Plugin Manager\"\nexport MY_RELEASE_FOLDER=\"$SRCROOT/../Releases\"\nexport MY_PRODUCT_NEW_NAME=\"MailPluginManager.New\"\n#export $INFO=\"$BUILT_PRODUCTS_DIR/INFOPLIST_PATH\"\n\necho \"Extracting version info from plist\"\n\necho \"Creating the zip file for Sparkle\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\n#   remove old zip file if it exists\nif [ -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\" ]; then\n    rm -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\"\nfi\n\n#   zip the file into new location\ntar -cyf \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\" \"$FULL_PRODUCT_NAME\"\n\n";
+		};
+		D2344AAF1518E197005B3B0F /* Set Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set Build Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/usr/bin/perl -w";
+			shellScript = "# Xcode auto-versioning script for Subversion\n# by Axel Andersson, modified by Daniel Jalkut to add\n# \"--revision HEAD\" to the svn info line, which allows\n# the latest revision to always be used.\n\nuse strict;\n\ndie \"$0: Must be run from Xcode\" unless $ENV{\"BUILT_PRODUCTS_DIR\"};\n\n\n# Get the current git branch and sha hash\n# \tto use them to set the CFBundleVersion value\nmy $GIT_INFO = `git --work-tree=\"$ENV{PROJECT_DIR}\" branch --abbrev=10 -v | grep '^*'`;\nmy $BRANCH = $GIT_INFO;\nmy $SHAHASH = $GIT_INFO;\nmy $INFO = \"$ENV{BUILT_PRODUCTS_DIR}/$ENV{INFOPLIST_PATH}\";\n\n# Extract the branch and sha\n$BRANCH =~ s/^\\*\\s([^\\s]+)(\\s+)[^\\$]*/$1/;\n$SHAHASH =~ s/^\\*\\s([^\\s]+)(\\s+)([0-9a-f]+)[^\\$]*/$3/;\n\n# trim the ends\n$BRANCH =~ s/^\\s+//;\n$SHAHASH =~ s/^\\s+//;\n\ndie \"$0: No git branch found\" unless $BRANCH;\n\n# Get the contents as an XML format\nmy $info = `plutil -convert xml1 -o - \"$INFO\"`;\n\n# replace both the branch name and the hash value\n$info =~ s/\\[BRANCH\\]/$BRANCH/;\n$info =~ s/\\[SHA-HASH\\]/$SHAHASH/;\n\n# Rewrite the contents to the file\nopen(FH, \">$INFO\") or die \"$0: $INFO: $!\";\nprint FH $info;\nclose(FH);\n\n# Rest the contents of the file to the binary version\n`plutil -convert binary1 \"$INFO\"`;\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
