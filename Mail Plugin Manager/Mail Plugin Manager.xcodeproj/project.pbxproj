@@ -1416,6 +1416,7 @@
 				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed-test/mpm";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1427,6 +1428,7 @@
 				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed/mpm";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

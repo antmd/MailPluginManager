@@ -32,20 +32,6 @@
 	[super dealloc];
 }
 
-//- (void)postDoneNotification {
-//	//	Post a new notification indicating that we are done
-//	LKLog(@"Sending Sparkle Done Notification for '%@'", [[self.mailBundle path] lastPathComponent]);
-//	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCDoneUpdatingMailBundleNotification object:self.mailBundle];
-//}
-//
-//- (void)updateDriverFinished:(NSNotification *)notification {
-//	//	Then remove the observer
-//	if (notification != nil) {
-//		[[NSNotificationCenter defaultCenter] removeObserver:self name:kMPCSUUpdateDriverAbortNotification object:[notification object]];
-//	}
-//	[self postDoneNotification];
-//}
-
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update {
 	//	Post a distributed notification indicating that the bundle is up-to-date
 	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];

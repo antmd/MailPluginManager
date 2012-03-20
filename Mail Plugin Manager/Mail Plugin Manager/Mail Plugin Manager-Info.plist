@@ -66,7 +66,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>https://littleknownsoftware.com/mpm/feed</string>
+	<string>${SPARKLE_FEED_URL}</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
