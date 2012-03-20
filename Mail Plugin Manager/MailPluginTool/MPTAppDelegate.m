@@ -181,6 +181,7 @@
 	
 	NSString	*bundlePath = nil;
 	NSInteger	frequencyInHours = 0;
+	BOOL		forceUpdate = NO;
 	
 	if ([arguments count] > 0) {
 		bundlePath = [arguments objectAtIndex:0];
@@ -190,7 +191,7 @@
 	}
 	if ([arguments count] > 1) {
 		if ([[arguments objectAtIndex:1] isEqualToString:kMPCCommandLineFrequencyOptionKey]) {
-			NSString	*frequencyType = [arguments objectAtIndex:4];
+			NSString	*frequencyType = [arguments objectAtIndex:2];
 			if ([frequencyType isEqualToString:@"daily"]) {
 				frequencyInHours = 24;
 			}
@@ -199,6 +200,9 @@
 			}
 			else if ([frequencyType isEqualToString:@"monthly"]) {
 				frequencyInHours = 24 * 7 * 28;
+			}
+			else if ([frequencyType isEqualToString:@"now"]) {
+				forceUpdate = YES;
 			}
 		}
 	}
@@ -231,7 +235,7 @@
 			//	Tell it to update itself, if frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
 				LKLog(@"Adding an update for bundle:'%@' to the queue", [[mailBundle path] lastPathComponent]);
-				[self updateMailBundle:mailBundle];
+				[self updateMailBundle:mailBundle force:forceUpdate];
 			}
 		}
 		else if ([kMPCCommandLineCheckCrashReportsKey isEqualToString:action]) {
@@ -248,7 +252,7 @@
 				[self addActivityTask:^{
 					[mailBundle sendCrashReports];
 				}];
-				[self updateMailBundle:mailBundle];
+				[self updateMailBundle:mailBundle force:forceUpdate];
 			}
 		}
 		else if ([kMPCCommandLineSystemInfoKey isEqualToString:action]) {

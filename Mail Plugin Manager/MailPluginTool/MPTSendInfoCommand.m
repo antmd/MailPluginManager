@@ -42,8 +42,28 @@
 			break;
 	}
 	NSArray		*arguments = [NSArray arrayWithObject:pluginPath];
+	NSString	*freqValue = @"weekly";
 	if ([[self evaluatedArguments] valueForKey:@"frequency"]) {
-		arguments = [arguments arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MPT_FREQUENCY_OPTION, [[self evaluatedArguments] valueForKey:@"frequency"], nil]];
+		LKLog(@"Arg class:%@   value:%@", [[[self evaluatedArguments] valueForKey:@"frequency"] className], [[self evaluatedArguments] valueForKey:@"frequency"]);
+		
+		switch ([[[self evaluatedArguments] valueForKey:@"frequency"] longValue]) {
+			case 'Now ':
+				freqValue = @"now";
+				break;
+				
+			case 'Daly':
+				freqValue = @"daily";
+				break;
+				
+			case 'Mnth':
+				freqValue = @"monthly";
+				break;
+				
+			default:
+				break;
+		}
+		
+		arguments = [arguments arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MPT_FREQUENCY_OPTION, freqValue, nil]];
 	}
 	LKLog(@"Action='%@' args=%@", command, arguments);
 	[AppDel doAction:command withArguments:arguments];

@@ -54,6 +54,7 @@
 			<enumerator name="daily" code="Daly" description="Should happen at least every 24 hours"/>
 			<enumerator name="weekly" code="Week" description="Should happen at least every 7 days."/>
 			<enumerator name="monthly" code="Mnth" description="Should happen at least once a calendar month."/>
+			<enumerator name="now" code="Now " description="Force a check now."/>
 		</enumeration>
 		<enumeration name="info type" code="Info">
 			<enumerator name="mail info" code="Mail" description="The mail relevant system information.">

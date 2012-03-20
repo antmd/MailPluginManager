@@ -10,49 +10,9 @@
 #import	"MPTPluginMacros.h"
 
 
-
 @implementation TTHAppDelegate
 
 @synthesize window = _window;
-
-void	MPTLaunchCommandForBundle2(NSString *mptCommand, NSBundle *mptMailBundle, BOOL needsActivate, NSString *mptFrequency);
-void	MPTCallToolCommandForBundleWithBlock2(NSString *mptCommand, NSBundle *mptMailBundle, MPTResultNotificationBlock mptNotificationBlock);
-
-void	MPTLaunchCommandForBundle2(NSString *mptCommand, NSBundle *mptMailBundle, BOOL mptNeedsActivate, NSString *mptFrequency) \
-{ \
-	NSDictionary	*scriptErrors = nil; \
-	NSMutableString	*appleScript = [NSMutableString stringWithString:MPT_TELL_APPLICATION_OPEN]; \
-	if (mptNeedsActivate) {
-		[appleScript appendString:MPT_ACTIVATE_APP];
-	}
-	[appleScript appendFormat:MPT_SCRIPT_FORMAT, mptCommand, [mptMailBundle bundlePath]]; \
-	if (mptFrequency != nil) { \
-		[appleScript appendFormat:MPT_FREQUENCY_FORMAT, mptFrequency]; \
-	} \
-	[appleScript appendString:MPT_END_TELL]; \
-	NSAppleScript	*theScript = [[[NSAppleScript alloc] initWithSource:appleScript] autorelease]; \
-	NSAppleEventDescriptor	*desc = [theScript executeAndReturnError:&scriptErrors]; \
-	if (!desc) { \
-		NSLog(@"Script (%@) to call MailBundleTool failed:%@", appleScript, scriptErrors); \
-	} \
-}
-
-void	MPTCallToolCommandForBundleWithBlock2(NSString *mptCommand, NSBundle *mptMailBundle, MPTResultNotificationBlock mptNotificationBlock) \
-{ \
-	NSString	*mptNotificationName = [mptCommand isEqualToString:MPT_SEND_MAIL_INFO_TEXT]?MPT_SYSTEM_INFO_NOTIFICATION:MPT_UUID_LIST_NOTIFICATION; \
-	/*	Set up the notification watch	*/ \
-	NSOperationQueue	*mptQueue = [[[NSOperationQueue alloc] init] autorelease]; \
-	__block id mptObserver; \
-	mptObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:mptNotificationName object:nil queue:mptQueue usingBlock:^(NSNotification *note) { \
-		/*	If this was aimed at us, then perform the block and remove the observer	*/ \
-		if ([[note object] isEqualToString:[mptMailBundle bundleIdentifier]]) { \
-			mptNotificationBlock([note userInfo]); \
-			[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptObserver]; \
-		} \
-	}]; \
-	/*	Then actually launch the app to get the information back	*/ \
-	MPTLaunchCommandForBundle2(mptCommand, mptMailBundle, NO, nil); \
-}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -74,7 +34,7 @@ void	MPTCallToolCommandForBundleWithBlock2(NSString *mptCommand, NSBundle *mptMa
 	
 //	MPTUninstallForBundle(mailBundle);
 	
-//	MPTCheckForUpdatesForBundle(mailBundle);
+	MPTUpdateAndSendReportsForBundleNow(mailBundle);
 //	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Sidebar for Infusionsoft.mailbundle"];
 //	MPTCheckForUpdatesForBundle(sisBundle);
 //	MPTUninstallForBundle(sisBundle);

@@ -348,7 +348,7 @@
 
 #pragma mark - Bundle Updating
 
-- (void)updateMailBundle:(MPCMailBundle *)mailBundle {
+- (void)updateMailBundle:(MPCMailBundle *)mailBundle force:(BOOL)flag {
 	
 	//	If the bundle doesn't support sparkle, just send a done notification and return
 	if (![mailBundle supportsSparkleUpdates]) {
@@ -368,7 +368,7 @@
 		MPCScheduledUpdateDriver	*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
 		
 		//	Only start the update if the schedule requires it
-		if ([updateDriver isPastSchedule]) {
+		if (flag || [updateDriver isPastSchedule]) {
 			//	Then create an operation to run the action
 			MPCSparkleAsyncOperation	*sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
 			[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];

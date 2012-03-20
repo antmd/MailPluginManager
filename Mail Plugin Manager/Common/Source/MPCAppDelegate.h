@@ -62,7 +62,7 @@
 - (IBAction)finishApplication:(id)sender;
 
 //	Bundle Management
-- (void)updateMailBundle:(MPCMailBundle *)mailBundle;
+- (void)updateMailBundle:(MPCMailBundle *)mailBundle force:(BOOL)flag;
 
 //	Queue management tasks
 - (void)addMaintenanceTask:(void (^)(void))block;
