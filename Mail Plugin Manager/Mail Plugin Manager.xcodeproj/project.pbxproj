@@ -1108,7 +1108,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# shell script goes here\n\nif [ $CONFIGURATION != \"Release\" ]; then\n#exit \"Can't package for Non-Deployment Style\"\necho \"nothing\"\nfi\n\nexport REAL_PRODUCT=\"Mail Plugin Manager\"\nexport MY_RELEASE_FOLDER=\"$SRCROOT/../Releases\"\nexport MY_PRODUCT_NEW_NAME=\"MailPluginManager.New\"\n#export $INFO=\"$BUILT_PRODUCTS_DIR/INFOPLIST_PATH\"\n\necho \"Extracting version info from plist\"\n\necho \"Creating the zip file for Sparkle\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\n#   remove old zip file if it exists\nif [ -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\" ]; then\n    rm -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\"\nfi\n\n#   zip the file into new location\ntar -cyf \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\" \"$FULL_PRODUCT_NAME\"\n\n";
+			shellScript = "# shell script goes here\n\nif [ $CONFIGURATION != \"Release\" ]; then\n#exit \"Can't package for Non-Deployment Style\"\necho \"nothing\"\nfi\n\nexport REAL_PRODUCT=\"Mail Plugin Manager\"\nexport MY_RELEASE_FOLDER=\"$SRCROOT/../Releases\"\nexport MY_PRODUCT_NEW_NAME=\"MailPluginManager.New\"\nexport MY_PRODUCT_VERSIONED_NAME=\"MailPluginManager.$VERSION_STRING\"\n\necho \"Extracting version info from plist\"\n\necho \"Creating the zip file for Sparkle\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\n#   remove old zip file if it exists\nif [ -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\" ]; then\n    rm -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\"\nfi\n\n#   remove old zip file if it exists\nif [ -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_VERSIONED_NAME.tar.bz2\" ]; then\n    export MY_PRODUCT_VERSIONED_NAME=\"$MY_PRODUCT_NEW_NAME\"\nfi\n\n#   zip the file into new location\ntar -cyf \"$MY_RELEASE_FOLDER/$MY_PRODUCT_VERSIONED_NAME.tar.bz2\" \"$FULL_PRODUCT_NAME\"\n\n";
 		};
 		D2344AAF1518E197005B3B0F /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1442,11 +1442,13 @@
 		D216B36D141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_NUMBER = 5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed-test/mpm";
+				VERSION_STRING = 1.0.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1454,11 +1456,13 @@
 		D216B36E141DFDE2003788DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_NUMBER = 5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed/mpm";
+				VERSION_STRING = 1.0.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
