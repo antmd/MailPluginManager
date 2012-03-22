@@ -12,7 +12,31 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Dictionary Keys
 
-#define	MPT_UUID_COMPLETE_LIST_KEY				@"all-known-uuids"
+//	Keys for historical UUID plist
+#define	MPT_UUID_COMPLETE_LIST_KEY					@"all-uuids"
+#define	MPT_UUID_LATEST_SUPPORTED_UUID_KEY			@"latest-supported-uuid-dict"
+#define	MPT_UUID_FIRST_UNSUPPORTED_UUID_KEY			@"first-unsupported-uuid-dict"
+#define	MPT_UUID_TYPE_KEY							@"type"
+#define	MPT_UUID_EARLIEST_OS_VERSION_DISPLAY_KEY	@"earliest-os-version-display"
+#define	MPT_UUID_LATEST_OS_VERSION_DISPLAY_KEY		@"latest-os-version-display"
+#define	MPT_UUID_LATEST_VERSION_KEY					@"latest-version-comparator"
+#define	MPT_UUID_TYPE_VALUE_MAIL					@"mail"
+#define	MPT_UUID_TYPE_VALUE_MESSAGE					@"message"
+
+//	Keys for System Information dictionary
+#define	MPT_SYSINFO_SYSTEM_KEY						@"system"
+#define	MPT_SYSINFO_MAIL_KEY						@"mail"
+#define	MPT_SYSINFO_MESSAGE_KEY						@"message"
+#define	MPT_SYSINFO_HARDWARE_KEY					@"hardware"
+#define	MPT_SYSINFO_INSTALLED_PLUGINS_KEY			@"installed"
+#define	MPT_SYSINFO_DISABLED_PLUGINS_KEY			@"disabled"
+#define	MPT_SYSINFO_VERSION_KEY						@"version"
+#define	MPT_SYSINFO_BUILD_KEY						@"build"
+#define	MPT_SYSINFO_UUID_KEY						@"uuid"
+#define MPT_SYSINFO_NAME_KEY						@"name"
+#define MPT_SYSINFO_PATH_KEY						@"path"
+
+
 
 #pragma mark Command List
 
