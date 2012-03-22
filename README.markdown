@@ -1,11 +1,11 @@
-## BundleManager - Mail Plugin Manager
+## Mail Plugin Manager
 
-BundleManager is a tool to help Mac Mail bundle authors manage, install & keep up to date for their users.
+Mail Plugin Manager is a tool to help Mac Mail bundle authors manage, install & keep up to date for their users.
 
 ### Why use this?
 
 1. This tool allows you to easily integrate Sparkle, which isn't difficult in and of itself, but for plugins it can be a problem, when other plugins also include Sparkle. This way you don't have to maintain an additional application to avoid those problems.
-2. It also, gives you some tools to preemptively deal with Mail upgrades and UUID issues.
+2. It gives you some tools to preemptively deal with Mail upgrades and UUID issues.
 3. It provides debugging tools for your user, i.e. system info collection and crash reports.
 4. It gives the user an easy way to manage the plugin.
 5. It provides a simplified installer and uninstaller, again without you having to maintain another separate application.
@@ -21,15 +21,14 @@ BundleManager is a tool to help Mac Mail bundle authors manage, install & keep u
 * Determine relevant information about the user's system (Mail, Message, etc.)
 * Keep updated list of OS versions, including future versions, that are accessible to plugins
 
-The features provided are separated into 2 separate applications, a user facing app and a faceless app. In truth the faceless app (Mail Bundle Tool, as I am currently calling it), is not truly faceless as it does interact with the user, but it will be a NSUIElement = 1 application. The feature split between the two apps should be obvious, but keep reading for more details.
+The features provided are separated into 2 separate applications, a user facing app and a faceless app. In truth the faceless app (MailPluginTool), is not truly faceless as it does interact with the user, but it is a NSUIElement = 1 application. The feature split between the two apps should be obvious, but keep reading for more details.
 
-The tool application will be embedded inside of the manager application. When plugins call it they should use a standard NSTask call to it and pass one of the parameters [defined below](#commands). A .h file will be available with **macros** defined for the calls to the tool. These will be defined as macros in order to avoid namespace conflicts between plugins using this code. [A List](#macros) is provided in these docs so you can see what you can do.
+The tool application will be embedded inside of the manager application. When plugins call it this will be done using applescripts [defined below](#commands). A .h file will be available with **macros** defined for the calls to the tool. It's done this way in order to avoid namespace conflicts between plugins using this code. [A List](#macros) is provided in these docs so you can see what you can do.
 
 This manager only supports Snow Leopard & Lion.
 
-
-<a name="manager"/>
-### Mail Bundle Manager (MBM)
+<a name="manager"></a>
+### Mail Plugin Manager(MPM)
 
 It has the following main features:
 
@@ -39,9 +38,9 @@ It has the following main features:
 
 #### Installation
 
-A file package format has been defined (with an extension of `mbinstall`) that can be used to create a Mail Plugin specific installer that BundleManager handles for you, very similar to Installer, but it is aware of the specific constraints of Mail Bundles and will install the BundleManager as well, if desired.
+A file package format has been defined (with an extension of `mpinstall`) that can be used to create a Mail Plugin specific installer that Mail Plugin Manager handles for you, very similar to Installer, but it is aware of the specific constraints of Mail Bundles and will install the Mail Plugin Manager as well, if desired.
 
-A single plist file defines what will be installed, you can have other components besides just the plugin, and where they should go. You can define Release Notes sections (using either an rtf file or html) and a license agreement as well. The user is presented with a view of what will be installed, so that we are not hiding anything from them. Eventually it will prompt for required authorization, though at the moment that is missing.
+A single plist manifest file ([see below](#manifest)) defines what will be installed, you can have other components besides just the plugin, and where they should go. You can define Release Notes sections (using either an rtf file or html) and a license agreement as well. The user is presented with a view of what will be installed, so that we are not hiding anything from them. When necessary, it will prompt for required authorization.
 
 Here are images of a dummy installation:
 
@@ -55,24 +54,24 @@ Here are images of a dummy installation:
 
 #### Uninstallation
 
-Similarly a file package format has been defined (with an extension of `mbremove`) for an uninstall, so the user can double-click something to start an uninstall. It has an almost identical feature set to the uninstall and uses the same format for the manifest file ([see below](#manifest)). There is the ability to trigger an uninstall directly from your plugin as well if you want to have a button in your prefs to uninstall ([see tool](#tool)).
+Similarly a file package format has been defined (with an extension of `mpremove`) for an uninstall, so the user can double-click something to start an uninstall. It has an almost identical feature set to the uninstall and uses the same format for the manifest file ([see below](#manifest)). There is the ability to trigger an uninstall directly from your plugin as well if you want to have a button in your prefs to uninstall ([see tool](#tool)).
 
 
 #### Mail Plugin Manager Window
 
-This interface is for the user to interact with and is the default mode when the Mail Bundle Manager is opened without a file. Here is an example of what it looks like:
+This interface is for the user to interact with and is the default mode when the Mail Plugin Manager is opened without a file. Here is an example of what it looks like:
 
 ![Mail Bundle Manager Window][manager-window]
 
-I have tried to add as much information about the plugin as I can get from the plugin itself. There are ways to add more detailed information to the Info.plist file so that MBM can provide a better experience, but it's good to try to show something.
+I have tried to add as much information about the plugin as I can get from the plugin itself. There are ways to add more detailed information to the Info.plist file so that MPM can provide a better experience, but it's good to try to show something.
 
 The user can enable/disable, remove, update and change the domain of the plugin from this window. They can also click on the name to go to a product site and the company name to go to the company site.
 
 
-<a name="tool"/>
-### Mail Bundle Tool (MBT)
+<a name="tool"></a>
+### MailPluginTool (MPT)
 
-All interacts with MBT will be by command line, with perhaps a scripting interface for requests of information rather than actions.
+All interacts with MPT are done using an applescript interface.
 
 It has the following main features:
 
@@ -85,11 +84,11 @@ It has the following main features:
 
 #### Uninstallation
 
-A plugin will be able to request the uninstallation of itself. when this happens MBT will present a standard type of uninstall "Are you sure?" dialog and then proceed to uninstall and restart Mail.
+A plugin will be able to request the uninstallation of itself. When this happens MPT will present a standard type of uninstall "Are you sure?" dialog and then proceed to uninstall and restart Mail.
 
 #### Automatic update checking
 
-This comes as a command line request from the plugin, with the path to the plugin to update. It will check (using Sparkle currently) to see if there is an update available and will let Sparkle progress through a normal update process if it is found.
+A plugin can request an update check and ask that it happen regularly, using the path to the plugin to update. It will check (using Sparkle) to see if there is an update available and will let Sparkle progress through a normal update process if it is found.
 
 #### Send crash reports to developer
 
@@ -103,7 +102,7 @@ At boot time (though a Launch Agent) check for any incompatibilities or updates 
 
 This feature will be initiated by a Launch Agent setup for the user (which shouldn't need any special authorization) and will be launched each time the user logs in to a full session (excludes terminal sessions).
 
-This mode will look at all plugins in both "Bundles" and "Bundles (Disabled[ X])" to find the latest ones and look to see if that have incompatibilities or updates and notify the user.
+This mode will look at all plugins in both "Bundles" and "Bundles (Disabled[ X])" to find the latest ones and look to see if they have incompatibilities or updates and notify the user.
 
 A dialog/window will be presented to the user to potentially do something. For a single item a window similar to the following will appear:
 
@@ -117,86 +116,44 @@ Through both of these the user can perform and Update, Disable a plugin, Remove 
 
 I am thinking of also running it whenever the Bundles folder list changes as well, but not sure that we be a proper time, so I need to think about that one some more.
 
-<a name="sys-info"/>
+<a name="sys-info"></a>
 #### Get relevant system information
 
-**Not yet implemented.**
+This allows the calling bundle to get back a dictionary of information about the system, such as OS Version, Mail Version & UUID, Message.framework version & UUID.
 
-This should allow the caller to get back a dictionary of information about the system, such as OS Version, Mail Version & UUID, Message.framework version & UUID.
-
-<a name="uuid-list"/>
+<a name="uuid-list"></a>
 #### Get list of *past & future* compatibility information
-
-**Not yet implemented.**
 
 The tool will keep an updated version of a list of UUIDs that Mail and Message.framework have defined and supported for plugins to access, so they can actually test in *advance* if they will be compatible with an upcoming OS release. Or even just an OS release after the one the user has.
 
-<a name="commands"/>
-#### Command Line Syntax
 
-In general, the syntax is very simple:
-
-		/path/to/MailBundleTool -command [path/to/plugin] [-freq 999]
-
-With these as the full options:
-
-		-uninstall path/to/plugin
-
-Uninstalls the plugin at the indicated path (required).
-	
-		-update path/to/plugin [-freq (daily|weekly|monthly)]
-
-Checks for and, if found, updates the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
-	
-		-send-crash-reports path/to/plugin [-freq (daily|weekly|monthly)]
-
-Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for sending crash reports without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
-	
-		-update-and-crash-reports path/to/plugin [-freq (daily|weekly|monthly)]
-
-Sends any crash reports found for the plugin at the indicated path (required). If the optional `-freq` flag is passed MBT will schedule a recurring check for updates & sending crash reports without any further need for the plugin to manage it. See the [note below](#freq-note)<span style="color:red"/>&nbsp;\*</span>.
-	
-		-mail-info path/to/plugin
-
-Will collect a bunch of information from the system and return the results to you (through a notification block) as a `NSDictionary`. See [system information](#sys-info) above. The path is required to be able to post the notification to the correct plugin.
-	
-		-uuid-list path/to/plugin
-
-Will return a list of the past and future UUIDs that Mail and Message.framework support (through a notification block) as a `NSDictionary`. See [compatibility information](#uuid-list) above. The path is required to be able to post the notification to the correct plugin.
-	
-		-validate-all
-
-This command is used at boot time to validate all plugins. *Generally only called by the Launch Agent*.
-
-<a name="freq-note"/>
-<span style="color:red"/>&nbsp;\*&nbsp;</span>The __frequency flag__ `-freq` is independent between the three commands that use it. What this means is that you can schedule the updates differently than the crash reports and even have a separate schedule for doing both.
-
-
-<a name="manifest"/>
+<a name="manifest"></a>
 ### Manifest File Format
 
-The manifest file, which should be named **`mbm-manifest.plist`** is a plist file that contains a description of the items to install or uninstall. It also is used to describe to the user what is being installed.
+The manifest file, which should be named **`mpm-manifest.plist`** is a plist file that contains a description of the items to install or uninstall. It also is used to describe to the user what is being installed.
 
 There are several keys at the top level of the plist that are used to configure the installer window and define information about what we are doing.
 
 		manifest-type			[install/uninstall]						(String)
 		display-name			Plugin Name								(String)
 		background-image-path	path/to/image_to_show_in_installer		(String)
+		completion-message		Text to show at completion.				(String)
 		action-items			(see below)								(Array)
 		confirmation-steps		(see below)								(Array)
 		
-Install specific (ignored during uninstall). These define the min and max versions of OS and min version of Mail supported. Pretty self-explanatory.
+Install specific (ignored during uninstall). These define the min and max versions of OS and min version of Mail supported. Pretty self-explanatory. The `configure-mail-min-bundle-version` key indicates the minimum bundle version value for configuring Mail. This key is required to have the installer configure Mail properly.
 		
-		min-os-major-version	10.X									(Number)
-		max-os-major-version	10.X									(Number)
-		min-mail-version		X.X										(Number)
+		min-os-major-version				10.X						(Number)
+		max-os-major-version				10.X						(Number)
+		min-mail-version					X.X							(Number)
+		configure-mail-min-bundle-version	Min Mail Bundle Version		(Number)
 
-Uninstall specific (ignored during install). These are used to determine how the Mail Plugin Manager application can be deleted if different cases. Assuming that the Manager is included in an uninstall manifest.
+Uninstall specific (ignored during install). These are used to determine how the Mail Plugin Manager application can be deleted in different situations. Assuming that the Manager is included in an uninstall manifest.
 		
 		can-delete-bundle-manager-if-no-other-plugins-use				(Boolean)
 		can-delete-bundle-manager-if-no-plugins-left					(Boolean)
 		
-<a name="action-items"/>
+<a name="action-items"></a>
 #### Action Items
 
 This is an array of dictionary objects that describe what is to be installed or uninstalled. The objects will not be installed in any particular order. Here are the keys and example values with a description of them afterward.
@@ -210,8 +167,8 @@ This is an array of dictionary objects that describe what is to be installed or 
 
 The key `path` is the path where to find the original object to act upon.
 
-* In the case of an **install**, this value should be a path *relative* to the package file or an absolute URL. For instance, in the example above there would be a folder called `Delivery` inside the `.mbinstall` package that would contain the mail bundle. If it is a full URL it will try to install directly from the web, but please remember that no access will mean a failure. *Currently not yet implemented*.
-* For an **uninstall**, this value should be a path to where the item should be installed. This should be a full path or a path using a tilda (~).
+* In the case of an **install**, this value should be a path *relative* to the package file or an absolute URL. For instance, in the example above there would be a folder called `Delivery` inside the `.mpinstall` package that would contain the mail bundle. If it is a full URL it will try to install directly from the web, but please remember that no access will mean a failure. **_Currently not yet implemented_**.
+* For an **uninstall**, this value should be a path to where the item to be deleted should be. This should be a full path or a path using a tilda (~).
 
 The key `destination-path` is the path to where the item should be copied during an install. **It is ignored during an uninstall**. This is a full path, a path using a tilda (~), or a path beginning with the special marker `<LibraryDomain>`. The value `<LibraryDomain>` will be expanded to the Library folder in the domain the users selects to install to. Tildas will also be expanded.
 
@@ -221,20 +178,15 @@ The key `name` is the value used in display during the install/uninstall.
 The key `description` is the value used in display during the install/uninstall during the Review step.
 *This key is optional*
 
-The key `is-bundle-manager` indicates that the item described is the Mail Bundle Manager application. This is a boolean flag that is used to facilitate the proper installation/removal of this item. Special handling is done to ensure the most recent version is available/installed and that it is not removed if another plugin is using it. 
+The key `is-bundle-manager` indicates that the item described is the Mail Plugin Manager application. This is a boolean flag that is used to facilitate the proper installation/removal of this item. Special handling is done to ensure the most recent version is available/installed and that it is not removed if another plugin is using it. 
 *This key is optional*
 
 The key `user-can-choose-domain` let's the user select the domain they want to install to. The default values is `NO` and the User Domain will be used. This is ignored during uninstall.
-*This key is optional*
-*Currently not implemented*.
+*This key is optional*.
+**_Currently not implemented_**.
 
-<!--
-	permissions-needed	none									(Array of Strings)
-The key `permissions-needed` is an array of strings indicating the types of permissions that might be needed to install this file. The values should be one of `none`, `admin` or `other`.
-*This key is optional*
--->
 
-<a name="confirm-steps"/>
+<a name="confirm-steps"></a>
 #### Confirmation Steps
 
 This is an array of dictionary objects with values describing each of the steps to display to the user, in the desired order, during the confirmation of the install/uninstall process. 
@@ -257,11 +209,11 @@ The key `bullet-title` is used in the step list on the left side of the window. 
 
 The key `path` is the path where to find the resource to display for either an `information` or `license` type. The path should be relative to the manifest file and should be either an RTF/RTFD file or an HTML file (with resources relative to that file. *It is required for the `license` and `information` types*.
 
-<a name="license-agree"/>
+<a name="license-agree"></a>
 The key `license-agreement-required` works in conjunction with the `license` type and is ignored in other cases. If set to **YES**, then the license will require the user to agree before continuing. The default is **NO**.
 *This key is optional*.
 
-<a name="localization"/>
+<a name="localization"></a>
 #### Localizing Install/Uninstall packages
 
 These packages can be localized in the same way that applications or bundles can. If you put an .lproj folder for a language in the package, any text values that are pulled out of your manifest file will attempt to be localized from those localization folders.
@@ -270,26 +222,35 @@ Unfortunately this doesn't include the base of the project itself and thus all t
 
 ---
 
-<a name="macros"/>
+<a name="macros"></a>
 ### Macros Defined
 
 #### Fire and Forget Macros
 
-These macros are the ones that you might call when the app launches to do the update in the background. They do not require your plugin to take any other action. The names are pretty self-explanatory, I think.
+These macros are the ones that you should call when the app launches to do updates or send crash reports in the background. They do not require your plugin to take any other action. The names are pretty self-explanatory, I think. The ones that end with "Now" should be used if you want to force an update, such as when the user clicks a button saying "Check Now".
 
-		MBMUninstallForBundle(mbmMailBundle)		
-		MBMCheckForUpdatesForBundle(mbmMailBundle)
-		MBMSendCrashReportsForBundle(mbmMailBundle)
-		MBMUpdateAndSendReportsForBundle(mbmMailBundle)
-		
+		MPTUninstallForBundle(mptMailBundle)
+		MPTCheckForUpdatesForBundle(mptMailBundle)
+		MPTCheckForUpdatesForBundleNow(mptMailBundle)
+		MPTSendCrashReportsForBundle(mptMailBundle)
+		MPTUpdateAndSendReportsForBundle(mptMailBundle)
+		MPTUpdateAndSendReportsForBundleNow(mptMailBundle)
+
 You need to pass in the bundle for your plugin, so it can properly determine the bundle identifier and it's path.
+
+#### Handling Up To Date Sparkle Results
+
+These macros are to be used in conjunction with the Update "Now" macros from the above list and allow you to properly display a dialog telling the user that the current plugin is up to date. You have an option of a modal version or a sheet version (pass in the window to put the sheet on).
+
+		MPTPresentModalDialogWhenUpToDate(mptBundle)
+		MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow)
 
 #### Notification Block Macros
 
-These macros allow you to get information back from MBT by having a block run which is passed a dictionary of the results.
+These macros allow you to get information back from MPT by having a block run which is passed a dictionary of the results.
 
-		MBMMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
-		MBMUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
+		MPTMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
+		MPTUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
 
 The first argument is the bundle of your plugin, as with the macros above. The second argument is the block that you want to run when the results are returned. It is defined as a `MPTResultNotificationBlock` and has been `typedef`'d like this:
 
@@ -297,11 +258,48 @@ The first argument is the bundle of your plugin, as with the macros above. The s
 
 It takes the single argument of the dictionary of results and has a void result.
 
-The keys for the results in the dictionary are listed below.
+Macros for the keys for the results in the dictionary are listed below.
 
-		MBM_UUID_COMPLETE_LIST_KEY				NSArray of all uuid dictionaries
+##### UUID List Query
 
-*Not yet completed*.
+These are the keys for the results of the uuid list query:
+
+		MPT_UUID_COMPLETE_LIST_KEY				NSArray of all uuid NSDictionaries
+		MPT_UUID_LATEST_SUPPORTED_UUID_KEY		NSDictionary of latest uuid data supported by Plugin
+		MPT_UUID_FIRST_UNSUPPORTED_UUID_KEY		NSDictionary of 1st uuid data known that the Plugin does **not** support
+
+Each of the above `NSDictionary` objects should contain the following keys. The OS display keys are for the standard user visible descriptions of the OS, i.e. 10.6.8, 10.7 or 10.7.3. The latest version key is a relative value integer that tells us it if is greater or less than another in the list - makes comparing easier that deciphering the 10.7.3 numbers.
+
+		MPT_UUID_TYPE_KEY
+		MPT_UUID_EARLIEST_OS_VERSION_DISPLAY_KEY
+		MPT_UUID_LATEST_OS_VERSION_DISPLAY_KEY
+		MPT_UUID_LATEST_VERSION_KEY
+		
+And the value of the `MPT_UUID_TYPE_KEY` key should be one of:
+
+		MPT_UUID_TYPE_VALUE_MAIL				Mail.app Type
+		MPT_UUID_TYPE_VALUE_MESSAGE				Message.Framework Type
+
+##### System info Query
+
+These are the keys for the results of the system info query:
+
+		MPT_SYSINFO_HARDWARE_KEY				String of hardware identifier
+		MPT_SYSINFO_SYSTEM_KEY					NSDictionary of BUILD & VERSION
+		MPT_SYSINFO_MAIL_KEY					NSDictionary of BUILD, VERSION & UUID
+		MPT_SYSINFO_MESSAGE_KEY					NSDictionary of BUILD, VERSION & UUID
+		MPT_SYSINFO_INSTALLED_PLUGINS_KEY		NSArray of NSDictionaries of NAME, PATH & VERSION
+		MPT_SYSINFO_DISABLED_PLUGINS_KEY		NSArray of NSDictionaries of NAME, PATH & VERSION
+
+The key macros in capitals above are the following:
+
+		MPT_SYSINFO_NAME_KEY
+		MPT_SYSINFO_PATH_KEY
+		MPT_SYSINFO_VERSION_KEY
+		MPT_SYSINFO_BUILD_KEY
+		MPT_SYSINFO_UUID_KEY
+
+*Not yet completed* - descriptions are still needed.
 
 ---
 
@@ -349,7 +347,7 @@ The keys for the results in the dictionary are listed below.
 
 #### Other
 
-* Add support for .mbinstall install through sparkle updater?
+* Add support for .mpinstall install through sparkle updater?
 * What about devs that want to use this but have there own installer?
 
 ---
@@ -360,7 +358,7 @@ Can a plugin be written to load first in Mail and then patch the loading process
 
 ---
 
-© Copyright 2011 Little Known Software
+© Copyright 2011-2012 Little Known Software
 
 You can use this software any way that you like, as long as you don't blame me for anything ;-)
 
