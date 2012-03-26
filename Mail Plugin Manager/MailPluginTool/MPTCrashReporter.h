@@ -8,27 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-#import "MPCMailBundle.h"
-
-typedef enum {
-	kMPTReportTypeMail,
-	kMPTReportTypePlugin,
-	kMPTReportTypeOtherPlugin
-} MPTReportType;
-
 
 @interface MPTCrashReport : NSObject {
 	NSString		*_reportPath;
 	NSDate			*_reportDate;
 	NSString		*_reportContent;
-	MPTReportType	_reportType;
 @private
 	NSString		*_bundleID;
 }
 @property	(nonatomic, copy, readonly)		NSString		*reportPath;
 @property	(nonatomic, retain, readonly)	NSDate			*reportDate;
 @property	(nonatomic, copy, readonly)		NSString		*reportContent;
-@property	(nonatomic, assign, readonly)	MPTReportType	reportType;
 - (id)initWithPath:(NSString *)crashPath forBundleID:(NSString *)aBundleID;
 - (NSDictionary *)serializableContents;
 @end
@@ -36,15 +26,14 @@ typedef enum {
 
 
 @interface MPTCrashReporter : NSObject {
-	MPCMailBundle	*_mailBundle;
-	MPTCrashReport	*_lastMailReport;
-	MPTCrashReport	*_lastPluginReport;
-	id				_delegate;
+	NSBundle	*_bundle;
+	id			_delegate;
 }
-@property	(nonatomic, retain, readonly)	MPCMailBundle		*mailBundle;
-@property	(nonatomic, retain, readonly)	MPTCrashReport		*lastMailReport;
-@property	(nonatomic, retain, readonly)	MPTCrashReport		*lastPluginReport;
-@property	(nonatomic, assign)				id					delegate;
-- (id)initWithMailBundle:(MPCMailBundle *)aMailBundle;
+@property	(nonatomic, retain, readonly)	NSBundle	*bundle;
+@property	(nonatomic, assign)				id			delegate;
+- (id)initWithBundle:(NSBundle *)aBundle;
 - (BOOL)sendLatestReports;
+- (NSDictionary *)otherValuesForReport;
+- (NSString *)mainApplicationName;
+- (MPTCrashReport *)validCrashReportWithPath:(NSString *)crashPath;
 @end

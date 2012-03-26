@@ -14,7 +14,6 @@
 @property	(nonatomic, copy, readwrite)	NSString		*reportPath;
 @property	(nonatomic, retain, readwrite)	NSDate			*reportDate;
 @property	(nonatomic, copy, readwrite)	NSString		*reportContent;
-@property	(nonatomic, assign, readwrite)	MPTReportType	reportType;
 @property	(nonatomic, copy)				NSString		*bundleID;
 @end
 
@@ -22,7 +21,6 @@
 @synthesize reportPath = _reportPath;
 @synthesize reportDate = _reportDate;
 @synthesize reportContent = _reportContent;
-@synthesize reportType = _reportType;
 @synthesize bundleID = _bundleID;
 
 #pragma mark - Memory Management
@@ -41,17 +39,6 @@
 		//	Save the contents if there is something valid
 		if ([separateReports count] > 0) {
 			_reportContent = [[separateReports lastObject] copy];
-		}
-		
-		//	Set the type, default is mail
-		_reportType = kMPTReportTypeMail;
-		NSString	*pluginIndicator = @"PlugIn Identifier";
-		NSString	*plugInSeachString = [NSString stringWithFormat:@"%@: %@", pluginIndicator, aBundleID];
-		if ([_reportContent rangeOfString:plugInSeachString].location != NSNotFound) {
-			_reportType = kMPTReportTypePlugin;
-		}
-		else if ([_reportContent rangeOfString:pluginIndicator].location != NSNotFound) {
-			_reportType = kMPTReportTypeOtherPlugin;
 		}
 		
 		//	Get it's date
@@ -79,7 +66,6 @@
 	NSMutableDictionary	*contents = [NSMutableDictionary dictionary];
 	
 	[contents setValue:[NSString stringWithFormat:@"%@", self.reportDate] forKey:@"date"];
-	[contents setValue:((self.reportType == kMPTReportTypeMail)?@"mail":@"plugin") forKey:@"type"];
 	[contents setValue:self.reportContent forKey:@"report"];
 	
 	return [NSDictionary dictionaryWithDictionary:contents];
@@ -90,34 +76,100 @@
 
 
 @interface MPTCrashReporter ()
-@property	(nonatomic, retain, readwrite)	MPCMailBundle		*mailBundle;
-@property	(nonatomic, retain, readwrite)	MPTCrashReport		*lastMailReport;
-@property	(nonatomic, retain, readwrite)	MPTCrashReport		*lastPluginReport;
+@property	(nonatomic, retain, readwrite)	NSBundle		*bundle;
 - (NSArray *)listOfReportsSince:(NSDate *)lastSentDate;
 @end
 
 @implementation MPTCrashReporter
-@synthesize mailBundle = _mailBundle;
-@synthesize lastMailReport = _lastMailReport;
-@synthesize lastPluginReport = _lastPluginReport;
+@synthesize bundle = _bundle;
 @synthesize delegate = _delegate;
 
 #pragma mark - Memory Management
 
-- (id)initWithMailBundle:(MPCMailBundle *)aMailBundle {
+- (id)initWithBundle:(NSBundle *)aBundle {
 	self = [super init];
 	if (self) {
-		_mailBundle = [aMailBundle retain];
+		_bundle = [aBundle retain];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	self.mailBundle = nil;
-	self.lastMailReport = nil;
-	self.lastPluginReport = nil;
+	self.bundle = nil;
 
 	[super dealloc];
+}
+
+
+#pragma mar - Abstraction Methods
+
+- (NSDate *)lastCrashReportDate {
+	NSDictionary	*pluginDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:[self.bundle bundleIdentifier]];
+	NSTimeInterval	lastCrashReportInterval = [[pluginDefaults valueForKey:kMPTLastReportDatePrefKey] floatValue];
+	return [NSDate dateWithTimeIntervalSince1970:lastCrashReportInterval];
+}
+
+- (void)saveNewCrashReportDate {
+	//	Update the user defs for the plugin
+	NSMutableDictionary	*newDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:[self.bundle bundleIdentifier]] mutableCopy];
+	[newDefaults setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:kMPTLastReportDatePrefKey];
+	[[NSUserDefaults standardUserDefaults] setPersistentDomain:newDefaults forName:[self.bundle bundleIdentifier]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	[newDefaults release];
+}
+
+- (NSURL *)reportURL {
+	return [NSURL URLWithString:[[self.bundle infoDictionary] valueForKey:kMPCCrashReportURLKey]];
+}
+
+- (NSArray *)listOfReportsSince:(NSDate *)lastSentDate {
+	
+	NSMutableArray	*reports = [NSMutableArray array];
+	
+	// Get the log file, its last change date and last report date:
+	NSString	*appName = [self mainApplicationName];
+	NSString	*crashLogsFolder = [@"~/Library/Logs/CrashReporter/" stringByExpandingTildeInPath];
+	
+	NSDirectoryEnumerator*	enny = [[NSFileManager defaultManager] enumeratorAtPath:crashLogsFolder];
+	NSString	*currName = nil;
+	NSString	*crashLogPrefix = [NSString stringWithFormat: @"%@_", appName];
+	NSString	*crashLogSuffix = @".crash";
+	
+	//	Look through all of the crash files of our app that are after our date
+	while ((currName = [enny nextObject])) {
+		if ([currName hasPrefix:crashLogPrefix] && [currName hasSuffix:crashLogSuffix] && 
+			[[[enny fileAttributes] fileModificationDate] isGreaterThan:lastSentDate]) {
+			
+			//	Parse the report and add it if it is not nil
+			MPTCrashReport	*report = [self validCrashReportWithPath:[crashLogsFolder stringByAppendingPathComponent:currName]];
+			if (report != nil) {
+				[reports addObject:report];
+			}
+		}
+	}
+	
+	//	Sort the reports
+	NSSortDescriptor	*dateSort = [NSSortDescriptor sortDescriptorWithKey:@"reportDate" ascending:YES];
+	[reports sortUsingDescriptors:[NSArray arrayWithObject:dateSort]];
+	
+	return [NSArray arrayWithArray:reports];
+	
+}
+
+
+#pragma mark - Methods to Override
+
+- (NSDictionary *)otherValuesForReport {
+	return [NSDictionary dictionary];
+}
+
+- (MPTCrashReport *)validCrashReportWithPath:(NSString *)crashPath {
+	//	Parse the report
+	return [[[MPTCrashReport alloc] initWithPath:crashPath forBundleID:[self.bundle bundleIdentifier]] autorelease];
+}
+
+- (NSString *)mainApplicationName {
+	return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
 }
 
 
@@ -127,9 +179,7 @@
 	
 	NSMutableDictionary	*contentsToSend = [NSMutableDictionary dictionary];
 	
-	NSDictionary	*pluginDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:self.mailBundle.identifier];
-	NSTimeInterval	lastCrashReportInterval = [[pluginDefaults valueForKey:kMPTLastReportDatePrefKey] floatValue];
-	NSDate			*lastTimeCrashReported = [NSDate dateWithTimeIntervalSince1970:lastCrashReportInterval];
+	NSDate			*lastTimeCrashReported = [self lastCrashReportDate];
 
 	//	Add all of the reports
 	NSMutableArray	*reportList = [NSMutableArray array];
@@ -146,8 +196,11 @@
 		//	Add the system info to the package
 		[contentsToSend setValue:[MPCSystemInfo completeInfo] forKey:kMPCSysInfoKey];
 		
+		//	Add any other values
+		[contentsToSend addEntriesFromDictionary:[self otherValuesForReport]];
+		
 		//	Determine what the url is to call
-		NSURL	*crashReportURL = [NSURL URLWithString:[[self.mailBundle.bundle infoDictionary] valueForKey:kMPCCrashReportURLKey]];
+		NSURL	*crashReportURL = [self reportURL];
 		if (crashReportURL != nil) {
 
 			//	Send the package as JSON
@@ -164,17 +217,13 @@
 			
 		}
 		else {
-			LKInfo(@"There is no Crash Report URL for plugin:%@", self.mailBundle.name);
+			LKInfo(@"There is no Crash Report URL for bundle:%@", [[self.bundle localizedInfoDictionary] valueForKey:(NSString *)kCFBundleExecutableKey]);
 			return NO;
 		}
 	}
 
 	//	Update the user defs for the plugin
-//	NSMutableDictionary	*newDefaults = [pluginDefaults copy];
-//	[newDefaults setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:kMPTLastReportDatePrefKey];
-//	[[NSUserDefaults standardUserDefaults] setPersistentDomain:newDefaults forName:self.mailBundle.identifier];
-//	[[NSUserDefaults standardUserDefaults] synchronize];
-//	[newDefaults release];
+//	[self saveNewCrashReportDate];
 
 	return YES;
 }
@@ -193,42 +242,5 @@
 	}
 }
 
-
-#pragma mark - Methods
-
-- (NSArray *)listOfReportsSince:(NSDate *)lastSentDate {
-	
-	NSMutableArray	*reports = [NSMutableArray array];
-	
-	// Get the log file, its last change date and last report date:
-	NSString	*mailAppName = [[[NSBundle bundleWithIdentifier:kMPCMailBundleIdentifier] infoDictionary] objectForKey: @"CFBundleExecutable"];
-	NSString	*crashLogsFolder = [@"~/Library/Logs/CrashReporter/" stringByExpandingTildeInPath];
-
-	
-	NSDirectoryEnumerator*	enny = [[NSFileManager defaultManager] enumeratorAtPath:crashLogsFolder];
-	NSString	*currName = nil;
-	NSString	*crashLogPrefix = [NSString stringWithFormat: @"%@_", mailAppName];
-	NSString	*crashLogSuffix = @".crash";
-	
-	//	Look through all of the crash files of our mail app that are after our date
-	while ((currName = [enny nextObject])) {
-		if ([currName hasPrefix:crashLogPrefix] && [currName hasSuffix:crashLogSuffix] && 
-			[[[enny fileAttributes] fileModificationDate] isGreaterThan:lastSentDate]) {
-			//	Parse the report
-			MPTCrashReport	*report = [[[MPTCrashReport alloc] initWithPath:[crashLogsFolder stringByAppendingPathComponent:currName] forBundleID:self.mailBundle.identifier] autorelease];
-			//	Add it to our list, if it is not some other plugin's report
-			if (report.reportType != kMPTReportTypeOtherPlugin) {
-				[reports addObject:report];
-			}
-		}
-	}
-	
-	//	Sort the reports
-	NSSortDescriptor	*dateSort = [NSSortDescriptor sortDescriptorWithKey:@"reportDate" ascending:YES];
-	[reports sortUsingDescriptors:[NSArray arrayWithObject:dateSort]];
-	
-	return [NSArray arrayWithArray:reports];
-	
-}
 
 @end

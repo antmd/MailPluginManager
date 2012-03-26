@@ -7,12 +7,13 @@
 //
 
 #import "MPTReporterAsyncOperation.h"
-#import "MPTCrashReporter.h"
+#import "MPTPluginCrashReporter.h"
 
 @interface MPTReporterAsyncOperation ()
 @property	(readwrite)			BOOL			isExecuting;
 @property	(readwrite)			BOOL			isFinished;
 @property	(nonatomic, retain)	MPCMailBundle	*mailBundle;
+@property	(nonatomic, retain)	NSBundle		*bundle;
 @end
 
 
@@ -21,21 +22,30 @@
 @synthesize isExecuting = _isExecuting;
 @synthesize isFinished = _isFinished;
 @synthesize mailBundle = _mailBundle;
-
+@synthesize bundle = _bundle;
 
 
 #pragma mark - Memory Management
 
-- (id)initWithMailBundle:(MPCMailBundle *)aMailBundleundle {
+- (id)initWithMailBundle:(MPCMailBundle *)aMailBundle {
 	self = [super init];
 	if (self) {
-		_mailBundle = [aMailBundleundle retain];
+		_mailBundle = [aMailBundle retain];
+	}
+	return self;
+}
+
+- (id)initWithBundle:(NSBundle *)aBundle {
+	self = [super init];
+	if (self) {
+		_bundle = [aBundle retain];
 	}
 	return self;
 }
 
 - (void)dealloc {
 	self.mailBundle = nil;
+	self.bundle = nil;
 	
 	[super dealloc];
 }
@@ -54,7 +64,15 @@
     [self didChangeValueForKey:@"isExecuting"];
 	
 	//	Send the reports
-	MPTCrashReporter	*reporter = [[[MPTCrashReporter alloc] initWithMailBundle:self.mailBundle] autorelease];
+	MPTCrashReporter	*reporter = nil;
+	if (self.bundle != nil) {
+		reporter = [[[MPTCrashReporter alloc] initWithBundle:self.bundle] autorelease];
+	}
+	else if (self.mailBundle != nil) {
+		reporter = [[[MPTPluginCrashReporter alloc] initWithMailBundle:self.mailBundle] autorelease];
+	}
+	
+	//	If we managed to actually create one...
 	reporter.delegate = self;
 	if (![reporter sendLatestReports]) {
 		[self performSelector:@selector(finish) withObject:nil afterDelay:0.1f];
@@ -82,8 +100,12 @@
 
 #pragma mark - NSURLConnection Delegate Methods
 
+- (NSString *)bundleName {
+	return (self.mailBundle!=nil)?self.mailBundle.name:[[self.bundle localizedInfoDictionary] valueForKey:(NSString *)kCFBundleExecutableKey];
+}
+
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	LKErr(@"Crash Reports for %@ Connection [%@]: %@", self.mailBundle.name, connection, error);
+	LKErr(@"Crash Reports for %@ Connection [%@]: %@", [self bundleName], connection, error);
 	[self finish];
 }
 
@@ -91,10 +113,10 @@
 	NSHTTPURLResponse	*httpResponse = (NSHTTPURLResponse *)response;
 	if ([httpResponse statusCode] != 200) {
 		//	Something went weird
-		LKErr(@"Response from Crash Report on %@:%@", self.mailBundle.name, httpResponse);
+		LKErr(@"Response from Crash Report on %@:%@", [self bundleName], httpResponse);
 	}
 	else {
-		LKLog(@"Good response from Crash Reports for %@", self.mailBundle.name);
+		LKLog(@"Good response from Crash Reports for %@", [self bundleName]);
 	}
 	[self finish];
 }

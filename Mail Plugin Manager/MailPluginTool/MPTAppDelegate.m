@@ -106,6 +106,10 @@
 
 	//	Get Path for the Mail Plugin Manager container
 	NSString	*mpmPath = [self pathToManagerContainer];
+	
+	//	Report crashes for the tool app
+	[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle mainBundle]] autorelease]];
+	
 	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager and if that is writable by the user.
 	LKLog(@"mpmPath is:%@", mpmPath);
 	if ((mpmPath != nil) && [mpmPath userHasAccessRights]) {
@@ -129,6 +133,9 @@
 		//	May need to save the state of this value and restore afterward
 		[self setupSparkleEnvironment];
 		
+		//	Report crashes for the manager app
+		[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle bundleWithPath:mpmPath]] autorelease]];
+
 		//	Run a background thread to see if we need to update this app, using the basic updater directly.
 		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
 		self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];

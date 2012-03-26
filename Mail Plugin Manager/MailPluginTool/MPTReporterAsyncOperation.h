@@ -13,9 +13,11 @@
 	BOOL					_isExecuting;
 	BOOL					_isFinished;
 	MPCMailBundle			*_mailBundle;
+	NSBundle				*_bundle;
 }
 
-- (id)initWithMailBundle:(MPCMailBundle *)aMailBundleundle;
+- (id)initWithMailBundle:(MPCMailBundle *)aMailBundle;
+- (id)initWithBundle:(NSBundle *)aBundle;
 
 @property	(readonly)	BOOL		isExecuting;
 @property	(readonly)	BOOL		isFinished;
