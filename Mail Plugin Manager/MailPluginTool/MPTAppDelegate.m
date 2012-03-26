@@ -14,6 +14,8 @@
 #import "LKCGStructs.h"
 #import "NSString+LKHelper.h"
 #import "NSUserDefaults+MPCShared.h"
+//#import "MPTCrashReporter.h"
+#import "MPTReporterAsyncOperation.h"
 
 
 #define HOURS_AGO	(-1 * 60 * 60)
@@ -241,17 +243,14 @@
 		else if ([kMPCCommandLineCheckCrashReportsKey isEqualToString:action]) {
 			//	Tell it to check its crash reports, if frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-				[self addActivityTask:^{
-					[mailBundle sendCrashReports];
-				}];
+				LKLog(@"Sending crash reports");
+				[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
 			}
 		}
 		else if ([kMPCCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
 			//	If frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-				[self addActivityTask:^{
-					[mailBundle sendCrashReports];
-				}];
+				[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
 				[self updateMailBundle:mailBundle force:forceUpdate];
 			}
 		}

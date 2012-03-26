@@ -520,9 +520,9 @@ typedef enum {
 	return somethingHappened;
 }
 
-- (void)sendCrashReports {
-	//	TODO: Put in the crash reporting
-}
+//- (void)sendCrashReports {
+//	//	TODO: Put in the crash reporting
+//}
 
 
 #pragma mark - Sparkle Methods

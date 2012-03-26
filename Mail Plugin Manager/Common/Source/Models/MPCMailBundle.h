@@ -107,6 +107,6 @@
 - (void)loadUpdateInformation;
 - (void)updateIfNecessary;
 - (BOOL)uninstall;
-- (void)sendCrashReports;
+//- (void)sendCrashReports;
 
 @end

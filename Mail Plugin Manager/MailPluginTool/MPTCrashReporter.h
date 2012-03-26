@@ -38,10 +38,12 @@ typedef enum {
 	MPCMailBundle	*_mailBundle;
 	MPTCrashReport	*_lastMailReport;
 	MPTCrashReport	*_lastPluginReport;
+	id				_delegate;
 }
 @property	(nonatomic, retain, readonly)	MPCMailBundle		*mailBundle;
 @property	(nonatomic, retain, readonly)	MPTCrashReport		*lastMailReport;
 @property	(nonatomic, retain, readonly)	MPTCrashReport		*lastPluginReport;
+@property	(nonatomic, assign)				id					delegate;
 - (id)initWithMailBundle:(MPCMailBundle *)aMailBundle;
 - (void)sendLatestReports;
 @end

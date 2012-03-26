@@ -96,7 +96,7 @@
 @synthesize mailBundle = _mailBundle;
 @synthesize lastMailReport = _lastMailReport;
 @synthesize lastPluginReport = _lastPluginReport;
-
+@synthesize delegate = _delegate;
 
 #pragma mark - Memory Management
 
@@ -133,9 +133,10 @@
 		//	Add a report content to our list for sending
 		[reportList addObject:[report serializableContents]];
 	}
+	LKLog(@"Report count=%d", [reportList count]);
 	
 	//	If we found some reports, try to send them
-	if (!IsEmpty(contentsToSend)) {
+	if (!IsEmpty(reportList)) {
 		[contentsToSend setValue:reportList forKey:kMPTReportListKey];
 		
 		//	Add the system info to the package
@@ -149,7 +150,7 @@
 			LKLog(@"Data made:%p", sendData);
 
 			NSURLRequest		*theRequest = [NSURLRequest requestWithURL:crashReportURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0f];
-			NSURLConnection		*myConnection = [NSURLConnection connectionWithRequest:theRequest delegate:self];
+			NSURLConnection		*myConnection = [NSURLConnection connectionWithRequest:theRequest delegate:(self.delegate==nil?self:self.delegate)];
 			if (myConnection == nil) {
 				LKErr(@"Could not create the connection for request: %@", theRequest);
 			}
@@ -162,11 +163,11 @@
 	}
 
 	//	Update the user defs for the plugin
-	NSMutableDictionary	*newDefaults = [pluginDefaults copy];
-	[newDefaults setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:kMPTLastReportDatePrefKey];
-	[[NSUserDefaults standardUserDefaults] setPersistentDomain:newDefaults forName:self.mailBundle.identifier];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-	[newDefaults release];
+//	NSMutableDictionary	*newDefaults = [pluginDefaults copy];
+//	[newDefaults setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:kMPTLastReportDatePrefKey];
+//	[[NSUserDefaults standardUserDefaults] setPersistentDomain:newDefaults forName:self.mailBundle.identifier];
+//	[[NSUserDefaults standardUserDefaults] synchronize];
+//	[newDefaults release];
 
 }
 
