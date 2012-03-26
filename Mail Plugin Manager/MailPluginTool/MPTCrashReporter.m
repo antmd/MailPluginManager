@@ -45,9 +45,13 @@
 		
 		//	Set the type, default is mail
 		_reportType = kMPTReportTypeMail;
-		NSString *plugInSeachString = [NSString stringWithFormat:@"PlugIn Identifier: %@", aBundleID];
+		NSString	*pluginIndicator = @"PlugIn Identifier";
+		NSString	*plugInSeachString = [NSString stringWithFormat:@"%@: %@", pluginIndicator, aBundleID];
 		if ([_reportContent rangeOfString:plugInSeachString].location != NSNotFound) {
 			_reportType = kMPTReportTypePlugin;
+		}
+		else if ([_reportContent rangeOfString:pluginIndicator].location != NSNotFound) {
+			_reportType = kMPTReportTypeOtherPlugin;
 		}
 		
 		//	Get it's date
@@ -74,7 +78,7 @@
 - (NSDictionary *)serializableContents {
 	NSMutableDictionary	*contents = [NSMutableDictionary dictionary];
 	
-	[contents setValue:self.reportDate forKey:@"date"];
+	[contents setValue:[NSString stringWithFormat:@"%@", self.reportDate] forKey:@"date"];
 	[contents setValue:((self.reportType == kMPTReportTypeMail)?@"mail":@"plugin") forKey:@"type"];
 	[contents setValue:self.reportContent forKey:@"report"];
 	
@@ -119,7 +123,7 @@
 
 #pragma mark - Main Sender
 
-- (void)sendLatestReports {
+- (BOOL)sendLatestReports {
 	
 	NSMutableDictionary	*contentsToSend = [NSMutableDictionary dictionary];
 	
@@ -145,20 +149,23 @@
 		//	Determine what the url is to call
 		NSURL	*crashReportURL = [NSURL URLWithString:[[self.mailBundle.bundle infoDictionary] valueForKey:kMPCCrashReportURLKey]];
 		if (crashReportURL != nil) {
+
 			//	Send the package as JSON
 			NSData	*sendData = [contentsToSend JSONData];
-			LKLog(@"Data made:%p", sendData);
 
-			NSURLRequest		*theRequest = [NSURLRequest requestWithURL:crashReportURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0f];
+			NSMutableURLRequest		*theRequest = [NSMutableURLRequest requestWithURL:crashReportURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0f];
+			[theRequest setHTTPMethod:@"POST"];
+			[theRequest setHTTPBody:sendData];
 			NSURLConnection		*myConnection = [NSURLConnection connectionWithRequest:theRequest delegate:(self.delegate==nil?self:self.delegate)];
 			if (myConnection == nil) {
 				LKErr(@"Could not create the connection for request: %@", theRequest);
+				return NO;
 			}
 			
 		}
 		else {
 			LKInfo(@"There is no Crash Report URL for plugin:%@", self.mailBundle.name);
-			return;
+			return NO;
 		}
 	}
 
@@ -169,6 +176,7 @@
 //	[[NSUserDefaults standardUserDefaults] synchronize];
 //	[newDefaults release];
 
+	return YES;
 }
 
 #pragma mark - NSURLConnection Delegate Methods
@@ -193,7 +201,7 @@
 	NSMutableArray	*reports = [NSMutableArray array];
 	
 	// Get the log file, its last change date and last report date:
-	NSString	*mailAppName = [[[NSBundle mainBundle] infoDictionary] objectForKey: @"CFBundleExecutable"];
+	NSString	*mailAppName = [[[NSBundle bundleWithIdentifier:kMPCMailBundleIdentifier] infoDictionary] objectForKey: @"CFBundleExecutable"];
 	NSString	*crashLogsFolder = [@"~/Library/Logs/CrashReporter/" stringByExpandingTildeInPath];
 
 	
@@ -206,8 +214,12 @@
 	while ((currName = [enny nextObject])) {
 		if ([currName hasPrefix:crashLogPrefix] && [currName hasSuffix:crashLogSuffix] && 
 			[[[enny fileAttributes] fileModificationDate] isGreaterThan:lastSentDate]) {
-			//	Add it to our list
-			[reports addObject:[[[MPTCrashReport alloc] initWithPath:[crashLogsFolder stringByAppendingPathComponent:currName] forBundleID:self.mailBundle.identifier] autorelease]];
+			//	Parse the report
+			MPTCrashReport	*report = [[[MPTCrashReport alloc] initWithPath:[crashLogsFolder stringByAppendingPathComponent:currName] forBundleID:self.mailBundle.identifier] autorelease];
+			//	Add it to our list, if it is not some other plugin's report
+			if (report.reportType != kMPTReportTypeOtherPlugin) {
+				[reports addObject:report];
+			}
 		}
 	}
 	

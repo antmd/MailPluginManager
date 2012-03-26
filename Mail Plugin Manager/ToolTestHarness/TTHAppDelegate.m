@@ -18,9 +18,9 @@
 {
 	// Insert code here to initialize your application
 	
-//	MPTResultNotificationBlock myBlock = ^(NSDictionary *object) {
-//		NSLog(@"\n\nThe returned object is:%@\n\n", object);
-//	};
+	MPTResultNotificationBlock myBlock = ^(NSDictionary *object) {
+		NSLog(@"\n\nThe returned object is:%@\n\n", object);
+	};
 	
 	NSBundle *mailBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/ExamplePlugin.mailbundle"];
 
@@ -29,7 +29,7 @@
 
 //	MPTLaunchCommandForBundle2(@"update", mailBundle, YES, nil);
 
-//	MPTMailInformationForBundleWithBlock(mailBundle, myBlock);
+	MPTMailInformationForBundleWithBlock(mailBundle, myBlock);
 //	MPTUUIDListForBundleWithBlock(mailBundle, myBlock);
 	
 //	MPTUninstallForBundle(mailBundle);
@@ -39,7 +39,7 @@
 //	MPTCheckForUpdatesForBundle(sisBundle);
 //	MPTUninstallForBundle(sisBundle);
 //	MPTSendCrashReportsForBundle(sisBundle);
-	MPTSendCrashReportsForBundle(mailBundle);
+//	MPTSendCrashReportsForBundle(mailBundle);
 	
 	double delayInSeconds = 10.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);

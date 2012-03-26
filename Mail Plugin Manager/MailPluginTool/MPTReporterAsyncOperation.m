@@ -56,7 +56,9 @@
 	//	Send the reports
 	MPTCrashReporter	*reporter = [[[MPTCrashReporter alloc] initWithMailBundle:self.mailBundle] autorelease];
 	reporter.delegate = self;
-	[reporter sendLatestReports];
+	if (![reporter sendLatestReports]) {
+		[self performSelector:@selector(finish) withObject:nil afterDelay:0.1f];
+	}
 	
 }
 

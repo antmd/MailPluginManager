@@ -289,8 +289,8 @@ These are the keys for the results of the system info query:
 		MPT_SYSINFO_SYSTEM_KEY					NSDictionary of BUILD & VERSION
 		MPT_SYSINFO_MAIL_KEY					NSDictionary of BUILD, VERSION & UUID
 		MPT_SYSINFO_MESSAGE_KEY					NSDictionary of BUILD, VERSION & UUID
-		MPT_SYSINFO_INSTALLED_PLUGINS_KEY		NSArray of NSDictionaries of NAME, PATH & VERSION
-		MPT_SYSINFO_DISABLED_PLUGINS_KEY		NSArray of NSDictionaries of NAME, PATH & VERSION
+		MPT_SYSINFO_INSTALLED_PLUGINS_KEY		NSArray of NSDictionaries of NAME, PATH, BUILD & VERSION
+		MPT_SYSINFO_DISABLED_PLUGINS_KEY		NSArray of NSDictionaries of NAME, PATH, BUILD & VERSION
 
 The key macros in capitals above are the following:
 
@@ -309,6 +309,7 @@ The key macros in capitals above are the following:
 #### Common Pieces
 
 * Add better error handling to the secureMoveTo methods.
+* Document the keys for the info.plist file.
 * *Would be nice*
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.

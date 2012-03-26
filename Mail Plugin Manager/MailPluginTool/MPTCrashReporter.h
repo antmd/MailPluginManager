@@ -12,7 +12,8 @@
 
 typedef enum {
 	kMPTReportTypeMail,
-	kMPTReportTypePlugin
+	kMPTReportTypePlugin,
+	kMPTReportTypeOtherPlugin
 } MPTReportType;
 
 
@@ -45,5 +46,5 @@ typedef enum {
 @property	(nonatomic, retain, readonly)	MPTCrashReport		*lastPluginReport;
 @property	(nonatomic, assign)				id					delegate;
 - (id)initWithMailBundle:(MPCMailBundle *)aMailBundle;
-- (void)sendLatestReports;
+- (BOOL)sendLatestReports;
 @end

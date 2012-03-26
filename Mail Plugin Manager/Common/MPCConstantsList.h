@@ -87,6 +87,9 @@ STR_CONST(kMPCSysInfoHardwareKey, "hardware");
 STR_CONST(kMPCSysInfoInstalledMailPluginsKey, "installed");
 STR_CONST(kMPCSysInfoDisabledMailPluginsKey, "disabled");
 
+STR_CONST(kMPCLocalMailFolderPlaceholder, "<LOCALMailFolder>");
+STR_CONST(kMPCUserMailFolderPlaceholder, "<USERMailFolder>");
+
 //	Progress handling
 STR_CONST(kMPCInstallationProgressNotification, "MPCInstallationProgressNotification");
 STR_CONST(kMPCInstallationProgressDescriptionKey, "installation-description");

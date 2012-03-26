@@ -133,13 +133,13 @@
 		NSArray				*bundles = [MPCMailBundle allActiveMailBundlesShouldLoadInfo:NO];
 		NSMutableArray		*bundleInfoList = [NSMutableArray arrayWithCapacity:[bundles count]];
 		for (MPCMailBundle *aBundle in bundles) {
-			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.path, kMPCPathKey, aBundle.version, kMPCVersionKey, aBundle.name, kMPCNameKey, nil]];
+			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.anonymousPath, kMPCPathKey, IsEmpty(aBundle.shortVersion)?@"-":aBundle.shortVersion, kMPCVersionKey, aBundle.version, kMPCSysInfoBuildKey, aBundle.name, kMPCNameKey, nil]];
 		}
 		[sysInfo setObject:bundleInfoList forKey:kMPCSysInfoInstalledMailPluginsKey];
 		bundles = [MPCMailBundle allDisabledMailBundlesShouldLoadInfo:NO];
 		bundleInfoList = [NSMutableArray arrayWithCapacity:[bundles count]];
 		for (MPCMailBundle *aBundle in bundles) {
-			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.path, kMPCPathKey, aBundle.version, kMPCVersionKey, aBundle.name, kMPCNameKey, nil]];
+			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.anonymousPath, kMPCPathKey, IsEmpty(aBundle.shortVersion)?@"-":aBundle.shortVersion, kMPCVersionKey, aBundle.version, kMPCSysInfoBuildKey, aBundle.name, kMPCNameKey, nil]];
 		}
 		[sysInfo setObject:bundleInfoList forKey:kMPCSysInfoDisabledMailPluginsKey];
 		
