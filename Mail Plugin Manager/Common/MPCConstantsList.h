@@ -76,6 +76,7 @@ STR_CONST(kMPCUUIDNotificationSenderKey, "sender-id");
 
 //	Keys for System Information dictionary
 STR_CONST(kMPCSysInfoKey, "system-info");
+STR_CONST(kMPCAnonymousIDKey, "anonymous-id");
 STR_CONST(kMPCSysInfoSystemKey, "system");
 STR_CONST(kMPCSysInfoMailKey, "mail");
 STR_CONST(kMPCSysInfoMessageKey, "message");
@@ -102,8 +103,13 @@ STR_CONST(kMPCBundleUsesMPMKey, "PluginUsesMailPluginManager");
 STR_CONST(kMPCCompanyNameKey, "MPCCompanyName");
 STR_CONST(kMPCCompanyURLKey, "MPCCompanyURL");
 STR_CONST(kMPCProductURLKey, "MPCProductURL");
+STR_CONST(kMPCCrashReportURLKey, "MPCCrashReportURL");
 STR_CONST(kMPCUnknownCompanyValue, "<MPCCompanyUnknown>");
 STR_CONST(kMPCSupplementalSparkleFeedParametersKey, "MPCSupplementalSparkleFeedParameters");
+
+//	The send crash reports values
+STR_CONST(kMPTLastReportDatePrefKey, "MPTCrashReportedLastReportDate");
+STR_CONST(kMPTReportListKey, "report-list");
 
 //	Notifications
 STR_CONST(kMPCMailBundleUninstalledNotification, "MPCMailBundleUninstalledNotification");

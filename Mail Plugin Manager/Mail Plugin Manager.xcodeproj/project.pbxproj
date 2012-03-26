@@ -38,6 +38,10 @@
 		D22CC067146BD8800055CFBE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22CC065146BD8800055CFBE /* MainMenu.xib */; };
 		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
+		D2344B23151F9EBB005B3B0F /* MPTCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B22151F9EBB005B3B0F /* MPTCrashReporter.m */; };
+		D2344B2C151FCEDC005B3B0F /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B2B151FCEDC005B3B0F /* JSONKit.m */; };
+		D2344B34152069E0005B3B0F /* NSString+LKAnonymizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B33152069E0005B3B0F /* NSString+LKAnonymizer.m */; };
+		D2344B3515206ACF005B3B0F /* NSString+LKAnonymizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B33152069E0005B3B0F /* NSString+LKAnonymizer.m */; };
 		D23D3151144216E3007D30F8 /* companies.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23D3150144216E3007D30F8 /* companies.plist */; };
 		D23D3152144216E3007D30F8 /* companies.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23D3150144216E3007D30F8 /* companies.plist */; };
 		D23D3155144234B4007D30F8 /* MPCCompanyList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D3154144234B4007D30F8 /* MPCCompanyList.m */; };
@@ -340,6 +344,12 @@
 		D231F44C1428ED5E002DB999 /* LKLogHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKLogHelper.m; path = ../../LKKit/Helpers/LKLogHelper.m; sourceTree = "<group>"; };
 		D231F44E1428EE7B002DB999 /* LKInclude.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKInclude.pch; path = ../LKKit/LKInclude.pch; sourceTree = "<group>"; };
 		D231F44F1428F035002DB999 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.markdown; path = ../README.markdown; sourceTree = SOURCE_ROOT; };
+		D2344B21151F9EBB005B3B0F /* MPTCrashReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTCrashReporter.h; sourceTree = "<group>"; };
+		D2344B22151F9EBB005B3B0F /* MPTCrashReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTCrashReporter.m; sourceTree = "<group>"; };
+		D2344B2A151FCEDC005B3B0F /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		D2344B2B151FCEDC005B3B0F /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		D2344B32152069E0005B3B0F /* NSString+LKAnonymizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKAnonymizer.h"; path = "../../LKKit/Categories/NSString+LKAnonymizer.h"; sourceTree = "<group>"; };
+		D2344B33152069E0005B3B0F /* NSString+LKAnonymizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKAnonymizer.m"; path = "../../LKKit/Categories/NSString+LKAnonymizer.m"; sourceTree = "<group>"; };
 		D23D3150144216E3007D30F8 /* companies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = companies.plist; path = ../Remote/companies.plist; sourceTree = "<group>"; };
 		D23D3153144234B4007D30F8 /* MPCCompanyList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCCompanyList.h; sourceTree = "<group>"; };
 		D23D3154144234B4007D30F8 /* MPCCompanyList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCCompanyList.m; sourceTree = "<group>"; };
@@ -631,8 +641,12 @@
 				D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */,
 				D20537F1143B15ED002F0157 /* MPTSinglePluginController.h */,
 				D20537F2143B15ED002F0157 /* MPTSinglePluginController.m */,
+				D2344B21151F9EBB005B3B0F /* MPTCrashReporter.h */,
+				D2344B22151F9EBB005B3B0F /* MPTCrashReporter.m */,
 				D25738D6143BBEF0009D4A97 /* DSClickableURLTextField.h */,
 				D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */,
+				D2344B2A151FCEDC005B3B0F /* JSONKit.h */,
+				D2344B2B151FCEDC005B3B0F /* JSONKit.m */,
 				D2779BD8143363DF003F7BE0 /* Resources */,
 				D2779BC414336287003F7BE0 /* Project */,
 				D256CF0814F7DB97001BA72D /* External Headers */,
@@ -802,6 +816,8 @@
 				D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */,
 				D2D1E6CA1430827F002FF1B1 /* NSString+LKHelper.h */,
 				D2D1E6CB1430827F002FF1B1 /* NSString+LKHelper.m */,
+				D2344B32152069E0005B3B0F /* NSString+LKAnonymizer.h */,
+				D2344B33152069E0005B3B0F /* NSString+LKAnonymizer.m */,
 				D222073E14F1B04000881515 /* NSObject+LKObject.h */,
 				D222073F14F1B04000881515 /* NSObject+LKObject.m */,
 				D2EB8256148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.h */,
@@ -1160,6 +1176,7 @@
 				D227F2971504E69500907524 /* MPCSparkleAsyncOperation.m in Sources */,
 				D2F4B6F2150527B6002C3E1D /* MPCScheduledUpdateDriver.m in Sources */,
 				D2487F2A150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */,
+				D2344B3515206ACF005B3B0F /* NSString+LKAnonymizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1217,6 +1234,9 @@
 				D256CF2F14F99D00001BA72D /* MPCSparkleAsyncOperation.m in Sources */,
 				D221E96D1500237600568952 /* MPCScheduledUpdateDriver.m in Sources */,
 				D2487F2B150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */,
+				D2344B23151F9EBB005B3B0F /* MPTCrashReporter.m in Sources */,
+				D2344B2C151FCEDC005B3B0F /* JSONKit.m in Sources */,
+				D2344B34152069E0005B3B0F /* NSString+LKAnonymizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

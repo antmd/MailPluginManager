@@ -9,10 +9,12 @@
 #import "MPCSystemInfo.h"
 #import "MPCMailBundle.h"
 #import "MPCUUIDList.h"
+#import "NSString+LKAnonymizer.h"
 
 #import <sys/sysctl.h>
 
 @interface MPCSystemInfo ()
+@property	(nonatomic, copy)	NSString		*hashedNetworkAddress;
 @property	(nonatomic, copy)	NSString		*systemVersion;
 @property	(nonatomic, copy)	NSString		*systemBuild;
 @property	(nonatomic, copy)	NSString		*mailShortVersion;
@@ -27,6 +29,7 @@
 
 @implementation MPCSystemInfo
 
+@synthesize hashedNetworkAddress = _hashedNetworkAddress;
 @synthesize systemVersion = _systemVersion;
 @synthesize systemBuild = _systemBuild;
 @synthesize mailShortVersion = _mailShortVersion;
@@ -37,13 +40,20 @@
 @synthesize completeInfo = _completeInfo;
 
 
+- (NSString *)hashedNetworkAddress {
+	if (_hashedNetworkAddress == nil) {
+		_hashedNetworkAddress = [[NSString anonymizedMacAddressForInterface:@"en0"] copy];
+	}
+	return _hashedNetworkAddress;
+}
+
 - (NSString *)systemVersion {
 	if (_systemVersion == nil) {
 		SInt32	versionMajor, versionMinor, versionBugFix;
 		Gestalt(gestaltSystemVersionMajor, &versionMajor);
 		Gestalt(gestaltSystemVersionMinor, &versionMinor);
 		Gestalt(gestaltSystemVersionBugFix, &versionBugFix);
-		_systemVersion = [[NSString stringWithFormat:@"%d.%d.%d", versionMajor, versionMinor, versionBugFix] retain];
+		_systemVersion = [[NSString stringWithFormat:@"%d.%d.%d", versionMajor, versionMinor, versionBugFix] copy];
 	}
 	return _systemVersion;
 }
@@ -113,6 +123,8 @@
 	if (_completeInfo == nil) {
 		NSMutableDictionary	*sysInfo = [NSMutableDictionary dictionaryWithCapacity:6];
 		
+		//	Anonymous identifier
+		[sysInfo setObject:[self hashedNetworkAddress] forKey:kMPCAnonymousIDKey];
 		//	[System, Mail, Message.framework (version & build)], hardware device, [plugins installed, plugins disabled (including paths)]
 		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self systemVersion], kMPCSysInfoVersionKey, [self systemBuild], kMPCSysInfoBuildKey, nil] forKey:kMPCSysInfoSystemKey];
 		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self mailShortVersion], kMPCSysInfoVersionKey, [self mailVersion], kMPCSysInfoBuildKey, [MPCUUIDList currentMailUUID], kMPCSysInfoUUIDKey, nil] forKey:kMPCSysInfoMailKey];
@@ -145,6 +157,10 @@
 	
 	dispatch_once(&once, ^{ sharedHelper = [[self alloc] init]; });
 	return sharedHelper;
+}
+
++ (NSString *)hashedNetworkAddress {
+	return [[self sharedInstance] hashedNetworkAddress];
 }
 
 + (NSString *)systemVersion {

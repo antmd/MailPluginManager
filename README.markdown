@@ -284,6 +284,7 @@ And the value of the `MPT_UUID_TYPE_KEY` key should be one of:
 
 These are the keys for the results of the system info query:
 
+		MPT_SYSINFO_ANONYMOUS_ID_KEY			String of Anonymized Unique Identifier
 		MPT_SYSINFO_HARDWARE_KEY				String of hardware identifier
 		MPT_SYSINFO_SYSTEM_KEY					NSDictionary of BUILD & VERSION
 		MPT_SYSINFO_MAIL_KEY					NSDictionary of BUILD, VERSION & UUID
