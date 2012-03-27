@@ -96,7 +96,7 @@
 }
 
 - (NSString *)mainApplicationName {
-	return [[[NSBundle bundleWithIdentifier:kMPCMailBundleIdentifier] infoDictionary] objectForKey: @"CFBundleExecutable"];
+	return [[[NSBundle bundleWithIdentifier:kMPCMailBundleIdentifier] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
 }
 
 
