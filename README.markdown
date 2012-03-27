@@ -90,11 +90,16 @@ A plugin will be able to request the uninstallation of itself. When this happens
 
 A plugin can request an update check and ask that it happen regularly, using the path to the plugin to update. It will check (using Sparkle) to see if there is an update available and will let Sparkle progress through a normal update process if it is found.
 
+<a name="crash-reports"></a>
 #### Send crash reports to developer
 
-**Not yet implemented.**
+Look for any crash reports for the plugin (whose path will have been passed in) and if found send these back to the developer, targeting some type of web service. It will send reports for both Mail and your particular plugin - up to the last 10 reports.
 
-Look for any crash reports for the plugin (whose path will have been passed in) and if found send these back to the developer, targeting some type of web service.
+You will obviously need to setup a web service to accept the input from this and add that URL to the `Info.plist` file of your plugin. See the [Info.plist Keys](#infoplistkeys) section below about this.
+
+The data is sent in a JSON package that contains the crash reports plus information about the version of Mail.app, Message.Framework, Mac OS X and the machine itself, plus a list of Mail plugins (both active and disabled).
+
+An example php script to accept this data and load into a mysql database can be found in the [Github repository][crash-script-link]. It is based on the similar script written by Tom Harrington for the Sparkle feed values and in fact uses the `profileDB.php` and `profileConfig.php` from Tom's code, which you can [find here][sparkle-script]. In addition, it uses the `lib-json.php` file to parse the JSON, which you'll need to [download here][lib-json]. Also included with my script is an sql script to create the database.
 
 #### Check all plugins for compatibility/updates at boot
 
@@ -300,7 +305,32 @@ The key macros in capitals above are the following:
 		MPT_SYSINFO_BUILD_KEY
 		MPT_SYSINFO_UUID_KEY
 
-*Not yet completed* - descriptions are still needed.
+---
+
+<a name="infoplistkeys"></a>
+### Info.plist Keys
+
+To make your plugin work optimally with MPM and MPT, you should add some specific values to your info.plist. These will determine where to send crash reports, how to handle uninstalls and other features. Below is a list of the keys and a description of what they do.
+
+Required to use the [Send Crash Reports](#crash-reports) feature, see that link for the format of the report:
+
+		MPCCrashReportURL		URL to your web service to accept crash reports
+		
+The rest are all optional, but recommended:
+		
+		MPCPluginUsesMailPluginManager			
+		MPCSupplementalSparkleFeedParameters
+		
+The `MPCPluginUsesMailPluginManager` key identifies your plugin as one that is aware of MPM and MPT and is used during an install to ensure that another uninstaller doesn't remove the apps when you depend on them.
+
+The `MPCSupplementalSparkleFeedParameters` key allows you to add an array of other keys within your `info.plist` file that are to be sent as Sparkel feed parameters for the anonymous data.
+
+The following values are used by the apps whenever a plugin is displayed to show the company name, URL and product URL. All of them are optional, but make the presentation nicer. There is a companies.plist file which I try to update with the company name and url based on the reverse domain name of the bundle id, but these values will **always** override that information.
+		
+		MPCCompanyName			Company name for display
+		MPCCompanyURL			Company URL to link to in Apps
+		MPCProductURL			Product URL to link to in Apps
+
 
 ---
 
@@ -366,6 +396,9 @@ You can use this software any way that you like, as long as you don't blame me f
 
 <!-- links -->
 [launchd]: http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man5/launchd.plist.5.html#//apple_ref/doc/man/5/launchd.plist
+[sparkle-script]: http://sparkle.andymatuschak.org/files/php_sparkle_stats_server.zip
+[crash-script-link]: https://github.com/lksoft/MailPluginManager/raw/master/Remote/MPTCrashScripts.zip
+[lib-json]: http://pear.php.net/pepr/pepr-proposal-show.php?id=198
 
 <!-- images -->
 [install-1]: http://media.lksw.eu/mbm/Example_Install_1.png
