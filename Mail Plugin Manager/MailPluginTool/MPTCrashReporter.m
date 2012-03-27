@@ -106,6 +106,8 @@
 #pragma mar - Abstraction Methods
 
 - (NSDate *)lastCrashReportDate {
+	LKLog(@"Getting lastCrashReportDate for:%@", [self.bundle bundleIdentifier]);
+	
 	NSDictionary	*pluginDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:[self.bundle bundleIdentifier]];
 	NSTimeInterval	lastCrashReportInterval = [[pluginDefaults valueForKey:kMPTLastReportDatePrefKey] floatValue];
 	return [NSDate dateWithTimeIntervalSince1970:lastCrashReportInterval];
@@ -114,6 +116,9 @@
 - (void)saveNewCrashReportDate {
 	//	Update the user defs for the plugin
 	NSMutableDictionary	*newDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:[self.bundle bundleIdentifier]] mutableCopy];
+	if (newDefaults == nil) {
+		newDefaults = [[NSMutableDictionary alloc] initWithCapacity:1];
+	}
 	[newDefaults setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:kMPTLastReportDatePrefKey];
 	[[NSUserDefaults standardUserDefaults] setPersistentDomain:newDefaults forName:[self.bundle bundleIdentifier]];
 	[[NSUserDefaults standardUserDefaults] synchronize];
@@ -140,7 +145,7 @@
 	//	Look through all of the crash files of our app that are after our date
 	while ((currName = [enny nextObject])) {
 		if ([currName hasPrefix:crashLogPrefix] && [currName hasSuffix:crashLogSuffix] && 
-			[[[enny fileAttributes] fileModificationDate] isGreaterThan:lastSentDate]) {
+			[[[enny fileAttributes] fileCreationDate] isGreaterThan:lastSentDate]) {
 			
 			//	Parse the report and add it if it is not nil
 			MPTCrashReport	*report = [self validCrashReportWithPath:[crashLogsFolder stringByAppendingPathComponent:currName]];
@@ -193,8 +198,12 @@
 	}
 	LKLog(@"Total Report count=%d", [allReports count]);
 	
-	//	If we found some reports, try to send them
-	if (!IsEmpty(reportList)) {
+	//	If we didn't find any reports we are done
+	if (IsEmpty(reportList)) {
+		return NO;
+	}
+	//	Otherwise send them
+	else {
 		[contentsToSend setValue:[NSNumber numberWithInteger:[allReports count]] forKey:@"total-report-count"];
 		[contentsToSend setValue:reportList forKey:kMPTReportListKey];
 		
@@ -225,7 +234,7 @@
 	}
 
 	//	Update the user defs for the plugin
-//	[self saveNewCrashReportDate];
+	[self saveNewCrashReportDate];
 
 	return YES;
 }
