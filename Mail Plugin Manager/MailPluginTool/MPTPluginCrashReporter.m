@@ -44,7 +44,12 @@
 - (NSDictionary *)serializableContents {
 	NSMutableDictionary	*contents = [[[super serializableContents] mutableCopy] autorelease];
 	
-	[contents setValue:((self.reportType == kMPTReportTypeMail)?@"mail":@"plugin") forKey:@"type"];
+	if (self.reportType == kMPTReportTypeMail) {
+		[contents setValue:kMPCMailBundleIdentifier forKey:@"bundle"];
+	}
+	else {
+		[contents setValue:@"plugin" forKey:@"type"];
+	}
 	
 	return [NSDictionary dictionaryWithDictionary:contents];
 }
@@ -79,10 +84,6 @@
 
 
 #pragma mark - Methods to Override
-
-- (NSDictionary *)otherValuesForReport {
-	return [NSDictionary dictionary];
-}
 
 - (MPTCrashReport *)validCrashReportWithPath:(NSString *)crashPath {
 	//	Parse the report

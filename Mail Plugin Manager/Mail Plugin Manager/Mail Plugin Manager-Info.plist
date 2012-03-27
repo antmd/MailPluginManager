@@ -65,6 +65,8 @@
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>MPCCrashReportURL</key>
+	<string>http://lkslocal/sparkle/crash-logs.php</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2012 Little Known Software. All rights reserved.</string>
 	<key>NSMainNibFile</key>

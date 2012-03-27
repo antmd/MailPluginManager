@@ -24,7 +24,6 @@
 @end
 
 
-
 @interface MPTCrashReporter : NSObject {
 	NSBundle	*_bundle;
 	id			_delegate;
@@ -33,7 +32,6 @@
 @property	(nonatomic, assign)				id			delegate;
 - (id)initWithBundle:(NSBundle *)aBundle;
 - (BOOL)sendLatestReports;
-- (NSDictionary *)otherValuesForReport;
 - (NSString *)mainApplicationName;
 - (MPTCrashReport *)validCrashReportWithPath:(NSString *)crashPath;
 @end

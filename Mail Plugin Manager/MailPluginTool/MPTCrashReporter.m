@@ -66,6 +66,8 @@
 	NSMutableDictionary	*contents = [NSMutableDictionary dictionary];
 	
 	[contents setValue:[NSString stringWithFormat:@"%@", self.reportDate] forKey:@"date"];
+	[contents setValue:@"app" forKey:@"type"];
+	[contents setValue:self.bundleID forKey:@"bundle"];
 	[contents setValue:self.reportContent forKey:@"report"];
 	
 	return [NSDictionary dictionaryWithDictionary:contents];
@@ -128,7 +130,7 @@
 	
 	// Get the log file, its last change date and last report date:
 	NSString	*appName = [self mainApplicationName];
-	NSString	*crashLogsFolder = [@"~/Library/Logs/CrashReporter/" stringByExpandingTildeInPath];
+	NSString	*crashLogsFolder = [@"~/Library/Logs/DiagnosticReports/" stringByExpandingTildeInPath];
 	
 	NSDirectoryEnumerator*	enny = [[NSFileManager defaultManager] enumeratorAtPath:crashLogsFolder];
 	NSString	*currName = nil;
@@ -149,7 +151,7 @@
 	}
 	
 	//	Sort the reports
-	NSSortDescriptor	*dateSort = [NSSortDescriptor sortDescriptorWithKey:@"reportDate" ascending:YES];
+	NSSortDescriptor	*dateSort = [NSSortDescriptor sortDescriptorWithKey:@"reportDate" ascending:NO];
 	[reports sortUsingDescriptors:[NSArray arrayWithObject:dateSort]];
 	
 	return [NSArray arrayWithArray:reports];
@@ -159,17 +161,13 @@
 
 #pragma mark - Methods to Override
 
-- (NSDictionary *)otherValuesForReport {
-	return [NSDictionary dictionary];
-}
-
 - (MPTCrashReport *)validCrashReportWithPath:(NSString *)crashPath {
 	//	Parse the report
 	return [[[MPTCrashReport alloc] initWithPath:crashPath forBundleID:[self.bundle bundleIdentifier]] autorelease];
 }
 
 - (NSString *)mainApplicationName {
-	return [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
+	return [[self.bundle infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
 }
 
 
@@ -181,23 +179,27 @@
 	
 	NSDate			*lastTimeCrashReported = [self lastCrashReportDate];
 
-	//	Add all of the reports
+	//	Add up to 10 of the reports (to avoid issues with server max post issue)
+	NSArray			*allReports = [self listOfReportsSince:lastTimeCrashReported];
+	NSUInteger		reportCount = 10;
 	NSMutableArray	*reportList = [NSMutableArray array];
-	for (MPTCrashReport *report in [self listOfReportsSince:lastTimeCrashReported]) {
+	for (MPTCrashReport *report in allReports) {
 		//	Add a report content to our list for sending
 		[reportList addObject:[report serializableContents]];
+		reportCount--;
+		if (reportCount == 0) {
+			break;
+		}
 	}
-	LKLog(@"Report count=%d", [reportList count]);
+	LKLog(@"Total Report count=%d", [allReports count]);
 	
 	//	If we found some reports, try to send them
 	if (!IsEmpty(reportList)) {
+		[contentsToSend setValue:[NSNumber numberWithInteger:[allReports count]] forKey:@"total-report-count"];
 		[contentsToSend setValue:reportList forKey:kMPTReportListKey];
 		
 		//	Add the system info to the package
 		[contentsToSend setValue:[MPCSystemInfo completeInfo] forKey:kMPCSysInfoKey];
-		
-		//	Add any other values
-		[contentsToSend addEntriesFromDictionary:[self otherValuesForReport]];
 		
 		//	Determine what the url is to call
 		NSURL	*crashReportURL = [self reportURL];
