@@ -102,7 +102,7 @@ STR_CONST(kMPCMailBundleExtension, "mailbundle");
 STR_CONST(kMPCMailBundleUUIDKey, "PluginCompatibilityUUID");
 STR_CONST(kMPCMailBundleUUIDListKey, "SupportedPluginCompatibilityUUIDs");
 //	Other info.plist keys and values
-STR_CONST(kMPCBundleUsesMPMKey, "PluginUsesMailPluginManager");
+STR_CONST(kMPCBundleUsesMPMKey, "MPCPluginUsesMailPluginManager");
 STR_CONST(kMPCCompanyNameKey, "MPCCompanyName");
 STR_CONST(kMPCCompanyURLKey, "MPCCompanyURL");
 STR_CONST(kMPCProductURLKey, "MPCProductURL");
