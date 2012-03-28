@@ -107,6 +107,7 @@ STR_CONST(kMPCCompanyNameKey, "MPCCompanyName");
 STR_CONST(kMPCCompanyURLKey, "MPCCompanyURL");
 STR_CONST(kMPCProductURLKey, "MPCProductURL");
 STR_CONST(kMPCCrashReportURLKey, "MPCCrashReportURL");
+STR_CONST(kMPCMaxCrashReportCountKey, "MPCMaxCrashReportsToSend");
 STR_CONST(kMPCUnknownCompanyValue, "<MPCCompanyUnknown>");
 STR_CONST(kMPCSupplementalSparkleFeedParametersKey, "MPCSupplementalSparkleFeedParameters");
 

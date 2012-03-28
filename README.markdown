@@ -99,7 +99,7 @@ You will obviously need to setup a web service to accept the input from this and
 
 The data is sent in a JSON package that contains the crash reports plus information about the version of Mail.app, Message.Framework, Mac OS X and the machine itself, plus a list of Mail plugins (both active and disabled).
 
-An example php script to accept this data and load into a mysql database can be found in the [Github repository][crash-script-link]. It is based on the similar script written by Tom Harrington for the Sparkle feed values and in fact uses the `profileDB.php` and `profileConfig.php` from Tom's code, which you can [find here][sparkle-script]. In addition, it uses the `lib-json.php` file to parse the JSON, which you'll need to [download here][lib-json]. Also included with my script is an sql script to create the database.
+An example php script to accept this data and load into a mysql database can be found in the [Github repository][crash-script-link]. It is based on the similar script written by Tom Harrington for the Sparkle feed values and in fact uses the `profileDB.php` and `profileConfig.php` from Tom's code, which you can [find here][sparkle-script]. In addition, it uses the php JSON extension to parse the data, which you'll need to ensure is included in your php installation (should be in version 5.2.0 or greater). For more information about that extension [see here][json-php]. Also included with my script is an sql script to create the database tables.
 
 #### Check all plugins for compatibility/updates at boot
 
@@ -318,9 +318,12 @@ Required to use the [Send Crash Reports](#crash-reports) feature, see that link 
 		
 The rest are all optional, but recommended:
 		
+		MPCMaxCrashReportsToSend
 		MPCPluginUsesMailPluginManager			
 		MPCSupplementalSparkleFeedParameters
 		
+The `MPCMaxCrashReportsToSend` key allows you to indicate a maximum of crash reports that you want to send in any one session. This allows you to manage your server storage better. **_The default value is 20_**.
+
 The `MPCPluginUsesMailPluginManager` key identifies your plugin as one that is aware of MPM and MPT and is used during an install to ensure that another uninstaller doesn't remove the apps when you depend on them.
 
 The `MPCSupplementalSparkleFeedParameters` key allows you to add an array of other keys within your `info.plist` file that are to be sent as Sparkel feed parameters for the anonymous data.
@@ -398,7 +401,7 @@ You can use this software any way that you like, as long as you don't blame me f
 [launchd]: http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man5/launchd.plist.5.html#//apple_ref/doc/man/5/launchd.plist
 [sparkle-script]: http://sparkle.andymatuschak.org/files/php_sparkle_stats_server.zip
 [crash-script-link]: https://github.com/lksoft/MailPluginManager/raw/master/Remote/MPTCrashScripts.zip
-[lib-json]: http://pear.php.net/pepr/pepr-proposal-show.php?id=198
+[json-php]: http://bg.php.net/manual/en/book.json.php
 
 <!-- images -->
 [install-1]: http://media.lksw.eu/mbm/Example_Install_1.png

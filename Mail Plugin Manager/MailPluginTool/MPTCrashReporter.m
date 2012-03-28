@@ -186,7 +186,10 @@
 
 	//	Add up to 10 of the reports (to avoid issues with server max post issue)
 	NSArray			*allReports = [self listOfReportsSince:lastTimeCrashReported];
-	NSUInteger		reportCount = 10;
+	NSUInteger		reportCount = [[[self.bundle infoDictionary] valueForKey:kMPCMaxCrashReportCountKey] integerValue];
+	if (reportCount == 0) {
+		reportCount = 20;
+	}
 	NSMutableArray	*reportList = [NSMutableArray array];
 	for (MPTCrashReport *report in allReports) {
 		//	Add a report content to our list for sending
@@ -218,6 +221,7 @@
 			NSData	*sendData = [contentsToSend JSONData];
 
 			NSMutableURLRequest		*theRequest = [NSMutableURLRequest requestWithURL:crashReportURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0f];
+			[theRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 			[theRequest setHTTPMethod:@"POST"];
 			[theRequest setHTTPBody:sendData];
 			NSURLConnection		*myConnection = [NSURLConnection connectionWithRequest:theRequest delegate:(self.delegate==nil?self:self.delegate)];

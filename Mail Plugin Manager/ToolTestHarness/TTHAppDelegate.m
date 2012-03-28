@@ -35,11 +35,11 @@
 //	MPTUninstallForBundle(mailBundle);
 	
 //	MPTUpdateAndSendReportsForBundleNow(mailBundle);
-//	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Sidebar for Infusionsoft.mailbundle"];
+	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Sidebar for Infusionsoft.mailbundle"];
 //	MPTCheckForUpdatesForBundle(sisBundle);
 //	MPTUninstallForBundle(sisBundle);
-//	MPTSendCrashReportsForBundle(sisBundle);
-	MPTSendCrashReportsForBundle(mailBundle);
+	MPTSendCrashReportsForBundle(sisBundle);
+//	MPTSendCrashReportsForBundle(mailBundle);
 	
 	double delayInSeconds = 10.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
