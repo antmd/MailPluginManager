@@ -27,7 +27,9 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>MPCCrashReportURL</key>
-	<string>http://lkslocal/sparkle/crash-logs.php</string>
+	<string>https://littleknownsoftware.com/crash-report</string>
+	<key>MPCMaxCrashReportsToSend</key>
+	<string>20</string>
 	<key>NSAppleScriptEnabled</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
