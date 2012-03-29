@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface MPCSystemInfo : NSObject {
-@private	
+@private
+	NSString		*_hashedNetworkAddress;
 	NSString		*_systemVersion;
 	NSString		*_systemBuild;
 	NSString		*_mailShortVersion;
@@ -19,6 +20,7 @@
 	NSString		*_hardware;
 	NSDictionary	*_completeInfo;
 }
++ (NSString *)hashedNetworkAddress;
 + (NSString *)systemVersion;
 + (NSString *)systemBuild;
 + (NSString *)mailShortVersion;

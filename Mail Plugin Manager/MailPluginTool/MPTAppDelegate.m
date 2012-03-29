@@ -14,6 +14,8 @@
 #import "LKCGStructs.h"
 #import "NSString+LKHelper.h"
 #import "NSUserDefaults+MPCShared.h"
+//#import "MPTCrashReporter.h"
+#import "MPTReporterAsyncOperation.h"
 
 
 #define HOURS_AGO	(-1 * 60 * 60)
@@ -104,6 +106,10 @@
 
 	//	Get Path for the Mail Plugin Manager container
 	NSString	*mpmPath = [self pathToManagerContainer];
+	
+	//	Report crashes for the tool app
+	[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle mainBundle]] autorelease]];
+	
 	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager and if that is writable by the user.
 	LKLog(@"mpmPath is:%@", mpmPath);
 	if ((mpmPath != nil) && [mpmPath userHasAccessRights]) {
@@ -127,6 +133,9 @@
 		//	May need to save the state of this value and restore afterward
 		[self setupSparkleEnvironment];
 		
+		//	Report crashes for the manager app
+		[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle bundleWithPath:mpmPath]] autorelease]];
+
 		//	Run a background thread to see if we need to update this app, using the basic updater directly.
 		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
 		self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
@@ -241,17 +250,14 @@
 		else if ([kMPCCommandLineCheckCrashReportsKey isEqualToString:action]) {
 			//	Tell it to check its crash reports, if frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-				[self addActivityTask:^{
-					[mailBundle sendCrashReports];
-				}];
+				LKLog(@"Sending crash reports");
+				[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
 			}
 		}
 		else if ([kMPCCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
 			//	If frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-				[self addActivityTask:^{
-					[mailBundle sendCrashReports];
-				}];
+				[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
 				[self updateMailBundle:mailBundle force:forceUpdate];
 			}
 		}

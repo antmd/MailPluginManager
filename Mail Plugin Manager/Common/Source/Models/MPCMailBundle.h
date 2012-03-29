@@ -39,6 +39,7 @@
 
 @property	(nonatomic, copy, readonly)		NSString		*name;
 @property	(nonatomic, copy, readonly)		NSString		*path;
+@property	(nonatomic, copy, readonly)		NSString		*anonymousPath;
 @property	(nonatomic, copy, readonly)		NSString		*identifier;
 @property	(nonatomic, copy, readonly)		NSString		*company;
 @property	(nonatomic, copy, readonly)		NSString		*companyURL;
@@ -107,6 +108,6 @@
 - (void)loadUpdateInformation;
 - (void)updateIfNecessary;
 - (BOOL)uninstall;
-- (void)sendCrashReports;
+//- (void)sendCrashReports;
 
 @end

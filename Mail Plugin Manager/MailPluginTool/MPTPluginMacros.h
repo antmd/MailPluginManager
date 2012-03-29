@@ -24,6 +24,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define	MPT_UUID_TYPE_VALUE_MESSAGE					@"message"
 
 //	Keys for System Information dictionary
+#define MPT_SYSINFO_ANONYMOUS_ID_KEY				@"anonymous-id"
 #define	MPT_SYSINFO_SYSTEM_KEY						@"system"
 #define	MPT_SYSINFO_MAIL_KEY						@"mail"
 #define	MPT_SYSINFO_MESSAGE_KEY						@"message"

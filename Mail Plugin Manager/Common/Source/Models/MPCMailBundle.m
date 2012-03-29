@@ -84,6 +84,20 @@ typedef enum {
 	return [self.bundle bundlePath];
 }
 
+- (NSString *)anonymousPath {
+	NSSearchPathDomainMask	domain = self.inLocalDomain?NSLocalDomainMask:NSUserDomainMask;
+	NSString	*fullPath = [self.bundle bundlePath];
+	NSString	*cleanedPath = nil;
+	NSString	*mailFolderPath = [[self class] mailFolderPathForDomain:domain];
+	if ([fullPath hasPrefix:mailFolderPath]) {
+		cleanedPath = [NSString stringWithFormat:@"%@%@", (domain==NSLocalDomainMask?kMPCLocalMailFolderPlaceholder:kMPCUserMailFolderPlaceholder), [fullPath substringFromIndex:[mailFolderPath length]]];
+	}
+	else {
+		cleanedPath = fullPath;
+	}
+	return cleanedPath;
+}
+
 - (NSString *)identifier {
 	return [self.bundle bundleIdentifier];
 }
@@ -520,9 +534,9 @@ typedef enum {
 	return somethingHappened;
 }
 
-- (void)sendCrashReports {
-	//	TODO: Put in the crash reporting
-}
+//- (void)sendCrashReports {
+//	//	TODO: Put in the crash reporting
+//}
 
 
 #pragma mark - Sparkle Methods
