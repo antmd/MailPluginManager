@@ -342,7 +342,6 @@ The following values are used by the apps whenever a plugin is displayed to show
 #### Common Pieces
 
 * Add better error handling to the secureMoveTo methods.
-* Document the keys for the info.plist file.
 * *Would be nice*
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
@@ -360,7 +359,6 @@ The following values are used by the apps whenever a plugin is displayed to show
 #### Tool
 
 * *Would be nice*
-* Crash Reporting.
 * Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * Add an Update All Plugins button to Multi Plugin window when relevant.
 * During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
