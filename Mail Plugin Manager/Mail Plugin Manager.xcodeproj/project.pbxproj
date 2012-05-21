@@ -1478,11 +1478,13 @@
 		D216B36D141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_NUMBER = 7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed-test/mpm";
+				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1490,11 +1492,13 @@
 		D216B36E141DFDE2003788DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_NUMBER = 7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed/mpm";
+				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1560,6 +1564,7 @@
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_NUMBER = 7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
@@ -1573,6 +1578,7 @@
 				);
 				INFOPLIST_FILE = "MailPluginTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1580,6 +1586,7 @@
 		D2779BD714336287003F7BE0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_NUMBER = 7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
@@ -1593,6 +1600,7 @@
 				);
 				INFOPLIST_FILE = "MailPluginTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

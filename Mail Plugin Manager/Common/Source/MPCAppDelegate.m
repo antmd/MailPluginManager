@@ -362,6 +362,7 @@
 		
 		//	Set a delegate
 		MPCSparkleDelegate	*sparkleDelegate = [[[MPCSparkleDelegate alloc] initWithMailBundle:mailBundle] autorelease];
+		mailBundle.sparkleDelegate = sparkleDelegate;
 		[updater setDelegate:sparkleDelegate];
 		
 		//	Create our driver manually, so that we have a copy to store
