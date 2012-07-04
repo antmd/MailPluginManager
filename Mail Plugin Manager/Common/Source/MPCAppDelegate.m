@@ -382,6 +382,12 @@
 			LKLog(@"Update Scheduled");
 			[self addActivityOperation:sparkleOperation];
 		}
+		else {
+			[self addActivityTask:^{
+				//	A simple task to ensure that the activity queue is sparked to run
+				LKLog(@"Running the dummy activity task");
+			}];
+		}
 	}
 }
 
