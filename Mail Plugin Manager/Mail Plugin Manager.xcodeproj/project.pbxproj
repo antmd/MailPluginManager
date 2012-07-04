@@ -61,6 +61,8 @@
 		D2487F2B150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */; };
 		D24AF649147D3565000EDC6F /* MPT Scripting.sdef in Resources */ = {isa = PBXBuildFile; fileRef = D24AF648147D3565000EDC6F /* MPT Scripting.sdef */; };
 		D24AF64F147D4CAD000EDC6F /* MPTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */; };
+		D25589C315A48F5B0046E683 /* MPCPluginUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */; };
+		D25589C415A48F5B0046E683 /* MPCPluginUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */; };
 		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
 		D256CF2F14F99D00001BA72D /* MPCSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
@@ -374,6 +376,9 @@
 		D24AF648147D3565000EDC6F /* MPT Scripting.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "MPT Scripting.sdef"; sourceTree = "<group>"; };
 		D24AF64D147D4CAD000EDC6F /* MPTSendInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTSendInfoCommand.h; sourceTree = "<group>"; };
 		D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTSendInfoCommand.m; sourceTree = "<group>"; };
+		D25589C115A48F5B0046E683 /* MPCPluginUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCPluginUpdater.h; path = Common/Source/MPCPluginUpdater.h; sourceTree = "<group>"; };
+		D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCPluginUpdater.m; path = Common/Source/MPCPluginUpdater.m; sourceTree = "<group>"; };
+		D25589C515A491AF0046E683 /* SUUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SUUpdater.h; path = ../../Sparkle/SUUpdater.h; sourceTree = "<group>"; };
 		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF2D14F99CFF001BA72D /* MPCSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCSparkleAsyncOperation.h; path = Common/Source/MPCSparkleAsyncOperation.h; sourceTree = "<group>"; };
@@ -616,6 +621,7 @@
 		D256CF0814F7DB97001BA72D /* External Headers */ = {
 			isa = PBXGroup;
 			children = (
+				D25589C515A491AF0046E683 /* SUUpdater.h */,
 				D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */,
 				D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */,
 				D221E96F1500253300568952 /* SUStatusController.h */,
@@ -698,6 +704,8 @@
 				D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */,
 				D221E96B1500237600568952 /* MPCScheduledUpdateDriver.h */,
 				D221E96C1500237600568952 /* MPCScheduledUpdateDriver.m */,
+				D25589C115A48F5B0046E683 /* MPCPluginUpdater.h */,
+				D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */,
 				D24248A4148E515700DE7E6A /* MPCConstantsList.h */,
 				D216B37B141E1676003788DC /* MPCConstants.h */,
 				D216B37C141E1676003788DC /* MPCConstants.m */,
@@ -1187,6 +1195,7 @@
 				D2F4B6F2150527B6002C3E1D /* MPCScheduledUpdateDriver.m in Sources */,
 				D2487F2A150579E90064C1AE /* MPCRestartAsyncOperation.m in Sources */,
 				D2344B3515206ACF005B3B0F /* NSString+LKAnonymizer.m in Sources */,
+				D25589C315A48F5B0046E683 /* MPCPluginUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1249,6 +1258,7 @@
 				D2344B34152069E0005B3B0F /* NSString+LKAnonymizer.m in Sources */,
 				D2344B3815207F09005B3B0F /* MPTReporterAsyncOperation.m in Sources */,
 				D2344BA815212030005B3B0F /* MPTPluginCrashReporter.m in Sources */,
+				D25589C415A48F5B0046E683 /* MPCPluginUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

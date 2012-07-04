@@ -138,7 +138,7 @@
 
 		//	Run a background thread to see if we need to update this app, using the basic updater directly.
 		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
-		self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver] autorelease];
+		self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver updater:managerUpdater] autorelease];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managerSparkleCompleted:) name:kMPCSUUpdateDriverAbortNotification object:self.updateDriver];
 		[self addFinalizeOperation:self.sparkleOperation];
 	}

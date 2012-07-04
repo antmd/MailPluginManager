@@ -15,6 +15,7 @@
 #import "SUBasicUpdateDriver.h"
 #import "MPCSparkleAsyncOperation.h"
 #import "MPCScheduledUpdateDriver.h"
+#import "MPCPluginUpdater.h"
 
 @interface MPCAppDelegate ()
 
@@ -357,21 +358,21 @@
 	}
 	
 	//	Simply use the standard Sparkle behavior (with an instantiation via the bundle)
-	SUUpdater	*updater = [SUUpdater updaterForBundle:mailBundle.bundle];
+	SUUpdater	*updater = [MPCPluginUpdater updaterForBundle:mailBundle.bundle];
 	if (updater) {
+		
+		//	Create our driver manually, so that we have a copy to store
+		MPCScheduledUpdateDriver	*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
 		
 		//	Set a delegate
 		MPCSparkleDelegate	*sparkleDelegate = [[[MPCSparkleDelegate alloc] initWithMailBundle:mailBundle] autorelease];
 		mailBundle.sparkleDelegate = sparkleDelegate;
 		[updater setDelegate:sparkleDelegate];
 		
-		//	Create our driver manually, so that we have a copy to store
-		MPCScheduledUpdateDriver	*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
-		
 		//	Only start the update if the schedule requires it
 		if (flag || [updateDriver isPastSchedule]) {
 			//	Then create an operation to run the action
-			MPCSparkleAsyncOperation	*sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
+			MPCSparkleAsyncOperation	*sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver updater:updater] autorelease];
 			[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];
 			
 			//	Set an observer for the bundle

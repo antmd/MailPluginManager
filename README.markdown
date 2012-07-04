@@ -119,7 +119,7 @@ When there are more than one plugins that need the user's attention a different 
 
 Through both of these the user can perform and Update, Disable a plugin, Remove it or ignore the message altogether.
 
-I am thinking of also running it whenever the Bundles folder list changes as well, but not sure that we be a proper time, so I need to think about that one some more.
+I am thinking of also running it whenever the Bundles folder list changes as well, but not sure that would be a proper time, so I need to think about that one some more.
 
 <a name="sys-info"></a>
 #### Get relevant system information
@@ -326,7 +326,7 @@ The `MPCMaxCrashReportsToSend` key allows you to indicate a maximum of crash rep
 
 The `MPCPluginUsesMailPluginManager` key identifies your plugin as one that is aware of MPM and MPT and is used during an install to ensure that another uninstaller doesn't remove the apps when you depend on them.
 
-The `MPCSupplementalSparkleFeedParameters` key allows you to add an array of other keys within your `info.plist` file that are to be sent as Sparkel feed parameters for the anonymous data.
+The `MPCSupplementalSparkleFeedParameters` key allows you to add an array of other keys within your `info.plist` file that are to be sent as Sparkle feed parameters for the anonymous data.
 
 The following values are used by the apps whenever a plugin is displayed to show the company name, URL and product URL. All of them are optional, but make the presentation nicer. There is a companies.plist file which I try to update with the company name and url based on the reverse domain name of the bundle id, but these values will **always** override that information.
 		
@@ -385,13 +385,7 @@ The following values are used by the apps whenever a plugin is displayed to show
 
 ---
 
-### Crazy Idea
-
-Can a plugin be written to load first in Mail and then patch the loading process for other mailbundles from that point to ensure that any plugins about to be disabled can be handled more gracefully? Unlikely, but think about it.
-
----
-
-© Copyright 2011-2012 Little Known Software
+2011-2012 Little Known Software
 
 You can use this software any way that you like, as long as you don't blame me for anything ;-)
 
