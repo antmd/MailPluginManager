@@ -497,7 +497,7 @@ typedef enum {
 }
 
 - (void)updateIfNecessary {
-	[AppDel updateMailBundle:self force:NO];
+	[AppDel updateMailBundle:self force:YES];
 }
 
 - (BOOL)uninstall {
