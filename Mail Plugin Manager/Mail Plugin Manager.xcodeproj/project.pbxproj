@@ -63,6 +63,10 @@
 		D24AF64F147D4CAD000EDC6F /* MPTSendInfoCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D24AF64E147D4CAD000EDC6F /* MPTSendInfoCommand.m */; };
 		D25589C315A48F5B0046E683 /* MPCPluginUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */; };
 		D25589C415A48F5B0046E683 /* MPCPluginUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */; };
+		D2558A3115A62DFD0046E683 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
+		D2558A3915A62DFD0046E683 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2558A3815A62DFD0046E683 /* main.m */; };
+		D2558A4B15A6366D0046E683 /* MailPluginRelaunch.app in Resources */ = {isa = PBXBuildFile; fileRef = D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */; };
+		D2558A4C15A636720046E683 /* MailPluginRelaunch.app in Resources */ = {isa = PBXBuildFile; fileRef = D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */; };
 		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
 		D256CF2F14F99D00001BA72D /* MPCSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
@@ -223,6 +227,20 @@
 			remoteGlobalIDString = D2779BBF14336287003F7BE0;
 			remoteInfo = MailPluginTool;
 		};
+		D2558A4715A636560046E683 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2558A2E15A62DFC0046E683;
+			remoteInfo = MailPluginRelaunch;
+		};
+		D2558A4915A6365A0046E683 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2558A2E15A62DFC0046E683;
+			remoteInfo = MailPluginRelaunch;
+		};
 		D256CF0E14F92CDA001BA72D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D216B331141DFDE1003788DC /* Project object */;
@@ -379,6 +397,11 @@
 		D25589C115A48F5B0046E683 /* MPCPluginUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCPluginUpdater.h; path = Common/Source/MPCPluginUpdater.h; sourceTree = "<group>"; };
 		D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCPluginUpdater.m; path = Common/Source/MPCPluginUpdater.m; sourceTree = "<group>"; };
 		D25589C515A491AF0046E683 /* SUUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SUUpdater.h; path = ../../Sparkle/SUUpdater.h; sourceTree = "<group>"; };
+		D2558A1F15A62D9D0046E683 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailPluginRelaunch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2558A3415A62DFD0046E683 /* MailPluginRelaunch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MailPluginRelaunch-Info.plist"; sourceTree = "<group>"; };
+		D2558A3815A62DFD0046E683 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D2558A3A15A62DFD0046E683 /* MailPluginRelaunch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MailPluginRelaunch-Prefix.pch"; sourceTree = "<group>"; };
 		D256CF0914F7DBD0001BA72D /* SUBasicUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUBasicUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF0A14F7DBD0001BA72D /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
 		D256CF2D14F99CFF001BA72D /* MPCSparkleAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCSparkleAsyncOperation.h; path = Common/Source/MPCSparkleAsyncOperation.h; sourceTree = "<group>"; };
@@ -475,6 +498,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D2558A2C15A62DFC0046E683 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2558A3115A62DFD0046E683 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2779BBD14336287003F7BE0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -495,6 +526,7 @@
 				D2779BD9143364C9003F7BE0 /* Common Source */,
 				D216B344141DFDE1003788DC /* Mail Plugin Manager */,
 				D2779BC314336287003F7BE0 /* MailPluginTool */,
+				D2558A3215A62DFD0046E683 /* MailPluginRelaunch */,
 				D22CC056146BD87F0055CFBE /* ToolTestHarness */,
 				D216B361141DFDE2003788DC /* Mail Plugin ManagerTests */,
 				D216B33D141DFDE1003788DC /* Frameworks */,
@@ -511,6 +543,7 @@
 				D216B35B141DFDE2003788DC /* Mail Plugin ManagerTests.octest */,
 				D2779BC014336287003F7BE0 /* MailPluginTool.app */,
 				D22CC053146BD87F0055CFBE /* ToolTestHarness.app */,
+				D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -523,6 +556,7 @@
 				D216B33E141DFDE1003788DC /* Cocoa.framework */,
 				D216B35C141DFDE2003788DC /* SenTestingKit.framework */,
 				D2866EF214FBC3890006A749 /* Sparkle.framework */,
+				D2558A1F15A62D9D0046E683 /* Foundation.framework */,
 				D216B340141DFDE1003788DC /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -616,6 +650,16 @@
 				D22CC05F146BD8800055CFBE /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D2558A3215A62DFD0046E683 /* MailPluginRelaunch */ = {
+			isa = PBXGroup;
+			children = (
+				D2558A3415A62DFD0046E683 /* MailPluginRelaunch-Info.plist */,
+				D2558A3815A62DFD0046E683 /* main.m */,
+				D2558A3A15A62DFD0046E683 /* MailPluginRelaunch-Prefix.pch */,
+			);
+			path = MailPluginRelaunch;
 			sourceTree = "<group>";
 		};
 		D256CF0814F7DB97001BA72D /* External Headers */ = {
@@ -872,6 +916,7 @@
 			);
 			dependencies = (
 				D256CF1214F92D12001BA72D /* PBXTargetDependency */,
+				D2558A4A15A6365A0046E683 /* PBXTargetDependency */,
 			);
 			name = "Mail Plugin Manager";
 			productName = "Mail Plugin Manager";
@@ -918,6 +963,23 @@
 			productReference = D22CC053146BD87F0055CFBE /* ToolTestHarness.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2558A4415A62DFD0046E683 /* Build configuration list for PBXNativeTarget "MailPluginRelaunch" */;
+			buildPhases = (
+				D2558A2B15A62DFC0046E683 /* Sources */,
+				D2558A2C15A62DFC0046E683 /* Frameworks */,
+				D2558A2D15A62DFC0046E683 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MailPluginRelaunch;
+			productName = MailPluginRelaunch;
+			productReference = D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D2779BBF14336287003F7BE0 /* MailPluginTool */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailPluginTool" */;
@@ -931,6 +993,7 @@
 			);
 			dependencies = (
 				D221E9AE15004A5800568952 /* PBXTargetDependency */,
+				D2558A4815A636560046E683 /* PBXTargetDependency */,
 			);
 			name = MailPluginTool;
 			productName = MailPluginTool;
@@ -973,6 +1036,7 @@
 				D2779BBF14336287003F7BE0 /* MailPluginTool */,
 				D216B35A141DFDE2003788DC /* Mail Plugin ManagerTests */,
 				D22CC052146BD87F0055CFBE /* ToolTestHarness */,
+				D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */,
 			);
 		};
 /* End PBXProject section */
@@ -1067,6 +1131,7 @@
 				D2866E4814FADC790006A749 /* ManagerIcon.icns in Resources */,
 				D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */,
 				D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
+				D2558A4B15A6366D0046E683 /* MailPluginRelaunch.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1086,6 +1151,13 @@
 				D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */,
 				D22CC061146BD8800055CFBE /* Credits.rtf in Resources */,
 				D22CC067146BD8800055CFBE /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2558A2D15A62DFC0046E683 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,6 +1182,7 @@
 				D24AF649147D3565000EDC6F /* MPT Scripting.sdef in Resources */,
 				D2866E6E14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
 				D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */,
+				D2558A4C15A636720046E683 /* MailPluginRelaunch.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1217,6 +1290,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D2558A2B15A62DFC0046E683 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2558A3915A62DFD0046E683 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2779BBC14336287003F7BE0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1279,6 +1360,16 @@
 			isa = PBXTargetDependency;
 			target = D2779BBF14336287003F7BE0 /* MailPluginTool */;
 			targetProxy = D24AF645147D177A000EDC6F /* PBXContainerItemProxy */;
+		};
+		D2558A4815A636560046E683 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */;
+			targetProxy = D2558A4715A636560046E683 /* PBXContainerItemProxy */;
+		};
+		D2558A4A15A6365A0046E683 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */;
+			targetProxy = D2558A4915A6365A0046E683 /* PBXContainerItemProxy */;
 		};
 		D256CF0F14F92CDA001BA72D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1567,6 +1658,39 @@
 			};
 			name = Release;
 		};
+		D2558A4515A62DFD0046E683 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D2558A4615A62DFD0046E683 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1649,6 +1773,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D2558A4415A62DFD0046E683 /* Build configuration list for PBXNativeTarget "MailPluginRelaunch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2558A4515A62DFD0046E683 /* Debug */,
+				D2558A4615A62DFD0046E683 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailPluginTool" */ = {
 			isa = XCConfigurationList;
