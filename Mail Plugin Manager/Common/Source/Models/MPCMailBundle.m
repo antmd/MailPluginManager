@@ -829,6 +829,10 @@ typedef enum {
 
 #pragma mark - KVO Dependence
 
++ (NSSet *)keyPathsForValuesAffectingNameColor {
+	return [NSSet setWithObject:@"enabled"];
+}
+
 + (NSSet *)keyPathsForValuesAffectingPath {
 	return [NSSet setWithObject:@"bundle"];
 }
