@@ -26,6 +26,8 @@
 
 @property	(nonatomic, copy)	NSMutableArray			*bundleSparkleOperations;
 
+@property	(nonatomic, assign, readonly)	BOOL		collectInstalls;
+
 //	App delegation
 - (void)applicationChangeForNotification:(NSNotification *)note;
 
@@ -56,6 +58,7 @@
 
 @synthesize backgroundView = _backgroundView;
 @synthesize scrollView = _scrollView;
+@synthesize quitButton = _quitButton;
 
 @synthesize counterQueue = _counterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
@@ -118,6 +121,13 @@
 	[super dealloc];
 }
 
+
+
+#pragma mark - Accessors
+
+- (BOOL)collectInstalls {
+	return NO;
+}
 
 
 #pragma mark - Application Delegate
@@ -241,10 +251,13 @@
 }
 
 - (IBAction)finishApplication:(id)sender {
+	self.quitButton.enabled = NO;
+
 	//	Indicate that we can quit, *then* release the activity && finalize queues
 	[self quittingNowIsReasonable];
 	[self releaseActivityQueue];
 	[self releaseFinalizeQueue];
+	
 }
 
 
@@ -281,7 +294,7 @@
 	}
 	else {
 		MPCRestartAsyncOperation	*operation = [[[MPCRestartAsyncOperation alloc] initWithTaskBlock:taskBlock] autorelease];
-		[self addActivityOperation:operation];
+		[self addFinalizeOperation:operation];
 	}
 }
 
@@ -316,9 +329,7 @@
 			//	If they said yes, restart
 			if (mailResult == NSAlertDefaultReturn) {
 				//	Otherwise restart mail and return as a finalize task
-				[self addActivityTask:^{
-					[self restartMailExecutingBlock:taskBlock];
-				}];
+				[self restartMailExecutingBlock:taskBlock];
 				mailWasRestartedOrNotRunning = YES;
 			}
 		});
@@ -362,7 +373,8 @@
 	if (updater) {
 		
 		//	Create our driver manually, so that we have a copy to store
-		MPCScheduledUpdateDriver	*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
+		MPCScheduledUpdateDriver	*updateDriver = [[[MPCScheduledUpdateDriver alloc] initWithUpdater:updater] autorelease];
+		updateDriver.shouldCollectInstalls = self.collectInstalls;
 		
 		//	Set a delegate
 		MPCSparkleDelegate	*sparkleDelegate = [[[MPCSparkleDelegate alloc] initWithMailBundle:mailBundle] autorelease];

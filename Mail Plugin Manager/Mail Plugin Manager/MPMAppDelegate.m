@@ -53,6 +53,12 @@ typedef enum {
 }
 
 
+#pragma mark - Accessors
+
+- (BOOL)collectInstalls {
+	return YES;
+}
+
 #pragma mark - App Delegate
 
 //	These are the methods in the order they are called...
