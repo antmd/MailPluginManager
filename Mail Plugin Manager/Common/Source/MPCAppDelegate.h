@@ -36,6 +36,10 @@
 	
 	MPCBackgroundableView	*_backgroundView;
 	NSScrollView			*_scrollView;
+	NSButton				*_quitButton;
+	NSProgressIndicator		*_quitingIndicator;
+	NSTextField				*_quittingNotice;
+	
 }
 
 @property (assign)				id						bundleUninstallObserver;
@@ -52,6 +56,10 @@
 
 @property (assign)	IBOutlet	MPCBackgroundableView	*backgroundView;
 @property (assign)	IBOutlet	NSScrollView			*scrollView;
+@property (assign)	IBOutlet	NSButton				*quitButton;
+@property (assign)	IBOutlet	NSProgressIndicator		*quittingIndicator;
+@property (assign)	IBOutlet	NSTextField				*quittingNotice;
+
 
 //	Window management
 - (void)showCollectionWindowForBundles:(NSArray *)bundleList;

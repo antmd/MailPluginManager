@@ -38,9 +38,12 @@
 
 - (void)complete {
 	
-	//	Launch Mail again
-	[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:kMPCMailBundleIdentifier options:(NSWorkspaceLaunchAsync | NSWorkspaceLaunchWithoutActivation) additionalEventParamDescriptor:nil launchIdentifier:NULL];
+	// Copy the relauncher into a temporary directory so we can get to it after the new version's installed.
+	NSString	*relaunchMailPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"MailPluginRelaunch" ofType:@"app"];
+	relaunchMailPath = [relaunchMailPath stringByAppendingPathComponent:@"/Contents/MacOS/MailPluginRelaunch"];
 	
+    [NSTask launchedTaskWithLaunchPath:relaunchMailPath arguments:[NSArray arrayWithObject:@"0.0"]];
+
 	//	Indicate that the operation is finished.
 	[self finish];
 }
@@ -66,8 +69,8 @@
 				_taskBlock();
 			}
 
-			//	Setup a timer to complete the task after a second - this gives Mail a better time of relaunching
-			[NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(complete) userInfo:nil repeats:NO];
+			//	Complete the task
+			[self complete];
 			
 			//	Remove this observer
 			[[NSNotificationCenter defaultCenter] removeObserver:appDoneObserver];

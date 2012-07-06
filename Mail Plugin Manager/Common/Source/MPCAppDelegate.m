@@ -15,6 +15,7 @@
 #import "SUBasicUpdateDriver.h"
 #import "MPCSparkleAsyncOperation.h"
 #import "MPCScheduledUpdateDriver.h"
+#import "MPCPluginUpdater.h"
 
 @interface MPCAppDelegate ()
 
@@ -24,6 +25,8 @@
 @property	(nonatomic, retain)	NSOperationQueue		*finalizeQueue;
 
 @property	(nonatomic, copy)	NSMutableArray			*bundleSparkleOperations;
+
+@property	(nonatomic, assign, readonly)	BOOL		collectInstalls;
 
 //	App delegation
 - (void)applicationChangeForNotification:(NSNotification *)note;
@@ -55,6 +58,9 @@
 
 @synthesize backgroundView = _backgroundView;
 @synthesize scrollView = _scrollView;
+@synthesize quitButton = _quitButton;
+@synthesize quittingIndicator = _quitingIndicator;
+@synthesize quittingNotice = _quittingNotice;
 
 @synthesize counterQueue = _counterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
@@ -117,6 +123,13 @@
 	[super dealloc];
 }
 
+
+
+#pragma mark - Accessors
+
+- (BOOL)collectInstalls {
+	return NO;
+}
 
 
 #pragma mark - Application Delegate
@@ -240,10 +253,17 @@
 }
 
 - (IBAction)finishApplication:(id)sender {
+	self.quitButton.enabled = NO;
+	self.quittingIndicator.hidden = NO;
+	[self.quittingIndicator startAnimation:self];
+	[self.quittingNotice setStringValue:NSLocalizedString(@"Cleaning up and moving files into place before quitting.", @"Text indicating to user that we are cleaning up before quitting")];
+	self.quittingNotice.hidden = NO;
+
 	//	Indicate that we can quit, *then* release the activity && finalize queues
 	[self quittingNowIsReasonable];
 	[self releaseActivityQueue];
 	[self releaseFinalizeQueue];
+	
 }
 
 
@@ -280,7 +300,7 @@
 	}
 	else {
 		MPCRestartAsyncOperation	*operation = [[[MPCRestartAsyncOperation alloc] initWithTaskBlock:taskBlock] autorelease];
-		[self addActivityOperation:operation];
+		[self addFinalizeOperation:operation];
 	}
 }
 
@@ -315,9 +335,7 @@
 			//	If they said yes, restart
 			if (mailResult == NSAlertDefaultReturn) {
 				//	Otherwise restart mail and return as a finalize task
-				[self addActivityTask:^{
-					[self restartMailExecutingBlock:taskBlock];
-				}];
+				[self restartMailExecutingBlock:taskBlock];
 				mailWasRestartedOrNotRunning = YES;
 			}
 		});
@@ -357,21 +375,22 @@
 	}
 	
 	//	Simply use the standard Sparkle behavior (with an instantiation via the bundle)
-	SUUpdater	*updater = [SUUpdater updaterForBundle:mailBundle.bundle];
+	SUUpdater	*updater = [MPCPluginUpdater updaterForBundle:mailBundle.bundle];
 	if (updater) {
+		
+		//	Create our driver manually, so that we have a copy to store
+		MPCScheduledUpdateDriver	*updateDriver = [[[MPCScheduledUpdateDriver alloc] initWithUpdater:updater] autorelease];
+		updateDriver.shouldCollectInstalls = self.collectInstalls;
 		
 		//	Set a delegate
 		MPCSparkleDelegate	*sparkleDelegate = [[[MPCSparkleDelegate alloc] initWithMailBundle:mailBundle] autorelease];
 		mailBundle.sparkleDelegate = sparkleDelegate;
 		[updater setDelegate:sparkleDelegate];
 		
-		//	Create our driver manually, so that we have a copy to store
-		MPCScheduledUpdateDriver	*updateDriver = [[[NSClassFromString(@"MPCScheduledUpdateDriver") alloc] initWithUpdater:updater] autorelease];
-		
 		//	Only start the update if the schedule requires it
 		if (flag || [updateDriver isPastSchedule]) {
 			//	Then create an operation to run the action
-			MPCSparkleAsyncOperation	*sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver] autorelease];
+			MPCSparkleAsyncOperation	*sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:updateDriver updater:updater] autorelease];
 			[self.bundleSparkleOperations addObject:[NSDictionary dictionaryWithObjectsAndKeys:updateDriver, @"driver", sparkleOperation, @"operation", sparkleDelegate, @"delegate", mailBundle, @"bundle", nil]];
 			
 			//	Set an observer for the bundle
@@ -380,6 +399,12 @@
 			
 			LKLog(@"Update Scheduled");
 			[self addActivityOperation:sparkleOperation];
+		}
+		else {
+			[self addActivityTask:^{
+				//	A simple task to ensure that the activity queue is sparked to run
+				LKLog(@"Running the dummy activity task");
+			}];
 		}
 	}
 }
@@ -430,6 +455,7 @@
 		for (NSDictionary *aDict in self.bundleSparkleOperations) {
 			if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
 				theDict = aDict;
+				((MPCMailBundle *)[note object]).updateWaiting = YES;
 				break;
 			}
 		}

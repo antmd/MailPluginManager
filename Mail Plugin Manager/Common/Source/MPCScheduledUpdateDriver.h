@@ -11,7 +11,10 @@
 @interface MPCScheduledUpdateDriver : SUUIBasedUpdateDriver {
 @private
 	BOOL	showErrors;
+	BOOL	_shouldCollectInstalls;
 }
+
+@property	(nonatomic, assign)	BOOL	shouldCollectInstalls;
 
 - (BOOL)isPastSchedule;
 

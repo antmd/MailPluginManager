@@ -139,8 +139,8 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
 		/*	Test to see if the plugin is up to date	*/ \
 		if ([[[note userInfo] valueForKey:@"uptodate"] boolValue]) { \
-			NSString	*messageText = [NSString stringWithFormat:PluginLocalizedString(@"You have the most recent version of %@.", @"Text telling user the plugin is up to date"), [[mptBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey]]; \
-			NSAlert	*mptBundleUpToDateAlert = [NSAlert alertWithMessageText:messageText defaultButton:PluginLocalizedString(@"OK", @"Okay button") alternateButton:nil otherButton:nil informativeTextWithFormat:@""]; \
+			NSString	*messageText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"You have the most recent version of %@.", nil, [NSBundle bundleForClass:MODULE_CLASS], @"Text telling user the plugin is up to date"), [[mptBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey]]; \
+			NSAlert	*mptBundleUpToDateAlert = [NSAlert alertWithMessageText:messageText defaultButton:NSLocalizedStringFromTableInBundle(@"OK", nil, [NSBundle bundleForClass:MODULE_CLASS], @"Okay button") alternateButton:nil otherButton:nil informativeTextWithFormat:@""]; \
 			[mptBundleUpToDateAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[mptBundle bundlePath]]]; \
 			if (mptSheetWindow != nil) { \
 				dispatch_async(dispatch_get_main_queue(), ^{ \

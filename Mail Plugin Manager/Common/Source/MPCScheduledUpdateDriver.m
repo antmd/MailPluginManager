@@ -15,13 +15,42 @@
 
 @implementation MPCScheduledUpdateDriver
 
+@synthesize shouldCollectInstalls = _shouldCollectInstalls;
+
 - (void)unarchiverDidFinish:(SUUnarchiver *)ua {
 	SUStatusController	*aStatusController = [self valueForKey:@"statusController"];
-	[aStatusController beginActionWithTitle:SULocalizedString(@"Ready to Install", nil) maxProgressValue:1.0 statusText:nil];
-	[aStatusController setProgressValue:1.0]; // Fill the bar.
-	[aStatusController setButtonEnabled:YES];
-	[aStatusController setButtonTitle:SULocalizedString(@"Install Plugin", nil) target:self action:@selector(installAndRestart:) isDefault:YES];
-	[[aStatusController window] makeKeyAndOrderFront: self];
+	if (self.shouldCollectInstalls) {
+		[aStatusController close];
+		
+		
+		//	If so, ask user to quit it
+		NSString	*messageText = NSLocalizedString(@"The plugin is ready to install, but will only happen when you quit.", @"Description of when plugin will be installed.");
+		NSString	*infoText = NSLocalizedString(@"Clicking 'Quit Now' will quit & complete the install. Clicking 'Continue Using' will let you perform other actions.", @"Details about how the buttons work.");
+		
+		NSString	*defaultButton = NSLocalizedString(@"Continue Using", @"Button text to perfomr other manager actions");
+		NSString	*altButton = NSLocalizedString(@"Quit Now", @"Button text to quit manager now");
+		NSAlert		*installReadyAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
+//			[installReadyAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]]];
+
+		//	Initializes Sparkle to do the install, when the app quits
+		[self installAndRestart:nil];
+		
+		//	Throw this back onto the main queue
+		NSUInteger	installReadyResult = [installReadyAlert runModal];
+		
+		//	If they said quit, do it
+		if (installReadyResult == NSAlertAlternateReturn) {
+			[AppDel finishApplication:nil];
+		}
+		
+	}
+	else {
+		[aStatusController beginActionWithTitle:SULocalizedString(@"Ready to Install", nil) maxProgressValue:1.0 statusText:nil];
+		[aStatusController setProgressValue:1.0]; // Fill the bar.
+		[aStatusController setButtonEnabled:YES];
+		[aStatusController setButtonTitle:SULocalizedString(@"Install Plugin", nil) target:self action:@selector(installAndRestart:) isDefault:YES];
+		[[aStatusController window] makeKeyAndOrderFront: self];
+	}
 	[NSApp requestUserAttention:NSInformationalRequest];	
 }
 
