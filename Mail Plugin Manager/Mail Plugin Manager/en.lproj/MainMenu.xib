@@ -1450,7 +1450,7 @@
 						</object>
 						<object class="NSProgressIndicator" id="154295714">
 							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">-2147482356</int>
+							<int key="NSvFlags">-2147482332</int>
 							<object class="NSPSMatrix" key="NSDrawMatrix"/>
 							<string key="NSFrame">{{83, 20}, {16, 16}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
@@ -1462,11 +1462,10 @@
 						</object>
 						<object class="NSTextField" id="143370982">
 							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">-2147483380</int>
-							<string key="NSFrame">{{104, 20}, {513, 17}}</string>
+							<int key="NSvFlags">-2147483354</int>
+							<string key="NSFrame">{{104, 20}, {671, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:1505</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="482773350">
@@ -1678,7 +1677,6 @@
 							<string key="NSFrame">{{78, 12}, {111, 32}}</string>
 							<reference key="NSSuperview" ref="1066055110"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:687</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="835042275">
