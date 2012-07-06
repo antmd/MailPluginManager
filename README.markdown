@@ -345,23 +345,18 @@ The following values are used by the apps whenever a plugin is displayed to show
 * *Would be nice*
 * Change the MailBundle class to cache the list of mail plugins so that there is no need to rehit for update info.
 * Setup actions to watch changes of files to note when Plugins become active, disabled, domain change.
-* *Maybe*
-* Parse company Name from the Get Info string of info.plist
 
 #### Manager Interface
 
 * *Would be nice*
 * Add support for different domains in installation and uninstall.
 * Add an Update All Plugins button to Manager window when relevant.
-* *Maybe*
-* Handle install path with a full URL.
 
 #### Tool
 
 * *Would be nice*
 * Build out Launch Agent scheduling for boot-time validation and plugin scheduling.
 * Add an Update All Plugins button to Multi Plugin window when relevant.
-* During the boot validation process, we need to be able to skip items the user has previously seen and dismissed.
 
 #### launchd values of interest (for boot time agent setup)
 
@@ -372,11 +367,6 @@ The following values are used by the apps whenever a plugin is displayed to show
 * StandardOutPath = path
 * [man page][launchd]
 * LaunchOnlyOnce = YES (nope)
-
-#### Data to be stored about each bundle
-
-* Last run date of update, crash report & both.
-* Crash Report(s) unsuccessfully sent (file paths to a folder I manage)
 
 #### Other
 
