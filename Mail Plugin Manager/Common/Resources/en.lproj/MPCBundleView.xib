@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">11D50b</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2177</string>
-		<string key="IBDocument.AppKitVersion">1138.32</string>
-		<string key="IBDocument.HIToolboxVersion">568.00</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2177</string>
+			<string key="NS.object.0">2182</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -46,6 +46,41 @@
 				<int key="NSvFlags">268</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="NSTextField" id="734306623">
+						<reference key="NSNextResponder" ref="696709593"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{33, 174}, {184, 17}}</string>
+						<reference key="NSSuperview" ref="696709593"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="643855897"/>
+						<string key="NSReuseIdentifierKey">_NS:1505</string>
+						<bool key="NSEnabled">YES</bool>
+						<object class="NSTextFieldCell" key="NSCell" id="132051554">
+							<int key="NSCellFlags">68288064</int>
+							<int key="NSCellFlags2">138413056</int>
+							<string key="NSContents">Update Pending</string>
+							<object class="NSFont" key="NSSupport" id="14889222">
+								<string key="NSName">LucidaGrande</string>
+								<double key="NSSize">11</double>
+								<int key="NSfFlags">16</int>
+							</object>
+							<string key="NSCellIdentifier">_NS:1505</string>
+							<reference key="NSControlView" ref="734306623"/>
+							<object class="NSColor" key="NSBackgroundColor" id="203543427">
+								<int key="NSColorSpace">6</int>
+								<string key="NSCatalogName">System</string>
+								<string key="NSColorName">controlColor</string>
+								<object class="NSColor" key="NSColor">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
+								</object>
+							</object>
+							<object class="NSColor" key="NSTextColor">
+								<int key="NSColorSpace">1</int>
+								<bytes key="NSRGB">MC44MTM3ODIzNTQ4IDAgMC4wMDg4MzAzNTc0ODkAA</bytes>
+							</object>
+						</object>
+					</object>
 					<object class="NSButton" id="728623758">
 						<reference key="NSNextResponder" ref="696709593"/>
 						<int key="NSvFlags">268</int>
@@ -87,22 +122,10 @@
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">138413056</int>
 							<string key="NSContents">incompatible text</string>
-							<object class="NSFont" key="NSSupport">
-								<string key="NSName">LucidaGrande</string>
-								<double key="NSSize">11</double>
-								<int key="NSfFlags">16</int>
-							</object>
+							<reference key="NSSupport" ref="14889222"/>
 							<string key="NSCellIdentifier">_NS:3936</string>
 							<reference key="NSControlView" ref="829670092"/>
-							<object class="NSColor" key="NSBackgroundColor" id="203543427">
-								<int key="NSColorSpace">6</int>
-								<string key="NSCatalogName">System</string>
-								<string key="NSColorName">controlColor</string>
-								<object class="NSColor" key="NSColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
-								</object>
-							</object>
+							<reference key="NSBackgroundColor" ref="203543427"/>
 							<object class="NSColor" key="NSTextColor">
 								<int key="NSColorSpace">2</int>
 								<bytes key="NSRGB">MSAwLjExMzcyNTQ5MDkgMAA</bytes>
@@ -324,7 +347,7 @@
 						<string key="NSFrame">{{20, 119}, {64, 64}}</string>
 						<reference key="NSSuperview" ref="696709593"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="643855897"/>
+						<reference key="NSNextKeyView" ref="734306623"/>
 						<string key="NSReuseIdentifierKey">_NS:1658</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="996086242">
@@ -552,6 +575,26 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: lkCVI.representedObject.updateWaiting</string>
+						<reference key="source" ref="208146219"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="208146219"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: lkCVI.representedObject.updateWaiting</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">lkCVI.representedObject.updateWaiting</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">179</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
 						<string key="label">valuePath: lkCVI.representedObject.iconPath</string>
 						<reference key="source" ref="367386457"/>
 						<reference key="destination" ref="1001"/>
@@ -565,26 +608,6 @@
 						</object>
 					</object>
 					<int key="connectionID">76</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-						<reference key="source" ref="354495586"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="354495586"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">NSNegateBoolean</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">165</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -608,6 +631,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: lkCVI.representedObject.enableCheckboxes</string>
+						<reference key="source" ref="354495586"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="354495586"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: lkCVI.representedObject.enableCheckboxes</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">lkCVI.representedObject.enableCheckboxes</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">195</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: lkCVI.representedObject.enabled</string>
 						<reference key="source" ref="643855897"/>
 						<reference key="destination" ref="1001"/>
@@ -624,39 +663,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+						<string key="label">enabled: lkCVI.representedObject.enableCheckboxes</string>
 						<reference key="source" ref="643855897"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="643855897"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.incompatibleWithCurrentMail</string>
+							<string key="NSLabel">enabled: lkCVI.representedObject.enableCheckboxes</string>
 							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.incompatibleWithCurrentMail</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">NSNegateBoolean</string>
-							</object>
+							<string key="NSKeyPath">lkCVI.representedObject.enableCheckboxes</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">164</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: lkCVI.representedObject.hasUpdate</string>
-						<reference key="source" ref="307513451"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="307513451"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled: lkCVI.representedObject.hasUpdate</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">lkCVI.representedObject.hasUpdate</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">128</int>
+					<int key="connectionID">193</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -677,6 +696,22 @@
 						</object>
 					</object>
 					<int key="connectionID">136</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: lkCVI.representedObject.enableUpdateButton</string>
+						<reference key="source" ref="307513451"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="307513451"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: lkCVI.representedObject.enableUpdateButton</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">lkCVI.representedObject.enableUpdateButton</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">196</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -790,6 +825,26 @@
 					</object>
 					<int key="connectionID">153</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: lkCVI.representedObject.updateWaiting</string>
+						<reference key="source" ref="734306623"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="734306623"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">hidden: lkCVI.representedObject.updateWaiting</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">lkCVI.representedObject.updateWaiting</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">191</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -839,6 +894,7 @@
 							<reference ref="391191594"/>
 							<reference ref="732773932"/>
 							<reference ref="179296049"/>
+							<reference ref="734306623"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Mail Plugin View</string>
@@ -1047,6 +1103,20 @@
 						<reference key="object" ref="748624935"/>
 						<reference key="parent" ref="391191594"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">187</int>
+						<reference key="object" ref="734306623"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="132051554"/>
+						</object>
+						<reference key="parent" ref="696709593"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">188</int>
+						<reference key="object" ref="132051554"/>
+						<reference key="parent" ref="734306623"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1069,6 +1139,8 @@
 					<string>16.IBPluginDependency</string>
 					<string>17.IBPluginDependency</string>
 					<string>18.IBPluginDependency</string>
+					<string>187.IBPluginDependency</string>
+					<string>188.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>2.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
@@ -1122,6 +1194,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -1136,7 +1210,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">173</int>
+			<int key="maxID">196</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1182,6 +1256,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>collectionItem</string>
+							<string>quitButton</string>
+							<string>quittingIndicator</string>
+							<string>quittingNotice</string>
 							<string>scrollView</string>
 							<string>window</string>
 						</object>
@@ -1189,6 +1266,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>MPCBackgroundableView</string>
 							<string>NSCollectionViewItem</string>
+							<string>NSButton</string>
+							<string>NSProgressIndicator</string>
+							<string>NSTextField</string>
 							<string>NSScrollView</string>
 							<string>NSWindow</string>
 						</object>
@@ -1199,6 +1279,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>collectionItem</string>
+							<string>quitButton</string>
+							<string>quittingIndicator</string>
+							<string>quittingNotice</string>
 							<string>scrollView</string>
 							<string>window</string>
 						</object>
@@ -1211,6 +1294,18 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">collectionItem</string>
 								<string key="candidateClassName">NSCollectionViewItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">quitButton</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">quittingIndicator</string>
+								<string key="candidateClassName">NSProgressIndicator</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">quittingNotice</string>
+								<string key="candidateClassName">NSTextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scrollView</string>

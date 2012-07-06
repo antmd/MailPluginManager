@@ -74,6 +74,7 @@ typedef enum {
 @synthesize enabled = _enabled;
 @synthesize installed = _installed;
 @synthesize inLocalDomain = _inLocalDomain;
+@synthesize updateWaiting = _updateWaiting;
 @synthesize sparkleDelegate = _sparkleDelegate;
 @synthesize needsMailRestart = _needsMailRestart;
 @synthesize initialState = _initialState;
@@ -196,6 +197,14 @@ typedef enum {
 
 	//	Update all the state
 	[self updateState];
+}
+
+- (BOOL)enableCheckboxes {
+	return (!self.incompatibleWithCurrentMail && !self.updateWaiting);
+}
+
+- (BOOL)enableUpdateButton {
+	return (self.hasUpdate && !self.updateWaiting);
 }
 
 - (NSString *)company {
@@ -402,7 +411,7 @@ typedef enum {
 
 - (NSColor *)nameColor {
 	NSColor	*aColor	= [NSColor grayColor];
-	if (self.enabled) {
+	if (self.enabled && !self.updateWaiting) {
 		aColor = [NSColor colorWithDeviceRed:0.290 green:0.459 blue:0.224 alpha:1.000];
 	}
 	else if (self.incompatibleWithCurrentMail) {
@@ -830,7 +839,15 @@ typedef enum {
 #pragma mark - KVO Dependence
 
 + (NSSet *)keyPathsForValuesAffectingNameColor {
-	return [NSSet setWithObject:@"enabled"];
+	return [NSSet setWithObjects:@"enabled", @"updateWaiting", nil];
+}
+
++ (NSSet *)keyPathsForValuesAffectingEnableCheckboxes {
+	return [NSSet setWithObjects:@"incompatibleWithCurrentMail", @"updateWaiting", nil];
+}
+
++ (NSSet *)keyPathsForValuesAffectingEnableUpdateButton {
+	return [NSSet setWithObjects:@"hasUpdate", @"updateWaiting", nil];
 }
 
 + (NSSet *)keyPathsForValuesAffectingPath {

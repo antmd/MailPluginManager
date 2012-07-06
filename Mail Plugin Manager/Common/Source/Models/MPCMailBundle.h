@@ -30,6 +30,7 @@
 	BOOL			_enabled;
 	BOOL			_installed;
 	BOOL			_inLocalDomain;
+	BOOL			_updateWaiting;
 	
 	NSInteger			_initialState;
 	MPCSparkleDelegate	*_sparkleDelegate;
@@ -62,6 +63,9 @@
 @property	(nonatomic, assign)				BOOL			enabled;
 @property	(nonatomic, assign)				BOOL			installed;
 @property	(nonatomic, assign)				BOOL			inLocalDomain;
+@property	(nonatomic, assign)				BOOL			updateWaiting;
+@property	(nonatomic, assign, readonly)	BOOL			enableCheckboxes;
+@property	(nonatomic, assign, readonly)	BOOL			enableUpdateButton;
 
 @property	(nonatomic, retain)				MPCSparkleDelegate	*sparkleDelegate;
 @property	(nonatomic, assign, readonly)	BOOL				needsMailRestart;

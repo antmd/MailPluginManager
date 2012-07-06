@@ -455,6 +455,7 @@
 		for (NSDictionary *aDict in self.bundleSparkleOperations) {
 			if ([[aDict valueForKey:@"bundle"] isEqual:[note object]]) {
 				theDict = aDict;
+				((MPCMailBundle *)[note object]).updateWaiting = YES;
 				break;
 			}
 		}
