@@ -1781,6 +1781,7 @@
 				D2558A4615A62DFD0046E683 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D2779BD514336287003F7BE0 /* Build configuration list for PBXNativeTarget "MailPluginTool" */ = {
 			isa = XCConfigurationList;

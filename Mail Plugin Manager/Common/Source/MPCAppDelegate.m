@@ -59,6 +59,8 @@
 @synthesize backgroundView = _backgroundView;
 @synthesize scrollView = _scrollView;
 @synthesize quitButton = _quitButton;
+@synthesize quittingIndicator = _quitingIndicator;
+@synthesize quittingNotice = _quittingNotice;
 
 @synthesize counterQueue = _counterQueue;
 @synthesize maintenanceQueue = _maintenanceQueue;
@@ -252,6 +254,10 @@
 
 - (IBAction)finishApplication:(id)sender {
 	self.quitButton.enabled = NO;
+	self.quittingIndicator.hidden = NO;
+	[self.quittingIndicator startAnimation:self];
+	[self.quittingNotice setStringValue:NSLocalizedString(@"Cleaning up and moving files into place before quitting.", @"Text indicating to user that we are cleaning up before quitting")];
+	self.quittingNotice.hidden = NO;
 
 	//	Indicate that we can quit, *then* release the activity && finalize queues
 	[self quittingNowIsReasonable];
