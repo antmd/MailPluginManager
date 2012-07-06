@@ -1517,7 +1517,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 7;
+				BUILD_NUMBER = 8;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
@@ -1541,7 +1541,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
-				VERSION_STRING = 1.1.1;
+				VERSION_STRING = 1.1.2;
 			};
 			name = Debug;
 		};
@@ -1551,7 +1551,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 7;
+				BUILD_NUMBER = 8;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1572,7 +1572,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
-				VERSION_STRING = 1.1.1;
+				VERSION_STRING = 1.1.2;
 			};
 			name = Release;
 		};
