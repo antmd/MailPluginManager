@@ -157,7 +157,7 @@ typedef enum {
 	NSString	*tempPath = toPath;
 	NSInteger	counter = 1;
 	while ([[NSFileManager defaultManager] fileExistsAtPath:tempPath]) {
-		tempPath = [toPath stringByAppendingFormat:@" %ld", counter++];
+		tempPath = [toPath stringByAppendingFormat:@" %@", [NSNumber numberWithInteger:counter++]];
 	}
 	if (toPath != tempPath) {	//	Using pointer equivalence here expressly!!
 		toPath = tempPath;

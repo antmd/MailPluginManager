@@ -625,7 +625,7 @@ typedef enum {
 	NSString	*tempPath = toPath;
 	NSInteger	counter = 1;
 	while ([[NSFileManager defaultManager] fileExistsAtPath:tempPath]) {
-		tempPath = [toPath stringByAppendingFormat:@" %ld", counter++];
+		tempPath = [toPath stringByAppendingFormat:@" %@", [NSNumber numberWithInteger:counter++]];
 	}
 	if (toPath != tempPath) {	//	Using pointer equivalence here expressly!!
 		toPath = tempPath;
@@ -887,13 +887,13 @@ typedef enum {
 		case MPCMinOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
 			[values addObject:self.manifestModel.minOSVersion];
-			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f.%@", macOSXVersion(), [NSNumber numberWithInteger:macOSXBugFixVersion()]]];
 			break;
 			
 		case MPCMaxOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
 			[values addObject:self.manifestModel.maxOSVersion];
-			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f.%@", macOSXVersion(), [NSNumber numberWithInteger:macOSXBugFixVersion()]]];
 			break;
 			
 		case MPCMinMailInsufficientCode:

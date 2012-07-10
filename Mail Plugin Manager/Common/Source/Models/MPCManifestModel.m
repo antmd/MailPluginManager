@@ -239,11 +239,11 @@
 	[result appendFormat:@"minMailVersion:%3.2f  ", self.minMailVersion];
 	[result appendFormat:@"shouldInstallManager:%@\n", [NSString stringWithBool:self.shouldInstallManager]];
 	[result appendFormat:@"bundleManager:\n\t(%@)\n", self.bundleManager];
-	[result appendFormat:@"totalActionCount:%d  ", self.totalActionItemCount];
+	[result appendFormat:@"totalActionCount:%@  ", [NSNumber numberWithInteger:self.totalActionItemCount]];
 	[result appendFormat:@"canDeleteManagerIfNotUsedByOthers:%@\n", [NSString stringWithBool:self.canDeleteManagerIfNotUsedByOthers]];
 	[result appendFormat:@"canDeleteManagerIfNoBundlesLeft:%@\n", [NSString stringWithBool:self.canDeleteManagerIfNoBundlesLeft]];
 	[result appendFormat:@"shouldConfigureMail:%@\n", [NSString stringWithBool:self.shouldConfigureMail]];
-	[result appendFormat:@"configureMailVersion:%d\n", self.configureMailVersion];
+	[result appendFormat:@"configureMailVersion:%@\n", [NSNumber numberWithInteger:self.configureMailVersion ]];
 	[result appendString:@"actionItems:{\n"];
 	for (MPCActionItem *anItem in self.actionItemList) {
 		[result appendFormat:@"\t[%@]\n", anItem];

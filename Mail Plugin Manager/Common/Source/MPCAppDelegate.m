@@ -317,7 +317,14 @@
 			
 			NSString	*defaultButton = NSLocalizedString(@"Restart Mail", @"Button text to quit mail");
 			NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-security"
+			
 			NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
+
+#pragma clang diagnostic pop
+			
 			if (iconImage != nil) {
 				[quitMailAlert setIcon:iconImage];
 			}
