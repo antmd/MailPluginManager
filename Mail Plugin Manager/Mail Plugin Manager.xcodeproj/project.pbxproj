@@ -1519,6 +1519,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				BUILD_NUMBER = 8;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
@@ -1529,12 +1530,14 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"USE_NSRECTS=1",
 					"DEBUG=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1555,6 +1558,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				BUILD_NUMBER = 8;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1564,11 +1568,13 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"USE_NSRECTS=1",
 					"DEBUG_OUTPUT_OFF=1",
 				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1583,9 +1589,6 @@
 		D216B36D141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed-test/mpm";
@@ -1596,9 +1599,6 @@
 		D216B36E141DFDE2003788DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed/mpm";
@@ -1611,14 +1611,11 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Plugin Manager.app/Contents/MacOS/Mail Plugin Manager";
 				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
 					"\"$(SRCROOT)/Mail Plugin ManagerTests/TestData/ExamplePlugin.mailbundle/Contents/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mail Plugin Manager/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin ManagerTests/Mail Plugin ManagerTests-Info.plist";
 				PRODUCT_NAME = "Mail Plugin ManagerTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1631,14 +1628,11 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Plugin Manager.app/Contents/MacOS/Mail Plugin Manager";
 				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
 					"\"$(SRCROOT)/Mail Plugin ManagerTests/TestData/ExamplePlugin.mailbundle/Contents/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mail Plugin Manager/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin ManagerTests/Mail Plugin ManagerTests-Info.plist";
 				PRODUCT_NAME = "Mail Plugin ManagerTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1650,8 +1644,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
 				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1663,8 +1655,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
 				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1675,18 +1665,8 @@
 		D2558A4515A62DFD0046E683 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1695,13 +1675,8 @@
 		D2558A4615A62DFD0046E683 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1710,22 +1685,12 @@
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUILD_NUMBER = 7;
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Mail Plugin Manager\"",
-					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,
 				);
 				INFOPLIST_FILE = "MailPluginTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1733,22 +1698,12 @@
 		D2779BD714336287003F7BE0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUILD_NUMBER = 7;
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Mail Plugin Manager\"",
-					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,
 				);
 				INFOPLIST_FILE = "MailPluginTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
