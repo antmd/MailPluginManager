@@ -489,7 +489,28 @@ typedef enum {
 	//	Only need to bother if the manifest asked for it
 	if (self.manifestModel.shouldConfigureMail || self.manifestModel.shouldRestartMail) {
 		//	Get Mail settings
+		NSString		*longDomain = @"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail";
 		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCMailBundleIdentifier];
+		
+		longDomain = [longDomain stringByExpandingTildeInPath];
+		
+		NSTask *task = [[NSTask alloc] init];
+		[task setLaunchPath:@"/usr/bin/defaults"];
+		[task setArguments:@[@"read", longDomain, @"NSPreferencesContentSize"]]; //	EnableBundles
+		
+		NSPipe *pipe = [NSPipe pipe];
+		[task setStandardOutput:pipe];
+		
+		NSFileHandle *file = [pipe fileHandleForReading];
+		
+		[task launch];
+		
+		NSString *string = [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+		LKLog(@"Current enableBundles is:%@", string);
+		[task release];
+		[string release];
+		
+		
 		if (mailDefaults == nil) {
 			mailDefaults = [NSDictionary dictionary];
 		}
