@@ -489,38 +489,55 @@ typedef enum {
 	//	Only need to bother if the manifest asked for it
 	if (self.manifestModel.shouldConfigureMail || self.manifestModel.shouldRestartMail) {
 		//	Get Mail settings
-		NSString		*longDomain = @"~/Library/Containers/com.apple.mail/Data/Library/Preferences/com.apple.mail";
-		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCMailBundleIdentifier];
+		NSString		*sandboxPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences" stringByExpandingTildeInPath];
+		NSString		*defaultsDomain = kMPCMailBundleIdentifier;
+		BOOL			isDir;
 		
-		longDomain = [longDomain stringByExpandingTildeInPath];
+		if ([[NSFileManager defaultManager] fileExistsAtPath:sandboxPath isDirectory:&isDir] && isDir) {
+			defaultsDomain = [sandboxPath stringByAppendingPathComponent:defaultsDomain];
+		}
 		
-		NSTask *task = [[NSTask alloc] init];
-		[task setLaunchPath:@"/usr/bin/defaults"];
-		[task setArguments:@[@"read", longDomain, @"NSPreferencesContentSize"]]; //	EnableBundles
+		NSTask *enabledTask = [[NSTask alloc] init];
+		[enabledTask setLaunchPath:@"/usr/bin/defaults"];
+		[enabledTask setArguments:@[@"read", defaultsDomain, kMPCEnableBundlesKey]];
+		
+		NSTask *bundleVersionTask = [[NSTask alloc] init];
+		[bundleVersionTask setLaunchPath:@"/usr/bin/defaults"];
+		[bundleVersionTask setArguments:@[@"read", defaultsDomain, kMPCBundleCompatibilityVersionKey]];
 		
 		NSPipe *pipe = [NSPipe pipe];
-		[task setStandardOutput:pipe];
-		
+		[enabledTask setStandardOutput:pipe];
 		NSFileHandle *file = [pipe fileHandleForReading];
 		
-		[task launch];
+		[enabledTask launch];
+		[enabledTask waitUntilExit];
 		
-		NSString *string = [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
-		LKLog(@"Current enableBundles is:%@", string);
-		[task release];
-		[string release];
+		NSString *tempString = [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+		NSString *enabledString = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		LKLog(@"Current enableBundles is:%@", enabledString);
+		[enabledTask release];
+		[tempString release];
 		
+		NSPipe *pipe2 = [NSPipe pipe];
+		[bundleVersionTask setStandardOutput:pipe2];
+		NSFileHandle *file2 = [pipe2 fileHandleForReading];
 		
-		if (mailDefaults == nil) {
-			mailDefaults = [NSDictionary dictionary];
-		}
+		[bundleVersionTask launch];
+		[bundleVersionTask waitUntilExit];
+		
+		tempString = [[NSString alloc] initWithData:[file2 readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+		NSString *bundleVersion = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		LKLog(@"Current bundleVersion is:%@", bundleVersion);
+		[bundleVersionTask release];
+		[tempString release];
+		
 		
 		//	Make the block for updating those values
 		void	(^configureBlock)(void) = nil;
 
 		//	Test to see if those settings are sufficient
-		if (([[mailDefaults valueForKey:kMPCEnableBundlesKey] boolValue]) &&
-			(((NSUInteger)[[mailDefaults valueForKey:kMPCBundleCompatibilityVersionKey] integerValue]) >= self.manifestModel.configureMailVersion)) {
+		if (([enabledString boolValue]) &&
+			(((NSUInteger)[bundleVersion integerValue]) >= self.manifestModel.configureMailVersion)) {
 			
 			//	If no restart wanted,
 			if (!self.manifestModel.shouldRestartMail) {
@@ -528,13 +545,25 @@ typedef enum {
 				return YES;
 			}
 		}
-		else { 
+		else {
 			//	Make the block for updating those values
+			NSString	*newBundleVersionString = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:self.manifestModel.configureMailVersion]];
 			configureBlock = ^(void) {
-				NSMutableDictionary	*newMailDefs = [[mailDefaults mutableCopy] autorelease];
-				[newMailDefs setValue:@"YES" forKey:kMPCEnableBundlesKey];
-				[newMailDefs setValue:[NSNumber numberWithInteger:self.manifestModel.configureMailVersion] forKey:kMPCBundleCompatibilityVersionKey];
-				[[NSUserDefaults standardUserDefaults] setPersistentDomain:newMailDefs forName:kMPCMailBundleIdentifier];
+				
+				NSTask *updateEnabledTask = [[NSTask alloc] init];
+				[updateEnabledTask setLaunchPath:@"/usr/bin/defaults"];
+				[updateEnabledTask setArguments:@[@"write", defaultsDomain, kMPCEnableBundlesKey, @"YES"]];
+				
+				NSTask *updateBundleVersionTask = [[NSTask alloc] init];
+				[updateBundleVersionTask setLaunchPath:@"/usr/bin/defaults"];
+				[updateBundleVersionTask setArguments:@[@"write", defaultsDomain, kMPCBundleCompatibilityVersionKey, newBundleVersionString]];
+				
+				[updateEnabledTask launch];
+				[updateBundleVersionTask launch];
+				
+				[updateEnabledTask release];
+				[updateBundleVersionTask release];
+				
 			};
 		}
 		
