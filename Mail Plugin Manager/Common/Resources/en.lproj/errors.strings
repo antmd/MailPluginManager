@@ -42,6 +42,9 @@
 
 "221-description" = "This Mail Plugin will not work with the current version of Mail (%<version>@).";
 
+"222-description" = "You will need to run Mail at least once before installing \"%<name>@\".";
+"222-recovery-suggestion" = "Run Mail once and setup an account, then rerun the installer.";
+
 //	Messages from the MPM AppDelegate
 "400-description" = "Undefined error from the Mail Plugin Manager.";
 "400-recovery-suggestion" = "Please let us know about this problem.";

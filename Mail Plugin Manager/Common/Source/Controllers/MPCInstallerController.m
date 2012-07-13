@@ -30,6 +30,7 @@ typedef enum {
 	MPCCopyFailed = 212,
 	
 	MPCPluginDoesNotWorkWithMailVersion = 221,
+	MPCMailHasNotBeenRunPreviously = 222,
 	
 	MPCUnknownInstallCode
 } MPCInstallErrorCodes;
@@ -53,6 +54,7 @@ typedef enum {
 - (BOOL)installItem:(MPCActionItem *)anItem;
 - (BOOL)removeBundleManagerIfReasonable;
 - (BOOL)removeItem:(MPCActionItem *)anItem;
+- (BOOL)ensureMailHasBeenRunOnce;
 - (BOOL)configureMail;
 
 - (BOOL)checkForLicenseRequirement;
@@ -445,6 +447,13 @@ typedef enum {
 	NSFileManager		*manager = [NSFileManager defaultManager];
 	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
 	
+	//	Ensure that Mail has been run at least once
+	if (![self ensureMailHasBeenRunOnce]) {
+		NSDictionary	*dict = [NSDictionary dictionaryWithObject:model.bundleManager.name forKey:kMPCNameKey];
+		LKPresentErrorCodeUsingDict(MPCMailHasNotBeenRunPreviously, dict);
+		return NO;
+	}
+	
 	//	Ensure that the versions all check out
 	MPCOSSupportResult	supportResult = [model supportResultForManifest];
 	if (supportResult == kMPCOSIsTooLow) {
@@ -482,6 +491,31 @@ typedef enum {
 	}
 
 	return YES;
+}
+
+- (BOOL)ensureMailHasBeenRunOnce {
+	
+	BOOL			isDir = NO;
+	NSString		*basePath = [@"~/Library/Mail" stringByExpandingTildeInPath];
+	NSString		*endPath = @"Mailboxes";
+	NSString		*testPath = [[basePath stringByAppendingPathComponent:@"V2"] stringByAppendingPathComponent:endPath];
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	
+	//	See if we have a valid Mail 5.x > config
+	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	testPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Mail/V2/Mailboxes" stringByExpandingTildeInPath];
+	//	See if we have a valid Sandboxed Mail config
+	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	//	See if we have a valid Mail 4.x config
+	testPath = [basePath stringByAppendingPathComponent:endPath];
+	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	return NO;
 }
 
 - (BOOL)configureMail {
