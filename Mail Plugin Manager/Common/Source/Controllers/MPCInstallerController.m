@@ -449,7 +449,7 @@ typedef enum {
 	
 	//	Ensure that Mail has been run at least once
 	if (![self ensureMailHasBeenRunOnce]) {
-		NSDictionary	*dict = [NSDictionary dictionaryWithObject:model.bundleManager.name forKey:kMPCNameKey];
+		NSDictionary	*dict = [NSDictionary dictionaryWithObject:model.displayName forKey:kMPCNameKey];
 		LKPresentErrorCodeUsingDict(MPCMailHasNotBeenRunPreviously, dict);
 		return NO;
 	}
