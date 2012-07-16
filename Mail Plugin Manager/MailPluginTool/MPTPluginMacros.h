@@ -10,6 +10,10 @@
 
 typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
+#ifndef MODULE_CLASS
+#error In order to properly use the MPTPluginMacros, you need to define MODULE_CLASS as one of the classes of your plugin
+#endif
+
 #pragma mark Dictionary Keys
 
 //	Keys for historical UUID plist

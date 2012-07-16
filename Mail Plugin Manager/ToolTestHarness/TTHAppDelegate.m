@@ -7,6 +7,7 @@
 //
 
 #import "TTHAppDelegate.h"
+#define MODULE_CLASS [self class]
 #import	"MPTPluginMacros.h"
 
 

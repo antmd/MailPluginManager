@@ -8,6 +8,7 @@
 
 #import "MPTSendInfoCommand.h"
 
+#define MODULE_CLASS [self class]
 #import "MPTPluginMacros.h"
 
 @implementation MPTSendInfoCommand
