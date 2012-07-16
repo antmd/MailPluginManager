@@ -10,6 +10,7 @@ STR_CONST(kMPCCommandLineSystemInfoKey, "-mail-info");
 STR_CONST(kMPCCommandLineUUIDListKey, "-uuid-list");
 STR_CONST(kMPCCommandLineFrequencyOptionKey, "-freq");
 STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
+STR_CONST(kMPCCommandLineFinishInstallKey, "-finish-install");
 
 //	Extensions and commonly used values
 STR_CONST(kMPCPlistExtension, "plist");

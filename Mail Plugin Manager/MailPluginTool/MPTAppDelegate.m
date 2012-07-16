@@ -26,6 +26,7 @@
 @property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
 @property	(nonatomic, assign) MPCSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
+@property	(nonatomic, retain)	NSDictionary				*performDictionary;
 
 
 //	Actions
@@ -44,6 +45,7 @@
 @synthesize sparkleKeysValues = _sparkleKeysValues;
 @synthesize sparkleOperation = _sparkleOperation;
 @synthesize updateDriver = _updateDriver;
+@synthesize performDictionary = _performDictionary;
 
 
 #pragma mark - Handler Methods
@@ -96,6 +98,22 @@
 
 #pragma mark - Application Events
 
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {
+	
+	//	Determine the type (install/uninstall)
+	LKLog(@"Open file with Path:%@", filename);
+	NSString	*extension = [filename pathExtension];
+	if ([extension isEqualToString:@"mtperform"]) {
+		self.performDictionary = [NSDictionary dictionaryWithContentsOfFile:filename];
+	}
+	else {
+		return NO;
+	}
+	
+	return NO;
+}
+
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	LKLog(@"Inside the MailBundleTool - Path is:'%@'", [[NSBundle mainBundle] bundlePath]);
 
@@ -110,9 +128,22 @@
 	//	Report crashes for the tool app
 	[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle mainBundle]] autorelease]];
 	
+	//	See if we just need to get ourselves registered.
+	BOOL	finishInstallRun = NO;
+	NSArray	*arguments = [[NSProcessInfo processInfo] arguments];
+	LKLog(@"########## Arguments passed into MPT are:%@", arguments);
+	if ([arguments count] > 0) {
+		for (NSString *anArg in arguments) {
+			if ([anArg isEqualToString:kMPCCommandLineFinishInstallKey]) {
+				finishInstallRun = YES;
+				break;
+			}
+		}
+	}
+	
 	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager and if that is writable by the user.
 	LKLog(@"mpmPath is:%@", mpmPath);
-	if ((mpmPath != nil) && [mpmPath userHasAccessRights]) {
+	if (!finishInstallRun && (mpmPath != nil) && [mpmPath userHasAccessRights]) {
 		//	Then find it's bundle
 		NSURL		*bundleURL = [NSURL fileURLWithPath:mpmPath isDirectory:YES];
 		NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
@@ -144,7 +175,15 @@
 	}
 	
 	//	Go ahead and process the arguments
-	[self processArguments];
+	if (self.performDictionary != nil) {
+		LKLog(@"Dictionary is:%@", self.performDictionary);
+		NSString	*action = [self.performDictionary objectForKey:@"action"];
+		arguments = @[ [self.performDictionary objectForKey:@"plugin-path"], [self.performDictionary objectForKey:@"frequency"] ];
+		[self doAction:action withArguments:arguments];
+	}
+	else {
+		[self processArguments];
+	}
 
 }
 

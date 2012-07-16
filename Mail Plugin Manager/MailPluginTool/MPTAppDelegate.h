@@ -19,6 +19,7 @@
 	NSArray						*_sparkleKeysValues;
 	MPCSparkleAsyncOperation	*_sparkleOperation;
 	SUBasicUpdateDriver			*_updateDriver;
+	NSDictionary				*_performDictionary;
 	
 }
 - (void)doAction:(NSString *)action withArguments:(NSArray *)arguments;
