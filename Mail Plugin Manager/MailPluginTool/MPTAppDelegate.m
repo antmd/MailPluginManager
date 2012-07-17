@@ -105,6 +105,7 @@
 	NSString	*extension = [filename pathExtension];
 	if ([extension isEqualToString:@"mtperform"]) {
 		self.performDictionary = [NSDictionary dictionaryWithContentsOfFile:filename];
+		[[NSFileManager defaultManager] removeItemAtPath:filename error:NULL];
 	}
 	else {
 		return NO;
@@ -177,9 +178,16 @@
 	//	Go ahead and process the arguments
 	if (self.performDictionary != nil) {
 		LKLog(@"Dictionary is:%@", self.performDictionary);
-		NSString	*action = [self.performDictionary objectForKey:@"action"];
-		arguments = @[ [self.performDictionary objectForKey:@"plugin-path"], [self.performDictionary objectForKey:@"frequency"] ];
-		[self doAction:action withArguments:arguments];
+		NSString		*action = [self.performDictionary objectForKey:@"action"];
+		NSMutableArray	*args = [NSMutableArray arrayWithCapacity:3];
+		if (!IsEmpty(action) && !IsEmpty([self.performDictionary objectForKey:@"plugin-path"])) {
+			[args addObject:[self.performDictionary objectForKey:@"plugin-path"]];
+			if ([self.performDictionary objectForKey:@"frequency"] != nil) {
+				[args addObject:kMPCCommandLineFrequencyOptionKey];
+				[args addObject:[self.performDictionary objectForKey:@"frequency"]];
+			}
+			[self doAction:action withArguments:args];
+		}
 	}
 	else {
 		[self processArguments];
@@ -256,9 +264,6 @@
 			}
 		}
 	}
-	LKLog(@"Path is %@", bundlePath);
-	LKLog(@"Freq is:%@", [NSNumber numberWithInteger:frequencyInHours]);
-	LKLog(@"Force is:%@", forceUpdate?@"YES":@"NO:");
 	
 	//	Get the mail bundle, if there
 	MPCMailBundle	*mailBundle = nil;
@@ -275,6 +280,7 @@
 			[self releaseActivityQueue];
 	}
 	else {
+		LKLog(@"Valid bundlePath");
 		//	Look at the first argument (after executable name) and test for one of our types
 		if ([kMPCCommandLineUninstallKey isEqualToString:action]) {
 			//	Tell it to uninstall itself
@@ -285,6 +291,7 @@
 			}];
 		}
 		else if ([kMPCCommandLineUpdateKey isEqualToString:action]) {
+			LKLog(@"update found");
 			//	Tell it to update itself, if frequency requirements met
 			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
 				LKLog(@"Adding an update for bundle:'%@' to the queue", [[mailBundle path] lastPathComponent]);
