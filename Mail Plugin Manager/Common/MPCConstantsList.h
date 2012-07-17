@@ -129,6 +129,7 @@ STR_CONST(kMPCSUUpdateDriverAbortNotification, "SUUpdateDriverFinished");
 
 //	Sparkle info Distributed Notifications
 STR_CONST(kMPCBundleUpdateStatusDistNotification, "com.littleknownsoftware.MPCBundleUpdateStatusDistNotification");
+STR_CONST(kMPCBundleWillInstallDistNotification, "com.littleknownsoftware.MPCBundleWillInstallDistNotification");
 
 //	Tool Distributed Notifications
 STR_CONST(kMPTSystemInfoDistNotification, "com.littleknownsoftware.MPTSystemInfoDistNotification");

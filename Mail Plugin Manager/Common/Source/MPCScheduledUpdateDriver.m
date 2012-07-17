@@ -61,6 +61,9 @@
 
 - (void)installAndRestart:(id)sender {
     [self installWithToolAndRelaunch:NO];
+	//	Post a distributed notification indicating that the bundle is up-to-date
+	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+	[center postNotificationName:kMPCBundleWillInstallDistNotification object:[[[self valueForKey:@"host"] bundle] bundleIdentifier] userInfo:nil deliverImmediately:YES];
 }
 
 - (void)didFindValidUpdate {
