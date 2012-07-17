@@ -231,6 +231,8 @@
 	NSInteger	frequencyInHours = 0;
 	BOOL		forceUpdate = NO;
 	
+	
+	LKLog(@"Arguments are:%@", arguments);
 	if ([arguments count] > 0) {
 		bundlePath = [arguments objectAtIndex:0];
 		if ([bundlePath isEqualToString:@"(null)"]) {
@@ -254,6 +256,9 @@
 			}
 		}
 	}
+	LKLog(@"Path is %@", bundlePath);
+	LKLog(@"Freq is:%@", [NSNumber numberWithInteger:frequencyInHours]);
+	LKLog(@"Force is:%@", forceUpdate?@"YES":@"NO:");
 	
 	//	Get the mail bundle, if there
 	MPCMailBundle	*mailBundle = nil;
