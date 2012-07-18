@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^MPTResultNotificationBlock)(NSDictionary *);
-
 #ifndef MODULE_CLASS
 #error In order to properly use the MPTPluginMacros, you need to define MODULE_CLASS as one of the classes of your plugin
 #endif
+
+typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Dictionary Keys
 
@@ -45,39 +45,43 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Command List
 
-#define MPT_SEND_MAIL_INFO_TEXT					@"send mail info plugin path"
-#define MPT_SEND_UUID_LIST_TEXT					@"send uuid list plugin path"
-#define MPT_UNINSTALL_TEXT						@"uninstall"
-#define MPT_UPDATE_TEXT							@"update"
-#define MPT_CRASH_REPORTS_TEXT					@"crash reports"
-#define MPT_UPDATE_CRASH_REPORTS_TEXT			@"update and crash reports"
+#define MPT_SEND_MAIL_INFO_TEXT					@"-mail-info"
+#define MPT_SEND_UUID_LIST_TEXT					@"-uuid-list"
+#define MPT_UNINSTALL_TEXT						@"-uninstall"
+#define MPT_UPDATE_TEXT							@"-update"
+#define MPT_CRASH_REPORTS_TEXT					@"-send-crash-reports"
+#define MPT_UPDATE_CRASH_REPORTS_TEXT			@"-update-and-crash-reports"
 
 #pragma mark Internal Values
 
-#define MPT_TELL_APPLICATION_OPEN				@"tell application \"%@\"\n"
-#define MPT_TELL_APPLICATION_OPEN_0				@"tell application \"MailPluginTool\"\n"
-#define MPT_SCRIPT_FORMAT						@" %@ \"%@\""
-#define MPT_END_TELL							@"\nend tell"
-#define MPT_FREQUENCY_FORMAT					@" frequency %@"
-#define MPT_FREQUENCY_OPTION					@"-freq"
-
 #define MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION	@"com.littleknownsoftware.MPCBundleUpdateStatusDistNotification"
+#define MPT_BUNDLE_WILL_INSTALL_NOTIFICATION	@"com.littleknownsoftware.MPCBundleWillInstallDistNotification"
 #define MPT_SYSTEM_INFO_NOTIFICATION			@"com.littleknownsoftware.MPTSystemInfoDistNotification"
 #define MPT_UUID_LIST_NOTIFICATION				@"com.littleknownsoftware.MPTUUIDListDistNotification"
 #define MPT_TOOL_NAME							@"MailPluginTool"
 #define MPT_TOOL_IDENTIFIER						@"com.littleknownsoftware.MailPluginTool"
 #define MPT_MANAGER_IDENTIFIER					@"com.littleknownsoftware.MailPluginManager"
 #define MPT_APP_RESOURCES_PATH					@"Contents/Resources"
-#define MPT_APP_CONTENTS_PATH					@"Contents/MacOS"
-#define MPT_SENDER_ID_KEY						@"sender-id"
+//#define MPT_APP_CONTENTS_PATH					@"Contents/MacOS"
+//#define MPT_SENDER_ID_KEY						@"sender-id"
 
+#define MPT_MANAGER_APP_NAME					@"Mail Plugin Manager.app"
+#define MPT_MAIL_MPT_FOLDER_PATH				@"Mail/MPT"
+#define MPT_PERFORM_ACTION_EXTENSION			@"mtperform"
+#define MPT_ACTION_KEY							@"action"
+#define MPT_PLUGIN_PATH_KEY						@"plugin-path"
+#define MPT_FREQUENCY_KEY						@"frequency"
 
 #pragma mark - Reused Macros
 
 #define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptFrequency) \
 { \
 	if (mptMailBundle != nil) { \
-		NSString	*pluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
+		NSFileManager	*manager = [NSFileManager defaultManager]; \
+		NSString	*pluginManagerPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MANAGER_APP_NAME]; \
+		if (![manager fileExistsAtPath:pluginManagerPath]) { \
+			pluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
+		} \
 		NSString	*pluginToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_TOOL_IDENTIFIER]; \
 		if ((pluginToolPath == nil) || ((pluginManagerPath != nil) && ![pluginToolPath hasPrefix:pluginManagerPath])) { \
 			/*	See if we can get the tool path inside the managerPath	*/ \
@@ -88,18 +92,30 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 			} \
 		} \
 		if (pluginToolPath != nil) { \
-			/*	Then actually launch the app to get the information back	*/ \
-			NSDictionary	*scriptErrors = nil; \
-			NSMutableString	*appleScript = [NSMutableString stringWithFormat:MPT_TELL_APPLICATION_OPEN, pluginToolPath]; \
-			[appleScript appendFormat:MPT_SCRIPT_FORMAT, mptCommand, [mptMailBundle bundlePath]]; \
-			if (mptFrequency != nil) { \
-				[appleScript appendFormat:MPT_FREQUENCY_FORMAT, mptFrequency]; \
+			NSMutableDictionary	*performDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
+			[performDict setObject:mptCommand forKey:MPT_ACTION_KEY]; \
+			[performDict setObject:[mptMailBundle bundlePath] forKey:MPT_PLUGIN_PATH_KEY]; \
+			if ((mptFrequency != nil) && ![mptFrequency isEqualToString:@""]) { \
+				[performDict setObject:mptFrequency forKey:MPT_FREQUENCY_KEY]; \
 			} \
-			[appleScript appendString:MPT_END_TELL]; \
-			NSAppleScript	*theScript = [[[NSAppleScript alloc] initWithSource:appleScript] autorelease]; \
-			NSAppleEventDescriptor	*desc = [theScript executeAndReturnError:&scriptErrors]; \
-			if (!desc) { \
-				NSLog(@"Script (%@) to call MailBundleTool failed:%@", appleScript, scriptErrors); \
+			NSString		*plistPath = [[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MAIL_MPT_FOLDER_PATH] stringByExpandingTildeInPath]; \
+			BOOL			isDir = NO; \
+			/*	Ensure that we have a directory	*/ \
+			if (![manager fileExistsAtPath:plistPath isDirectory:&isDir] || !isDir) { \
+				if ([manager createDirectoryAtPath:plistPath withIntermediateDirectories:NO attributes:nil error:NULL]) { \
+					isDir = YES; \
+				} \
+			} \
+			/*	If we do, then try to create our file	*/ \
+			NSString	*fullFilePath = nil; \
+			if (isDir) { \
+				NSString	*tempfileName = [[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:MPT_PERFORM_ACTION_EXTENSION]; \
+				if ([performDict writeToFile:[plistPath stringByAppendingPathComponent:tempfileName] atomically:NO]) { \
+					fullFilePath = [plistPath stringByAppendingPathComponent:tempfileName]; \
+				} \
+			} \
+			if (![[NSWorkspace sharedWorkspace] openFile:fullFilePath withApplication:pluginToolPath andDeactivate:NO]) { \
+				NSLog(@"Launching MailBundleTool with file (%@) failed!", fullFilePath); \
 			} \
 		} \
 		else { \
@@ -114,10 +130,10 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define	MPTCallToolCommandForBundleWithBlock(mptCommand, mptMailBundle, mptNotificationBlock) \
 { \
 	if (mptMailBundle != nil) { \
-NSLog(@"Notification block is:%@", mptNotificationBlock); \
 		NSString	*mptNotificationName = [mptCommand isEqualToString:MPT_SEND_MAIL_INFO_TEXT]?MPT_SYSTEM_INFO_NOTIFICATION:MPT_UUID_LIST_NOTIFICATION; \
+		mptNotificationName = MPT_SYSTEM_INFO_NOTIFICATION; \
 		/*	Set up the notification watch	*/ \
-		NSOperationQueue	*mptQueue = [[[NSOperationQueue alloc] init] autorelease]; \
+		NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
 		__block id mptObserver; \
 		mptObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:mptNotificationName object:nil queue:mptQueue usingBlock:^(NSNotification *note) { \
 			/*	If this was aimed at us, then perform the block and remove the observer	*/ \
@@ -127,7 +143,7 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 			} \
 		}]; \
 		/*	Then actually launch the app to get the information back	*/ \
-		MPTLaunchCommandForBundle(mptCommand, mptMailBundle, nil); \
+		MPTLaunchCommandForBundle(mptCommand, mptMailBundle, @""); \
 	} \
 	else { \
 		NSLog(@"ERROR in MPTCallToolCommandForBundleWithBlock() Macro: Cannot pass a nil bundle"); \
@@ -137,7 +153,7 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 
 #define	MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow) \
 { \
-	NSOperationQueue	*mptQueue = [[[NSOperationQueue alloc] init] autorelease]; \
+	NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
 	[mptQueue setName:@"com.littleknownsoftware.BundleUpdateStatusQueue"]; \
 	__block id mptBundleObserver; \
 	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
@@ -162,6 +178,27 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 	}]; \
 }
 
+#define MPTClosePrefsWindowIfInstalling(mptBundle) \
+{ \
+	NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
+	[mptQueue setName:@"com.littleknownsoftware.BundleWillInstallQueue"]; \
+	__block id mptBundleObserver; \
+	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_WILL_INSTALL_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
+		/*	If the preferences are open then close them	*/ \
+		NSPreferences	*prefs = [NSPreferences sharedPreferences]; \
+		BOOL	panelIsVisible = [[prefs valueForKey:@"preferencesPanel"] isVisible]; \
+		if (panelIsVisible && (prefs != nil)) { \
+			dispatch_async(dispatch_get_main_queue(), ^{ \
+				[prefs performSelector:@selector(cancel:) withObject:self]; \
+			}); \
+		} \
+		/*	Always remove the observer	*/ \
+		[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptBundleObserver]; \
+	}]; \
+}
+
+//MPT_BUNDLE_WILL_INSTALL_NOTIFICATION
+
 
 #pragma mark - Plugin Macros
 
@@ -170,11 +207,11 @@ NSLog(@"Notification block is:%@", mptNotificationBlock); \
 
 #pragma mark Launch and Forget
 
-#define	MPTUninstallForBundle(mptMailBundle)									MPTLaunchCommandForBundle(MPT_UNINSTALL_TEXT, mptMailBundle, nil);
-#define	MPTCheckForUpdatesForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, nil);
+#define	MPTUninstallForBundle(mptMailBundle)									MPTLaunchCommandForBundle(MPT_UNINSTALL_TEXT, mptMailBundle, @"");
+#define	MPTCheckForUpdatesForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, @"");
 #define	MPTCheckForUpdatesForBundleNow(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, @"now");
-#define	MPTSendCrashReportsForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, nil);
-#define	MPTUpdateAndSendReportsForBundle(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, nil);
+#define	MPTSendCrashReportsForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, @"");
+#define	MPTUpdateAndSendReportsForBundle(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, @"");
 #define	MPTUpdateAndSendReportsForBundleNow(mptMailBundle)						MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, @"now");
 #define	MPTCheckForUpdatesForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, mptFreq);
 #define	MPTSendCrashReportsForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, mptFreq);
