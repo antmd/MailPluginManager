@@ -117,7 +117,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 				} \
 			} \
 			if (![[NSWorkspace sharedWorkspace] openFile:fullFilePath withApplication:pluginToolPath andDeactivate:NO]) { \
-				NSLog(@"Launching MailBundleTool with file (%@) failed!", fullFilePath); \
+				NSLog(@"Launching MailBundleTool at (%@) with file (%@) failed!", pluginToolPath, fullFilePath); \
 			} \
 		} \
 		else { \
