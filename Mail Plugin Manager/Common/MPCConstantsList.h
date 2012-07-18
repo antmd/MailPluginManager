@@ -126,6 +126,7 @@ STR_CONST(kMPCDoneUpdatingMailBundleNotification, "MPCDoneUpdatingMailBundleNoti
 STR_CONST(kMPCCancelledUpdatingMailBundleNotification, "MPCCancelledUpdatingMailBundleNotification");
 STR_CONST(kMPCDoneSendingCrashReportsMailBundleNotification, "MPCDoneSendingCrashReportsMailBundleNotification");
 STR_CONST(kMPCSUUpdateDriverAbortNotification, "SUUpdateDriverFinished");
+STR_CONST(kMPCRestartMailNowNotification, "com.littleknownsoftware.MPCRestartMailNowNotification");
 
 //	Sparkle info Distributed Notifications
 STR_CONST(kMPCBundleUpdateStatusDistNotification, "com.littleknownsoftware.MPCBundleUpdateStatusDistNotification");

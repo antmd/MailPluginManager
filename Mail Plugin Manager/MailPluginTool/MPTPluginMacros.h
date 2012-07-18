@@ -51,6 +51,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define MPT_UPDATE_TEXT							@"-update"
 #define MPT_CRASH_REPORTS_TEXT					@"-send-crash-reports"
 #define MPT_UPDATE_CRASH_REPORTS_TEXT			@"-update-and-crash-reports"
+#define MPT_FREQUENCY_OPTION					@"-freq"
 
 #pragma mark Internal Values
 
@@ -64,6 +65,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define MPT_APP_RESOURCES_PATH					@"Contents/Resources"
 //#define MPT_APP_CONTENTS_PATH					@"Contents/MacOS"
 //#define MPT_SENDER_ID_KEY						@"sender-id"
+
 
 #define MPT_MANAGER_APP_NAME					@"Mail Plugin Manager.app"
 #define MPT_MAIL_MPT_FOLDER_PATH				@"Mail/MPT"

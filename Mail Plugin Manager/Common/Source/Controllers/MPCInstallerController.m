@@ -336,6 +336,10 @@ typedef enum {
 }
 
 
+- (void)restartingSoQuitNow:(NSNotification *)note {
+	[AppDel finishApplication:self];
+}
+
 
 - (void)startActions {
 
@@ -371,6 +375,9 @@ typedef enum {
 	//	Do the installation on a dispatch queue
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	dispatch_async(myQueue, ^(void) {
+		
+		//	Wait for a notification to tell us to restart
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartingSoQuitNow:) name:kMPCRestartMailNowNotification object:nil];
 		
 		NSString	*displayMessage = nil;
 		self.displayErrorMessage = nil;

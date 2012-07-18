@@ -344,6 +344,8 @@
 				//	Otherwise restart mail and return as a finalize task
 				[self restartMailExecutingBlock:taskBlock];
 				mailWasRestartedOrNotRunning = YES;
+				//	Send a notification to indicate what was selected
+				[[NSNotificationCenter defaultCenter] postNotificationName:kMPCRestartMailNowNotification object:nil];
 			}
 		});
 	}
