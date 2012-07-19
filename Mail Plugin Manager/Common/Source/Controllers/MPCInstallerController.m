@@ -448,6 +448,20 @@ typedef enum {
 	return result;
 }
 
+- (void)handleRecoveryForMailRunOnceWithOption:(NSNumber *)selectedOption {
+	LKLog(@"Should be handling the recovery");
+	//	Open Mail
+	if ([selectedOption integerValue] == NSAlertAlternateReturn) {
+		NSWorkspace	*ws = [NSWorkspace sharedWorkspace];
+		NSURL		*mailURL = [NSURL URLWithString:[@"file://" stringByAppendingString:[ws absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]]];
+		[[NSWorkspace sharedWorkspace] launchApplicationAtURL:mailURL options:NSWorkspaceLaunchAsync configuration:nil error:NULL];
+	}
+	//	Quit
+	else if ([selectedOption integerValue] == NSAlertDefaultReturn) {
+		[AppDel finishApplication:self];
+	}
+}
+
 - (BOOL)validateRequirements {
 	
 	MPCManifestModel	*model = self.manifestModel;
@@ -1014,6 +1028,14 @@ typedef enum {
 }
 
 - (BOOL)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex {
+	LKError	*myError = (LKError *)error;
+	LKLog(@"my error's recoverySelector: %@", NSStringFromSelector([myError recoveryActionSelector]));
+	if ([myError recoveryActionSelector] != NULL) {
+		if ([self respondsToSelector:[myError recoveryActionSelector]]) {
+			[self performSelector:[myError recoveryActionSelector] withObject:[NSNumber numberWithInteger:recoveryOptionIndex]];
+			return YES;
+		}
+	}
 	return recoveryOptionIndex==0?YES:NO;
 }
 
