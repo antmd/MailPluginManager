@@ -11,6 +11,7 @@ STR_CONST(kMPCCommandLineUUIDListKey, "-uuid-list");
 STR_CONST(kMPCCommandLineFrequencyOptionKey, "-freq");
 STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
 STR_CONST(kMPCCommandLineFinishInstallKey, "-finish-install");
+STR_CONST(kMPCCommandLineFileLoadKey, "-file-load");
 
 //	Extensions and commonly used values
 STR_CONST(kMPCPlistExtension, "plist");

@@ -16,6 +16,8 @@
 #import "NSUserDefaults+MPCShared.h"
 #import "MPTReporterAsyncOperation.h"
 
+#define MODULE_CLASS	[NSObject class]
+#import "MPTPluginMacros.h"
 
 #define HOURS_AGO	(-1 * 60 * 60)
 
@@ -123,7 +125,7 @@
 				finishInstallRun = YES;
 				break;
 			}
-			else if ([anArg isEqualToString:@"-file-load"]) {
+			else if ([anArg isEqualToString:kMPCCommandLineFileLoadKey]) {
 				LKLog(@"Should load files");
 				needToLoadFile = YES;
 				break;
@@ -170,22 +172,22 @@
 	if (needToLoadFile) {
 
 		NSFileManager	*manager = [NSFileManager defaultManager];
-		NSString		*basePath = [@"~/Library/Mail/MPT" stringByExpandingTildeInPath];
+		NSString		*basePath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MAIL_MPT_FOLDER_PATH];
 		for (NSString *filename in [manager contentsOfDirectoryAtPath:basePath error:NULL]) {
 			LKLog(@"Open file with name:%@", filename);
 			NSString	*extension = [filename pathExtension];
-			if ([extension isEqualToString:@"mtperform"]) {
+			if ([extension isEqualToString:MPT_PERFORM_ACTION_EXTENSION]) {
 				NSString	*fullPath = [basePath stringByAppendingPathComponent:filename];
 				self.performDictionary = [NSDictionary dictionaryWithContentsOfFile:fullPath];
 				[manager removeItemAtPath:fullPath error:NULL];
 
-				NSString		*action = [self.performDictionary objectForKey:@"action"];
+				NSString		*action = [self.performDictionary objectForKey:MPT_ACTION_KEY];
 				NSMutableArray	*args = [NSMutableArray arrayWithCapacity:3];
-				if (!IsEmpty(action) && !IsEmpty([self.performDictionary objectForKey:@"plugin-path"])) {
-					[args addObject:[self.performDictionary objectForKey:@"plugin-path"]];
-					if ([self.performDictionary objectForKey:@"frequency"] != nil) {
+				if (!IsEmpty(action) && !IsEmpty([self.performDictionary objectForKey:MPT_PLUGIN_PATH_KEY])) {
+					[args addObject:[self.performDictionary objectForKey:MPT_PLUGIN_PATH_KEY]];
+					if ([self.performDictionary objectForKey:MPT_FREQUENCY_KEY] != nil) {
 						[args addObject:kMPCCommandLineFrequencyOptionKey];
-						[args addObject:[self.performDictionary objectForKey:@"frequency"]];
+						[args addObject:[self.performDictionary objectForKey:MPT_FREQUENCY_KEY]];
 					}
 					[self doAction:[self actionTypeForString:action] withArguments:args shouldFinish:NO];
 				}
