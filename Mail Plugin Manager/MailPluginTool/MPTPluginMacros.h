@@ -133,7 +133,6 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 { \
 	if (mptMailBundle != nil) { \
 		NSString	*mptNotificationName = [mptCommand isEqualToString:MPT_SEND_MAIL_INFO_TEXT]?MPT_SYSTEM_INFO_NOTIFICATION:MPT_UUID_LIST_NOTIFICATION; \
-		mptNotificationName = MPT_SYSTEM_INFO_NOTIFICATION; \
 		/*	Set up the notification watch	*/ \
 		NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
 		__block id mptObserver; \
