@@ -63,9 +63,6 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define MPT_TOOL_IDENTIFIER						@"com.littleknownsoftware.MailPluginTool"
 #define MPT_MANAGER_IDENTIFIER					@"com.littleknownsoftware.MailPluginManager"
 #define MPT_APP_RESOURCES_PATH					@"Contents/Resources"
-//#define MPT_APP_CONTENTS_PATH					@"Contents/MacOS"
-//#define MPT_SENDER_ID_KEY						@"sender-id"
-
 
 #define MPT_MANAGER_APP_NAME					@"Mail Plugin Manager.app"
 #define MPT_MAIL_MPT_FOLDER_PATH				@"Mail/MPT"
@@ -116,8 +113,8 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 					fullFilePath = [plistPath stringByAppendingPathComponent:tempfileName]; \
 				} \
 			} \
-			if (![[NSWorkspace sharedWorkspace] openFile:fullFilePath withApplication:pluginToolPath andDeactivate:NO]) { \
-				NSLog(@"Launching MailBundleTool at (%@) with file (%@) failed!", pluginToolPath, fullFilePath); \
+			else { \
+				NSLog(@"Unable to create the action file, since the required folder doesn't exist and I can't create it"); \
 			} \
 		} \
 		else { \
@@ -197,8 +194,6 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 		[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptBundleObserver]; \
 	}]; \
 }
-
-//MPT_BUNDLE_WILL_INSTALL_NOTIFICATION
 
 
 #pragma mark - Plugin Macros
