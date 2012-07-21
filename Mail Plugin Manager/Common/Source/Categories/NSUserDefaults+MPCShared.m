@@ -29,7 +29,7 @@
 	//	Update user defaults with new values
 	NSMutableDictionary	*changedDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCUserDefaultSharedDomainName] mutableCopy];
 	if (changedDefaults == nil) {
-		changedDefaults = [NSMutableDictionary dictionary];
+		changedDefaults = [[NSMutableDictionary alloc] initWithCapacity:1];
 	}
 	[changedDefaults setObject:newValues forKey:mailBundle.identifier];
 	[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMPCUserDefaultSharedDomainName];
