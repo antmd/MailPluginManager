@@ -16,7 +16,6 @@
 #import "NSUserDefaults+MPCShared.h"
 #import "MPTReporterAsyncOperation.h"
 
-#define MODULE_CLASS	[NSObject class]
 #import "MPTPluginMacros.h"
 
 #define HOURS_AGO	(-1 * 60 * 60)
