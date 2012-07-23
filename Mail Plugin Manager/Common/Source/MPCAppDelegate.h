@@ -85,6 +85,10 @@
 //	Quitting only when tasks are completed
 - (void)quittingNowIsReasonable;
 
+//	launchd management
+- (BOOL)installStartupLaunchdConfig;
+- (BOOL)installToolWatchLaunchdConfig;
+
 //	Mail Application Management
 - (BOOL)quitMail;
 - (void)restartMailExecutingBlock:(MPCAsyncRestartBlock)taskBlock;

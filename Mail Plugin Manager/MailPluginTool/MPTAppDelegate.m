@@ -14,11 +14,12 @@
 #import "LKCGStructs.h"
 #import "NSString+LKHelper.h"
 #import "NSUserDefaults+MPCShared.h"
-//#import "MPTCrashReporter.h"
 #import "MPTReporterAsyncOperation.h"
 
+#import "MPTPluginMacros.h"
 
 #define HOURS_AGO	(-1 * 60 * 60)
+
 
 
 @interface MPTAppDelegate ()
@@ -26,13 +27,14 @@
 @property	(nonatomic, retain)	NSArray						*sparkleKeysValues;
 @property	(nonatomic, assign) MPCSparkleAsyncOperation	*sparkleOperation;
 @property	(nonatomic, retain) SUBasicUpdateDriver			*updateDriver;
+@property	(nonatomic, retain)	NSDictionary				*performDictionary;
 
 
 //	Actions
 - (NSString *)pathToManagerContainer;
 - (void)validateAllBundles;
 - (void)showUserInvalidBundles:(NSArray *)bundlesToTest;
-- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MPCMailBundle *)mailBundle;
+- (BOOL)checkFrequency:(NSUInteger)frequency forActionType:(MPTActionType)action onBundle:(MPCMailBundle *)mailBundle;
 
 - (void)managerSparkleCompleted:(NSNotification *)note;
 
@@ -44,6 +46,7 @@
 @synthesize sparkleKeysValues = _sparkleKeysValues;
 @synthesize sparkleOperation = _sparkleOperation;
 @synthesize updateDriver = _updateDriver;
+@synthesize performDictionary = _performDictionary;
 
 
 #pragma mark - Handler Methods
@@ -63,7 +66,7 @@
 	if ([arguments count] > 2) {
 		arguments = [arguments subarrayWithRange:NSMakeRange(2, [arguments count] - 2)];
 	}
-	[self doAction:action withArguments:arguments];
+	[self doAction:[self actionTypeForString:action] withArguments:arguments shouldFinish:YES];
 }
 
 
@@ -102,6 +105,9 @@
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
+	//	Ensure that this tool is setup to load files when created
+	[self installToolWatchLaunchdConfig];
+	
 	self.finalizeQueueRequiresExplicitRelease = NO;
 
 	//	Get Path for the Mail Plugin Manager container
@@ -110,9 +116,28 @@
 	//	Report crashes for the tool app
 	[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle mainBundle]] autorelease]];
 	
+	//	See if we just need to get ourselves registered.
+	BOOL	finishInstallRun = NO;
+	BOOL	needToLoadFile = NO;
+	NSArray	*arguments = [[NSProcessInfo processInfo] arguments];
+	LKLog(@"########## Arguments passed into MPT are:%@", arguments);
+	if ([arguments count] > 0) {
+		for (NSString *anArg in arguments) {
+			if ([anArg isEqualToString:kMPCCommandLineFinishInstallKey]) {
+				finishInstallRun = YES;
+				break;
+			}
+			else if ([anArg isEqualToString:kMPCCommandLineFileLoadKey]) {
+				LKLog(@"Should load files");
+				needToLoadFile = YES;
+				break;
+			}
+		}
+	}
+	
 	//	Currently don't support Sparkle updating for just the Tool, so only do this if contained with the Manager and if that is writable by the user.
 	LKLog(@"mpmPath is:%@", mpmPath);
-	if ((mpmPath != nil) && [mpmPath userHasAccessRights]) {
+	if (!finishInstallRun && (mpmPath != nil) && [mpmPath userHasAccessRights]) {
 		//	Then find it's bundle
 		NSURL		*bundleURL = [NSURL fileURLWithPath:mpmPath isDirectory:YES];
 		NSBundle	*managerBundle = [NSBundle bundleWithURL:bundleURL];
@@ -125,6 +150,8 @@
 				return;
 			}
 		}
+		
+		LKLog(@"About to call Sparkle stuff");
 		
 		//	Test for an update quietly
 		SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
@@ -143,8 +170,38 @@
 		[self addFinalizeOperation:self.sparkleOperation];
 	}
 	
-	//	Go ahead and process the arguments
-	[self processArguments];
+	//	Find a file in the path and load it
+	if (needToLoadFile) {
+
+		NSFileManager	*manager = [NSFileManager defaultManager];
+		NSString		*basePath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MAIL_MPT_FOLDER_PATH];
+		for (NSString *filename in [manager contentsOfDirectoryAtPath:basePath error:NULL]) {
+			LKLog(@"Open file with name:%@", filename);
+			NSString	*extension = [filename pathExtension];
+			if ([extension isEqualToString:MPT_PERFORM_ACTION_EXTENSION]) {
+				NSString	*fullPath = [basePath stringByAppendingPathComponent:filename];
+				self.performDictionary = [NSDictionary dictionaryWithContentsOfFile:fullPath];
+				[manager removeItemAtPath:fullPath error:NULL];
+
+				NSString		*action = [self.performDictionary objectForKey:MPT_ACTION_KEY];
+				NSMutableArray	*args = [NSMutableArray arrayWithCapacity:3];
+				if (!IsEmpty(action) && !IsEmpty([self.performDictionary objectForKey:MPT_PLUGIN_PATH_KEY])) {
+					[args addObject:[self.performDictionary objectForKey:MPT_PLUGIN_PATH_KEY]];
+					if ([self.performDictionary objectForKey:MPT_FREQUENCY_KEY] != nil) {
+						[args addObject:kMPCCommandLineFrequencyOptionKey];
+						[args addObject:[self.performDictionary objectForKey:MPT_FREQUENCY_KEY]];
+					}
+					[self doAction:[self actionTypeForString:action] withArguments:args shouldFinish:NO];
+				}
+				
+			}
+		}
+		[self quittingNowIsReasonable];
+	
+	}
+	else {
+		[self processArguments];
+	}
 
 }
 
@@ -183,15 +240,45 @@
 	return managerPath;
 }
 
+- (MPTActionType)actionTypeForString:(NSString *)action {
+	MPTActionType	type = MPTActionNone;
+	
+	if ([kMPCCommandLineUninstallKey isEqualToString:action]) {
+		type = MPTActionUninstall;
+	}
+	else if ([kMPCCommandLineUpdateKey isEqualToString:action]) {
+		type = MPTActionUpdate;
+	}
+	else if ([kMPCCommandLineCheckCrashReportsKey isEqualToString:action]) {
+		type = MPTActionCheckCrashReports;
+	}
+	else if ([kMPCCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
+		type = MPTActionUpdateAndCrashReports;
+	}
+	else if ([kMPCCommandLineSystemInfoKey isEqualToString:action]) {
+		type = MPTActionSystemInfo;
+	}
+	else if ([kMPCCommandLineUUIDListKey isEqualToString:action]) {
+		type = MPTActionUUIDList;
+	}
+	else if ([kMPCCommandLineValidateAllKey isEqualToString:action]) {
+		type = MPTActionValidateAll;
+	}
+	
+	return type;
+}
+
 
 #pragma mark - Action Methods
 
-- (void)doAction:(NSString *)action withArguments:(NSArray *)arguments {
+- (void)doAction:(MPTActionType)action withArguments:(NSArray *)arguments shouldFinish:(BOOL)shouldFinish {
 	
 	NSString	*bundlePath = nil;
 	NSInteger	frequencyInHours = 0;
 	BOOL		forceUpdate = NO;
 	
+	
+	LKLog(@"Arguments are:%@", arguments);
 	if ([arguments count] > 0) {
 		bundlePath = [arguments objectAtIndex:0];
 		if ([bundlePath isEqualToString:@"(null)"]) {
@@ -223,73 +310,86 @@
 	}
 	
 	//	If there is no bundle for one of the tasks that require it, just quit
-	if ((bundlePath == nil) &&
-		([kMPCCommandLineUninstallKey isEqualToString:action] || [kMPCCommandLineUpdateKey isEqualToString:action] ||
-		 [kMPCCommandLineCheckCrashReportsKey isEqualToString:action] || [kMPCCommandLineUpdateAndCrashReportsKey isEqualToString:action])) {
-			
+	if ((bundlePath == nil) && ((action == MPTActionUninstall) || (action == MPTActionUpdate) || (action == MPTActionCheckCrashReports) || (action == MPTActionUpdateAndCrashReports))) {
 			//	Release the Activity Queue
 			[self releaseActivityQueue];
 	}
 	else {
-		//	Look at the first argument (after executable name) and test for one of our types
-		if ([kMPCCommandLineUninstallKey isEqualToString:action]) {
-			//	Tell it to uninstall itself
-			[self addActivityTask:^{
-				if ([mailBundle uninstall]) {
-					[self askToRestartMailWithBlock:nil usingIcon:[mailBundle icon]];
+		LKLog(@"Valid bundlePath");
+		switch (action) {
+			case MPTActionUninstall:
+				//	Tell it to uninstall itself
+				[self addActivityTask:^{
+					if ([mailBundle uninstall]) {
+						[self askToRestartMailWithBlock:nil usingIcon:[mailBundle icon]];
+					}
+				}];
+				break;
+				
+			case MPTActionUpdate:
+				LKLog(@"update found");
+				//	Tell it to update itself, if frequency requirements met
+				if ([self checkFrequency:frequencyInHours forActionType:action onBundle:mailBundle]) {
+					LKLog(@"Adding an update for bundle:'%@' to the queue", [[mailBundle path] lastPathComponent]);
+					[self updateMailBundle:mailBundle force:forceUpdate];
 				}
-			}];
-		}
-		else if ([kMPCCommandLineUpdateKey isEqualToString:action]) {
-			//	Tell it to update itself, if frequency requirements met
-			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-				LKLog(@"Adding an update for bundle:'%@' to the queue", [[mailBundle path] lastPathComponent]);
-				[self updateMailBundle:mailBundle force:forceUpdate];
-			}
-		}
-		else if ([kMPCCommandLineCheckCrashReportsKey isEqualToString:action]) {
-			//	Tell it to check its crash reports, if frequency requirements met
-			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-				LKLog(@"Sending crash reports");
-				[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
-			}
-		}
-		else if ([kMPCCommandLineUpdateAndCrashReportsKey isEqualToString:action]) {
-			//	If frequency requirements met
-			if ([self checkFrequency:frequencyInHours forActionKey:action onBundle:mailBundle]) {
-				[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
-				[self updateMailBundle:mailBundle force:forceUpdate];
-			}
-		}
-		else if ([kMPCCommandLineSystemInfoKey isEqualToString:action]) {
-			[self addActivityTask:^{
-				//	Then send the information
-				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-				[center postNotificationName:kMPTSystemInfoDistNotification object:mailBundle.identifier userInfo:[MPCSystemInfo completeInfo] deliverImmediately:YES];
-				LKLog(@"Sent notification");
-				[self quittingNowIsReasonable];
-			}];
-		}
-		else if ([kMPCCommandLineUUIDListKey isEqualToString:action]) {
-			[self addActivityTask:^{
-				NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-				[center postNotificationName:kMPTUUIDListDistNotification object:mailBundle.identifier userInfo:[MPCUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
-				[self quittingNowIsReasonable];
-			}];
-		}
-		else if ([kMPCCommandLineValidateAllKey isEqualToString:action]) {
-			//	Note that this does NOT get added to the Activity queue, since it will run as an event driven interface
-			[self validateAllBundles];
-		}
-		else {
-			//	Release the Activity Queue
-			[self releaseActivityQueue];
+				break;
+				
+			case MPTActionCheckCrashReports:
+				//	Tell it to check its crash reports, if frequency requirements met
+				if ([self checkFrequency:frequencyInHours forActionType:action onBundle:mailBundle]) {
+					LKLog(@"Sending crash reports");
+					[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
+				}
+				break;
+				
+			case MPTActionUpdateAndCrashReports:
+				//	If frequency requirements met
+				if ([self checkFrequency:frequencyInHours forActionType:action onBundle:mailBundle]) {
+					[self addActivityOperation:[[[MPTReporterAsyncOperation alloc] initWithMailBundle:mailBundle] autorelease]];
+					[self updateMailBundle:mailBundle force:forceUpdate];
+				}
+				break;
+				
+			case MPTActionSystemInfo:
+				[self addActivityTask:^{
+					//	Then send the information
+					NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+					[center postNotificationName:kMPTSystemInfoDistNotification object:mailBundle.identifier userInfo:[MPCSystemInfo completeInfo] deliverImmediately:YES];
+					LKLog(@"Sent notification");
+					if (shouldFinish) {
+						[self quittingNowIsReasonable];
+					}
+				}];
+				break;
+				
+			case MPTActionUUIDList:
+				[self addActivityTask:^{
+					NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+					[center postNotificationName:kMPTUUIDListDistNotification object:mailBundle.identifier userInfo:[MPCUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+					if (shouldFinish) {
+						[self quittingNowIsReasonable];
+					}
+				}];
+				break;
+				
+			case MPTActionValidateAll:
+				//	Note that this does NOT get added to the Activity queue, since it will run as an event driven interface
+				[self validateAllBundles];
+				break;
+				
+			default:
+				//	Release the Activity Queue
+				[self releaseActivityQueue];
+				break;
 		}
 	}
-
+	
 	//	Can always indicate that quitting is reasonable
-	LKLog(@"Reached the end of doAction - calling quittingNow...");
-	[self quittingNowIsReasonable];
+	if (shouldFinish) {
+		LKLog(@"Reached the end of doAction - calling quittingNow...");
+		[self quittingNowIsReasonable];
+	}
 }
 
 
@@ -383,10 +483,16 @@
 	}
 }
 
-- (BOOL)checkFrequency:(NSUInteger)frequency forActionKey:(NSString *)actionKey onBundle:(MPCMailBundle *)mailBundle {
+- (BOOL)checkFrequency:(NSUInteger)frequency forActionType:(MPTActionType)action onBundle:(MPCMailBundle *)mailBundle {
+	
+	//	If frequency is now, just return yes
+	if (frequency == 0) {
+		return YES;
+	}
 	
 	//	Default is that we have passed the frequency
-	BOOL	result = YES;
+	BOOL		result = YES;
+	NSString	*actionKey = [@"action-" stringByAppendingString:[[NSNumber numberWithInt:action] stringValue]];
 	
 	//	Look in User Defaults to see when last run
 	NSMutableDictionary	*bundleDict = [[NSUserDefaults standardUserDefaults] mutableDefaultsForMailBundle:mailBundle];

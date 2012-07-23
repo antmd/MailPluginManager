@@ -30,6 +30,7 @@ typedef enum {
 	MPCCopyFailed = 212,
 	
 	MPCPluginDoesNotWorkWithMailVersion = 221,
+	MPCMailHasNotBeenRunPreviously = 222,
 	
 	MPCUnknownInstallCode
 } MPCInstallErrorCodes;
@@ -53,6 +54,7 @@ typedef enum {
 - (BOOL)installItem:(MPCActionItem *)anItem;
 - (BOOL)removeBundleManagerIfReasonable;
 - (BOOL)removeItem:(MPCActionItem *)anItem;
+- (BOOL)ensureMailHasBeenRunOnce;
 - (BOOL)configureMail;
 
 - (BOOL)checkForLicenseRequirement;
@@ -334,6 +336,10 @@ typedef enum {
 }
 
 
+- (void)restartingSoQuitNow:(NSNotification *)note {
+	[AppDel finishApplication:self];
+}
+
 
 - (void)startActions {
 
@@ -369,6 +375,9 @@ typedef enum {
 	//	Do the installation on a dispatch queue
 	dispatch_queue_t	myQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	dispatch_async(myQueue, ^(void) {
+		
+		//	Wait for a notification to tell us to restart
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartingSoQuitNow:) name:kMPCRestartMailNowNotification object:nil];
 		
 		NSString	*displayMessage = nil;
 		self.displayErrorMessage = nil;
@@ -439,11 +448,32 @@ typedef enum {
 	return result;
 }
 
+- (void)handleRecoveryForMailRunOnceWithOption:(NSNumber *)selectedOption {
+	LKLog(@"Should be handling the recovery");
+	//	Open Mail
+	if ([selectedOption integerValue] == NSAlertAlternateReturn) {
+		NSWorkspace	*ws = [NSWorkspace sharedWorkspace];
+		NSURL		*mailURL = [NSURL URLWithString:[@"file://" stringByAppendingString:[ws absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]]];
+		[[NSWorkspace sharedWorkspace] launchApplicationAtURL:mailURL options:NSWorkspaceLaunchAsync configuration:nil error:NULL];
+	}
+	//	Quit
+	else if ([selectedOption integerValue] == NSAlertDefaultReturn) {
+		[AppDel finishApplication:self];
+	}
+}
+
 - (BOOL)validateRequirements {
 	
 	MPCManifestModel	*model = self.manifestModel;
 	NSFileManager		*manager = [NSFileManager defaultManager];
 	NSWorkspace			*workspace = [NSWorkspace sharedWorkspace];
+	
+	//	Ensure that Mail has been run at least once
+	if (![self ensureMailHasBeenRunOnce]) {
+		NSDictionary	*dict = [NSDictionary dictionaryWithObject:model.displayName forKey:kMPCNameKey];
+		LKPresentErrorCodeUsingDict(MPCMailHasNotBeenRunPreviously, dict);
+		return NO;
+	}
 	
 	//	Ensure that the versions all check out
 	MPCOSSupportResult	supportResult = [model supportResultForManifest];
@@ -484,22 +514,85 @@ typedef enum {
 	return YES;
 }
 
+- (BOOL)ensureMailHasBeenRunOnce {
+	
+	BOOL			isDir = NO;
+	NSString		*basePath = [@"~/Library/Mail" stringByExpandingTildeInPath];
+	NSString		*endPath = @"Mailboxes";
+	NSString		*testPath = [[basePath stringByAppendingPathComponent:@"V2"] stringByAppendingPathComponent:endPath];
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	
+	//	See if we have a valid Mail 5.x > config
+	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	testPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Mail/V2/Mailboxes" stringByExpandingTildeInPath];
+	//	See if we have a valid Sandboxed Mail config
+	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	//	See if we have a valid Mail 4.x config
+	testPath = [basePath stringByAppendingPathComponent:endPath];
+	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		return YES;
+	}
+	return NO;
+}
+
 - (BOOL)configureMail {
 	
 	//	Only need to bother if the manifest asked for it
 	if (self.manifestModel.shouldConfigureMail || self.manifestModel.shouldRestartMail) {
 		//	Get Mail settings
-		NSDictionary	*mailDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCMailBundleIdentifier];
-		if (mailDefaults == nil) {
-			mailDefaults = [NSDictionary dictionary];
+		NSString		*sandboxPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences" stringByExpandingTildeInPath];
+		NSString		*defaultsDomain = kMPCMailBundleIdentifier;
+		BOOL			isDir;
+		
+		if ([[NSFileManager defaultManager] fileExistsAtPath:sandboxPath isDirectory:&isDir] && isDir) {
+			defaultsDomain = [sandboxPath stringByAppendingPathComponent:defaultsDomain];
 		}
+		
+		NSTask *enabledTask = [[NSTask alloc] init];
+		[enabledTask setLaunchPath:@"/usr/bin/defaults"];
+		[enabledTask setArguments:@[@"read", defaultsDomain, kMPCEnableBundlesKey]];
+		
+		NSTask *bundleVersionTask = [[NSTask alloc] init];
+		[bundleVersionTask setLaunchPath:@"/usr/bin/defaults"];
+		[bundleVersionTask setArguments:@[@"read", defaultsDomain, kMPCBundleCompatibilityVersionKey]];
+		
+		NSPipe *pipe = [NSPipe pipe];
+		[enabledTask setStandardOutput:pipe];
+		NSFileHandle *file = [pipe fileHandleForReading];
+		
+		[enabledTask launch];
+		[enabledTask waitUntilExit];
+		
+		NSString *tempString = [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+		NSString *enabledString = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		LKLog(@"Current enableBundles is:%@", enabledString);
+		[enabledTask release];
+		[tempString release];
+		
+		NSPipe *pipe2 = [NSPipe pipe];
+		[bundleVersionTask setStandardOutput:pipe2];
+		NSFileHandle *file2 = [pipe2 fileHandleForReading];
+		
+		[bundleVersionTask launch];
+		[bundleVersionTask waitUntilExit];
+		
+		tempString = [[NSString alloc] initWithData:[file2 readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+		NSString *bundleVersion = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		LKLog(@"Current bundleVersion is:%@", bundleVersion);
+		[bundleVersionTask release];
+		[tempString release];
+		
 		
 		//	Make the block for updating those values
 		void	(^configureBlock)(void) = nil;
 
 		//	Test to see if those settings are sufficient
-		if (([[mailDefaults valueForKey:kMPCEnableBundlesKey] boolValue]) &&
-			(((NSUInteger)[[mailDefaults valueForKey:kMPCBundleCompatibilityVersionKey] integerValue]) >= self.manifestModel.configureMailVersion)) {
+		if (([enabledString boolValue]) &&
+			(((NSUInteger)[bundleVersion integerValue]) >= self.manifestModel.configureMailVersion)) {
 			
 			//	If no restart wanted,
 			if (!self.manifestModel.shouldRestartMail) {
@@ -507,13 +600,25 @@ typedef enum {
 				return YES;
 			}
 		}
-		else { 
+		else {
 			//	Make the block for updating those values
+			NSString	*newBundleVersionString = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:self.manifestModel.configureMailVersion]];
 			configureBlock = ^(void) {
-				NSMutableDictionary	*newMailDefs = [[mailDefaults mutableCopy] autorelease];
-				[newMailDefs setValue:@"YES" forKey:kMPCEnableBundlesKey];
-				[newMailDefs setValue:[NSNumber numberWithInteger:self.manifestModel.configureMailVersion] forKey:kMPCBundleCompatibilityVersionKey];
-				[[NSUserDefaults standardUserDefaults] setPersistentDomain:newMailDefs forName:kMPCMailBundleIdentifier];
+				
+				NSTask *updateEnabledTask = [[NSTask alloc] init];
+				[updateEnabledTask setLaunchPath:@"/usr/bin/defaults"];
+				[updateEnabledTask setArguments:@[@"write", defaultsDomain, kMPCEnableBundlesKey, @"YES"]];
+				
+				NSTask *updateBundleVersionTask = [[NSTask alloc] init];
+				[updateBundleVersionTask setLaunchPath:@"/usr/bin/defaults"];
+				[updateBundleVersionTask setArguments:@[@"write", defaultsDomain, kMPCBundleCompatibilityVersionKey, newBundleVersionString]];
+				
+				[updateEnabledTask launch];
+				[updateBundleVersionTask launch];
+				
+				[updateEnabledTask release];
+				[updateBundleVersionTask release];
+				
 			};
 		}
 		
@@ -625,7 +730,7 @@ typedef enum {
 	NSString	*tempPath = toPath;
 	NSInteger	counter = 1;
 	while ([[NSFileManager defaultManager] fileExistsAtPath:tempPath]) {
-		tempPath = [toPath stringByAppendingFormat:@" %ld", counter++];
+		tempPath = [toPath stringByAppendingFormat:@" %@", [NSNumber numberWithInteger:counter++]];
 	}
 	if (toPath != tempPath) {	//	Using pointer equivalence here expressly!!
 		toPath = tempPath;
@@ -712,6 +817,10 @@ typedef enum {
 		NSString		*toolPath = [model.bundleManager.destinationPath stringByAppendingPathComponent:kMPCRelativeToolPath];
 		if ([manager fileExistsAtPath:toolPath]) {
 			[manager releaseFromQuarantine:toolPath];
+
+			//	Ensure that the Tool is setup correctly to be responsive
+			[AppDel installToolWatchLaunchdConfig];
+
 		}
 	}
 	return bundleSuccess;
@@ -887,13 +996,13 @@ typedef enum {
 		case MPCMinOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
 			[values addObject:self.manifestModel.minOSVersion];
-			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f.%@", macOSXVersion(), [NSNumber numberWithInteger:macOSXBugFixVersion()]]];
 			break;
 			
 		case MPCMaxOSInsufficientCode:
 			[values addObject:self.manifestModel.displayName];
 			[values addObject:self.manifestModel.maxOSVersion];
-			[values addObject:[NSString stringWithFormat:@"%3.1f.%d", macOSXVersion(), macOSXBugFixVersion()]];
+			[values addObject:[NSString stringWithFormat:@"%3.1f.%@", macOSXVersion(), [NSNumber numberWithInteger:macOSXBugFixVersion()]]];
 			break;
 			
 		case MPCMinMailInsufficientCode:
@@ -913,6 +1022,14 @@ typedef enum {
 }
 
 - (BOOL)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex {
+	LKError	*myError = (LKError *)error;
+	LKLog(@"my error's recoverySelector: %@", NSStringFromSelector([myError recoveryActionSelector]));
+	if ([myError recoveryActionSelector] != NULL) {
+		if ([self respondsToSelector:[myError recoveryActionSelector]]) {
+			[self performSelector:[myError recoveryActionSelector] withObject:[NSNumber numberWithInteger:recoveryOptionIndex]];
+			return YES;
+		}
+	}
 	return recoveryOptionIndex==0?YES:NO;
 }
 

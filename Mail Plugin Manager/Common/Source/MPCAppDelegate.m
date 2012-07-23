@@ -17,6 +17,12 @@
 #import "MPCScheduledUpdateDriver.h"
 #import "MPCPluginUpdater.h"
 
+#import "MPTPluginMacros.h"
+
+#define LAUNCH_CONTROL_PATH			@"/bin/launchctl"
+#define LAUNCH_AGENT_FOLDER_NAME	@"LaunchAgents"
+
+
 @interface MPCAppDelegate ()
 
 @property	(nonatomic, retain)	NSOperationQueue		*counterQueue;
@@ -40,6 +46,13 @@
 - (BOOL)testForMailBundleChanges;
 - (void)installAnyMailBundlesPending;
 - (void)completeBundleUpdate:(NSNotification *)note;
+
+//	launchd management
+- (NSDictionary *)launchdConfigurations;
+- (BOOL)addLaunchDDictionary:(NSDictionary *)launchDict forLabel:(NSString *)label;
+- (BOOL)unloadLaunchControlAtPath:(NSString *)filePath;
+- (BOOL)loadLaunchControlAtPath:(NSString *)filePath;
+- (NSString *)likelyPluginToolPath;
 
 @end
 
@@ -135,7 +148,7 @@
 #pragma mark - Application Delegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	
+
 	//	Set a key-value observation on the running apps for "Mail"
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidTerminateApplicationNotification object:nil];
@@ -268,6 +281,269 @@
 
 
 
+#pragma mark - Launchd Methods
+
+- (NSString *)likelyPluginToolPath {
+	MPTGetLikelyToolPath();
+	
+	//	Add on our complete path to the executable
+	pluginToolPath = [[pluginToolPath stringByAppendingPathComponent:MPT_APP_CODE_PATH] stringByAppendingPathComponent:MPT_TOOL_NAME];
+	//	Validate that it exists
+	if (IsEmpty(pluginToolPath) || ![manager fileExistsAtPath:pluginToolPath]) {
+		LKErr(@"Cannot find the %@ app to create launchd config.", MPT_TOOL_NAME);
+		return nil;
+	}
+	
+	return pluginToolPath;
+}
+
+- (NSDictionary *)launchdConfigurations {
+	
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	NSString		*shellPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@".sh"]];
+	if (![manager fileExistsAtPath:shellPath]) {
+		NSString	*grepCommand = [NSString stringWithFormat:@"#/bin/sh\n%@ list | grep %@\n", LAUNCH_CONTROL_PATH, MPT_LKS_BUNDLE_START];
+		NSError		*error;
+		if (![grepCommand writeToFile:shellPath atomically:NO encoding:NSUTF8StringEncoding error:&error]) {
+			LKLog(@"Error writing shell command to tempfile:%@", shellPath);
+		}
+	}
+	else {
+		return nil;
+	}
+	
+	//	Get the list of my configs
+	NSTask	*launchControlListTask = [[NSTask alloc] init];
+	[launchControlListTask setLaunchPath:@"/bin/sh"];
+	[launchControlListTask setArguments:@[shellPath]];
+	
+	NSPipe	*pipe = [NSPipe pipe];
+	[launchControlListTask setStandardOutput:pipe];
+	NSFileHandle *file = [pipe fileHandleForReading];
+	
+	//	Run launchctl and give it a bit to run, since it doesn't seem to finish until we kill the task
+	[launchControlListTask launch];
+	[launchControlListTask waitUntilExit];
+	
+	NSString	*tempString = [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+	NSArray		*launchLines = [tempString componentsSeparatedByString:@"\n"];
+
+	[launchControlListTask release];
+	[tempString release];
+	
+	//	Strip out the labels of any Little Known configs within it (for verification)
+	NSMutableArray	*myLists = [NSMutableArray array];
+	for (NSString *aLine in launchLines) {
+		NSRange	myDomainRange = [aLine rangeOfString:MPT_LKS_BUNDLE_START];
+		if (myDomainRange.location != NSNotFound) {
+			[myLists addObject:[aLine substringFromIndex:myDomainRange.location]];
+		}
+	}
+	
+	LKLog(@"Found lists are:%@", myLists);
+	
+	//	For each of those, get teh xml plist data and turn it into a dict
+	NSMutableDictionary	*myConfigs = [NSMutableDictionary dictionaryWithCapacity:[myLists count]];
+	for (NSString *myAgent in myLists) {
+		
+		NSTask	*launchControlConfigTask = [[NSTask alloc] init];
+		[launchControlConfigTask setLaunchPath:LAUNCH_CONTROL_PATH];
+		[launchControlConfigTask setArguments:@[@"list", @"-x", myAgent]];
+		
+		NSPipe	*pipeOut = [NSPipe pipe];
+		NSPipe	*pipeError = [NSPipe pipe];
+		[launchControlConfigTask setStandardOutput:pipeOut];
+		[launchControlConfigTask setStandardError:pipeError];
+		NSFileHandle *fileOut = [pipeOut fileHandleForReading];
+		NSFileHandle *fileError = [pipeError fileHandleForReading];
+		
+		//	Run launchctl and give it a bit to run, since it doesn't seem to finish until we kill the task
+		[launchControlConfigTask launch];
+		
+		//	Try to get the data from the standard out, but for some reason (at least on Lion) it is returned in standard error
+		//	Allow for either, preferring the out - in case th ebug gets fixed
+		tempString = [[NSString alloc] initWithData:[fileOut readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+		if (IsEmpty(tempString)) {
+			[tempString release];
+			tempString = [[NSString alloc] initWithData:[fileError readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+		}
+		id propList = nil;
+		@try {
+			propList = [tempString propertyList];
+		}
+		@catch (NSException *exception) {
+			//	Should be an NSParseErrorException
+			//	Just set it to an empty dictionary
+			propList = [NSDictionary dictionary];
+		}
+		[myConfigs setObject:propList forKey:myAgent];
+		
+		[launchControlConfigTask release];
+		[tempString release];
+	}
+	
+	LKLog(@"Found configs are:%@", myConfigs);
+	
+	return [NSDictionary dictionaryWithDictionary:myConfigs];
+}
+
+- (BOOL)runLaunchControlWithCommand:(NSString *)command andPath:(NSString *)filePath {
+	
+	//	Then call launchctl to load it
+	//	Get the list of my configs
+	NSTask	*launchControlTask = [[NSTask alloc] init];
+	[launchControlTask setLaunchPath:LAUNCH_CONTROL_PATH];
+	[launchControlTask setArguments:@[command, filePath]];
+	
+	NSPipe	*pipeOut = [NSPipe pipe];
+	NSPipe	*pipeError = [NSPipe pipe];
+	[launchControlTask setStandardOutput:pipeOut];
+	[launchControlTask setStandardError:pipeError];
+	NSFileHandle *fileOut = [pipeOut fileHandleForReading];
+	NSFileHandle *fileError = [pipeError fileHandleForReading];
+	
+	//	Run launchctl and ensure that there were no errors
+	BOOL	result = NO;
+	[launchControlTask launch];
+	[launchControlTask waitUntilExit];
+	NSData	*outData = [fileOut readDataToEndOfFile];
+	NSData	*errorData = [fileError readDataToEndOfFile];
+	if (IsEmpty(outData) && IsEmpty(errorData)) {
+		result = YES;
+	}
+	else {
+		NSString	*tempString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+		LKErr(@"Error out on %@ is:'%@'", command, tempString);
+		[tempString release];
+		tempString = [[NSString alloc] initWithData:outData encoding:NSUTF8StringEncoding];
+		LKErr(@"Standard out on %@ is:'%@'", command, tempString);
+		[tempString release];
+	}
+	[launchControlTask release];
+	
+	return result;
+}
+
+- (BOOL)loadLaunchControlAtPath:(NSString *)filePath {
+	
+	//	Ensure that the file exists at the given path
+	if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		return NO;
+	}
+	
+	//	Get label from lastPathComponent
+	NSString		*label = [[filePath lastPathComponent] stringByDeletingPathExtension];
+	
+	//	Get configs
+	NSDictionary	*configs = [self launchdConfigurations];
+	
+	//	If it is already loaded, unload it
+	if ([[configs allKeys] containsObject:label]) {
+		[self unloadLaunchControlAtPath:filePath];
+	}
+	
+	//	Then call launchctl to load it and return the results
+	return [self runLaunchControlWithCommand:@"load" andPath:filePath];
+}
+
+- (BOOL)unloadLaunchControlAtPath:(NSString *)filePath {
+	
+	//	Ensure that the file exists at the given path
+	if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		return NO;
+	}
+	
+	//	Get label from lastPathComponent
+	NSString		*label = [[filePath lastPathComponent] stringByDeletingPathExtension];
+	
+	//	Get configs
+	NSDictionary	*configs = [self launchdConfigurations];
+	
+	//	If it is not already loaded, nothing to do
+	if (![[configs allKeys] containsObject:label]) {
+		return YES;
+	}
+	
+	//	Then call launchctl to unload it and return the results
+	return [self runLaunchControlWithCommand:@"unload" andPath:filePath];
+}
+
+- (BOOL)addLaunchDDictionary:(NSDictionary *)launchDict forLabel:(NSString *)label {
+	
+	//	If the dict is empty, nothing to do
+	if (IsEmpty(launchDict)) {
+		return NO;
+	}
+	
+	//	See if that label is already active we are done
+	if ([[[self launchdConfigurations] allKeys] containsObject:label]) {
+		LKLog(@"Launchd config for %@ is already loaded",label);
+		return YES;
+	}
+	
+	//	Get values
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	NSString		*fullPath = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME] stringByAppendingPathComponent:label] stringByAppendingPathExtension:kMPCPlistExtension];
+	
+	//	If the path exists already, move it to the trash
+	if ([manager fileExistsAtPath:fullPath]) {
+		NSError		*removeError;
+		if (![manager removeItemAtPath:fullPath error:&removeError]) {
+			LKErr(@"Cannot delete existing launch agent file (%@) - Error:%@.", [fullPath lastPathComponent], removeError);
+			return NO;
+		}
+	}
+	
+	//	If the file still exists, just leave
+	if ([manager fileExistsAtPath:fullPath]) {
+		return NO;
+	}
+	
+	//	Use the dictionary to write the file out using the constructed path
+	[launchDict writeToFile:fullPath atomically:YES];
+	
+	//	Ensure that the file was successful
+	if (![manager fileExistsAtPath:fullPath]) {
+		LKErr(@"Couldn't write the launchd plist file for label:%@", label);
+		return NO;
+	}
+	
+	//	Run launch control to load the file
+	return [self loadLaunchControlAtPath:fullPath];
+	
+}
+
+- (BOOL)installStartupLaunchdConfig {
+	
+	NSString	*label = [MPT_LKS_BUNDLE_START stringByAppendingString:[NSString stringWithFormat:@"%@-Startup", MPT_TOOL_NAME]];
+	NSString	*pluginToolPath = [self likelyPluginToolPath];
+	
+	if (pluginToolPath == nil) {
+		return NO;
+	}
+	
+	//	Build the dictionary
+	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineValidateAllKey ], @"RunAtLoad" : @YES };
+	LKLog(@"dict:%@", watchDict);
+	return [self addLaunchDDictionary:watchDict forLabel:label];
+}
+
+- (BOOL)installToolWatchLaunchdConfig {
+	
+	NSString	*label = [MPT_LKS_BUNDLE_START stringByAppendingString:[NSString stringWithFormat:@"%@-Watcher", MPT_TOOL_NAME]];
+	NSString	*pluginToolPath = [self likelyPluginToolPath];
+	
+	if (pluginToolPath == nil) {
+		return NO;
+	}
+	
+	//	Build the dictionary
+	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ] };
+	LKLog(@"dict:%@", watchDict);
+	return [self addLaunchDDictionary:watchDict forLabel:label];
+}
+
+
 #pragma mark - Support Methods
 
 - (BOOL)quitMail {
@@ -317,7 +593,14 @@
 			
 			NSString	*defaultButton = NSLocalizedString(@"Restart Mail", @"Button text to quit mail");
 			NSString	*altButton = NSLocalizedString(@"Quit Mail Later", @"Button text to quit myself");
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-security"
+			
 			NSAlert		*quitMailAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
+
+#pragma clang diagnostic pop
+			
 			if (iconImage != nil) {
 				[quitMailAlert setIcon:iconImage];
 			}
@@ -337,6 +620,8 @@
 				//	Otherwise restart mail and return as a finalize task
 				[self restartMailExecutingBlock:taskBlock];
 				mailWasRestartedOrNotRunning = YES;
+				//	Send a notification to indicate what was selected
+				[[NSNotificationCenter defaultCenter] postNotificationName:kMPCRestartMailNowNotification object:nil];
 			}
 		});
 	}

@@ -13,15 +13,29 @@
 #import "SUBasicUpdateDriver.h"
 #import "MPCSparkleAsyncOperation.h"
 
+typedef enum {
+	MPTActionNone,
+	MPTActionUpdate,
+	MPTActionUninstall,
+	MPTActionCheckCrashReports,
+	MPTActionUpdateAndCrashReports,
+	MPTActionSystemInfo,
+	MPTActionUUIDList,
+	MPTActionValidateAll
+} MPTActionType;
+
+
 @interface MPTAppDelegate : MPCAppDelegate {
 @private	
 	NSMutableDictionary			*_savedSparkleState;
 	NSArray						*_sparkleKeysValues;
 	MPCSparkleAsyncOperation	*_sparkleOperation;
 	SUBasicUpdateDriver			*_updateDriver;
+	NSDictionary				*_performDictionary;
 	
 }
-- (void)doAction:(NSString *)action withArguments:(NSArray *)arguments;
 
+- (MPTActionType)actionTypeForString:(NSString *)action;
+- (void)doAction:(MPTActionType)action withArguments:(NSArray *)arguments shouldFinish:(BOOL)shouldFinish;
 
 @end

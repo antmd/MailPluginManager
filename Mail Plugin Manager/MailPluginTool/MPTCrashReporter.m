@@ -44,7 +44,7 @@
 		//	Get it's date
 		NSDictionary	*fileAttrs = [[NSFileManager defaultManager] attributesOfItemAtPath:_reportPath error:&error];
 		if (fileAttrs != nil) {
-			_reportDate = [fileAttrs fileModificationDate];
+			_reportDate = [[fileAttrs fileModificationDate] retain];
 		}
 		
 	}

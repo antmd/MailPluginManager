@@ -10,6 +10,8 @@ STR_CONST(kMPCCommandLineSystemInfoKey, "-mail-info");
 STR_CONST(kMPCCommandLineUUIDListKey, "-uuid-list");
 STR_CONST(kMPCCommandLineFrequencyOptionKey, "-freq");
 STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
+STR_CONST(kMPCCommandLineFinishInstallKey, "-finish-install");
+STR_CONST(kMPCCommandLineFileLoadKey, "-file-load");
 
 //	Extensions and commonly used values
 STR_CONST(kMPCPlistExtension, "plist");
@@ -125,9 +127,11 @@ STR_CONST(kMPCDoneUpdatingMailBundleNotification, "MPCDoneUpdatingMailBundleNoti
 STR_CONST(kMPCCancelledUpdatingMailBundleNotification, "MPCCancelledUpdatingMailBundleNotification");
 STR_CONST(kMPCDoneSendingCrashReportsMailBundleNotification, "MPCDoneSendingCrashReportsMailBundleNotification");
 STR_CONST(kMPCSUUpdateDriverAbortNotification, "SUUpdateDriverFinished");
+STR_CONST(kMPCRestartMailNowNotification, "com.littleknownsoftware.MPCRestartMailNowNotification");
 
 //	Sparkle info Distributed Notifications
 STR_CONST(kMPCBundleUpdateStatusDistNotification, "com.littleknownsoftware.MPCBundleUpdateStatusDistNotification");
+STR_CONST(kMPCBundleWillInstallDistNotification, "com.littleknownsoftware.MPCBundleWillInstallDistNotification");
 
 //	Tool Distributed Notifications
 STR_CONST(kMPTSystemInfoDistNotification, "com.littleknownsoftware.MPTSystemInfoDistNotification");

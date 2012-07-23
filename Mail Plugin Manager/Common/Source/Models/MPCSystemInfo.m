@@ -53,7 +53,7 @@
 		Gestalt(gestaltSystemVersionMajor, &versionMajor);
 		Gestalt(gestaltSystemVersionMinor, &versionMinor);
 		Gestalt(gestaltSystemVersionBugFix, &versionBugFix);
-		_systemVersion = [[NSString stringWithFormat:@"%d.%d.%d", versionMajor, versionMinor, versionBugFix] copy];
+		_systemVersion = [[NSString stringWithFormat:@"%@.%@.%@", [NSNumber numberWithInt:versionMajor], [NSNumber numberWithInt:versionMinor], [NSNumber numberWithInt:versionBugFix]] copy];
 	}
 	return _systemVersion;
 }

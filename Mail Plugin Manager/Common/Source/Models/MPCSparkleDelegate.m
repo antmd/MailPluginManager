@@ -71,7 +71,7 @@
 			if (!IsEmpty(aKey)) {
 				NSString	*value = [infoDict valueForKey:aKey];
 				if (!IsEmpty(value)) {
-					[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"sup%d", suppCounter], @"key", value, @"value", [NSString stringWithFormat:@"Supplement %d Key", suppCounter], @"displayKey", value, @"displayValue", nil]];
+					[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"sup%@", [NSNumber numberWithInteger:suppCounter]], @"key", value, @"value", [NSString stringWithFormat:@"Supplement %@ Key", [NSNumber numberWithInteger:suppCounter]], @"displayKey", value, @"displayValue", nil]];
 				}
 			}
 			suppCounter++;

@@ -29,8 +29,13 @@
 		
 		NSString	*defaultButton = NSLocalizedString(@"Continue Using", @"Button text to perfomr other manager actions");
 		NSString	*altButton = NSLocalizedString(@"Quit Now", @"Button text to quit manager now");
+		
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-security"
+		
 		NSAlert		*installReadyAlert = [NSAlert alertWithMessageText:messageText defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:infoText];
-//			[installReadyAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:kMPCMailBundleIdentifier]]];
+
+#pragma clang diagnostic pop
 
 		//	Initializes Sparkle to do the install, when the app quits
 		[self installAndRestart:nil];
@@ -56,6 +61,9 @@
 
 - (void)installAndRestart:(id)sender {
     [self installWithToolAndRelaunch:NO];
+	//	Post a distributed notification indicating that the bundle is up-to-date
+	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+	[center postNotificationName:kMPCBundleWillInstallDistNotification object:[[[self valueForKey:@"host"] bundle] bundleIdentifier] userInfo:nil deliverImmediately:YES];
 }
 
 - (void)didFindValidUpdate {

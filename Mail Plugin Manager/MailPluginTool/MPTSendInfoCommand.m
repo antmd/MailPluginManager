@@ -66,7 +66,7 @@
 		arguments = [arguments arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MPT_FREQUENCY_OPTION, freqValue, nil]];
 	}
 	LKLog(@"Action='%@' args=%@", command, arguments);
-	[AppDel doAction:command withArguments:arguments];
+	[AppDel doAction:[AppDel actionTypeForString:command] withArguments:arguments shouldFinish:YES];
 	
 	return nil;
 }

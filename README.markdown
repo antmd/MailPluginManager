@@ -361,9 +361,10 @@ The following values are used by the apps whenever a plugin is displayed to show
 #### launchd values of interest (for boot time agent setup)
 
 * RunAtLoad = YES
-* SuccessfulExit = NO (won't be rerun if exit 0;)
-* WatchPaths = Array
+* WatchPaths = Array (a single path to watch)
+* QueueDirectories = Array (directories to watch)
 * StartCalendarInterval = dict (run once a week perhaps in order to update plists)
+* StartInterval (in seconds)
 * StandardOutPath = path
 * [man page][launchd]
 * LaunchOnlyOnce = YES (nope)

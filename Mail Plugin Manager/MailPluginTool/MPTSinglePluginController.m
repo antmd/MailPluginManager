@@ -237,11 +237,16 @@ typedef enum {
 			break;
 	}
 	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-security"
+	
 	NSAlert	*confirm = [NSAlert alertWithMessageText:[NSString stringWithFormat:messageText, self.mailBundle.name]
 									   defaultButton:confirmButton
 									 alternateButton:NSLocalizedString(@"Cancel", @"")
 										 otherButton:nil
 						   informativeTextWithFormat:[NSString stringWithFormat:infoText, self.mailBundle.name, disableFolder]];
+#pragma clang diagnostic pop
+
 	[confirm setIcon:self.mailBundle.icon];
 	
 	//	If they canceled return FALSE
@@ -282,12 +287,19 @@ typedef enum {
 		infoText = NSLocalizedString(@"You will need to restart Mail to see the changes.", @"");
 		iconImage = self.mailBundle.icon;
 	}
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-security"
+	
 	//	Build a new alert
 	confirm = [NSAlert alertWithMessageText:[NSString stringWithFormat:messageText, self.mailBundle.name]
 									   defaultButton:confirmButton
 									 alternateButton:alternateButton
 										 otherButton:nil
 						   informativeTextWithFormat:infoText];
+	
+#pragma clang diagnostic pop
+	
 	[confirm setIcon:iconImage];
 	//	And show it
 	if ([confirm runModal] == NSAlertDefaultReturn) {

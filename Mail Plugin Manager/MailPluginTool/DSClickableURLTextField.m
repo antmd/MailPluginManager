@@ -148,7 +148,7 @@
 	}
 	
 	NSUInteger myLength = [URLStorage length];
-	NSRange returnRange = { NSNotFound, 0 }, stringRange = { 0, myLength }, glyphRange = { NSNotFound, 0 };
+	NSRange returnRange = { NSNotFound, 0 }, stringRange = { 0, myLength }, glyphRange;
 	NSCursor *pointingCursor = nil;
 	
 	/* Here mainly for 10.2 compatibility (in case anyone even tries for that anymore) */
@@ -195,7 +195,7 @@
 	
 	if ( ([URLStorage length] > 0 ) && [self mouse:mousePoint inRect:cellBounds] ) {
 		id aVal = nil;
-		NSRange returnRange = { NSNotFound, 0 }, glyphRange = { NSNotFound, 0 };
+		NSRange returnRange = { NSNotFound, 0 }, glyphRange;
 		NSRectArray linkRect = NULL;
 		NSUInteger glyphIndex = [URLManager glyphIndexForPoint:mousePoint inTextContainer:URLContainer];
 		NSUInteger charIndex = [URLManager characterIndexForGlyphAtIndex:glyphIndex];

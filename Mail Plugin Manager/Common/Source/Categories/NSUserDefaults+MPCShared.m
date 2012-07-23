@@ -14,7 +14,11 @@
 - (NSDictionary *)defaultsForMailBundle:(MPCMailBundle *)mailBundle {
 	//	Get the defaults from the shared domain name and return the value for the bundle
 	NSDictionary	*defaultsDict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCUserDefaultSharedDomainName];
-	return [defaultsDict valueForKey:mailBundle.identifier];
+	NSDictionary	*bundleDefaults = [defaultsDict valueForKey:mailBundle.identifier];
+	if (bundleDefaults == nil) {
+		bundleDefaults = [NSDictionary dictionary];
+	}
+	return bundleDefaults;
 }
 
 - (NSMutableDictionary *)mutableDefaultsForMailBundle:(MPCMailBundle *)mailBundle {
@@ -24,6 +28,9 @@
 - (void)setDefaults:(NSDictionary *)newValues forMailBundle:(MPCMailBundle *)mailBundle {
 	//	Update user defaults with new values
 	NSMutableDictionary	*changedDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:kMPCUserDefaultSharedDomainName] mutableCopy];
+	if (changedDefaults == nil) {
+		changedDefaults = [[NSMutableDictionary alloc] initWithCapacity:1];
+	}
 	[changedDefaults setObject:newValues forKey:mailBundle.identifier];
 	[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMPCUserDefaultSharedDomainName];
 	[changedDefaults release];

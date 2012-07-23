@@ -7,8 +7,8 @@
 */
 
 //	Example
-"000-description" = "Installation failed because the file (%@) wasn't found.";
-"000-failure-reason" = "File (%@) wasn't found.";
+"000-description" = "Installation failed because the file (%@) wasn’t found.";
+"000-failure-reason" = "File (%@) wasn’t found.";
 "000-recovery-suggestion" = "Look for the file and put it here: (%@).";
 
 "000-button-1" = "Found It";
@@ -18,29 +18,35 @@
 
 //	Overall Requirements
 "101-description" = "'%1$@' requires minimum OS X version %2$@ - you have (%3$@).";
-"101-recovery-suggestion" = "You'll need to upgrade OS X first.";
+"101-recovery-suggestion" = "You’ll need to upgrade OS X first.";
 
-"102-description" = "'%1$@' doesn't work on OS X version %3$@ - it's max version is (%2$@).";
-"102-recovery-suggestion" = "This plugin doesn't work in this version of OS X.";
+"102-description" = "'%1$@' doesn’t work on OS X version %3$@ - it’s max version is (%2$@).";
+"102-recovery-suggestion" = "This plugin doesn’t work in this version of OS X.";
 
 "103-description" = "'%1$@' requires minimum Mail version %2$@ - you have (%3$@).";
-"103-recovery-suggestion" = "You'll need to upgrade your OS X (and thus Mail) before installing.";
+"103-recovery-suggestion" = "You’ll need to upgrade your OS X (and thus Mail) before installing.";
 
 
 //	Generic 200 level message
-"200-description" = "There was a problem installing the item (%<name>@).";
-"200-recovery-suggestion" = "Sorry there isn't anything I can do to continue.";
+"200-description" = "There was a problem installing the item “%<name>@”.";
+"200-recovery-suggestion" = "Sorry there isn’t anything I can do to continue.";
 //"200-button-1" = "Quit";
 
-"201-description" = "The source path for '%<name>@' is invalid [%<path>@].";
-"202-description" = "Trying to install %<name>@ with a different BundleID [%<bundleid>@] over the existing app '%<dest-name>@' [%<bundleid2>@].";
-"203-description" = "Can't copy '%<name>@' because the destination is actually a file:%<path>@.";
-"204-description" = "I am unable to move '%<name>@' to the trash.";
+"201-description" = "The source path for “%<name>@” is invalid [%<path>@].";
+"202-description" = "Trying to install “%<name>@” with a different BundleID [%<bundleid>@] over the existing app “%<dest-name>@” [%<bundleid2>@].";
+"203-description" = "Can’t copy “%<name>@” because the destination is actually a file: %<path>@.";
+"204-description" = "I am unable to move “%<name>@” to the trash.";
 
-"211-description" = "Couldn't create folder to copy item '%<name>@' into.";
-"212-description" = "Unable to copy item '%<name>@ to %<path>@.";
+"211-description" = "Couldn’t create folder to copy item “%<name>@” into.";
+"212-description" = "Unable to copy item “%<name>@” to “%<path>@”.";
 
 "221-description" = "This Mail Plugin will not work with the current version of Mail (%<version>@).";
+
+"222-description" = "You will need to run Mail at least once before installing “%<name>@”.";
+"222-recovery-suggestion" = "Choose “Open Mail” to run Mail and setup an account then come back here to finish the install or “Quit” to abort.";
+"222-recovery-selector" = "handleRecoveryForMailRunOnceWithOption:";
+"222-button-1" = "Open Mail";
+"222-button-2" = "Quit";
 
 //	Messages from the MPM AppDelegate
 "400-description" = "Undefined error from the Mail Plugin Manager.";
@@ -51,5 +57,5 @@
 
 //	Messages from the MPCBundle class
 "500-description" = "Undefined error from the Plugin Bundle.";
-"501-description" = "Couldn't create the Disabled Bundle folder at %<path>@.\n%<mpc-error>@.";
+"501-description" = "Couldn’t create the Disabled Bundle folder at “%<path>@”.\n%<mpc-error>@.";
 

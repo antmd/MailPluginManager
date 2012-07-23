@@ -102,10 +102,8 @@
 		D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4714FADC790006A749 /* ManagerIcon.png */; };
 		D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MPCBackgroundImage.png */; };
 		D2866E6E14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D2866E6C14FAF6DF0006A749 /* MPCBackgroundImage.png */; };
-		D2866EF514FBC3C10006A749 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D2866EF614FBC3D60006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D2866EF714FBC3DB0006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
-		D2866EF814FBC3DE0006A749 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D28F77EA14209D1D0015E42F /* MPCActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MPCActionItem.m */; };
 		D2C473CA146B44DA00B2981D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2779BF214337389003F7BE0 /* QuartzCore.framework */; };
 		D2C8644D14FAAD9B00BAFA00 /* MPCInstallerWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2C8645014FAAD9B00BAFA00 /* MPCInstallerWindow.xib */; };
@@ -125,6 +123,8 @@
 		D2E90297141E4C800058618F /* MPCMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90296141E4C7F0058618F /* MPCMailBundle.m */; };
 		D2E9029A141E5EFA0058618F /* NSBundle+MPCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E90299141E5EF90058618F /* NSBundle+MPCAdditions.m */; };
 		D2E902AD141E72470058618F /* MPCSparkleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E902AC141E72470058618F /* MPCSparkleDelegate.m */; };
+		D2EA4C8515BA0B7800A4E6A1 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D221E9A3150049E700568952 /* Sparkle.framework */; };
+		D2EA4C8615BA0B8600A4E6A1 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D221E9A3150049E700568952 /* Sparkle.framework */; };
 		D2EB824E148F9EE700C8B0DB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2EB824D148F9EE700C8B0DB /* Security.framework */; };
 		D2EB824F148F9EFA00C8B0DB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2EB824D148F9EE700C8B0DB /* Security.framework */; };
 		D2EB825A148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB8257148FA79300C8B0DB /* NSViewController+LKCollectionItemFix.m */; };
@@ -264,7 +264,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D2866EF814FBC3DE0006A749 /* Sparkle.framework in Copy Frameworks */,
+				D2EA4C8515BA0B7800A4E6A1 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,7 +286,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D2866EF514FBC3C10006A749 /* Sparkle.framework in Copy Frameworks */,
+				D2EA4C8615BA0B8600A4E6A1 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1006,7 +1006,7 @@
 		D216B331141DFDE1003788DC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 				ORGANIZATIONNAME = "Little Known Software";
 			};
 			buildConfigurationList = D216B334141DFDE1003788DC /* Build configuration list for PBXProject "Mail Plugin Manager" */;
@@ -1517,7 +1517,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 8;
+				BUILD_NUMBER = 10;
+				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
@@ -1528,20 +1530,23 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"USE_NSRECTS=1",
 					"DEBUG=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.1.2;
+				VERSION_STRING = 1.2.0;
 			};
 			name = Debug;
 		};
@@ -1551,7 +1556,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 8;
+				BUILD_NUMBER = 10;
+				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1561,26 +1568,27 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"USE_NSRECTS=1",
 					"DEBUG_OUTPUT_OFF=1",
 				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.1.2;
+				VERSION_STRING = 1.2.0;
 			};
 			name = Release;
 		};
 		D216B36D141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed-test/mpm";
@@ -1591,8 +1599,6 @@
 		D216B36E141DFDE2003788DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed/mpm";
@@ -1604,13 +1610,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Plugin Manager.app/Contents/MacOS/Mail Plugin Manager";
+				CODE_SIGN_IDENTITY = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
 					"\"$(SRCROOT)/Mail Plugin ManagerTests/TestData/ExamplePlugin.mailbundle/Contents/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mail Plugin Manager/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin ManagerTests/Mail Plugin ManagerTests-Info.plist";
 				PRODUCT_NAME = "Mail Plugin ManagerTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1622,13 +1627,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Plugin Manager.app/Contents/MacOS/Mail Plugin Manager";
+				CODE_SIGN_IDENTITY = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
 					"\"$(SRCROOT)/Mail Plugin ManagerTests/TestData/ExamplePlugin.mailbundle/Contents/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mail Plugin Manager/Mail Plugin Manager-Prefix.pch";
 				INFOPLIST_FILE = "Mail Plugin ManagerTests/Mail Plugin ManagerTests-Info.plist";
 				PRODUCT_NAME = "Mail Plugin ManagerTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1639,7 +1643,7 @@
 		D22CC069146BD8800055CFBE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				CODE_SIGN_IDENTITY = "";
 				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
 				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1650,7 +1654,7 @@
 		D22CC06A146BD8800055CFBE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				CODE_SIGN_IDENTITY = "";
 				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
 				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1661,17 +1665,8 @@
 		D2558A4515A62DFD0046E683 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1680,12 +1675,8 @@
 		D2558A4615A62DFD0046E683 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1694,21 +1685,12 @@
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUILD_NUMBER = 7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Mail Plugin Manager\"",
-					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,
 				);
 				INFOPLIST_FILE = "MailPluginTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1716,21 +1698,12 @@
 		D2779BD714336287003F7BE0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUILD_NUMBER = 7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Mail Plugin Manager\"",
-					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Common/Mail Plugin Manager-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,
 				);
 				INFOPLIST_FILE = "MailPluginTool/MailPluginTool-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				VERSION_STRING = 1.1.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
