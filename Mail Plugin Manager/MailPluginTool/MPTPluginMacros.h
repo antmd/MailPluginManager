@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#ifndef MODULE_CLASS
-#error In order to properly use the MPTPluginMacros, you need to define MODULE_CLASS as one of the classes of your plugin
-#endif
-
 typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Dictionary Keys
@@ -55,14 +51,16 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #pragma mark Internal Values
 
-#define MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION	@"com.littleknownsoftware.MPCBundleUpdateStatusDistNotification"
-#define MPT_BUNDLE_WILL_INSTALL_NOTIFICATION	@"com.littleknownsoftware.MPCBundleWillInstallDistNotification"
-#define MPT_SYSTEM_INFO_NOTIFICATION			@"com.littleknownsoftware.MPTSystemInfoDistNotification"
-#define MPT_UUID_LIST_NOTIFICATION				@"com.littleknownsoftware.MPTUUIDListDistNotification"
+#define MPT_LKS_BUNDLE_START					@"com.littleknownsoftware."
+#define MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION	[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPCBundleUpdateStatusDistNotification"]
+#define MPT_BUNDLE_WILL_INSTALL_NOTIFICATION	[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPCBundleWillInstallDistNotification"]
+#define MPT_SYSTEM_INFO_NOTIFICATION			[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTSystemInfoDistNotification"]
+#define MPT_UUID_LIST_NOTIFICATION				[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDListDistNotification"]
 #define MPT_TOOL_NAME							@"MailPluginTool"
-#define MPT_TOOL_IDENTIFIER						@"com.littleknownsoftware.MailPluginTool"
-#define MPT_MANAGER_IDENTIFIER					@"com.littleknownsoftware.MailPluginManager"
+#define MPT_TOOL_IDENTIFIER						[MPT_LKS_BUNDLE_START stringByAppendingString:MPT_TOOL_NAME]
+#define MPT_MANAGER_IDENTIFIER					[MPT_LKS_BUNDLE_START stringByAppendingString:@"MailPluginManager"]
 #define MPT_APP_RESOURCES_PATH					@"Contents/Resources"
+#define MPT_APP_CODE_PATH						@"Contents/MacOS"
 
 #define MPT_MANAGER_APP_NAME					@"Mail Plugin Manager.app"
 #define MPT_MAIL_MPT_FOLDER_PATH				@"Mail/MPT"
@@ -71,25 +69,33 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 #define MPT_PLUGIN_PATH_KEY						@"plugin-path"
 #define MPT_FREQUENCY_KEY						@"frequency"
 
+
 #pragma mark - Reused Macros
+
+#define MPTPerformFolderPath() \
+	[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MAIL_MPT_FOLDER_PATH] stringByExpandingTildeInPath]
+
+#define MPTGetLikelyToolPath() \
+	NSFileManager	*manager = [NSFileManager defaultManager]; \
+	NSString	*pluginManagerPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MANAGER_APP_NAME]; \
+	if (![manager fileExistsAtPath:pluginManagerPath]) { \
+		pluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
+	} \
+	NSString	*pluginToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_TOOL_IDENTIFIER]; \
+	if ((pluginToolPath == nil) || ((pluginManagerPath != nil) && ![pluginToolPath hasPrefix:pluginManagerPath])) { \
+		/*	See if we can get the tool path inside the managerPath	*/ \
+		NSString	*proposedPath = [pluginManagerPath stringByAppendingPathComponent:MPT_APP_RESOURCES_PATH]; \
+		proposedPath = [proposedPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", MPT_TOOL_NAME]]; \
+		if ((proposedPath != nil) && [[NSFileManager defaultManager] fileExistsAtPath:proposedPath]) { \
+			pluginToolPath = proposedPath; \
+		} \
+	} \
+
 
 #define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptFrequency) \
 { \
 	if (mptMailBundle != nil) { \
-		NSFileManager	*manager = [NSFileManager defaultManager]; \
-		NSString	*pluginManagerPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MANAGER_APP_NAME]; \
-		if (![manager fileExistsAtPath:pluginManagerPath]) { \
-			pluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
-		} \
-		NSString	*pluginToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_TOOL_IDENTIFIER]; \
-		if ((pluginToolPath == nil) || ((pluginManagerPath != nil) && ![pluginToolPath hasPrefix:pluginManagerPath])) { \
-			/*	See if we can get the tool path inside the managerPath	*/ \
-			NSString	*proposedPath = [pluginManagerPath stringByAppendingPathComponent:MPT_APP_RESOURCES_PATH]; \
-			proposedPath = [proposedPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", MPT_TOOL_NAME]]; \
-			if ((proposedPath != nil) && [[NSFileManager defaultManager] fileExistsAtPath:proposedPath]) { \
-				pluginToolPath = proposedPath; \
-			} \
-		} \
+		MPTGetLikelyToolPath(); \
 		if (pluginToolPath != nil) { \
 			NSMutableDictionary	*performDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
 			[performDict setObject:mptCommand forKey:MPT_ACTION_KEY]; \
@@ -97,7 +103,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 			if ((mptFrequency != nil) && ![mptFrequency isEqualToString:@""]) { \
 				[performDict setObject:mptFrequency forKey:MPT_FREQUENCY_KEY]; \
 			} \
-			NSString		*plistPath = [[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MAIL_MPT_FOLDER_PATH] stringByExpandingTildeInPath]; \
+			NSString		*plistPath = MPTPerformFolderPath(); \
 			BOOL			isDir = NO; \
 			/*	Ensure that we have a directory	*/ \
 			if (![manager fileExistsAtPath:plistPath isDirectory:&isDir] || !isDir) { \
@@ -149,10 +155,32 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 }
 
 
+#define MPTClosePrefsWindowIfInstalling(mptBundle) \
+{ \
+	NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
+	[mptQueue setName:[MPT_LKS_BUNDLE_START stringByAppendingString:@"BundleWillInstallQueue"]]; \
+	__block id mptBundleObserver; \
+	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_WILL_INSTALL_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
+		/*	If the preferences are open then close them	*/ \
+		NSPreferences	*prefs = [NSPreferences sharedPreferences]; \
+		BOOL	panelIsVisible = [[prefs valueForKey:@"preferencesPanel"] isVisible]; \
+		if (panelIsVisible && (prefs != nil)) { \
+			dispatch_async(dispatch_get_main_queue(), ^{ \
+				[prefs performSelector:@selector(cancel:) withObject:self]; \
+			}); \
+		} \
+		/*	Always remove the observer	*/ \
+		[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptBundleObserver]; \
+	}]; \
+}
+
+
+#ifdef MODULE_CLASS
+
 #define	MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow) \
 { \
 	NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
-	[mptQueue setName:@"com.littleknownsoftware.BundleUpdateStatusQueue"]; \
+	[mptQueue setName:[MPT_LKS_BUNDLE_START stringByAppendingString:@"BundleUpdateStatusQueue"]]; \
 	__block id mptBundleObserver; \
 	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
 		/*	Test to see if the plugin is up to date	*/ \
@@ -176,30 +204,13 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 	}]; \
 }
 
-#define MPTClosePrefsWindowIfInstalling(mptBundle) \
-{ \
-	NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
-	[mptQueue setName:@"com.littleknownsoftware.BundleWillInstallQueue"]; \
-	__block id mptBundleObserver; \
-	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_WILL_INSTALL_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
-		/*	If the preferences are open then close them	*/ \
-		NSPreferences	*prefs = [NSPreferences sharedPreferences]; \
-		BOOL	panelIsVisible = [[prefs valueForKey:@"preferencesPanel"] isVisible]; \
-		if (panelIsVisible && (prefs != nil)) { \
-			dispatch_async(dispatch_get_main_queue(), ^{ \
-				[prefs performSelector:@selector(cancel:) withObject:self]; \
-			}); \
-		} \
-		/*	Always remove the observer	*/ \
-		[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptBundleObserver]; \
-	}]; \
-}
+#pragma mark UpToDate Dialog
+#define MPTPresentModalDialogWhenUpToDate(mptBundle)							MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, nil);
+
+#endif
 
 
 #pragma mark - Plugin Macros
-
-#pragma mark UpToDate Dialog
-#define MPTPresentModalDialogWhenUpToDate(mptBundle)							MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, nil);
 
 #pragma mark Launch and Forget
 
