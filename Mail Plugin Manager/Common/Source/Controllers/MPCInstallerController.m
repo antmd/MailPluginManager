@@ -818,15 +818,9 @@ typedef enum {
 		if ([manager fileExistsAtPath:toolPath]) {
 			[manager releaseFromQuarantine:toolPath];
 
-			//	Also run the tool once to ensure that the script interface works properly from any plugins.
-			//	This actually loads it properly into the Workspace database
-			LKLog(@"&*&*&U&*&*& Running the MailPluginTool first time!");
-			NSTask	*toolTask = [[NSTask alloc] init];
-			toolTask.launchPath = [toolPath stringByAppendingPathComponent:@"Contents/MacOS/MailPluginTool"];
-			toolTask.arguments = @[kMPCCommandLineFinishInstallKey];
-			LKLog(@"#*#*#*# Launching Tool with Args:%@", toolTask.arguments);
-			[toolTask launch];
-			[toolTask release];
+			//	Ensure that the Tool is setup correctly to be responsive
+			[AppDel installToolWatchLaunchdConfig];
+
 		}
 	}
 	return bundleSuccess;

@@ -105,6 +105,9 @@
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
+	//	Ensure that this tool is setup to load files when created
+	[self installToolWatchLaunchdConfig];
+	
 	self.finalizeQueueRequiresExplicitRelease = NO;
 
 	//	Get Path for the Mail Plugin Manager container
