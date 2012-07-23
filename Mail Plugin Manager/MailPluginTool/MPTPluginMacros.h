@@ -77,11 +77,11 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 
 #define MPTGetLikelyToolPath() \
 	NSFileManager	*manager = [NSFileManager defaultManager]; \
-	NSString	*pluginManagerPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MANAGER_APP_NAME]; \
+	NSString		*pluginManagerPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MANAGER_APP_NAME]; \
 	if (![manager fileExistsAtPath:pluginManagerPath]) { \
 		pluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
 	} \
-	NSString	*pluginToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_TOOL_IDENTIFIER]; \
+	NSString		*pluginToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_TOOL_IDENTIFIER]; \
 	if ((pluginToolPath == nil) || ((pluginManagerPath != nil) && ![pluginToolPath hasPrefix:pluginManagerPath])) { \
 		/*	See if we can get the tool path inside the managerPath	*/ \
 		NSString	*proposedPath = [pluginManagerPath stringByAppendingPathComponent:MPT_APP_RESOURCES_PATH]; \
@@ -90,7 +90,6 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 			pluginToolPath = proposedPath; \
 		} \
 	} \
-
 
 #define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptFrequency) \
 { \
