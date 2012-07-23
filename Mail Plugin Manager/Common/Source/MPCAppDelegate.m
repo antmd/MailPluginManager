@@ -19,6 +19,10 @@
 
 #import "MPTPluginMacros.h"
 
+#define LAUNCH_CONTROL_PATH			@"/bin/launchctl"
+#define LAUNCH_AGENT_FOLDER_NAME	@"LaunchAgents"
+
+
 @interface MPCAppDelegate ()
 
 @property	(nonatomic, retain)	NSOperationQueue		*counterQueue;
@@ -145,11 +149,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
-	
-//	[self launchdConfigurations];
-//	[self installToolWatchLaunchdConfig];
-//	[self launchdConfigurations];
-	
 	//	Set a key-value observation on the running apps for "Mail"
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidLaunchApplicationNotification object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(applicationChangeForNotification:) name:NSWorkspaceDidTerminateApplicationNotification object:nil];
@@ -283,9 +282,6 @@
 
 
 #pragma mark - Launchd Methods
-
-#define LAUNCH_CONTROL_PATH			@"/bin/launchctl"
-#define LAUNCH_AGENT_FOLDER_NAME	@"LaunchAgents"
 
 - (NSString *)likelyPluginToolPath {
 	MPTGetLikelyToolPath();
@@ -479,15 +475,15 @@
 		return NO;
 	}
 	
+	//	See if that label is already active we are done
+	if ([[[self launchdConfigurations] allKeys] containsObject:label]) {
+		LKLog(@"Launchd config for %@ is already loaded",label);
+		return YES;
+	}
+	
 	//	Get values
-	NSDictionary	*configs = [self launchdConfigurations];
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*fullPath = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME] stringByAppendingPathComponent:label] stringByAppendingPathExtension:kMPCPlistExtension];
-	
-	//	See if that label is already in use and unload it if so
-	if ([[configs allKeys] containsObject:label]) {
-		[self unloadLaunchControlAtPath:fullPath];
-	}
 	
 	//	If the path exists already, move it to the trash
 	if ([manager fileExistsAtPath:fullPath]) {

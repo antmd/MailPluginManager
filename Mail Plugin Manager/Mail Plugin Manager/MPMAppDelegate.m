@@ -90,6 +90,10 @@ typedef enum {
 	
 	//	Then test to see if we should be showing the general management window
 	if (self.managing) {
+		
+		//	Ensure that the tool runs when files are created in it's folder
+		[self installToolWatchLaunchdConfig];
+		
 		[self showCollectionWindowForBundles:[MPCMailBundle allMailBundlesLoadInfo]];
 		
 		//	Add a notification watcher to handle uninstalls
