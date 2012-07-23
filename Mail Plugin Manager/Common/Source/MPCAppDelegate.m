@@ -538,7 +538,7 @@
 	}
 	
 	//	Build the dictionary
-	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : MPTPerformFolderPath() };
+	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ] };
 	LKLog(@"dict:%@", watchDict);
 	return [self addLaunchDDictionary:watchDict forLabel:label];
 }
