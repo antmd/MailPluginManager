@@ -526,10 +526,12 @@ typedef enum {
 	
 	//	See if we have a valid Sandboxed Mail config
 	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		LKLog(@"Has sandboxed container");
 		//	If we see that the prefs don't yet exist in the sandbox, but they do in the default prefs, then add a non-migrated flag
 		MPCMailBundle	*mailBundle = self.manifestModel.packageMailBundle;
 		NSString		*sandboxPrefsPath = [[[[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:mailBundle.identifier] stringByAppendingPathExtension:kMPCPlistExtension];
 		if (![manager fileExistsAtPath:sandboxPrefsPath]) {
+			LKLog(@"Does not have sandboxed prefs");
 			NSString		*prefsPath = [[[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:mailBundle.identifier] stringByAppendingPathExtension:kMPCPlistExtension];
 			if ([manager fileExistsAtPath:prefsPath]) {
 				[AppDel addMigratedFlagToPrefsAtPath:prefsPath migrated:NO];
@@ -539,10 +541,12 @@ typedef enum {
 	}
 	//	If not and we are running Mountain Lion or greater, make user run once on this environment
 	if (IsMountainLionOrGreater()) {
+		LKLog(@"Should have a sandboxed container");
 		//	If there are prefs in the standard place, add a non-migrated flag
 		MPCMailBundle	*mailBundle = self.manifestModel.packageMailBundle;
 		NSString		*prefsPath = [[[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:mailBundle.identifier] stringByAppendingPathExtension:kMPCPlistExtension];
 		if ([manager fileExistsAtPath:prefsPath]) {
+			LKLog(@"Add flag to prefs");
 			[AppDel addMigratedFlagToPrefsAtPath:prefsPath migrated:NO];
 		}
 		return NO;
@@ -700,6 +704,9 @@ typedef enum {
 			LKErr(@"This Mail Plugin will not work with this version of Mail:mailUUID:%@ messageUUID:%@", [MPCUUIDList currentMailUUID], [MPCUUIDList currentMessageUUID]);
 			return NO;
 		}
+		
+		//	Try to migrate the prefs into the sandbox, if needed
+		[AppDel migratePrefsIntoSandboxIfRequiredForMailBundle:mailBundle];
 	}
 	
 	//	Notification for what we are copying
