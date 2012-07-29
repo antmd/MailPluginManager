@@ -31,9 +31,10 @@ typedef enum {
 	
 	MPCPluginDoesNotWorkWithMailVersion = 221,
 	MPCMailHasNotBeenRunPreviously = 222,
+	MPCMailHasNotBeenRunInSandboxPreviously = 223,
 	
 	MPCUnknownInstallCode
-} MPCInstallErrorCodes;
+} MPCInstallErrorCode;
 
 
 
@@ -471,7 +472,7 @@ typedef enum {
 	//	Ensure that Mail has been run at least once
 	if (![self ensureMailHasBeenRunOnce]) {
 		NSDictionary	*dict = [NSDictionary dictionaryWithObject:model.displayName forKey:kMPCNameKey];
-		LKPresentErrorCodeUsingDict(MPCMailHasNotBeenRunPreviously, dict);
+		LKPresentErrorCodeUsingDict(IsMountainLionOrGreater()?MPCMailHasNotBeenRunInSandboxPreviously:MPCMailHasNotBeenRunPreviously, dict);
 		return NO;
 	}
 	
@@ -519,15 +520,19 @@ typedef enum {
 	BOOL			isDir = NO;
 	NSString		*basePath = [@"~/Library/Mail" stringByExpandingTildeInPath];
 	NSString		*endPath = @"Mailboxes";
-	NSString		*testPath = [[basePath stringByAppendingPathComponent:@"V2"] stringByAppendingPathComponent:endPath];
+	NSString		*testPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Mail/V2/Mailboxes" stringByExpandingTildeInPath];
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	
-	//	See if we have a valid Mail 5.x > config
+	//	See if we have a valid Sandboxed Mail config
 	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
 		return YES;
 	}
-	testPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Mail/V2/Mailboxes" stringByExpandingTildeInPath];
-	//	See if we have a valid Sandboxed Mail config
+	//	If not and we are running Mountain Lion or greater, make user run once on this environment
+	if (IsMountainLionOrGreater()) {
+		return NO;
+	}
+	testPath = [[basePath stringByAppendingPathComponent:@"V2"] stringByAppendingPathComponent:endPath];
+	//	See if we have a valid Mail 5.x > config
 	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
 		return YES;
 	}
