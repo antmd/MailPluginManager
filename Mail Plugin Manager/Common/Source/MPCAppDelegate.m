@@ -785,18 +785,27 @@
 	NSDictionary	*toAttributes = [manager attributesOfItemAtPath:fromPath error:NULL];
 	NSInteger		ranking = 0;
 	
-	//	Compare file creation dates (if from is older than to by 15 days or more  -1)
-	if ([[[fromAttributes fileCreationDate] dateByAddingTimeInterval:(15 * DAY_INTERVAL)] isLessThan:[toAttributes fileCreationDate]]) {
+	//	Compare file creation dates (if from is older than to by 30 days or more  +1)
+	//	Old ones were created at least a month before the newer ones
+	if ([[[fromAttributes fileCreationDate] dateByAddingTimeInterval:(30 * DAY_INTERVAL)] isLessThan:[toAttributes fileCreationDate]]) {
+		ranking++;
+	}
+	
+	//	Compare file modification dates (if from is older than to by 15 days or more  -1)
+	//	The new prefs have been modified over 2 weeks after the old, so the new ones are probably more up to date
+	if ([[[fromAttributes fileModificationDate] dateByAddingTimeInterval:(15 * DAY_INTERVAL)] isLessThan:[toAttributes fileModificationDate]]) {
 		ranking--;
 	}
 	
 	//	Compare modified of from to creation of to (if from mod happened within the 3 days before the to creation  +1)
+	//	Last change to old ones are close to creation of new ones
 	if (([[toAttributes fileCreationDate] isLessThan:[[fromAttributes fileModificationDate] dateByAddingTimeInterval:(3 * DAY_INTERVAL)]]) &&
 		([[fromAttributes fileModificationDate] isLessThan:[toAttributes fileCreationDate]])) {
 		ranking++;
 	}
 	
 	//	Compare size of files (if from is greater than to +1, if more than double +1)
+	//	Bigger is *most likely* newer,much bigger even more so
 	NSInteger	fromSize = (NSInteger)[fromAttributes fileSize];
 	NSInteger	toSize = (NSInteger)[toAttributes fileSize];
 	if (fromSize > toSize) {
@@ -807,6 +816,7 @@
 	}
 	
 	//	Compare creation and modified of to (if less than 24 hours apart +1)
+	//	The new ones haven't been changed long after creation
 	if ([[toAttributes fileModificationDate] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:DAY_INTERVAL]]) {
 		ranking++;
 	}
