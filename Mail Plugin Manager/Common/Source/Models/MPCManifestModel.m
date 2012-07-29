@@ -48,6 +48,7 @@
 @synthesize	minVersionBugFix = _minVersionBugFix;
 @synthesize	maxVersionMinor = _maxVersionMinor;
 @synthesize	maxVersionBugFix = _maxVersionBugFix;
+@synthesize packageMailBundle = _packageMailBundle;
 
 - (BOOL)shouldInstallManager {
 	return !IsEmpty(self.bundleManager.path);
@@ -112,6 +113,14 @@
 		
 		//	Set our items list to the new array
 		_actionItemList = [[NSArray arrayWithArray:newItems] retain];
+		
+		//	Go through the action list and find the mail bundle
+		for (MPCActionItem *anItem in _actionItemList) {
+			if (anItem.isMailBundle) {
+				_packageMailBundle = [[MPCMailBundle alloc] initWithPath:anItem.path shouldLoadUpdateInfo:NO];
+				break;
+			}
+		}
 		
 		
 		//	See if there are any version requirements - set defaults first

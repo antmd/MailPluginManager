@@ -36,6 +36,7 @@ typedef enum {
 	BOOL			_shouldConfigureMail;	//	Default is NO
 	NSUInteger		_configureMailVersion;
 	NSString		*_completionMessage;		//	Default is @""
+	MPCMailBundle	*_packageMailBundle;
 
 	//	Internal only
 	CGFloat			_minVersionMinor;
@@ -62,6 +63,7 @@ typedef enum {
 @property	(nonatomic, assign, readonly)	BOOL			shouldConfigureMail;	//	Default is NO
 @property	(nonatomic, assign, readonly)	NSUInteger		configureMailVersion;
 @property	(nonatomic, copy, readonly)		NSString		*completionMessage;		//	Default is @""
+@property	(nonatomic, retain, readonly)	MPCMailBundle	*packageMailBundle;
 
 - (id)initWithPackageAtPath:(NSString *)packageFilePath;
 - (MPCOSSupportResult)supportResultForManifest;
