@@ -770,19 +770,48 @@
 
 #pragma mark - Migrate Bundle Prefs
 
+#define DAY_INTERVAL					(60 * 60 * 24)
+
 - (BOOL)bestGuessIfWeShouldMigrateFromPath:(NSString *)fromPath toPath:(NSString *)toPath {
 	
-	//	Compare file creation dates (if from is older than 1 week from to  +1)
+	//	if there is a migrated flag set to yse in the toPath, we should not
+	if ([[self migratedFlagFromPrefsAtPath:toPath] isEqualToString:@"YES"]) {
+		return NO;
+	}
 	
-	//	Compare modified of from to creation of to (if from is less than 2-3 days older +1)
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	NSDictionary	*fromAttributes = [manager attributesOfItemAtPath:fromPath error:NULL];
+	NSDictionary	*toAttributes = [manager attributesOfItemAtPath:fromPath error:NULL];
+	NSInteger		ranking = 0;
 	
-	//	Compare size of files (if from is greater than to +1, if greater by 50% or more +1)
+	//	Compare file creation dates (if from is older than to by 15 days or more  -1)
+	if ([[[fromAttributes fileCreationDate] dateByAddingTimeInterval:(15 * DAY_INTERVAL)] isLessThan:[toAttributes fileCreationDate]]) {
+		ranking--;
+	}
 	
-	//	Compare createion and modified of to (if less than 24 hours apart +1)
+	//	Compare modified of from to creation of to (if from mod happened within the 3 days before the to creation  +1)
+	if (([[toAttributes fileCreationDate] isLessThan:[[fromAttributes fileModificationDate] dateByAddingTimeInterval:(3 * DAY_INTERVAL)]]) &&
+		([[fromAttributes fileModificationDate] isLessThan:[toAttributes fileCreationDate]])) {
+		ranking++;
+	}
 	
-	//	If count > 3, best guess is yes.
+	//	Compare size of files (if from is greater than to +1, if more than double +1)
+	NSInteger	fromSize = (NSInteger)[fromAttributes fileSize];
+	NSInteger	toSize = (NSInteger)[toAttributes fileSize];
+	if (fromSize > toSize) {
+		ranking++;
+	}
+	if (fromSize > (2 * toSize)) {
+		ranking++;
+	}
 	
-	return NO;
+	//	Compare creation and modified of to (if less than 24 hours apart +1)
+	if ([[toAttributes fileModificationDate] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:DAY_INTERVAL]]) {
+		ranking++;
+	}
+	
+	//	If ranking > 2, best guess is yes.
+	return (ranking > 2);
 }
 
 - (NSString *)migratedFlagFromPrefsAtPath:(NSString *)prefsPath {
@@ -830,13 +859,13 @@
 - (void)migratePrefsIntoSandboxIfRequiredForMailBundle:(MPCMailBundle *)mailBundle {
 	NSString		*libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
 	NSString		*plistName = [mailBundle.identifier stringByAppendingPathExtension:kMPCPlistExtension];
-	NSString		*sandboxPrefsPath = [[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:plistName];
+	NSString		*sandboxPrefsPath = [[[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:plistName];
 	NSString		*prefsPath = [[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:plistName];
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	
-	//	If we have non-linked sandbox file...
-	BOOL			isLinkedFile = ([manager destinationOfSymbolicLinkAtPath:sandboxPrefsPath error:NULL] == nil);
-	if (!isLinkedFile && [manager fileExistsAtPath:sandboxPrefsPath]) {
+	//	If we have a sandbox file...
+	if ([manager fileExistsAtPath:sandboxPrefsPath]) {
+		LKLog(@"Has a sandboxed prefs");
 		NSString	*migrateFlag = [self migratedFlagFromPrefsAtPath:prefsPath];
 		//	If we have migrated, then return done
 		if ([migrateFlag isEqualToString:@"YES"]) {
@@ -852,22 +881,28 @@
 	//	If we get here then migrate any existing normal prefs to the sandbox
 	//	If not found, nothing to do
 	if (![manager fileExistsAtPath:prefsPath]) {
+		LKLog(@"No normal prefs found");
 		return;
 	}
 	
-	//	Then remove any existing file in the sandbox
-	if (![manager removeItemAtPath:sandboxPrefsPath error:NULL]) {
+	//	Then move any existing file in the sandbox aside as a backup in case
+	NSError	*error;
+	NSDateFormatter	*formatter = [[NSDateFormatter alloc] initWithDateFormat:@"dd-MM-yyyy-HHmm" allowNaturalLanguage:NO];
+	NSString		*backupName = [[[sandboxPrefsPath stringByDeletingPathExtension] stringByAppendingFormat:@".Backup-%@", [formatter stringFromDate:[NSDate date]]] stringByAppendingPathExtension:kMPCPlistExtension];
+	if ([manager fileExistsAtPath:sandboxPrefsPath] && ![manager moveItemAtPath:sandboxPrefsPath toPath:backupName error:&error]) {
 		//	If failed, just log and leave
-		LKErr(@"Couldn't delete the sandboxed prefs file for %@ during migration", mailBundle.identifier);
+		LKErr(@"Couldn't rename the sandboxed prefs file for %@ to %@ during migration:%@", mailBundle.identifier, [backupName lastPathComponent], error);
 	}
 	else {
 		//	Otherwise try to copy our new file into the sandbox
-		if (![manager copyItemAtPath:prefsPath toPath:sandboxPrefsPath error:NULL]) {
-			LKErr(@"Couldn't copy the prefs into the sandbox for %@ during migration", mailBundle.identifier);
+		LKLog(@"Trying to copy '%@' to sandbox '%@'", prefsPath, sandboxPrefsPath);
+		if (![manager copyItemAtPath:prefsPath toPath:sandboxPrefsPath error:&error]) {
+			LKErr(@"Couldn't copy the prefs into the sandbox for %@ during migration: %@", mailBundle.identifier, error);
 			return;
 		}
-		//	Then add a migration flag to those migrated prefs
+		//	Then add a migration flag to both of those migrated prefs
 		[self addMigratedFlagToPrefsAtPath:prefsPath migrated:YES];
+		[self addMigratedFlagToPrefsAtPath:sandboxPrefsPath migrated:YES];
 	}
 }
 
