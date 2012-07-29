@@ -817,6 +817,11 @@
 
 - (NSString *)migratedFlagFromPrefsAtPath:(NSString *)prefsPath {
 	
+	//	remove the extension
+	if ([prefsPath hasSuffix:kMPCPlistExtension]) {
+		prefsPath = [prefsPath stringByDeletingPathExtension];
+	}
+	
 	NSTask *enabledTask = [[NSTask alloc] init];
 	[enabledTask setLaunchPath:@"/usr/bin/defaults"];
 	[enabledTask setArguments:@[@"read", prefsPath, kMPCPrefsMigratedToSandboxPrefKey]];
@@ -834,26 +839,31 @@
 	[enabledTask release];
 	[tempString release];
 	
-	return enabledString;
+	return IsEmpty(enabledString)?nil:enabledString;
 }
 
 - (void)addMigratedFlagToPrefsAtPath:(NSString *)prefsPath migrated:(BOOL)migrated {
 	
+	LKLog(@"Adding flag for path %@", prefsPath);
 	//	Don't write over the prefs that were migrated already with a false value
 	if (!migrated && [[self migratedFlagFromPrefsAtPath:prefsPath] isEqualToString:@"1"]) {
 		LKInfo(@"Avoiding resetting migration flag from YES to NO");
 		return;
 	}
 	
-	//	Get the list of my configs
-	NSTask	*updatePrefsTask = [[NSTask alloc] init];
-	[updatePrefsTask setLaunchPath:@"/usr/bin/defaults"];
-	[updatePrefsTask setArguments:@[@"write", prefsPath, kMPCPrefsMigratedToSandboxPrefKey, @"-bool", migrated?@"YES":@"NO"]];
+	NSMutableDictionary	*prefs = [[NSDictionary dictionaryWithContentsOfFile:prefsPath] mutableCopy];
+	[prefs setObject:[NSNumber numberWithBool:migrated] forKey:kMPCPrefsMigratedToSandboxPrefKey];
 	
-	//	Run launchctl and give it a bit to run, since it doesn't seem to finish until we kill the task
-	[updatePrefsTask launch];
-	[updatePrefsTask waitUntilExit];
-	[updatePrefsTask release];
+	NSString	*errorDesc;
+	NSData		*plistData = [NSPropertyListSerialization dataFromPropertyList:prefs format:NSPropertyListBinaryFormat_v1_0 errorDescription:&errorDesc];
+	
+	if (plistData != nil) {
+		[plistData writeToFile:prefsPath atomically:YES];
+	}
+	else {
+		LKErr(@"Error trying to add migration flag:%@", errorDesc);
+	}
+	[prefs release];
 	
 }
 
@@ -862,7 +872,7 @@
 	NSString		*plistName = [mailBundle.identifier stringByAppendingPathExtension:kMPCPlistExtension];
 	NSString		*sandboxPrefsPath = [[[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:plistName];
 	NSString		*prefsPath = [[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:plistName];
-	NSFileManager	*manager = [NSFileManager defaultManager];
+	NSFileManager	*manager = [[[NSFileManager alloc] init] autorelease];
 	
 	//	If we have a sandbox file...
 	if ([manager fileExistsAtPath:sandboxPrefsPath]) {
@@ -904,13 +914,14 @@
 	else {
 		//	Otherwise try to copy our new file into the sandbox
 		LKLog(@"Trying to copy '%@' to sandbox '%@'", prefsPath, sandboxPrefsPath);
-		if (![manager copyItemAtPath:prefsPath toPath:sandboxPrefsPath error:&error]) {
-			LKErr(@"Couldn't copy the prefs into the sandbox for %@ during migration: %@", mailBundle.identifier, error);
-			return;
+		if ([manager copyItemAtPath:prefsPath toPath:sandboxPrefsPath error:&error]) {
+			//	Then add a migration flag to both of those migrated prefs
+			[self addMigratedFlagToPrefsAtPath:prefsPath migrated:YES];
+			[self addMigratedFlagToPrefsAtPath:sandboxPrefsPath migrated:YES];
 		}
-		//	Then add a migration flag to both of those migrated prefs
-		[self addMigratedFlagToPrefsAtPath:prefsPath migrated:YES];
-		[self addMigratedFlagToPrefsAtPath:sandboxPrefsPath migrated:YES];
+		else {
+			LKErr(@"Couldn't copy the prefs into the sandbox for %@ during migration: %@", mailBundle.identifier, error);
+		}
 	}
 }
 
