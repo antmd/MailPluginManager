@@ -775,7 +775,8 @@
 - (BOOL)bestGuessIfWeShouldMigrateFromPath:(NSString *)fromPath toPath:(NSString *)toPath {
 	
 	//	if there is a migrated flag set to yse in the toPath, we should not
-	if ([[self migratedFlagFromPrefsAtPath:toPath] isEqualToString:@"YES"]) {
+	LKLog(@"Migrate flag in toPath:%@", [self migratedFlagFromPrefsAtPath:toPath]);
+	if ([[self migratedFlagFromPrefsAtPath:toPath] isEqualToString:@"1"]) {
 		return NO;
 	}
 	
@@ -839,7 +840,7 @@
 - (void)addMigratedFlagToPrefsAtPath:(NSString *)prefsPath migrated:(BOOL)migrated {
 	
 	//	Don't write over the prefs that were migrated already with a false value
-	if (!migrated && [[self migratedFlagFromPrefsAtPath:prefsPath] isEqualToString:@"YES"]) {
+	if (!migrated && [[self migratedFlagFromPrefsAtPath:prefsPath] isEqualToString:@"1"]) {
 		LKInfo(@"Avoiding resetting migration flag from YES to NO");
 		return;
 	}
@@ -847,7 +848,7 @@
 	//	Get the list of my configs
 	NSTask	*updatePrefsTask = [[NSTask alloc] init];
 	[updatePrefsTask setLaunchPath:@"/usr/bin/defaults"];
-	[updatePrefsTask setArguments:@[@"write", prefsPath, kMPCPrefsMigratedToSandboxPrefKey, migrated?@"YES":@"NO"]];
+	[updatePrefsTask setArguments:@[@"write", prefsPath, kMPCPrefsMigratedToSandboxPrefKey, @"-bool", migrated?@"YES":@"NO"]];
 	
 	//	Run launchctl and give it a bit to run, since it doesn't seem to finish until we kill the task
 	[updatePrefsTask launch];
@@ -865,10 +866,15 @@
 	
 	//	If we have a sandbox file...
 	if ([manager fileExistsAtPath:sandboxPrefsPath]) {
-		LKLog(@"Has a sandboxed prefs");
-		NSString	*migrateFlag = [self migratedFlagFromPrefsAtPath:prefsPath];
+		NSString	*migrateFlag = [self migratedFlagFromPrefsAtPath:sandboxPrefsPath];
+		LKLog(@"Has a sandboxed prefs - migrate flag in prefs:%@", migrateFlag);
+		//	If there is no setting in the sandbox prefs, look at the default prefs
+		if (migrateFlag == nil) {
+			migrateFlag = [self migratedFlagFromPrefsAtPath:prefsPath];
+			LKLog(@"Loaded migrate flag in basic prefs:%@", migrateFlag);
+		}
 		//	If we have migrated, then return done
-		if ([migrateFlag isEqualToString:@"YES"]) {
+		if ([migrateFlag isEqualToString:@"1"]) {
 			return;
 		}
 		
@@ -887,8 +893,10 @@
 	
 	//	Then move any existing file in the sandbox aside as a backup in case
 	NSError	*error;
-	NSDateFormatter	*formatter = [[NSDateFormatter alloc] initWithDateFormat:@"dd-MM-yyyy-HHmm" allowNaturalLanguage:NO];
+	NSDateFormatter	*formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"ddMMyyyy-HHmm"];
 	NSString		*backupName = [[[sandboxPrefsPath stringByDeletingPathExtension] stringByAppendingFormat:@".Backup-%@", [formatter stringFromDate:[NSDate date]]] stringByAppendingPathExtension:kMPCPlistExtension];
+	[formatter release];
 	if ([manager fileExistsAtPath:sandboxPrefsPath] && ![manager moveItemAtPath:sandboxPrefsPath toPath:backupName error:&error]) {
 		//	If failed, just log and leave
 		LKErr(@"Couldn't rename the sandboxed prefs file for %@ to %@ during migration:%@", mailBundle.identifier, [backupName lastPathComponent], error);
