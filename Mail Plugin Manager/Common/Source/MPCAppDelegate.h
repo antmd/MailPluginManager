@@ -71,6 +71,8 @@
 
 //	Bundle Management
 - (void)updateMailBundle:(MPCMailBundle *)mailBundle force:(BOOL)flag;
+- (void)migratePrefsIntoSandboxIfRequiredForMailBundle:(MPCMailBundle *)mailBundle;
+- (void)addMigratedFlagToPrefsAtPath:(NSString *)prefsPath migrated:(BOOL)migrated;
 
 //	Queue management tasks
 - (void)addMaintenanceTask:(void (^)(void))block;
