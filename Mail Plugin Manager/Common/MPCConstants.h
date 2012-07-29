@@ -22,7 +22,14 @@ typedef enum {
 	kMPCManifestTypeUninstallation
 } MPCManifestType;
 
+NSInteger	osMinorVersion(void);
 
+#define IsSnowLeopard()				(osMinorVersion() == 6)
+#define IsSnowLeopardOrGreater()	(osMinorVersion() >= 6)
+#define IsLion()					(osMinorVersion() == 7)
+#define IsLionOrGreater()			(osMinorVersion() >= 7)
+#define IsMountainLion()			(osMinorVersion() == 8)
+#define IsMountainLionOrGreater()	(osMinorVersion() >= 8)
 
 #define	kMPCNoVersionRequirement		-1.0
 #define	kMPCDefaultMailPluginVersion	4
