@@ -518,17 +518,33 @@ typedef enum {
 - (BOOL)ensureMailHasBeenRunOnce {
 	
 	BOOL			isDir = NO;
-	NSString		*basePath = [@"~/Library/Mail" stringByExpandingTildeInPath];
+	NSString		*libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
+	NSString		*basePath = [libraryPath stringByAppendingPathComponent:kMPCMailFolderName];
 	NSString		*endPath = @"Mailboxes";
-	NSString		*testPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Mail/V2/Mailboxes" stringByExpandingTildeInPath];
+	NSString		*testPath = [[[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCMailFolderName] stringByAppendingPathComponent:@"V2/Mailboxes"];
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	
 	//	See if we have a valid Sandboxed Mail config
 	if ([manager fileExistsAtPath:testPath isDirectory:&isDir] && isDir) {
+		//	If we see that the prefs don't yet exist in the sandbox, but they do in the default prefs, then add a non-migrated flag
+		MPCMailBundle	*mailBundle = self.manifestModel.packageMailBundle;
+		NSString		*sandboxPrefsPath = [[[[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:mailBundle.identifier] stringByAppendingPathExtension:kMPCPlistExtension];
+		if (![manager fileExistsAtPath:sandboxPrefsPath]) {
+			NSString		*prefsPath = [[[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:mailBundle.identifier] stringByAppendingPathExtension:kMPCPlistExtension];
+			if ([manager fileExistsAtPath:prefsPath]) {
+				[AppDel addMigratedFlagToPrefsAtPath:prefsPath migrated:NO];
+			}
+		}
 		return YES;
 	}
 	//	If not and we are running Mountain Lion or greater, make user run once on this environment
 	if (IsMountainLionOrGreater()) {
+		//	If there are prefs in the standard place, add a non-migrated flag
+		MPCMailBundle	*mailBundle = self.manifestModel.packageMailBundle;
+		NSString		*prefsPath = [[[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:mailBundle.identifier] stringByAppendingPathExtension:kMPCPlistExtension];
+		if ([manager fileExistsAtPath:prefsPath]) {
+			[AppDel addMigratedFlagToPrefsAtPath:prefsPath migrated:NO];
+		}
 		return NO;
 	}
 	testPath = [[basePath stringByAppendingPathComponent:@"V2"] stringByAppendingPathComponent:endPath];
@@ -549,7 +565,8 @@ typedef enum {
 	//	Only need to bother if the manifest asked for it
 	if (self.manifestModel.shouldConfigureMail || self.manifestModel.shouldRestartMail) {
 		//	Get Mail settings
-		NSString		*sandboxPath = [@"~/Library/Containers/com.apple.mail/Data/Library/Preferences" stringByExpandingTildeInPath];
+		NSString		*libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
+		NSString		*sandboxPath = [[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName];
 		NSString		*defaultsDomain = kMPCMailBundleIdentifier;
 		BOOL			isDir;
 		
