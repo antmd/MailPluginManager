@@ -775,27 +775,43 @@
 - (BOOL)bestGuessIfWeShouldMigrateFromPath:(NSString *)fromPath toPath:(NSString *)toPath {
 	
 	//	if there is a migrated flag set to yse in the toPath, we should not
-	if ([[self migratedFlagFromPrefsAtPath:toPath] isEqualToString:@"YES"]) {
+	LKLog(@"Migrate flag in toPath:%@", [self migratedFlagFromPrefsAtPath:toPath]);
+	if ([[self migratedFlagFromPrefsAtPath:toPath] isEqualToString:@"1"]) {
 		return NO;
 	}
 	
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSDictionary	*fromAttributes = [manager attributesOfItemAtPath:fromPath error:NULL];
-	NSDictionary	*toAttributes = [manager attributesOfItemAtPath:fromPath error:NULL];
+	NSDictionary	*toAttributes = [manager attributesOfItemAtPath:toPath error:NULL];
 	NSInteger		ranking = 0;
 	
-	//	Compare file creation dates (if from is older than to by 15 days or more  -1)
-	if ([[[fromAttributes fileCreationDate] dateByAddingTimeInterval:(15 * DAY_INTERVAL)] isLessThan:[toAttributes fileCreationDate]]) {
+	LKLog(@"FromAttr:%@", fromAttributes);
+	LKLog(@"ToAttr:%@", toAttributes);
+	
+	//	Compare file creation dates (if from is older than to by 30 days or more  +1)
+	//	Old ones were created at least a month before the newer ones
+	if ([[[fromAttributes fileCreationDate] dateByAddingTimeInterval:(30 * DAY_INTERVAL)] isLessThan:[toAttributes fileCreationDate]]) {
+		ranking++;
+		LKLog(@"Added for 1");
+	}
+	
+	//	Compare file modification dates (if from is older than to by 15 days or more  -1)
+	//	The new prefs have been modified over 2 weeks after the old, so the new ones are probably more up to date
+	if ([[[fromAttributes fileModificationDate] dateByAddingTimeInterval:(15 * DAY_INTERVAL)] isLessThan:[toAttributes fileModificationDate]]) {
 		ranking--;
+		LKLog(@"Subtracted for 2");
 	}
 	
 	//	Compare modified of from to creation of to (if from mod happened within the 3 days before the to creation  +1)
+	//	Last change to old ones are close to creation of new ones
 	if (([[toAttributes fileCreationDate] isLessThan:[[fromAttributes fileModificationDate] dateByAddingTimeInterval:(3 * DAY_INTERVAL)]]) &&
 		([[fromAttributes fileModificationDate] isLessThan:[toAttributes fileCreationDate]])) {
 		ranking++;
+		LKLog(@"Added for 3");
 	}
 	
 	//	Compare size of files (if from is greater than to +1, if more than double +1)
+	//	Bigger is *most likely* newer,much bigger even more so
 	NSInteger	fromSize = (NSInteger)[fromAttributes fileSize];
 	NSInteger	toSize = (NSInteger)[toAttributes fileSize];
 	if (fromSize > toSize) {
@@ -803,18 +819,39 @@
 	}
 	if (fromSize > (2 * toSize)) {
 		ranking++;
+		LKLog(@"Added for 4");
 	}
 	
-	//	Compare creation and modified of to (if less than 24 hours apart +1)
-	if ([[toAttributes fileModificationDate] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:DAY_INTERVAL]]) {
+	//	Compare creation and modified of to (if less than 1 hour apart +1)
+	//	The new ones haven't been changed long after creation
+	if ([[toAttributes fileModificationDate] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:(60 * 60)]]) {
 		ranking++;
+		LKLog(@"Added for 5");
 	}
 	
+	//	Compare creation to (if less than 6 hours ago  +1)
+	//	The new ones were created today
+	if ([[NSDate date] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:(6 * 60 * 60)]]) {
+		ranking++;
+		LKLog(@"Added for 6");
+	}
+	
+	LKLog(@"The Ranking is:%@", [NSNumber numberWithInteger:ranking]);
 	//	If ranking > 2, best guess is yes.
 	return (ranking > 2);
 }
 
 - (NSString *)migratedFlagFromPrefsAtPath:(NSString *)prefsPath {
+	
+	//	Ensure that the path exists
+	if (![[NSFileManager defaultManager] fileExistsAtPath:prefsPath]) {
+		return nil;
+	}
+	
+	//	remove the extension
+	if ([prefsPath hasSuffix:kMPCPlistExtension]) {
+		prefsPath = [prefsPath stringByDeletingPathExtension];
+	}
 	
 	NSTask *enabledTask = [[NSTask alloc] init];
 	[enabledTask setLaunchPath:@"/usr/bin/defaults"];
@@ -829,6 +866,9 @@
 	
 	NSString *tempString = [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
 	NSString *enabledString = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if (![enabledString isEqualToString:@"0"] || ![enabledString isEqualToString:@"1"]) {
+		enabledString = nil;
+	}
 	
 	[enabledTask release];
 	[tempString release];
@@ -838,21 +878,26 @@
 
 - (void)addMigratedFlagToPrefsAtPath:(NSString *)prefsPath migrated:(BOOL)migrated {
 	
+	LKLog(@"Adding flag for path %@", prefsPath);
 	//	Don't write over the prefs that were migrated already with a false value
-	if (!migrated && [[self migratedFlagFromPrefsAtPath:prefsPath] isEqualToString:@"YES"]) {
+	if (!migrated && [[self migratedFlagFromPrefsAtPath:prefsPath] isEqualToString:@"1"]) {
 		LKInfo(@"Avoiding resetting migration flag from YES to NO");
 		return;
 	}
 	
-	//	Get the list of my configs
-	NSTask	*updatePrefsTask = [[NSTask alloc] init];
-	[updatePrefsTask setLaunchPath:@"/usr/bin/defaults"];
-	[updatePrefsTask setArguments:@[@"write", prefsPath, kMPCPrefsMigratedToSandboxPrefKey, migrated?@"YES":@"NO"]];
+	NSMutableDictionary	*prefs = [[NSDictionary dictionaryWithContentsOfFile:prefsPath] mutableCopy];
+	[prefs setObject:[NSNumber numberWithBool:migrated] forKey:kMPCPrefsMigratedToSandboxPrefKey];
 	
-	//	Run launchctl and give it a bit to run, since it doesn't seem to finish until we kill the task
-	[updatePrefsTask launch];
-	[updatePrefsTask waitUntilExit];
-	[updatePrefsTask release];
+	NSString	*errorDesc;
+	NSData		*plistData = [NSPropertyListSerialization dataFromPropertyList:prefs format:NSPropertyListBinaryFormat_v1_0 errorDescription:&errorDesc];
+	
+	if (plistData != nil) {
+		[plistData writeToFile:prefsPath atomically:YES];
+	}
+	else {
+		LKErr(@"Error trying to add migration flag:%@", errorDesc);
+	}
+	[prefs release];
 	
 }
 
@@ -861,14 +906,19 @@
 	NSString		*plistName = [mailBundle.identifier stringByAppendingPathExtension:kMPCPlistExtension];
 	NSString		*sandboxPrefsPath = [[[libraryPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:plistName];
 	NSString		*prefsPath = [[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:plistName];
-	NSFileManager	*manager = [NSFileManager defaultManager];
+	NSFileManager	*manager = [[[NSFileManager alloc] init] autorelease];
 	
 	//	If we have a sandbox file...
 	if ([manager fileExistsAtPath:sandboxPrefsPath]) {
-		LKLog(@"Has a sandboxed prefs");
-		NSString	*migrateFlag = [self migratedFlagFromPrefsAtPath:prefsPath];
+		NSString	*migrateFlag = [self migratedFlagFromPrefsAtPath:sandboxPrefsPath];
+		LKLog(@"Has a sandboxed prefs - migrate flag in prefs:%@", migrateFlag);
+		//	If there is no setting in the sandbox prefs, look at the default prefs
+		if (migrateFlag == nil) {
+			migrateFlag = [self migratedFlagFromPrefsAtPath:prefsPath];
+			LKLog(@"Loaded migrate flag in basic prefs:%@", migrateFlag);
+		}
 		//	If we have migrated, then return done
-		if ([migrateFlag isEqualToString:@"YES"]) {
+		if ([migrateFlag isEqualToString:@"1"]) {
 			return;
 		}
 		
@@ -887,8 +937,10 @@
 	
 	//	Then move any existing file in the sandbox aside as a backup in case
 	NSError	*error;
-	NSDateFormatter	*formatter = [[NSDateFormatter alloc] initWithDateFormat:@"dd-MM-yyyy-HHmm" allowNaturalLanguage:NO];
+	NSDateFormatter	*formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"ddMMyyyy-HHmm"];
 	NSString		*backupName = [[[sandboxPrefsPath stringByDeletingPathExtension] stringByAppendingFormat:@".Backup-%@", [formatter stringFromDate:[NSDate date]]] stringByAppendingPathExtension:kMPCPlistExtension];
+	[formatter release];
 	if ([manager fileExistsAtPath:sandboxPrefsPath] && ![manager moveItemAtPath:sandboxPrefsPath toPath:backupName error:&error]) {
 		//	If failed, just log and leave
 		LKErr(@"Couldn't rename the sandboxed prefs file for %@ to %@ during migration:%@", mailBundle.identifier, [backupName lastPathComponent], error);
@@ -896,13 +948,16 @@
 	else {
 		//	Otherwise try to copy our new file into the sandbox
 		LKLog(@"Trying to copy '%@' to sandbox '%@'", prefsPath, sandboxPrefsPath);
-		if (![manager copyItemAtPath:prefsPath toPath:sandboxPrefsPath error:&error]) {
-			LKErr(@"Couldn't copy the prefs into the sandbox for %@ during migration: %@", mailBundle.identifier, error);
-			return;
+		if ([manager copyItemAtPath:prefsPath toPath:sandboxPrefsPath error:&error]) {
+			//	Then add a migration flag to both of those migrated prefs
+			[self addMigratedFlagToPrefsAtPath:prefsPath migrated:YES];
+			[self addMigratedFlagToPrefsAtPath:sandboxPrefsPath migrated:YES];
+			//	Try to move the original to a migrated file (that way further tests don't use it
+			[manager moveItemAtPath:prefsPath toPath:[[[prefsPath stringByDeletingPathExtension] stringByAppendingString:@".migrated"] stringByAppendingPathExtension:kMPCPlistExtension] error:NULL];
 		}
-		//	Then add a migration flag to both of those migrated prefs
-		[self addMigratedFlagToPrefsAtPath:prefsPath migrated:YES];
-		[self addMigratedFlagToPrefsAtPath:sandboxPrefsPath migrated:YES];
+		else {
+			LKErr(@"Couldn't copy the prefs into the sandbox for %@ during migration: %@", mailBundle.identifier, error);
+		}
 	}
 }
 
