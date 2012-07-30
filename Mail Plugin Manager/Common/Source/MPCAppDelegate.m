@@ -782,19 +782,24 @@
 	
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSDictionary	*fromAttributes = [manager attributesOfItemAtPath:fromPath error:NULL];
-	NSDictionary	*toAttributes = [manager attributesOfItemAtPath:fromPath error:NULL];
+	NSDictionary	*toAttributes = [manager attributesOfItemAtPath:toPath error:NULL];
 	NSInteger		ranking = 0;
+	
+	LKLog(@"FromAttr:%@", fromAttributes);
+	LKLog(@"ToAttr:%@", toAttributes);
 	
 	//	Compare file creation dates (if from is older than to by 30 days or more  +1)
 	//	Old ones were created at least a month before the newer ones
 	if ([[[fromAttributes fileCreationDate] dateByAddingTimeInterval:(30 * DAY_INTERVAL)] isLessThan:[toAttributes fileCreationDate]]) {
 		ranking++;
+		LKLog(@"Added for 1");
 	}
 	
 	//	Compare file modification dates (if from is older than to by 15 days or more  -1)
 	//	The new prefs have been modified over 2 weeks after the old, so the new ones are probably more up to date
 	if ([[[fromAttributes fileModificationDate] dateByAddingTimeInterval:(15 * DAY_INTERVAL)] isLessThan:[toAttributes fileModificationDate]]) {
 		ranking--;
+		LKLog(@"Subtracted for 2");
 	}
 	
 	//	Compare modified of from to creation of to (if from mod happened within the 3 days before the to creation  +1)
@@ -802,6 +807,7 @@
 	if (([[toAttributes fileCreationDate] isLessThan:[[fromAttributes fileModificationDate] dateByAddingTimeInterval:(3 * DAY_INTERVAL)]]) &&
 		([[fromAttributes fileModificationDate] isLessThan:[toAttributes fileCreationDate]])) {
 		ranking++;
+		LKLog(@"Added for 3");
 	}
 	
 	//	Compare size of files (if from is greater than to +1, if more than double +1)
@@ -813,19 +819,34 @@
 	}
 	if (fromSize > (2 * toSize)) {
 		ranking++;
+		LKLog(@"Added for 4");
 	}
 	
-	//	Compare creation and modified of to (if less than 24 hours apart +1)
+	//	Compare creation and modified of to (if less than 1 hour apart +1)
 	//	The new ones haven't been changed long after creation
-	if ([[toAttributes fileModificationDate] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:DAY_INTERVAL]]) {
+	if ([[toAttributes fileModificationDate] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:(60 * 60)]]) {
 		ranking++;
+		LKLog(@"Added for 5");
 	}
 	
+	//	Compare creation to (if less than 6 hours ago  +1)
+	//	The new ones were created today
+	if ([[NSDate date] isLessThan:[[toAttributes fileCreationDate] dateByAddingTimeInterval:(6 * 60 * 60)]]) {
+		ranking++;
+		LKLog(@"Added for 6");
+	}
+	
+	LKLog(@"The Ranking is:%@", [NSNumber numberWithInteger:ranking]);
 	//	If ranking > 2, best guess is yes.
 	return (ranking > 2);
 }
 
 - (NSString *)migratedFlagFromPrefsAtPath:(NSString *)prefsPath {
+	
+	//	Ensure that the path exists
+	if (![[NSFileManager defaultManager] fileExistsAtPath:prefsPath]) {
+		return nil;
+	}
 	
 	//	remove the extension
 	if ([prefsPath hasSuffix:kMPCPlistExtension]) {
@@ -845,11 +866,14 @@
 	
 	NSString *tempString = [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
 	NSString *enabledString = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if (![enabledString isEqualToString:@"0"] || ![enabledString isEqualToString:@"1"]) {
+		enabledString = nil;
+	}
 	
 	[enabledTask release];
 	[tempString release];
 	
-	return IsEmpty(enabledString)?nil:enabledString;
+	return enabledString;
 }
 
 - (void)addMigratedFlagToPrefsAtPath:(NSString *)prefsPath migrated:(BOOL)migrated {
@@ -928,6 +952,8 @@
 			//	Then add a migration flag to both of those migrated prefs
 			[self addMigratedFlagToPrefsAtPath:prefsPath migrated:YES];
 			[self addMigratedFlagToPrefsAtPath:sandboxPrefsPath migrated:YES];
+			//	Try to move the original to a migrated file (that way further tests don't use it
+			[manager moveItemAtPath:prefsPath toPath:[[[prefsPath stringByDeletingPathExtension] stringByAppendingString:@".migrated"] stringByAppendingPathExtension:kMPCPlistExtension] error:NULL];
 		}
 		else {
 			LKErr(@"Couldn't copy the prefs into the sandbox for %@ during migration: %@", mailBundle.identifier, error);
