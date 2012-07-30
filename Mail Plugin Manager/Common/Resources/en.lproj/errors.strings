@@ -48,6 +48,12 @@
 "222-button-1" = "Open Mail";
 "222-button-2" = "Quit";
 
+"223-description" = "You will need to run Mail at least once on this version of OS X before installing “%<name>@”.";
+"223-recovery-suggestion" = "Choose “Open Mail” to run Mail and setup an account then come back here to finish the install or “Quit” to abort.";
+"223-recovery-selector" = "handleRecoveryForMailRunOnceWithOption:";
+"223-button-1" = "Open Mail";
+"223-button-2" = "Quit";
+
 //	Messages from the MPM AppDelegate
 "400-description" = "Undefined error from the Mail Plugin Manager.";
 "400-recovery-suggestion" = "Please let us know about this problem.";

@@ -8,7 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#if __has_feature(objc_arc)
+#define	MPT_MACRO_RELEASE(x)	while (0) {}
+#else
+#define	MPT_MACRO_RELEASE(x)	[x release];
+#endif
+
 typedef void(^MPTResultNotificationBlock)(NSDictionary *);
+typedef void(^MPTUpdateTestingCompleteBlock)(void);
 
 #pragma mark Dictionary Keys
 
@@ -147,6 +154,7 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 		}]; \
 		/*	Then actually launch the app to get the information back	*/ \
 		MPTLaunchCommandForBundle(mptCommand, mptMailBundle, @""); \
+		MPT_MACRO_RELEASE(mptQueue); \
 	} \
 	else { \
 		NSLog(@"ERROR in MPTCallToolCommandForBundleWithBlock() Macro: Cannot pass a nil bundle"); \
@@ -171,12 +179,11 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 		/*	Always remove the observer	*/ \
 		[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptBundleObserver]; \
 	}]; \
+	MPT_MACRO_RELEASE(mptQueue); \
 }
 
 
-#ifdef MODULE_CLASS
-
-#define	MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow) \
+#define	MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow, mptFinishBlock) \
 { \
 	NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
 	[mptQueue setName:[MPT_LKS_BUNDLE_START stringByAppendingString:@"BundleUpdateStatusQueue"]]; \
@@ -184,8 +191,8 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 	mptBundleObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_BUNDLE_UPDATE_STATUS_NOTIFICATION object:[mptBundle bundleIdentifier] queue:mptQueue usingBlock:^(NSNotification *note) { \
 		/*	Test to see if the plugin is up to date	*/ \
 		if ([[[note userInfo] valueForKey:@"uptodate"] boolValue]) { \
-			NSString	*messageText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"You have the most recent version of %@.", nil, [NSBundle bundleForClass:MODULE_CLASS], @"Text telling user the plugin is up to date"), [[mptBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey]]; \
-			NSAlert	*mptBundleUpToDateAlert = [NSAlert alertWithMessageText:messageText defaultButton:NSLocalizedStringFromTableInBundle(@"OK", nil, [NSBundle bundleForClass:MODULE_CLASS], @"Okay button") alternateButton:nil otherButton:nil informativeTextWithFormat:@""]; \
+			NSString	*messageText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"You have the most recent version of %@.", nil, mptBundle, @"Text telling user the plugin is up to date"), [[mptBundle infoDictionary] valueForKey:(NSString *)kCFBundleNameKey]]; \
+			NSAlert	*mptBundleUpToDateAlert = [NSAlert alertWithMessageText:messageText defaultButton:NSLocalizedStringFromTableInBundle(@"OK", nil, mptBundle, @"Okay button") alternateButton:nil otherButton:nil informativeTextWithFormat:@""]; \
 			[mptBundleUpToDateAlert setIcon:[[NSWorkspace sharedWorkspace] iconForFile:[mptBundle bundlePath]]]; \
 			if (mptSheetWindow != nil) { \
 				dispatch_async(dispatch_get_main_queue(), ^{ \
@@ -198,18 +205,22 @@ typedef void(^MPTResultNotificationBlock)(NSDictionary *);
 				}); \
 			} \
 		} \
+		if (mptFinishBlock != nil) { \
+			mptFinishBlock(); \
+		} \
 		/*	Always remove the observer	*/ \
 		[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptBundleObserver]; \
 	}]; \
+	MPT_MACRO_RELEASE(mptQueue); \
 }
-
-#pragma mark UpToDate Dialog
-#define MPTPresentModalDialogWhenUpToDate(mptBundle)							MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, nil);
-
-#endif
 
 
 #pragma mark - Plugin Macros
+
+#pragma mark UpToDate Dialog
+
+#define MPTPresentModalDialogWhenUpToDate(mptBundle)							MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, nil, nil);
+#define MPTPresentModalDialogWhenUpToDateWithBlock(mptBundle, mptFinishBlock)	MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, nil, mptFinishBlock);
 
 #pragma mark Launch and Forget
 

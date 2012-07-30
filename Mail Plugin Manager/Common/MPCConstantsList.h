@@ -25,6 +25,9 @@ STR_CONST(kMPCUserDefaultSharedDomainName, "com.littleknownsoftware.MailPluginSh
 STR_CONST(kMPCSharedApplicationSupportName, "MailPluginShared");
 STR_CONST(kMPCRelativeToolPath, "Contents/Resources/MailPluginTool.app");
 STR_CONST(kMPCGenericBundleIcon, "GenericPlugin");
+STR_CONST(kMPCContainersPathFormat, "Containers/%@/Data/Library");
+STR_CONST(kMPCPreferencesFolderName, "Preferences");
+
 
 //	Keys for top level of manifest
 STR_CONST(kMPCManifestTypeKey, "manifest-type");
@@ -112,6 +115,7 @@ STR_CONST(kMPCCrashReportURLKey, "MPCCrashReportURL");
 STR_CONST(kMPCMaxCrashReportCountKey, "MPCMaxCrashReportsToSend");
 STR_CONST(kMPCUnknownCompanyValue, "<MPCCompanyUnknown>");
 STR_CONST(kMPCSupplementalSparkleFeedParametersKey, "MPCSupplementalSparkleFeedParameters");
+STR_CONST(kMPCPrefsMigratedToSandboxPrefKey, "MPCPrefsMigratedToSandbox");
 
 //	The send crash reports values
 STR_CONST(kMPTLastReportDatePrefKey, "MPTCrashReportedLastReportDate");
