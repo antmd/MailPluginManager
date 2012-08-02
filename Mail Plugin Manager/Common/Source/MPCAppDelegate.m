@@ -908,6 +908,18 @@
 	NSString		*prefsPath = [[libraryPath stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:plistName];
 	NSFileManager	*manager = [[[NSFileManager alloc] init] autorelease];
 	
+	//	First check to see if we should even bother, by seeing if the sandbox exists
+	if (![manager fileExistsAtPath:[sandboxPrefsPath stringByDeletingLastPathComponent]]) {
+		return;
+	}
+	
+	//	Also test to see if we have old prefs that would need to be migrated
+	//	If not found, nothing to do
+	if (![manager fileExistsAtPath:prefsPath]) {
+		LKLog(@"No normal prefs found");
+		return;
+	}
+	
 	//	If we have a sandbox file...
 	if ([manager fileExistsAtPath:sandboxPrefsPath]) {
 		NSString	*migrateFlag = [self migratedFlagFromPrefsAtPath:sandboxPrefsPath];
@@ -926,13 +938,6 @@
 		if ((migrateFlag == nil) && ![self bestGuessIfWeShouldMigrateFromPath:prefsPath toPath:sandboxPrefsPath]) {
 			return;
 		}
-	}
-	
-	//	If we get here then migrate any existing normal prefs to the sandbox
-	//	If not found, nothing to do
-	if (![manager fileExistsAtPath:prefsPath]) {
-		LKLog(@"No normal prefs found");
-		return;
 	}
 	
 	//	Then move any existing file in the sandbox aside as a backup in case
