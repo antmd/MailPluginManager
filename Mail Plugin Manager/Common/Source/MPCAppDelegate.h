@@ -91,6 +91,7 @@
 - (BOOL)installStartupLaunchdConfigReplacingIfNeeded:(BOOL)replace;
 - (BOOL)installToolWatchLaunchdConfigReplacingIfNeeded:(BOOL)replace;
 - (BOOL)installLaunchAgentForConfig:(NSDictionary *)agentConfig replacingIfNeeded:(BOOL)replace;
+- (BOOL)removeLaunchAgentForLabel:(NSString *)label;
 
 //	Mail Application Management
 - (BOOL)quitMail;

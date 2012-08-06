@@ -191,6 +191,9 @@
 						[args addObject:kMPCCommandLineFrequencyOptionKey];
 						[args addObject:[self.performDictionary objectForKey:MPT_FREQUENCY_KEY]];
 					}
+					if ([self.performDictionary objectForKey:MPT_OTHER_VALUES_KEY] != nil) {
+						[args addObject:[self.performDictionary objectForKey:MPT_OTHER_VALUES_KEY]];
+					}
 					[self doAction:[self actionTypeForString:action] withArguments:args shouldFinish:NO];
 				}
 				
@@ -264,6 +267,12 @@
 	else if ([kMPCCommandLineValidateAllKey isEqualToString:action]) {
 		type = MPTActionValidateAll;
 	}
+	else if ([kMPCCommandLineInstallLaunchAgentKey isEqualToString:action]) {
+		type = MPTActionInstallLaunchAgent;
+	}
+	else if ([kMPCCommandLineRemoveLaunchAgentKey isEqualToString:action]) {
+		type = MPTActionRemoveLaunchAgent;
+	}
 	
 	return type;
 }
@@ -285,7 +294,7 @@
 			bundlePath = nil;
 		}
 	}
-	if ([arguments count] > 1) {
+	if ((action < MPTActionInstallLaunchAgent) && ([arguments count] > 1)) {
 		if ([[arguments objectAtIndex:1] isEqualToString:kMPCCommandLineFrequencyOptionKey]) {
 			NSString	*frequencyType = [arguments objectAtIndex:2];
 			if ([frequencyType isEqualToString:@"daily"]) {
@@ -367,6 +376,55 @@
 				[self addActivityTask:^{
 					NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 					[center postNotificationName:kMPTUUIDListDistNotification object:mailBundle.identifier userInfo:[MPCUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+					if (shouldFinish) {
+						[self quittingNowIsReasonable];
+					}
+				}];
+				break;
+				
+			case MPTActionInstallLaunchAgent:
+				[self addActivityTask:^{
+					NSString	*noteName = MPT_LAUNCHD_SUCCESS_NOTIFICATION;
+					NSError		*error = nil;
+					if ([arguments count] > 1) {
+						NSDictionary	*otherValues = [arguments objectAtIndex:1];
+						NSDictionary	*agentDict = [otherValues valueForKey:MPT_LAUNCHD_CONFIG_DICT_KEY];
+						BOOL			replaceAgent = [[otherValues valueForKey:MPT_REPLACE_LAUNCHD_KEY] boolValue];
+						if (![self installLaunchAgentForConfig:agentDict replacingIfNeeded:replaceAgent]) {
+							noteName =MPT_LAUNCHD_FAILURE_NOTIFICATION;
+							error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_INSTALL_FAILED_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not configure the launch agent properly for %@", @"Error message indicating that a launch agent couldn't be installed"), [agentDict valueForKey:@"Label"]] }];
+						}
+					}
+					else {
+						noteName = MPT_LAUNCHD_FAILURE_NOTIFICATION;
+						error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_BAD_ARGUMENTS_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Invalid arguments passed to install a launch agent.", @"Error message telling the caller that the arguments for the install launch agent were not correct") }];
+					}
+					NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+					[center postNotificationName:noteName object:bundlePath userInfo:@{ MPT_LAUNCH_ERROR_KEY : (error!=nil?error:[NSNull null]) } deliverImmediately:YES];
+					if (shouldFinish) {
+						[self quittingNowIsReasonable];
+					}
+				}];
+				break;
+				
+			case MPTActionRemoveLaunchAgent:
+				[self addActivityTask:^{
+					NSString	*noteName = MPT_LAUNCHD_SUCCESS_NOTIFICATION;
+					NSError		*error = nil;
+					if ([arguments count] > 1) {
+						NSDictionary	*otherValues = [arguments objectAtIndex:1];
+						NSString		*label = [otherValues valueForKey:MPT_LAUNCHD_LABEL_KEY];
+						if (![self removeLaunchAgentForLabel:label]) {
+							noteName = MPT_LAUNCHD_FAILURE_NOTIFICATION;
+							error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_REMOVE_FAILED_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not remove the launch agent properly for %@", @"Error message indicating that a launch agent couldn't be removed"), label] }];
+						}
+					}
+					else {
+						noteName = MPT_LAUNCHD_FAILURE_NOTIFICATION;
+						error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_BAD_ARGUMENTS_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Invalid arguments passed to remove a launch agent.", @"Error message telling the caller that the arguments for the remove launch agent were not correct") }];
+					}
+					NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+					[center postNotificationName:noteName object:bundlePath userInfo:@{ MPT_LAUNCH_ERROR_KEY : (error!=nil?error:[NSNull null]) } deliverImmediately:YES];
 					if (shouldFinish) {
 						[self quittingNowIsReasonable];
 					}

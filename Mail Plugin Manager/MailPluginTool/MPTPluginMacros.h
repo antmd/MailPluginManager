@@ -63,11 +63,18 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_BUNDLE_WILL_INSTALL_NOTIFICATION	[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPCBundleWillInstallDistNotification"]
 #define MPT_SYSTEM_INFO_NOTIFICATION			[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTSystemInfoDistNotification"]
 #define MPT_UUID_LIST_NOTIFICATION				[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDListDistNotification"]
+#define MPT_LAUNCHD_SUCCESS_NOTIFICATION		[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDLaunchdSuccessNotification"]
+#define MPT_LAUNCHD_FAILURE_NOTIFICATION		[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDLaunchdFailureNotification"]
 #define MPT_TOOL_NAME							@"MailPluginTool"
 #define MPT_TOOL_IDENTIFIER						[MPT_LKS_BUNDLE_START stringByAppendingString:MPT_TOOL_NAME]
 #define MPT_MANAGER_IDENTIFIER					[MPT_LKS_BUNDLE_START stringByAppendingString:@"MailPluginManager"]
 #define MPT_APP_RESOURCES_PATH					@"Contents/Resources"
 #define MPT_APP_CODE_PATH						@"Contents/MacOS"
+
+#define MPT_LAUNCHD_ERROR_DOMAIN_NAME			@"LKLaunchAgentConfigurator"
+#define MPT_LAUNCHD_BAD_ARGUMENTS_ERROR_CODE	100
+#define MPT_LAUNCHD_INSTALL_FAILED_ERROR_CODE	101
+#define MPT_LAUNCHD_REMOVE_FAILED_ERROR_CODE	102
 
 #define MPT_MANAGER_APP_NAME					@"Mail Plugin Manager.app"
 #define MPT_MAIL_MPT_FOLDER_PATH				@"Mail/MPT"
@@ -75,7 +82,11 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_ACTION_KEY							@"action"
 #define MPT_PLUGIN_PATH_KEY						@"plugin-path"
 #define MPT_FREQUENCY_KEY						@"frequency"
-
+#define MPT_OTHER_VALUES_KEY					@"other-values"
+#define MPT_LAUNCHD_LABEL_KEY					@"label"
+#define MPT_LAUNCHD_CONFIG_DICT_KEY				@"launchd-config"
+#define MPT_REPLACE_LAUNCHD_KEY					@"replace-launchd-flag"
+#define MPT_LAUNCH_ERROR_KEY					@"launch-error"
 
 #pragma mark - Reused Macros
 

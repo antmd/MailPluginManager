@@ -21,6 +21,8 @@ typedef enum {
 	MPTActionUpdateAndCrashReports,
 	MPTActionSystemInfo,
 	MPTActionUUIDList,
+	MPTActionInstallLaunchAgent,
+	MPTActionRemoveLaunchAgent,
 	MPTActionValidateAll
 } MPTActionType;
 

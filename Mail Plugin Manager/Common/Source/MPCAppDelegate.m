@@ -565,6 +565,23 @@
 	return [self addLaunchDDictionary:agentConfig forLabel:label replace:replace];
 }
 
+- (BOOL)removeLaunchAgentForLabel:(NSString *)label {
+	//	Get values
+	NSFileManager	*manager = [NSFileManager defaultManager];
+	NSString		*fullPath = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME] stringByAppendingPathComponent:label] stringByAppendingPathExtension:kMPCPlistExtension];
+
+	if (![manager fileExistsAtPath:fullPath]) {
+		return NO;
+	}
+	BOOL	result = [self unloadLaunchControlAtPath:fullPath];
+	
+	//	Also delete the file as well
+	[manager removeItemAtPath:fullPath error:NULL];
+	
+	return result;
+	
+}
+
 
 #pragma mark - Support Methods
 

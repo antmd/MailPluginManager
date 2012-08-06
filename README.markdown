@@ -19,6 +19,7 @@ Mail Plugin Manager is a tool to help Mac Mail bundle authors manage, install & 
 * Sends crash reports back to developer
 * Checks for compatibility of plugins at boot time (i.e. after an install)
 * Determine relevant information about the user's system (Mail, Message, etc.)
+* Allow the loading/unloading of a LaunchAgent
 * Keep updated list of OS versions, including future versions, that are accessible to plugins
 * Preference migration into OS X sandbox for Mail.
 * Ensures that Mail has been launched at least once to ensure that all the directories and such are there.
@@ -133,6 +134,11 @@ This allows the calling bundle to get back a dictionary of information about the
 
 The tool will keep an updated version of a list of UUIDs that Mail and Message.framework have defined and supported for plugins to access, so they can actually test in *advance* if they will be compatible with an upcoming OS release. Or even just an OS release after the one the user has.
 
+<a name="launch-agent"></a>
+#### Load or Unload a LaunchAgent for a plugin
+
+The tool will install the `.plist` into the User's LaunchAgent folder `~/Library/LaunchAgents` and load it (or unload and delete the `.plist` file) for a plugin. This allows the plugin to install a helper that can run outside the sandbox in order to perform some capabilities that it might currently be limited from doing.
+
 
 <a name="manifest"></a>
 ### Manifest File Format
@@ -244,6 +250,24 @@ These macros are the ones that you should call when the app launches to do updat
 		MPTUpdateAndSendReportsForBundleNow(mptMailBundle)
 
 You need to pass in the bundle for your plugin, so it can properly determine the bundle identifier and it's path.
+
+#### Managing a LaunchAgent
+
+These macros are to be used to create a LaunchAgent that the plugin might need to configure in order to perfomr some actions outside of the sandbox.
+
+		MPTInstallLaunchAgent(mbmMailBundle, mptAgentConfig, mptReplaceExisting, mptResultBlock)
+		MPTRemoveLaunchAgent(mbmMailBundle, mptAgentLabel, mptResultBlock)
+		
+The first argument is the bundle of your plugin, as with the macros above. The last argument is the block that you want to run to notify you of success or failure. It is optional – pass nil, if you don't care. It is defined as a `MPTLaunchResultBlock` and has been `typedef`'d like this:
+
+		typedef void(^MPTLaunchResultBlock)(NSError *);
+
+It takes the single argument which is an error. It is `nil` if successful and will contain a reasonable description of any issues incurred.
+
+For `MPTInstallLaunchAgent` the second argument is a `NSDictionary` with the contents of the LaunchAgent file you need to create. See [the launchd man page][launchd] for more information about the contents of this dictionary. The `mptReplaceExisting` argument is a `BOOL` to indicate if the Tool should remove an existing agent with the same Label and replace it.
+
+For `MPTRemoveLaunchAgent` the second argument is simply the Label for the service to remove. It should be the same as the one passed into the above macro in the `mptAgentConfig`.
+
 
 #### Handling Up To Date Sparkle Results
 
