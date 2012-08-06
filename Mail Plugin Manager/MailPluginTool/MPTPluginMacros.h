@@ -14,7 +14,8 @@
 #define	MPT_MACRO_RELEASE(x)	[x release];
 #endif
 
-typedef void(^MPTResultNotificationBlock)(NSDictionary *);
+typedef void(^MPTResultNotificationBlock)(NSDictionary *infoResults);
+typedef void(^MPTLaunchResultBlock)(NSError *launchError);
 typedef void(^MPTUpdateTestingCompleteBlock)(void);
 
 #pragma mark Dictionary Keys
@@ -54,6 +55,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_UPDATE_TEXT							@"-update"
 #define MPT_CRASH_REPORTS_TEXT					@"-send-crash-reports"
 #define MPT_UPDATE_CRASH_REPORTS_TEXT			@"-update-and-crash-reports"
+#define MPT_INSTALL_LAUNCH_AGENT_TEXT			@"-add-launch-agent"
+#define MPT_REMOVE_LAUNCH_AGENT_TEXT			@"-del-launch-agent"
 #define MPT_FREQUENCY_OPTION					@"-freq"
 
 #pragma mark Internal Values
@@ -63,8 +66,7 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_BUNDLE_WILL_INSTALL_NOTIFICATION	[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPCBundleWillInstallDistNotification"]
 #define MPT_SYSTEM_INFO_NOTIFICATION			[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTSystemInfoDistNotification"]
 #define MPT_UUID_LIST_NOTIFICATION				[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDListDistNotification"]
-#define MPT_LAUNCHD_SUCCESS_NOTIFICATION		[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDLaunchdSuccessNotification"]
-#define MPT_LAUNCHD_FAILURE_NOTIFICATION		[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDLaunchdFailureNotification"]
+#define MPT_LAUNCHD_DONE_NOTIFICATION			[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDLaunchdDoneNotification"]
 #define MPT_TOOL_NAME							@"MailPluginTool"
 #define MPT_TOOL_IDENTIFIER						[MPT_LKS_BUNDLE_START stringByAppendingString:MPT_TOOL_NAME]
 #define MPT_MANAGER_IDENTIFIER					[MPT_LKS_BUNDLE_START stringByAppendingString:@"MailPluginManager"]
@@ -172,6 +174,71 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 	} \
 }
 
+
+#pragma mark LaunchD Configuration
+
+#define	MPTManageLaunchAgentWithBlock(mptCommand, mptMailBundle, mptOtherDict, mptResultBlock) \
+{ \
+	if (mptMailBundle != nil) { \
+		MPTGetLikelyToolPath(); \
+		if (pluginToolPath != nil) { \
+			NSMutableDictionary	*performDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
+			[performDict setObject:mptCommand forKey:MPT_ACTION_KEY]; \
+			[performDict setObject:[mptMailBundle bundlePath] forKey:MPT_PLUGIN_PATH_KEY]; \
+			[performDict setObject:mptOtherDict forKey:MPT_OTHER_VALUES_KEY]; \
+			NSString		*plistPath = MPTPerformFolderPath(); \
+			BOOL			isDir = NO; \
+			/*	Ensure that we have a directory	*/ \
+			if (![manager fileExistsAtPath:plistPath isDirectory:&isDir] || !isDir) { \
+				if ([manager createDirectoryAtPath:plistPath withIntermediateDirectories:NO attributes:nil error:NULL]) { \
+					isDir = YES; \
+				} \
+			} \
+			/*	If we do, then try to create our file	*/ \
+			NSString	*fullFilePath = nil; \
+			if (isDir) { \
+				if (mptResultBlock != nil) { \
+					/*	Set up the notification watch	*/ \
+					NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
+					__block id mptObserver; \
+					mptObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_LAUNCHD_DONE_NOTIFICATION object:nil queue:mptQueue usingBlock:^(NSNotification *note) { \
+						/*	If this was aimed at us, then perform the block and remove the observer	*/ \
+						if ([[note object] isEqualToString:[mptMailBundle bundleIdentifier]]) { \
+							NSError	*launchError = ([[note userInfo] valueForKey:MPT_LAUNCH_ERROR_KEY] != [NSNull null])?[[note userInfo] valueForKey:MPT_LAUNCH_ERROR_KEY]:nil; \
+							mptResultBlock(launchErr); \
+							[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptObserver]; \
+						} \
+					}]; \
+					/*	This will release the memeory in non-ARC environments	*/ \
+					MPT_MACRO_RELEASE(mptQueue); \
+				} \
+				NSString	*tempfileName = [[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:MPT_PERFORM_ACTION_EXTENSION]; \
+				if ([performDict writeToFile:[plistPath stringByAppendingPathComponent:tempfileName] atomically:NO]) { \
+					fullFilePath = [plistPath stringByAppendingPathComponent:tempfileName]; \
+				} \
+			} \
+			else { \
+				NSLog(@"Unable to create the action file, since the required folder doesn't exist and I can't create it"); \
+			} \
+		} \
+		else { \
+			NSLog(@"ERROR in MPTLaunchCommandForBundle() Macro: MailPluginTool application wasn't found anywhere"); \
+		} \
+	} \
+	else { \
+		NSLog(@"ERROR in MPTLaunchCommandForBundle() Macro: Cannot pass a nil bundle"); \
+	} \
+}
+
+
+#define MPTInstallLaunchAgent(mptMailBundle, mptAgentConfig, mptReplaceExisting, mptResultBlock)	MPTManageLaunchAgentWithBlock(MPT_INSTALL_LAUNCH_AGENT_TEXT, mptMailBundle, [NSDictionary dictionaryWithObjectsAndKeys:mptAgentConfig, MPT_LAUNCHD_CONFIG_DICT_KEY, [NSNumber numberWithBool:mptReplaceExisting], MPT_REPLACE_LAUNCHD_KEY], mptResultBlock)
+
+
+#define	MPTRemoveLaunchAgent(mptMailBundle, mptAgentLabel, mptResultBlock)							MPTManageLaunchAgentWithBlock(MPT_REMOVE_LAUNCH_AGENT_TEXT, mptMailBundle, [NSDictionary dictionaryWithObjectsAndKeys:mptAgentLabel, MPT_LAUNCHD_LABEL_KEY], mptResultBlock)
+
+
+
+#pragma mark Update Feedback Macros
 
 #define MPTClosePrefsWindowIfInstalling(mptBundle) \
 { \

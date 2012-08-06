@@ -255,8 +255,8 @@ You need to pass in the bundle for your plugin, so it can properly determine the
 
 These macros are to be used to create a LaunchAgent that the plugin might need to configure in order to perfomr some actions outside of the sandbox.
 
-		MPTInstallLaunchAgent(mbmMailBundle, mptAgentConfig, mptReplaceExisting, mptResultBlock)
-		MPTRemoveLaunchAgent(mbmMailBundle, mptAgentLabel, mptResultBlock)
+		MPTInstallLaunchAgent(mptMailBundle, mptAgentConfig, mptReplaceExisting, mptResultBlock)
+		MPTRemoveLaunchAgent(mptMailBundle, mptAgentLabel, mptResultBlock)
 		
 The first argument is the bundle of your plugin, as with the macros above. The last argument is the block that you want to run to notify you of success or failure. It is optional – pass nil, if you don't care. It is defined as a `MPTLaunchResultBlock` and has been `typedef`'d like this:
 
@@ -285,8 +285,8 @@ The block argument is the block that you want to run when the results are return
 
 These macros allow you to get information back from MPT by having a block run which is passed a dictionary of the results.
 
-		MPTMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
-		MPTUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
+		MPTMailInformationForBundleWithBlock(mptMailBundle, mptNotificationBlock)
+		MPTUUIDListForBundleWithBlock(mptMailBundle, mptNotificationBlock)
 
 The first argument is the bundle of your plugin, as with the macros above. The second argument is the block that you want to run when the results are returned. It is defined as a `MPTResultNotificationBlock` and has been `typedef`'d like this:
 
@@ -419,10 +419,10 @@ You can use this software any way that you like, as long as you don't blame me f
 [json-php]: http://bg.php.net/manual/en/book.json.php
 
 <!-- images -->
-[install-1]: http://media.lksw.eu/mbm/Example_Install_1.png
-[install-2]: http://media.lksw.eu/mbm/Example_Install_2.png
-[install-3]: http://media.lksw.eu/mbm/Example_Install_3.png
-[install-4]: http://media.lksw.eu/mbm/Example_Install_4.png
-[manager-window]: http://media.lksw.eu/mbm/Mail_Bundle_Manager.png
-[single-notice]: http://media.lksw.eu/mbm/Single_Plugin_Notice.png
-[multi-notice]: http://media.lksw.eu/mbm/Multi_Plugin_Notice.png
+[install-1]: http://media.lksw.eu/mpm/Example_Install_1.png
+[install-2]: http://media.lksw.eu/mpm/Example_Install_2.png
+[install-3]: http://media.lksw.eu/mpm/Example_Install_3.png
+[install-4]: http://media.lksw.eu/mpm/Example_Install_4.png
+[manager-window]: http://media.lksw.eu/mpm/Mail_Bundle_Manager.png
+[single-notice]: http://media.lksw.eu/mpm/Single_Plugin_Notice.png
+[multi-notice]: http://media.lksw.eu/mpm/Multi_Plugin_Notice.png
