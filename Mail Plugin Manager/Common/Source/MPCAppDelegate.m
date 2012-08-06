@@ -49,7 +49,8 @@
 
 //	launchd management
 - (NSDictionary *)launchdConfigurations;
-- (BOOL)addLaunchDDictionary:(NSDictionary *)launchDict forLabel:(NSString *)label;
+- (NSDictionary *)launchdConfigurationsWithPrefix:(NSString *)prefix;
+- (BOOL)addLaunchDDictionary:(NSDictionary *)launchDict forLabel:(NSString *)label replace:(BOOL)replace;
 - (BOOL)unloadLaunchControlAtPath:(NSString *)filePath;
 - (BOOL)loadLaunchControlAtPath:(NSString *)filePath;
 - (NSString *)likelyPluginToolPath;
@@ -298,11 +299,15 @@
 }
 
 - (NSDictionary *)launchdConfigurations {
+	return [self launchdConfigurationsWithPrefix:MPT_LKS_BUNDLE_START];
+}
+
+- (NSDictionary *)launchdConfigurationsWithPrefix:(NSString *)prefix {
 	
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*shellPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@".sh"]];
 	if (![manager fileExistsAtPath:shellPath]) {
-		NSString	*grepCommand = [NSString stringWithFormat:@"#/bin/sh\n%@ list | grep %@\n", LAUNCH_CONTROL_PATH, MPT_LKS_BUNDLE_START];
+		NSString	*grepCommand = [NSString stringWithFormat:@"#/bin/sh\n%@ list | grep %@\n", LAUNCH_CONTROL_PATH, prefix];
 		NSError		*error;
 		if (![grepCommand writeToFile:shellPath atomically:NO encoding:NSUTF8StringEncoding error:&error]) {
 			LKLog(@"Error writing shell command to tempfile:%@", shellPath);
@@ -331,10 +336,10 @@
 	[launchControlListTask release];
 	[tempString release];
 	
-	//	Strip out the labels of any Little Known configs within it (for verification)
+	//	Strip out the labels of any of thre desired configs within it (for verification)
 	NSMutableArray	*myLists = [NSMutableArray array];
 	for (NSString *aLine in launchLines) {
-		NSRange	myDomainRange = [aLine rangeOfString:MPT_LKS_BUNDLE_START];
+		NSRange	myDomainRange = [aLine rangeOfString:prefix];
 		if (myDomainRange.location != NSNotFound) {
 			[myLists addObject:[aLine substringFromIndex:myDomainRange.location]];
 		}
@@ -342,7 +347,7 @@
 	
 	LKLog(@"Found lists are:%@", myLists);
 	
-	//	For each of those, get teh xml plist data and turn it into a dict
+	//	For each of those, get the xml plist data and turn it into a dict
 	NSMutableDictionary	*myConfigs = [NSMutableDictionary dictionaryWithCapacity:[myLists count]];
 	for (NSString *myAgent in myLists) {
 		
@@ -435,7 +440,7 @@
 	NSString		*label = [[filePath lastPathComponent] stringByDeletingPathExtension];
 	
 	//	Get configs
-	NSDictionary	*configs = [self launchdConfigurations];
+	NSDictionary	*configs = [self launchdConfigurationsWithPrefix:label];
 	
 	//	If it is already loaded, unload it
 	if ([[configs allKeys] containsObject:label]) {
@@ -457,7 +462,7 @@
 	NSString		*label = [[filePath lastPathComponent] stringByDeletingPathExtension];
 	
 	//	Get configs
-	NSDictionary	*configs = [self launchdConfigurations];
+	NSDictionary	*configs = [self launchdConfigurationsWithPrefix:label];
 	
 	//	If it is not already loaded, nothing to do
 	if (![[configs allKeys] containsObject:label]) {
@@ -468,22 +473,34 @@
 	return [self runLaunchControlWithCommand:@"unload" andPath:filePath];
 }
 
-- (BOOL)addLaunchDDictionary:(NSDictionary *)launchDict forLabel:(NSString *)label {
+- (BOOL)addLaunchDDictionary:(NSDictionary *)launchDict forLabel:(NSString *)label replace:(BOOL)replace {
 	
 	//	If the dict is empty, nothing to do
 	if (IsEmpty(launchDict)) {
 		return NO;
 	}
 	
-	//	See if that label is already active we are done
-	if ([[[self launchdConfigurations] allKeys] containsObject:label]) {
-		LKLog(@"Launchd config for %@ is already loaded",label);
-		return YES;
-	}
-	
 	//	Get values
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*fullPath = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME] stringByAppendingPathComponent:label] stringByAppendingPathExtension:kMPCPlistExtension];
+	
+	//	See if that label is already active we are done
+	if (!IsEmpty([self launchdConfigurationsWithPrefix:label])) {
+		//	Try to unload the configuration
+		if (replace) {
+			if ([self unloadLaunchControlAtPath:fullPath]) {
+				LKLog(@"Launchd config for %@ has been unloaded successfully", label);
+			}
+			else {
+				LKLog(@"Launchd config for %@ is already loaded and I can't unload it", label);
+				return YES;
+			}
+		}
+		else {
+			LKLog(@"Launchd config for %@ is already loaded - not replacing", label);
+			return YES;
+		}
+	}
 	
 	//	If the path exists already, move it to the trash
 	if ([manager fileExistsAtPath:fullPath]) {
@@ -513,7 +530,7 @@
 	
 }
 
-- (BOOL)installStartupLaunchdConfig {
+- (BOOL)installStartupLaunchdConfigReplacingIfNeeded:(BOOL)replace {
 	
 	NSString	*label = [MPT_LKS_BUNDLE_START stringByAppendingString:[NSString stringWithFormat:@"%@-Startup", MPT_TOOL_NAME]];
 	NSString	*pluginToolPath = [self likelyPluginToolPath];
@@ -525,10 +542,10 @@
 	//	Build the dictionary
 	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineValidateAllKey ], @"RunAtLoad" : @YES };
 	LKLog(@"dict:%@", watchDict);
-	return [self addLaunchDDictionary:watchDict forLabel:label];
+	return [self addLaunchDDictionary:watchDict forLabel:label replace:replace];
 }
 
-- (BOOL)installToolWatchLaunchdConfig {
+- (BOOL)installToolWatchLaunchdConfigReplacingIfNeeded:(BOOL)replace {
 	
 	NSString	*label = [MPT_LKS_BUNDLE_START stringByAppendingString:[NSString stringWithFormat:@"%@-Watcher", MPT_TOOL_NAME]];
 	NSString	*pluginToolPath = [self likelyPluginToolPath];
@@ -538,9 +555,14 @@
 	}
 	
 	//	Build the dictionary
-	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ] };
+	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ], @"Empty" : @"value" };
 	LKLog(@"dict:%@", watchDict);
-	return [self addLaunchDDictionary:watchDict forLabel:label];
+	return [self addLaunchDDictionary:watchDict forLabel:label replace:replace];
+}
+
+- (BOOL)installLaunchAgentForConfig:(NSDictionary *)agentConfig replacingIfNeeded:(BOOL)replace {
+	NSString		*label = [agentConfig valueForKey:@"Label"];
+	return [self addLaunchDDictionary:agentConfig forLabel:label replace:replace];
 }
 
 

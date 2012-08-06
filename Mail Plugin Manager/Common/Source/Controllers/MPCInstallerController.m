@@ -848,7 +848,7 @@ typedef enum {
 			[manager releaseFromQuarantine:toolPath];
 
 			//	Ensure that the Tool is setup correctly to be responsive
-			[AppDel installToolWatchLaunchdConfig];
+			[AppDel installToolWatchLaunchdConfigReplacingIfNeeded:YES];
 
 		}
 	}
