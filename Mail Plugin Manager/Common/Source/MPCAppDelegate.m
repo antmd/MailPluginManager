@@ -288,14 +288,14 @@
 	MPTGetLikelyToolPath();
 	
 	//	Add on our complete path to the executable
-	pluginToolPath = [[pluginToolPath stringByAppendingPathComponent:MPT_APP_CODE_PATH] stringByAppendingPathComponent:MPT_TOOL_NAME];
+	mptPluginToolPath = [[mptPluginToolPath stringByAppendingPathComponent:MPT_APP_CODE_PATH] stringByAppendingPathComponent:MPT_TOOL_NAME];
 	//	Validate that it exists
-	if (IsEmpty(pluginToolPath) || ![manager fileExistsAtPath:pluginToolPath]) {
+	if (IsEmpty(mptPluginToolPath) || ![mptManager fileExistsAtPath:mptPluginToolPath]) {
 		LKErr(@"Cannot find the %@ app to create launchd config.", MPT_TOOL_NAME);
 		return nil;
 	}
 	
-	return pluginToolPath;
+	return mptPluginToolPath;
 }
 
 - (NSDictionary *)launchdConfigurations {
@@ -555,7 +555,7 @@
 	}
 	
 	//	Build the dictionary
-	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ], @"Empty" : @"value" };
+	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ] };
 	LKLog(@"dict:%@", watchDict);
 	return [self addLaunchDDictionary:watchDict forLabel:label replace:replace];
 }

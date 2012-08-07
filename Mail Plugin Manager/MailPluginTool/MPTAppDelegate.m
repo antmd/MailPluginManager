@@ -280,29 +280,24 @@
 
 #pragma mark - Action Methods
 
-- (void)handleLaunchAgentWithArgs:(NSArray *)arguments block:(BOOL (^)(NSDictionary *otherValues))actionBlock {
+- (void)handleLaunchAgentForBundle:(NSBundle *)bundle withArgs:(NSArray *)arguments block:(BOOL (^)(NSDictionary *otherValues))actionBlock {
 	
-	//	Get the bundle path from the args
-	NSString	*bundlePath = nil;
-	if ([arguments count] > 0) {
-		bundlePath = [arguments objectAtIndex:0];
-		if ([bundlePath isEqualToString:@"(null)"]) {
-			bundlePath = nil;
-		}
-	}
-
 	NSError		*error = nil;
 	if ([arguments count] > 1) {
 		NSDictionary	*otherValues = [arguments objectAtIndex:1];
 		if (!actionBlock(otherValues)) {
-			error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_INSTALL_FAILED_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not configure a launch agent properly for plugin %@", @"Error message indicating that a launch agent couldn't be configured"), bundlePath] }];
+			error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_INSTALL_FAILED_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not configure a launch agent properly for plugin with id '%@'", @"Error message indicating that a launch agent couldn't be configured for the plugin"), [bundle bundleIdentifier]] }];
 		}
 	}
 	else {
-		error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_BAD_ARGUMENTS_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Invalid arguments passed to configure a launch agent.", @"Error message telling the caller that the arguments for the configure launch agent were not correct") }];
+		error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_BAD_ARGUMENTS_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Invalid arguments passed to configure a launch agent: %@", @"Error message telling the caller that the arguments for the configure launch agent were not correct"), [bundle bundleIdentifier]] }];
 	}
 	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
-	[center postNotificationName:MPT_LAUNCHD_DONE_NOTIFICATION object:bundlePath userInfo:@{ MPT_LAUNCH_ERROR_KEY : (error!=nil?error:[NSNull null]) } deliverImmediately:YES];
+	NSDictionary	*infoDict = nil;
+	if (error != nil) {
+		infoDict = @{ MPT_LAUNCH_ERROR_KEY : error };
+	}
+	[center postNotificationName:MPT_LAUNCHD_DONE_NOTIFICATION object:[bundle bundleIdentifier] userInfo:infoDict deliverImmediately:YES];
 
 }
 
@@ -412,7 +407,7 @@
 			case MPTActionInstallLaunchAgent:
 				[self addActivityTask:^{
 					
-					[self handleLaunchAgentWithArgs:arguments block:^BOOL(NSDictionary *otherValues) {
+					[self handleLaunchAgentForBundle:mailBundle.bundle withArgs:arguments block:^BOOL(NSDictionary *otherValues) {
 						NSDictionary	*agentDict = [otherValues valueForKey:MPT_LAUNCHD_CONFIG_DICT_KEY];
 						BOOL			replaceAgent = [[otherValues valueForKey:MPT_REPLACE_LAUNCHD_KEY] boolValue];
 						return [self installLaunchAgentForConfig:agentDict replacingIfNeeded:replaceAgent];
@@ -427,7 +422,7 @@
 			case MPTActionRemoveLaunchAgent:
 				[self addActivityTask:^{
 					
-					[self handleLaunchAgentWithArgs:arguments block:^BOOL(NSDictionary *otherValues) {
+					[self handleLaunchAgentForBundle:mailBundle.bundle withArgs:arguments block:^BOOL(NSDictionary *otherValues) {
 						NSString		*label = [otherValues valueForKey:MPT_LAUNCHD_LABEL_KEY];
 						return [self removeLaunchAgentForLabel:label];
 					}];
