@@ -132,11 +132,10 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 				} \
 			} \
 			/*	If we do, then try to create our file	*/ \
-			NSString	*mptFullFilePath = nil; \
 			if (mptIsDir) { \
 				NSString	*mptTempfileName = [[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:MPT_PERFORM_ACTION_EXTENSION]; \
-				if ([mptPerformDict writeToFile:[mptPlistPath stringByAppendingPathComponent:mptTempfileName] atomically:NO]) { \
-					mptFullFilePath = [mptPlistPath stringByAppendingPathComponent:mptTempfileName]; \
+				if (![mptPerformDict writeToFile:[mptPlistPath stringByAppendingPathComponent:mptTempfileName] atomically:NO]) { \
+					NSLog(@"Unable to write the contents of the action file"); \
 				} \
 			} \
 			else { \
@@ -196,7 +195,6 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 				} \
 			} \
 			/*	If we do, then try to create our file	*/ \
-			NSString	*mptFullFilePath = nil; \
 			if (mptIsDir) { \
 				if (mptResultBlock != nil) { \
 					/*	Set up the notification watch	*/ \
@@ -205,7 +203,10 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 					mptObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_LAUNCHD_DONE_NOTIFICATION object:nil queue:mptQueue usingBlock:^(NSNotification *note) { \
 						/*	If this was aimed at us, then perform the block and remove the observer	*/ \
 						if ([[note object] isEqualToString:[mptMailBundle bundleIdentifier]]) { \
-							NSError	*mptLaunchError = ([[note userInfo] valueForKey:MPT_LAUNCH_ERROR_KEY] != [NSNull null])?[[note userInfo] valueForKey:MPT_LAUNCH_ERROR_KEY]:nil; \
+							NSError	*mptLaunchError = nil; \
+							if ([note userInfo] != nil) { \
+								mptLaunchError = [[note userInfo] valueForKey:MPT_LAUNCH_ERROR_KEY]; \
+							} \
 							mptResultBlock(mptLaunchError); \
 							[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptObserver]; \
 						} \
@@ -214,8 +215,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 					MPT_MACRO_RELEASE(mptQueue); \
 				} \
 				NSString	*mptTempfileName = [[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:MPT_PERFORM_ACTION_EXTENSION]; \
-				if ([mptPerformDict writeToFile:[mptPlistPath stringByAppendingPathComponent:mptTempfileName] atomically:NO]) { \
-					mptFullFilePath = [mptPlistPath stringByAppendingPathComponent:mptTempfileName]; \
+				if (![mptPerformDict writeToFile:[mptPlistPath stringByAppendingPathComponent:mptTempfileName] atomically:NO]) { \
+					NSLog(@"Unable to write the contents of the action file"); \
 				} \
 			} \
 			else { \
