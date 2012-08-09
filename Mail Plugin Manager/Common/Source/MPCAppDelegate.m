@@ -576,7 +576,10 @@
 	BOOL	result = [self unloadLaunchControlAtPath:fullPath];
 	
 	//	Also delete the file as well
-	[manager removeItemAtPath:fullPath error:NULL];
+	NSError	*error;
+	if (![manager removeItemAtPath:fullPath error:&error]) {
+		LKLog(@"Error removing file:%@", error);
+	}
 	
 	return result;
 	
