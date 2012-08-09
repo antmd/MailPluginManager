@@ -8,6 +8,8 @@ STR_CONST(kMPCCommandLineCheckCrashReportsKey, "-send-crash-reports");
 STR_CONST(kMPCCommandLineUpdateAndCrashReportsKey, "-update-and-crash-reports");
 STR_CONST(kMPCCommandLineSystemInfoKey, "-mail-info");
 STR_CONST(kMPCCommandLineUUIDListKey, "-uuid-list");
+STR_CONST(kMPCCommandLineInstallLaunchAgentKey, "-add-launch-agent");
+STR_CONST(kMPCCommandLineRemoveLaunchAgentKey, "-del-launch-agent");
 STR_CONST(kMPCCommandLineFrequencyOptionKey, "-freq");
 STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
 STR_CONST(kMPCCommandLineFinishInstallKey, "-finish-install");

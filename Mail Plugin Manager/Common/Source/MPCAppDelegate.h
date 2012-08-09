@@ -88,8 +88,10 @@
 - (void)quittingNowIsReasonable;
 
 //	launchd management
-- (BOOL)installStartupLaunchdConfig;
-- (BOOL)installToolWatchLaunchdConfig;
+- (BOOL)installStartupLaunchdConfigReplacingIfNeeded:(BOOL)replace;
+- (BOOL)installToolWatchLaunchdConfigReplacingIfNeeded:(BOOL)replace;
+- (BOOL)installLaunchAgentForConfig:(NSDictionary *)agentConfig replacingIfNeeded:(BOOL)replace;
+- (BOOL)removeLaunchAgentForLabel:(NSString *)label;
 
 //	Mail Application Management
 - (BOOL)quitMail;

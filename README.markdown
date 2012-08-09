@@ -8,7 +8,7 @@ Mail Plugin Manager is a tool to help Mac Mail bundle authors manage, install & 
 2. It gives you some tools to preemptively deal with Mail upgrades and UUID issues.
 3. It provides debugging tools for your user, i.e. system info collection and crash reports.
 4. It gives the user an easy way to manage the plugin.
-5. It provides a simplified installer and uninstaller, again without you having to maintain another separate application.
+5. It provides a simplified installer and uninstaller, again without you having to maintain another separate application. The installer also support Mountain Lion and migration of preferences into the sandbox.
 
 ### Main Features
 
@@ -19,13 +19,16 @@ Mail Plugin Manager is a tool to help Mac Mail bundle authors manage, install & 
 * Sends crash reports back to developer
 * Checks for compatibility of plugins at boot time (i.e. after an install)
 * Determine relevant information about the user's system (Mail, Message, etc.)
+* Allow the loading/unloading of a LaunchAgent
 * Keep updated list of OS versions, including future versions, that are accessible to plugins
+* Preference migration into OS X sandbox for Mail.
+* Ensures that Mail has been launched at least once to ensure that all the directories and such are there.
 
-The features provided are separated into 2 separate applications, a user facing app and a faceless app. In truth the faceless app (MailPluginTool), is not truly faceless as it does interact with the user, but it is a NSUIElement = 1 application. The feature split between the two apps should be obvious, but keep reading for more details.
+The features provided are separated into 2 separate applications, a user facing app and a faceless app. In truth the faceless app (MailPluginTool), is not truly faceless as it does interact with the user, but it is a `NSUIElement = 1` application. The feature split between the two apps should be obvious, but keep reading for more details.
 
-The tool application will be embedded inside of the manager application. When plugins call it this will be done using applescripts [defined below](#commands). A .h file will be available with **macros** defined for the calls to the tool. It's done this way in order to avoid namespace conflicts between plugins using this code. [A List](#macros) is provided in these docs so you can see what you can do.
+The tool application will be embedded inside of the manager application. When plugins call it this will be done using a file-based mechanism in order to be compatible with Mountain Lion and the sandbox [defined below](#commands). A .h file will be available with **macros** defined for the calls to the tool. It's done this way in order to avoid namespace conflicts between plugins using this code. [A List](#macros) is provided in these docs so you can see what you can do.
 
-This manager only supports Snow Leopard & Lion.
+This manager supports Snow Leopard, Lion & Mountain Lion.
 
 <a name="manager"></a>
 ### Mail Plugin Manager(MPM)
@@ -63,7 +66,7 @@ This interface is for the user to interact with and is the default mode when the
 
 ![Mail Bundle Manager Window][manager-window]
 
-I have tried to add as much information about the plugin as I can get from the plugin itself. There are ways to add more detailed information to the Info.plist file so that MPM can provide a better experience, but it's good to try to show something.
+I have tried to add as much information about the plugin as I can get from the plugin itself. There are ways to add more detailed information to the `Info.plist` file so that MPM can provide a better experience, but it's good to try to show something.
 
 The user can enable/disable, remove, update and change the domain of the plugin from this window. They can also click on the name to go to a product site and the company name to go to the company site.
 
@@ -71,7 +74,7 @@ The user can enable/disable, remove, update and change the domain of the plugin 
 <a name="tool"></a>
 ### MailPluginTool (MPT)
 
-All interacts with MPT are done using an applescript interface.
+All interacts with MPT are done using a file-based mechanism and the Tool is run as a LaunchAgent.
 
 It has the following main features:
 
@@ -130,6 +133,11 @@ This allows the calling bundle to get back a dictionary of information about the
 #### Get list of *past & future* compatibility information
 
 The tool will keep an updated version of a list of UUIDs that Mail and Message.framework have defined and supported for plugins to access, so they can actually test in *advance* if they will be compatible with an upcoming OS release. Or even just an OS release after the one the user has.
+
+<a name="launch-agent"></a>
+#### Load or Unload a LaunchAgent for a plugin
+
+The tool will install the `.plist` into the User's LaunchAgent folder `~/Library/LaunchAgents` and load it (or unload and delete the `.plist` file) for a plugin. This allows the plugin to install a helper that can run outside the sandbox in order to perform some capabilities that it might currently be limited from doing.
 
 
 <a name="manifest"></a>
@@ -243,19 +251,42 @@ These macros are the ones that you should call when the app launches to do updat
 
 You need to pass in the bundle for your plugin, so it can properly determine the bundle identifier and it's path.
 
+#### Managing a LaunchAgent
+
+These macros are to be used to create a LaunchAgent that the plugin might need to configure in order to perfomr some actions outside of the sandbox.
+
+		MPTInstallLaunchAgent(mptMailBundle, mptAgentConfig, mptReplaceExisting, mptResultBlock)
+		MPTRemoveLaunchAgent(mptMailBundle, mptAgentLabel, mptResultBlock)
+		
+The first argument is the bundle of your plugin, as with the macros above. The last argument is the block that you want to run to notify you of success or failure. It is optional – pass nil, if you don't care. It is defined as a `MPTLaunchResultBlock` and has been `typedef`'d like this:
+
+		typedef void(^MPTLaunchResultBlock)(NSError *);
+
+It takes the single argument which is an error. It is `nil` if successful and will contain a reasonable description of any issues incurred.
+
+For `MPTInstallLaunchAgent` the second argument is a `NSDictionary` with the contents of the LaunchAgent file you need to create. See [the launchd man page][launchd] for more information about the contents of this dictionary. The `mptReplaceExisting` argument is a `BOOL` to indicate if the Tool should remove an existing agent with the same Label and replace it.
+
+For `MPTRemoveLaunchAgent` the second argument is simply the Label for the service to remove. It should be the same as the one passed into the above macro in the `mptAgentConfig`.
+
+
 #### Handling Up To Date Sparkle Results
 
-These macros are to be used in conjunction with the Update "Now" macros from the above list and allow you to properly display a dialog telling the user that the current plugin is up to date. You have an option of a modal version or a sheet version (pass in the window to put the sheet on).
+These macros are to be used in conjunction with the Update "Now" macros from the above list and allow you to properly display a dialog telling the user that the current plugin is up to date. You have an option of a modal version or a sheet version (pass in the window to put the sheet on). An optional block can be passed as well, that will be run upon completion of checking for an update.
 
 		MPTPresentModalDialogWhenUpToDate(mptBundle)
-		MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow)
+		MPTPresentModalDialogWhenUpToDateWithBlock(mptBundle, mptFinishBlock)
+		MPTPresentDialogWhenUpToDateUsingWindow(mptBundle, mptSheetWindow, mptFinishBlock)
+
+The block argument is the block that you want to run when the results are returned. It is defined as a `MPTUpdateTestingCompleteBlock` and has been `typedef`'d like this:
+
+		typedef void(^MPTUpdateTestingCompleteBlock)(void);
 
 #### Notification Block Macros
 
 These macros allow you to get information back from MPT by having a block run which is passed a dictionary of the results.
 
-		MPTMailInformationForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
-		MPTUUIDListForBundleWithBlock(mbmMailBundle, mbmNotificationBlock)
+		MPTMailInformationForBundleWithBlock(mptMailBundle, mptNotificationBlock)
+		MPTUUIDListForBundleWithBlock(mptMailBundle, mptNotificationBlock)
 
 The first argument is the bundle of your plugin, as with the macros above. The second argument is the block that you want to run when the results are returned. It is defined as a `MPTResultNotificationBlock` and has been `typedef`'d like this:
 
@@ -351,6 +382,7 @@ The following values are used by the apps whenever a plugin is displayed to show
 * *Would be nice*
 * Add support for different domains in installation and uninstall.
 * Add an Update All Plugins button to Manager window when relevant.
+* Allow user to select destination for Manager application.
 
 #### Tool
 
@@ -387,10 +419,10 @@ You can use this software any way that you like, as long as you don't blame me f
 [json-php]: http://bg.php.net/manual/en/book.json.php
 
 <!-- images -->
-[install-1]: http://media.lksw.eu/mbm/Example_Install_1.png
-[install-2]: http://media.lksw.eu/mbm/Example_Install_2.png
-[install-3]: http://media.lksw.eu/mbm/Example_Install_3.png
-[install-4]: http://media.lksw.eu/mbm/Example_Install_4.png
-[manager-window]: http://media.lksw.eu/mbm/Mail_Bundle_Manager.png
-[single-notice]: http://media.lksw.eu/mbm/Single_Plugin_Notice.png
-[multi-notice]: http://media.lksw.eu/mbm/Multi_Plugin_Notice.png
+[install-1]: http://media.lksw.eu/mpm/Example_Install_1.png
+[install-2]: http://media.lksw.eu/mpm/Example_Install_2.png
+[install-3]: http://media.lksw.eu/mpm/Example_Install_3.png
+[install-4]: http://media.lksw.eu/mpm/Example_Install_4.png
+[manager-window]: http://media.lksw.eu/mpm/Mail_Bundle_Manager.png
+[single-notice]: http://media.lksw.eu/mpm/Single_Plugin_Notice.png
+[multi-notice]: http://media.lksw.eu/mpm/Multi_Plugin_Notice.png

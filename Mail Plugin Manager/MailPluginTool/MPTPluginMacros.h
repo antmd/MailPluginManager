@@ -14,7 +14,8 @@
 #define	MPT_MACRO_RELEASE(x)	[x release];
 #endif
 
-typedef void(^MPTResultNotificationBlock)(NSDictionary *);
+typedef void(^MPTResultNotificationBlock)(NSDictionary *infoResults);
+typedef void(^MPTLaunchResultBlock)(NSError *launchError);
 typedef void(^MPTUpdateTestingCompleteBlock)(void);
 
 #pragma mark Dictionary Keys
@@ -54,6 +55,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_UPDATE_TEXT							@"-update"
 #define MPT_CRASH_REPORTS_TEXT					@"-send-crash-reports"
 #define MPT_UPDATE_CRASH_REPORTS_TEXT			@"-update-and-crash-reports"
+#define MPT_INSTALL_LAUNCH_AGENT_TEXT			@"-add-launch-agent"
+#define MPT_REMOVE_LAUNCH_AGENT_TEXT			@"-del-launch-agent"
 #define MPT_FREQUENCY_OPTION					@"-freq"
 
 #pragma mark Internal Values
@@ -63,11 +66,17 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_BUNDLE_WILL_INSTALL_NOTIFICATION	[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPCBundleWillInstallDistNotification"]
 #define MPT_SYSTEM_INFO_NOTIFICATION			[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTSystemInfoDistNotification"]
 #define MPT_UUID_LIST_NOTIFICATION				[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDListDistNotification"]
+#define MPT_LAUNCHD_DONE_NOTIFICATION			[MPT_LKS_BUNDLE_START stringByAppendingString:@"MPTUUIDLaunchdDoneNotification"]
 #define MPT_TOOL_NAME							@"MailPluginTool"
 #define MPT_TOOL_IDENTIFIER						[MPT_LKS_BUNDLE_START stringByAppendingString:MPT_TOOL_NAME]
 #define MPT_MANAGER_IDENTIFIER					[MPT_LKS_BUNDLE_START stringByAppendingString:@"MailPluginManager"]
 #define MPT_APP_RESOURCES_PATH					@"Contents/Resources"
 #define MPT_APP_CODE_PATH						@"Contents/MacOS"
+
+#define MPT_LAUNCHD_ERROR_DOMAIN_NAME			@"LKLaunchAgentConfigurator"
+#define MPT_LAUNCHD_BAD_ARGUMENTS_ERROR_CODE	100
+#define MPT_LAUNCHD_INSTALL_FAILED_ERROR_CODE	101
+#define MPT_LAUNCHD_REMOVE_FAILED_ERROR_CODE	102
 
 #define MPT_MANAGER_APP_NAME					@"Mail Plugin Manager.app"
 #define MPT_MAIL_MPT_FOLDER_PATH				@"Mail/MPT"
@@ -75,7 +84,11 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_ACTION_KEY							@"action"
 #define MPT_PLUGIN_PATH_KEY						@"plugin-path"
 #define MPT_FREQUENCY_KEY						@"frequency"
-
+#define MPT_OTHER_VALUES_KEY					@"other-values"
+#define MPT_LAUNCHD_LABEL_KEY					@"label"
+#define MPT_LAUNCHD_CONFIG_DICT_KEY				@"launchd-config"
+#define MPT_REPLACE_LAUNCHD_KEY					@"replace-launchd-flag"
+#define MPT_LAUNCH_ERROR_KEY					@"launch-error"
 
 #pragma mark - Reused Macros
 
@@ -83,46 +96,46 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 	[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MAIL_MPT_FOLDER_PATH] stringByExpandingTildeInPath]
 
 #define MPTGetLikelyToolPath() \
-	NSFileManager	*manager = [NSFileManager defaultManager]; \
-	NSString		*pluginManagerPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MANAGER_APP_NAME]; \
-	if (![manager fileExistsAtPath:pluginManagerPath]) { \
-		pluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
+	NSFileManager	*mptManager = [NSFileManager defaultManager]; \
+	NSString		*mptPluginManagerPath = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByAppendingPathComponent:MPT_MANAGER_APP_NAME]; \
+	if (![mptManager fileExistsAtPath:mptPluginManagerPath]) { \
+		mptPluginManagerPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_MANAGER_IDENTIFIER]; \
 	} \
-	NSString		*pluginToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_TOOL_IDENTIFIER]; \
-	if ((pluginToolPath == nil) || ((pluginManagerPath != nil) && ![pluginToolPath hasPrefix:pluginManagerPath])) { \
+	NSString		*mptPluginToolPath = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:MPT_TOOL_IDENTIFIER]; \
+	if ((mptPluginToolPath == nil) || ((mptPluginManagerPath != nil) && ![mptPluginToolPath hasPrefix:mptPluginManagerPath])) { \
 		/*	See if we can get the tool path inside the managerPath	*/ \
-		NSString	*proposedPath = [pluginManagerPath stringByAppendingPathComponent:MPT_APP_RESOURCES_PATH]; \
-		proposedPath = [proposedPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", MPT_TOOL_NAME]]; \
-		if ((proposedPath != nil) && [[NSFileManager defaultManager] fileExistsAtPath:proposedPath]) { \
-			pluginToolPath = proposedPath; \
+		NSString	*mptProposedPath = [mptPluginManagerPath stringByAppendingPathComponent:MPT_APP_RESOURCES_PATH]; \
+		mptProposedPath = [mptProposedPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", MPT_TOOL_NAME]]; \
+		if ((mptProposedPath != nil) && [[NSFileManager defaultManager] fileExistsAtPath:mptProposedPath]) { \
+			mptPluginToolPath = mptProposedPath; \
 		} \
 	} \
+
 
 #define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptFrequency) \
 { \
 	if (mptMailBundle != nil) { \
 		MPTGetLikelyToolPath(); \
-		if (pluginToolPath != nil) { \
-			NSMutableDictionary	*performDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
-			[performDict setObject:mptCommand forKey:MPT_ACTION_KEY]; \
-			[performDict setObject:[mptMailBundle bundlePath] forKey:MPT_PLUGIN_PATH_KEY]; \
+		if (mptPluginToolPath != nil) { \
+			NSMutableDictionary	*mptPerformDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
+			[mptPerformDict setObject:mptCommand forKey:MPT_ACTION_KEY]; \
+			[mptPerformDict setObject:[mptMailBundle bundlePath] forKey:MPT_PLUGIN_PATH_KEY]; \
 			if ((mptFrequency != nil) && ![mptFrequency isEqualToString:@""]) { \
-				[performDict setObject:mptFrequency forKey:MPT_FREQUENCY_KEY]; \
+				[mptPerformDict setObject:mptFrequency forKey:MPT_FREQUENCY_KEY]; \
 			} \
-			NSString		*plistPath = MPTPerformFolderPath(); \
-			BOOL			isDir = NO; \
+			NSString		*mptPlistPath = MPTPerformFolderPath(); \
+			BOOL			mptIsDir = NO; \
 			/*	Ensure that we have a directory	*/ \
-			if (![manager fileExistsAtPath:plistPath isDirectory:&isDir] || !isDir) { \
-				if ([manager createDirectoryAtPath:plistPath withIntermediateDirectories:NO attributes:nil error:NULL]) { \
-					isDir = YES; \
+			if (![mptManager fileExistsAtPath:mptPlistPath isDirectory:&mptIsDir] || !mptIsDir) { \
+				if ([mptManager createDirectoryAtPath:mptPlistPath withIntermediateDirectories:NO attributes:nil error:NULL]) { \
+					mptIsDir = YES; \
 				} \
 			} \
 			/*	If we do, then try to create our file	*/ \
-			NSString	*fullFilePath = nil; \
-			if (isDir) { \
-				NSString	*tempfileName = [[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:MPT_PERFORM_ACTION_EXTENSION]; \
-				if ([performDict writeToFile:[plistPath stringByAppendingPathComponent:tempfileName] atomically:NO]) { \
-					fullFilePath = [plistPath stringByAppendingPathComponent:tempfileName]; \
+			if (mptIsDir) { \
+				NSString	*mptTempfileName = [[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:MPT_PERFORM_ACTION_EXTENSION]; \
+				if (![mptPerformDict writeToFile:[mptPlistPath stringByAppendingPathComponent:mptTempfileName] atomically:NO]) { \
+					NSLog(@"Unable to write the contents of the action file"); \
 				} \
 			} \
 			else { \
@@ -161,6 +174,73 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 	} \
 }
 
+
+#pragma mark LaunchD Configuration
+
+#define	MPTManageLaunchAgentWithBlock(mptCommand, mptMailBundle, mptOtherDict, mptResultBlock) \
+{ \
+	if (mptMailBundle != nil) { \
+		MPTGetLikelyToolPath(); \
+		if (mptPluginToolPath != nil) { \
+			NSMutableDictionary	*mptPerformDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
+			[mptPerformDict setObject:mptCommand forKey:MPT_ACTION_KEY]; \
+			[mptPerformDict setObject:[mptMailBundle bundlePath] forKey:MPT_PLUGIN_PATH_KEY]; \
+			[mptPerformDict setObject:mptOtherDict forKey:MPT_OTHER_VALUES_KEY]; \
+			NSString		*mptPlistPath = MPTPerformFolderPath(); \
+			BOOL			mptIsDir = NO; \
+			/*	Ensure that we have a directory	*/ \
+			if (![mptManager fileExistsAtPath:mptPlistPath isDirectory:&mptIsDir] || !mptIsDir) { \
+				if ([mptManager createDirectoryAtPath:mptPlistPath withIntermediateDirectories:NO attributes:nil error:NULL]) { \
+					mptIsDir = YES; \
+				} \
+			} \
+			/*	If we do, then try to create our file	*/ \
+			if (mptIsDir) { \
+				if (mptResultBlock != nil) { \
+					/*	Set up the notification watch	*/ \
+					NSOperationQueue	*mptQueue = [[NSOperationQueue alloc] init]; \
+					__block id mptObserver; \
+					mptObserver = [[NSDistributedNotificationCenter defaultCenter] addObserverForName:MPT_LAUNCHD_DONE_NOTIFICATION object:nil queue:mptQueue usingBlock:^(NSNotification *note) { \
+						/*	If this was aimed at us, then perform the block and remove the observer	*/ \
+						if ([[note object] isEqualToString:[mptMailBundle bundleIdentifier]]) { \
+							NSError	*mptLaunchError = nil; \
+							if ([note userInfo] != nil) { \
+								mptLaunchError = [[note userInfo] valueForKey:MPT_LAUNCH_ERROR_KEY]; \
+							} \
+							mptResultBlock(mptLaunchError); \
+							[[NSDistributedNotificationCenter defaultCenter] removeObserver:mptObserver]; \
+						} \
+					}]; \
+					/*	This will release the memeory in non-ARC environments	*/ \
+					MPT_MACRO_RELEASE(mptQueue); \
+				} \
+				NSString	*mptTempfileName = [[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:MPT_PERFORM_ACTION_EXTENSION]; \
+				if (![mptPerformDict writeToFile:[mptPlistPath stringByAppendingPathComponent:mptTempfileName] atomically:NO]) { \
+					NSLog(@"Unable to write the contents of the action file"); \
+				} \
+			} \
+			else { \
+				NSLog(@"Unable to create the action file, since the required folder doesn't exist and I can't create it"); \
+			} \
+		} \
+		else { \
+			NSLog(@"ERROR in MPTLaunchCommandForBundle() Macro: MailPluginTool application wasn't found anywhere"); \
+		} \
+	} \
+	else { \
+		NSLog(@"ERROR in MPTLaunchCommandForBundle() Macro: Cannot pass a nil bundle"); \
+	} \
+}
+
+
+#define MPTInstallLaunchAgent(mptMailBundle, mptAgentConfig, mptReplaceExisting, mptResultBlock)	MPTManageLaunchAgentWithBlock(MPT_INSTALL_LAUNCH_AGENT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObjectsAndKeys:mptAgentConfig, MPT_LAUNCHD_CONFIG_DICT_KEY, [NSNumber numberWithBool:mptReplaceExisting], MPT_REPLACE_LAUNCHD_KEY, nil]), mptResultBlock)
+
+
+#define	MPTRemoveLaunchAgent(mptMailBundle, mptAgentLabel, mptResultBlock)							MPTManageLaunchAgentWithBlock(MPT_REMOVE_LAUNCH_AGENT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObjectsAndKeys:mptAgentLabel, MPT_LAUNCHD_LABEL_KEY, nil]), mptResultBlock)
+
+
+
+#pragma mark Update Feedback Macros
 
 #define MPTClosePrefsWindowIfInstalling(mptBundle) \
 { \

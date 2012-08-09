@@ -92,7 +92,7 @@ typedef enum {
 	if (self.managing) {
 		
 		//	Ensure that the tool runs when files are created in it's folder
-		[self installToolWatchLaunchdConfig];
+		[self installToolWatchLaunchdConfigReplacingIfNeeded:NO];
 		
 		[self showCollectionWindowForBundles:[MPCMailBundle allMailBundlesLoadInfo]];
 		

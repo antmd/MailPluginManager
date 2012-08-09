@@ -106,7 +106,7 @@
 	[super applicationDidFinishLaunching:aNotification];
 	
 	//	Ensure that this tool is setup to load files when created
-	[self installToolWatchLaunchdConfig];
+	[self installToolWatchLaunchdConfigReplacingIfNeeded:NO];
 	
 	self.finalizeQueueRequiresExplicitRelease = NO;
 
@@ -191,6 +191,9 @@
 						[args addObject:kMPCCommandLineFrequencyOptionKey];
 						[args addObject:[self.performDictionary objectForKey:MPT_FREQUENCY_KEY]];
 					}
+					if ([self.performDictionary objectForKey:MPT_OTHER_VALUES_KEY] != nil) {
+						[args addObject:[self.performDictionary objectForKey:MPT_OTHER_VALUES_KEY]];
+					}
 					[self doAction:[self actionTypeForString:action] withArguments:args shouldFinish:NO];
 				}
 				
@@ -264,12 +267,40 @@
 	else if ([kMPCCommandLineValidateAllKey isEqualToString:action]) {
 		type = MPTActionValidateAll;
 	}
+	else if ([kMPCCommandLineInstallLaunchAgentKey isEqualToString:action]) {
+		type = MPTActionInstallLaunchAgent;
+	}
+	else if ([kMPCCommandLineRemoveLaunchAgentKey isEqualToString:action]) {
+		type = MPTActionRemoveLaunchAgent;
+	}
 	
 	return type;
 }
 
 
 #pragma mark - Action Methods
+
+- (void)handleLaunchAgentForBundle:(NSBundle *)bundle withArgs:(NSArray *)arguments block:(BOOL (^)(NSDictionary *otherValues))actionBlock {
+	
+	NSError		*error = nil;
+	if ([arguments count] > 1) {
+		NSDictionary	*otherValues = [arguments objectAtIndex:1];
+		if (!actionBlock(otherValues)) {
+			error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_INSTALL_FAILED_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not configure a launch agent properly for plugin with id '%@'", @"Error message indicating that a launch agent couldn't be configured for the plugin"), [bundle bundleIdentifier]] }];
+		}
+	}
+	else {
+		error = [NSError errorWithDomain:MPT_LAUNCHD_ERROR_DOMAIN_NAME code:MPT_LAUNCHD_BAD_ARGUMENTS_ERROR_CODE userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Invalid arguments passed to configure a launch agent: %@", @"Error message telling the caller that the arguments for the configure launch agent were not correct"), [bundle bundleIdentifier]] }];
+	}
+	NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
+	NSDictionary	*infoDict = nil;
+	if (error != nil) {
+		infoDict = @{ MPT_LAUNCH_ERROR_KEY : error };
+	}
+	[center postNotificationName:MPT_LAUNCHD_DONE_NOTIFICATION object:[bundle bundleIdentifier] userInfo:infoDict deliverImmediately:YES];
+
+}
+
 
 - (void)doAction:(MPTActionType)action withArguments:(NSArray *)arguments shouldFinish:(BOOL)shouldFinish {
 	
@@ -285,7 +316,7 @@
 			bundlePath = nil;
 		}
 	}
-	if ([arguments count] > 1) {
+	if ((action < MPTActionInstallLaunchAgent) && ([arguments count] > 1)) {
 		if ([[arguments objectAtIndex:1] isEqualToString:kMPCCommandLineFrequencyOptionKey]) {
 			NSString	*frequencyType = [arguments objectAtIndex:2];
 			if ([frequencyType isEqualToString:@"daily"]) {
@@ -367,6 +398,35 @@
 				[self addActivityTask:^{
 					NSDistributedNotificationCenter	*center = [NSDistributedNotificationCenter defaultCenter];
 					[center postNotificationName:kMPTUUIDListDistNotification object:mailBundle.identifier userInfo:[MPCUUIDList fullUUIDListFromBundle:mailBundle.bundle] deliverImmediately:YES];
+					if (shouldFinish) {
+						[self quittingNowIsReasonable];
+					}
+				}];
+				break;
+				
+			case MPTActionInstallLaunchAgent:
+				[self addActivityTask:^{
+					
+					[self handleLaunchAgentForBundle:mailBundle.bundle withArgs:arguments block:^BOOL(NSDictionary *otherValues) {
+						NSDictionary	*agentDict = [otherValues valueForKey:MPT_LAUNCHD_CONFIG_DICT_KEY];
+						BOOL			replaceAgent = [[otherValues valueForKey:MPT_REPLACE_LAUNCHD_KEY] boolValue];
+						return [self installLaunchAgentForConfig:agentDict replacingIfNeeded:replaceAgent];
+					}];
+					
+					if (shouldFinish) {
+						[self quittingNowIsReasonable];
+					}
+				}];
+				break;
+				
+			case MPTActionRemoveLaunchAgent:
+				[self addActivityTask:^{
+					
+					[self handleLaunchAgentForBundle:mailBundle.bundle withArgs:arguments block:^BOOL(NSDictionary *otherValues) {
+						NSString		*label = [otherValues valueForKey:MPT_LAUNCHD_LABEL_KEY];
+						return [self removeLaunchAgentForLabel:label];
+					}];
+					
 					if (shouldFinish) {
 						[self quittingNowIsReasonable];
 					}
