@@ -63,18 +63,18 @@
 		</dict>
 		<key>ca.indev</key>
 		<dict>
-			<key>New item - 3</key>
+			<key>ca.indev.MailTags</key>
 			<string>http://www.indev.ca/MailTags3.html</string>
-			<key>New item - 2</key>
+			<key>ca.indev.MailActOn</key>
 			<string>http://www.indev.ca/MailActOn.html</string>
-			<key>New item</key>
+			<key>ca.indev.MailPerspectives</key>
 			<string>http://www.indev.ca/MailPerspectives.html</string>
 			<key>name</key>
-			<string>indev</string>
+			<string>indev Software</string>
 		</dict>
 		<key>com.c-command</key>
 		<dict>
-			<key>New item</key>
+			<key>com.c-command.spamsieve.mailplugin</key>
 			<string>http://c-command.com/spamsieve/</string>
 			<key>name</key>
 			<string>C-Command Software</string>
