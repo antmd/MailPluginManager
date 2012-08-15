@@ -59,7 +59,7 @@
 			<key>earliest-os-version-display</key>
 			<string>10.8</string>
 			<key>latest-os-version-display</key>
-			<string>10.8</string>
+			<string>10.8.1</string>
 			<key>latest-version-comparator</key>
 			<integer>999999</integer>
 			<key>type</key>
@@ -96,7 +96,7 @@
 			<key>earliest-os-version-display</key>
 			<string>10.7.2</string>
 			<key>latest-os-version-display</key>
-			<string>10.8</string>
+			<string>10.8.1</string>
 			<key>latest-version-comparator</key>
 			<integer>999999</integer>
 			<key>type</key>
