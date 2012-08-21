@@ -554,6 +554,11 @@ typedef enum {
 
 - (BOOL)supportsSparkleUpdates {
 	
+	//	If the bundle id is nil, return NO
+	if (self.identifier == nil) {
+		return NO;
+	}
+	
 	NSString	*infoKey = [[self.bundle infoDictionary] valueForKey:@"SUFeedURL"];
 	NSString	*defaultsKey = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:self.identifier] valueForKey:@"SUFeedURL"];
 	
