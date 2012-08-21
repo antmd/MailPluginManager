@@ -525,9 +525,15 @@ typedef enum {
 	
 	//	Run the alert
 	__block NSInteger	result;
-	dispatch_sync(dispatch_get_main_queue(), ^{
+	//	If we are not on the main thread tohe make sure we are.
+	if ([NSThread currentThread] != [NSThread mainThread]){
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			result = [confirmAlert runModal];
+		});
+	}
+	else {
 		result = [confirmAlert runModal];
-	});
+	}
 	if (result == NSAlertDefaultReturn) {
 		self.installed = NO;
 	}
