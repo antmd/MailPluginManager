@@ -482,7 +482,8 @@
 	
 	//	Get values
 	NSFileManager	*manager = [NSFileManager defaultManager];
-	NSString		*fullPath = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME] stringByAppendingPathComponent:label] stringByAppendingPathExtension:kMPCPlistExtension];
+	NSString		*launchAgentFolderPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME];
+	NSString		*fullPath = [[launchAgentFolderPath stringByAppendingPathComponent:label] stringByAppendingPathExtension:kMPCPlistExtension];
 	
 	//	See if that label is already active we are done
 	if (!IsEmpty([self launchdConfigurationsWithPrefix:label])) {
@@ -514,6 +515,12 @@
 	//	If the file still exists, just leave
 	if ([manager fileExistsAtPath:fullPath]) {
 		return NO;
+	}
+	
+	//	Ensure that the LaunchAgent folder exists
+	NSError	*error;
+	if (![manager createDirectoryAtPath:launchAgentFolderPath withIntermediateDirectories:YES attributes:nil error:&error]) {
+		LKErr(@"Couldn't create the LaunchAgent folder:%@", [error localizedDescription]);
 	}
 	
 	//	Use the dictionary to write the file out using the constructed path
