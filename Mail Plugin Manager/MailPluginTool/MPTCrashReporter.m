@@ -117,13 +117,9 @@
 - (void)saveNewCrashReportDate {
 	//	Update the user defs for the plugin
 	NSMutableDictionary	*newDefaults = [[NSUserDefaults standardUserDefaults] mutableSandboxedDomainInMailForName:[self.bundle bundleIdentifier]];
-	if (newDefaults == nil) {
-		newDefaults = [[NSMutableDictionary alloc] initWithCapacity:1];
-	}
 	[newDefaults setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:kMPTLastReportDatePrefKey];
 	[[NSUserDefaults standardUserDefaults] setSandboxedDomain:newDefaults InMailForName:[self.bundle bundleIdentifier]];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-	[newDefaults release];
 }
 
 - (NSURL *)reportURL {
