@@ -835,6 +835,10 @@ typedef enum {
 		//	If the source version is not greater then just return yes and leave the existing one
 		if (!isSourceVersionGreater) {
 			LKWarn(@"Not actually copying the Bundle Manager since a recent version is already at destination");
+
+			//	Ensure that the Tool is setup correctly to be responsive
+			[AppDel installToolWatchLaunchdConfigReplacingIfNeeded:YES];
+			
 			return YES;
 		}
 	}

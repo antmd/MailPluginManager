@@ -14,6 +14,7 @@
 #import "NSString+LKHelper.h"
 #import "NSFileManager+LKAdditions.h"
 #import "NSObject+LKObject.h"
+#import "NSUserDefaults+MPCShared.h"
 
 #import "SUBasicUpdateDriver.h"
 
@@ -554,8 +555,13 @@ typedef enum {
 
 - (BOOL)supportsSparkleUpdates {
 	
+	//	If the bundle id is nil, return NO
+	if (self.identifier == nil) {
+		return NO;
+	}
+	
 	NSString	*infoKey = [[self.bundle infoDictionary] valueForKey:@"SUFeedURL"];
-	NSString	*defaultsKey = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:self.identifier] valueForKey:@"SUFeedURL"];
+	NSString	*defaultsKey = [[[NSUserDefaults standardUserDefaults] sandboxedDomainInMailForName:self.identifier] valueForKey:@"SUFeedURL"];
 	
 	return ((infoKey != nil) || (defaultsKey != nil));
 }
