@@ -14,4 +14,8 @@
 - (NSDictionary *)defaultsForMailBundle:(MPCMailBundle *)mailBundle;
 - (NSMutableDictionary *)mutableDefaultsForMailBundle:(MPCMailBundle *)mailBundle;
 - (void)setDefaults:(NSDictionary *)newValues forMailBundle:(MPCMailBundle *)mailBundle;
+
+- (NSDictionary *)sandboxedDomainInMailForName:(NSString *)domainName;
+- (NSMutableDictionary *)mutableSandboxedDomainInMailForName:(NSString *)domainName;
+- (void)setSandboxedDomain:(NSDictionary *)domainDict InMailForName:(NSString *)domainName;
 @end

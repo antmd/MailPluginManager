@@ -36,4 +36,54 @@
 	[changedDefaults release];
 }
 
+
+- (NSDictionary *)sandboxedDomainInMailForName:(NSString *)domainName {
+	
+	NSDictionary	*defs = [NSDictionary dictionary];
+	
+	//	Check to see if we are on ML or greater
+	if (IsMountainLionOrGreater()) {
+	
+		//	If so look for prefs in Mail's sandbox and read them in as a dict
+		NSFileManager	*manager = [[[NSFileManager alloc] init] autorelease];
+		NSString		*sandboxPrefsPath = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:[domainName stringByAppendingPathExtension:kMPCPlistExtension]];
+		
+		if ([manager fileExistsAtPath:sandboxPrefsPath]) {
+			//	Read in the file contents
+			defs = [NSDictionary dictionaryWithContentsOfFile:sandboxPrefsPath];
+		}
+		
+	}
+	//	Else use persistentDomainForName
+	else {
+		defs = [[NSUserDefaults standardUserDefaults] persistentDomainForName:domainName];
+	}
+	
+	return defs;
+}
+
+- (NSMutableDictionary *)mutableSandboxedDomainInMailForName:(NSString *)domainName {
+	return [[[self sandboxedDomainInMailForName:domainName] mutableCopy] autorelease];
+}
+
+- (void)setSandboxedDomain:(NSDictionary *)domainDict InMailForName:(NSString *)domainName {
+	
+	//	Check to see if we are on ML or greater
+	if (IsMountainLionOrGreater()) {
+		
+		//	If so set prefs in Mail's sandbox and write them in as a dict
+		NSString		*sandboxPrefsPath = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]] stringByAppendingPathComponent:kMPCPreferencesFolderName] stringByAppendingPathComponent:[domainName stringByAppendingPathExtension:kMPCPlistExtension]];
+		
+		if (![domainDict writeToFile:sandboxPrefsPath atomically:YES]) {
+			LKErr(@"Couldn't write the plugin prefs for '%@'", domainName);
+		}
+		
+	}
+	//	Else use setPersistentDomainForName
+	else {
+		[[NSUserDefaults standardUserDefaults] setPersistentDomain:domainDict forName:domainName];
+	}
+	
+}
+
 @end

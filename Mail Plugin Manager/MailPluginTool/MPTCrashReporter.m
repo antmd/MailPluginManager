@@ -9,6 +9,7 @@
 #import "MPTCrashReporter.h"
 #import "MPCSystemInfo.h"
 #import "JSONKit.h"
+#import "NSUserDefaults+MPCShared.h"
 
 @interface MPTCrashReport ()
 @property	(nonatomic, copy, readwrite)	NSString		*reportPath;
@@ -108,19 +109,19 @@
 - (NSDate *)lastCrashReportDate {
 	LKLog(@"Getting lastCrashReportDate for:%@", [self.bundle bundleIdentifier]);
 	
-	NSDictionary	*pluginDefaults = [[NSUserDefaults standardUserDefaults] persistentDomainForName:[self.bundle bundleIdentifier]];
+	NSDictionary	*pluginDefaults = [[NSUserDefaults standardUserDefaults] sandboxedDomainInMailForName:[self.bundle bundleIdentifier]];
 	NSTimeInterval	lastCrashReportInterval = [[pluginDefaults valueForKey:kMPTLastReportDatePrefKey] floatValue];
 	return [NSDate dateWithTimeIntervalSince1970:lastCrashReportInterval];
 }
 
 - (void)saveNewCrashReportDate {
 	//	Update the user defs for the plugin
-	NSMutableDictionary	*newDefaults = [[[NSUserDefaults standardUserDefaults] persistentDomainForName:[self.bundle bundleIdentifier]] mutableCopy];
+	NSMutableDictionary	*newDefaults = [[NSUserDefaults standardUserDefaults] mutableSandboxedDomainInMailForName:[self.bundle bundleIdentifier]];
 	if (newDefaults == nil) {
 		newDefaults = [[NSMutableDictionary alloc] initWithCapacity:1];
 	}
 	[newDefaults setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:kMPTLastReportDatePrefKey];
-	[[NSUserDefaults standardUserDefaults] setPersistentDomain:newDefaults forName:[self.bundle bundleIdentifier]];
+	[[NSUserDefaults standardUserDefaults] setSandboxedDomain:newDefaults InMailForName:[self.bundle bundleIdentifier]];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	[newDefaults release];
 }
