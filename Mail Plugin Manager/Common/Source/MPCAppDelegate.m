@@ -181,6 +181,9 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
 	LKLog(@"Activity Count:%d  Finalize Count:%d", [self.activityQueue operationCount], [self.finalizeQueue operationCount]);
 	if (([self.activityQueue operationCount] > 0) || ([self.finalizeQueue operationCount] > 0)) {
+		if ([self.activityQueue operationCount] == 0) {
+			[self finishApplication:nil];
+		}
 		return NSTerminateCancel;
 	}
 	return NSTerminateNow;
