@@ -23,6 +23,8 @@
 	MPCManifestModel	*_manifestModel;
 	
 	NSNumber			*_savedEnableAutoChecks;
+	
+	NSTimer				*_waitForOpenTimer;
 }
 
 
