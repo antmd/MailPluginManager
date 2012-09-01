@@ -564,6 +564,15 @@
 		return NO;
 	}
 	
+	//	Test to ensure that the path is not on a removable media
+	//	Determine if the install is running from the installation volume
+	NSArray		*removableMedia = [[NSWorkspace sharedWorkspace] mountedRemovableMedia];
+	for (NSString *aVolume in removableMedia) {
+		if ([pluginToolPath hasPrefix:aVolume]) {
+			return NO;
+		}
+	}
+	
 	//	Build the dictionary
 	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ] };
 	LKLog(@"dict:%@", watchDict);
