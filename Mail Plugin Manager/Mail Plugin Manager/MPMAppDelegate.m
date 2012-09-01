@@ -25,6 +25,9 @@ typedef enum {
 
 @interface MPMAppDelegate ()
 @property	(nonatomic, retain)	NSNumber		*savedEnableAutoChecks;
+@property	(nonatomic, retain)	NSTimer			*waitForOpenTimer;
+
+- (void)openOrManage;
 @end
 
 @implementation MPMAppDelegate
@@ -39,7 +42,7 @@ typedef enum {
 @synthesize singleBundlePath = _singleBundlePath;
 @synthesize manifestModel = _manifestModel;
 @synthesize savedEnableAutoChecks = _savedEnableAutoChecks;
-
+@synthesize waitForOpenTimer = _waitForOpenTimer;
 
 
 - (void)dealloc {
@@ -48,6 +51,7 @@ typedef enum {
 	self.singleBundlePath = nil;
 	self.manifestModel = nil;
 	self.savedEnableAutoChecks = nil;
+	self.waitForOpenTimer = nil;
 	
     [super dealloc];
 }
@@ -88,11 +92,17 @@ typedef enum {
 		//		[self ensureRunningBestVersion];
 	}
 	
+	self.waitForOpenTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(openOrManage) userInfo:nil repeats:NO];
+	
+}
+
+- (void)openOrManage {
+	
 	//	Then test to see if we should be showing the general management window
 	if (self.managing) {
 		
 		//	Ensure that the tool runs when files are created in it's folder
-		[self installToolWatchLaunchdConfigReplacingIfNeeded:NO];
+		[self installToolWatchLaunchdConfigReplacingIfNeeded:YES];
 		
 		[self showCollectionWindowForBundles:[MPCMailBundle allMailBundlesLoadInfo]];
 		
@@ -110,6 +120,7 @@ typedef enum {
 		self.currentController = controller;
 	}
 	
+	self.waitForOpenTimer = nil;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
