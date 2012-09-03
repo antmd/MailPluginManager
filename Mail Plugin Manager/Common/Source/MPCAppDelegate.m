@@ -483,6 +483,13 @@
 		return NO;
 	}
 	
+	//	Ensure that it has a session type of Aqua
+	if (IsEmpty([launchDict valueForKey:@"LimitLoadToSessionType"])) {
+		NSMutableDictionary	*changeDict = [[launchDict mutableCopy] autorelease];
+		[changeDict setObject:@"Aqua" forKey:@"LimitLoadToSessionType"];
+		launchDict = changeDict;
+	}
+	
 	//	Get values
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*launchAgentFolderPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME];
