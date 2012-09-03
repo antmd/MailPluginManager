@@ -1546,7 +1546,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.4.4;
+				VERSION_STRING = 1.4.4b1;
 			};
 			name = Debug;
 		};
@@ -1582,7 +1582,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.4.4;
+				VERSION_STRING = 1.4.4b1;
 			};
 			name = Release;
 		};
