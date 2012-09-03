@@ -105,8 +105,10 @@
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
-	//	Ensure that this tool is setup to load files when created
-	[self installToolWatchLaunchdConfigReplacingIfNeeded:YES];
+	//	Install the launchd tool, if it hasn't been done
+	[self addFinalizeTask:^{
+		[self installToolWatchLaunchdConfigReplacingIfNeeded:NO];
+	}];
 	
 	self.finalizeQueueRequiresExplicitRelease = NO;
 
