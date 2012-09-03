@@ -483,6 +483,13 @@
 		return NO;
 	}
 	
+	//	Ensure that it has a session type of Aqua
+	if (IsEmpty([launchDict valueForKey:@"LimitLoadToSessionType"])) {
+		NSMutableDictionary	*changeDict = [[launchDict mutableCopy] autorelease];
+		[changeDict setObject:@"Aqua" forKey:@"LimitLoadToSessionType"];
+		launchDict = changeDict;
+	}
+	
 	//	Get values
 	NSFileManager	*manager = [NSFileManager defaultManager];
 	NSString		*launchAgentFolderPath = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:LAUNCH_AGENT_FOLDER_NAME];
@@ -573,8 +580,24 @@
 		}
 	}
 	
+	//	If there is not already a config running, ensure that the watch path is empty of files
+	//		This prevents the setup from running old requests
+	NSString	*performFolderPath = MPTPerformFolderPath();
+	if (IsEmpty([self launchdConfigurationsWithPrefix:label])) {
+		NSFileManager	*manager = [[NSFileManager alloc] init];
+		NSError			*error;
+		for (NSString *file in [manager contentsOfDirectoryAtPath:performFolderPath error:NULL]) {
+			if ([file hasSuffix:MPT_PERFORM_ACTION_EXTENSION]) {
+				if (![manager removeItemAtPath:[performFolderPath stringByAppendingPathComponent:file] error:&error]) {
+					LKWarn(@"Could not delete perform file '%@'\nError:%@", [file lastPathComponent], error);
+				}
+			}
+		}
+		[manager release];
+	}
+	
 	//	Build the dictionary
-	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ MPTPerformFolderPath() ] };
+	NSDictionary	*watchDict = @{ @"Label" : label, @"KeepAlive" : @NO, @"ProgramArguments" : @[ pluginToolPath, kMPCCommandLineFileLoadKey ], @"QueueDirectories" : @[ performFolderPath ] };
 	LKLog(@"dict:%@", watchDict);
 	return [self addLaunchDDictionary:watchDict forLabel:label replace:replace];
 }

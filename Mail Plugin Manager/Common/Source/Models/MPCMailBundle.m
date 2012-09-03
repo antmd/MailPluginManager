@@ -334,6 +334,12 @@ typedef enum {
         // Initialization code here.
 		_bundle = [[NSBundle bundleWithPath:bundlePath] retain];
 		
+		//	Ensure that we can get an identifier for the bundle
+		if ([_bundle bundleIdentifier] == nil) {
+			[self release];
+			return nil;
+		}
+		
 		//	Get the localized name if there is one
 		NSString	*tempName = [[_bundle localizedInfoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
 		if (tempName == nil) {

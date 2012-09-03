@@ -105,8 +105,10 @@
 	//	Call our super
 	[super applicationDidFinishLaunching:aNotification];
 	
-	//	Ensure that this tool is setup to load files when created
-	[self installToolWatchLaunchdConfigReplacingIfNeeded:YES];
+	//	Install the launchd tool, if it hasn't been done
+	[self addFinalizeTask:^{
+		[self installToolWatchLaunchdConfigReplacingIfNeeded:NO];
+	}];
 	
 	self.finalizeQueueRequiresExplicitRelease = NO;
 
@@ -153,21 +155,24 @@
 		
 		LKLog(@"About to call Sparkle stuff");
 		
-		//	Test for an update quietly
-		SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
-		[managerUpdater resetUpdateCycle];
-		managerUpdater.delegate = self;
-		//	May need to save the state of this value and restore afterward
-		[self setupSparkleEnvironment];
-		
-		//	Report crashes for the manager app
-		[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle bundleWithPath:mpmPath]] autorelease]];
+		//	Ensure that the bundle gives a non-nil bundle id
+		if ([managerBundle bundleIdentifier] != nil) {
+			//	Test for an update quietly
+			SUUpdater	*managerUpdater = [SUUpdater updaterForBundle:managerBundle];
+			[managerUpdater resetUpdateCycle];
+			managerUpdater.delegate = self;
+			//	May need to save the state of this value and restore afterward
+			[self setupSparkleEnvironment];
+			
+			//	Report crashes for the manager app
+			[self addFinalizeOperation:[[[MPTReporterAsyncOperation alloc] initWithBundle:[NSBundle bundleWithPath:mpmPath]] autorelease]];
 
-		//	Run a background thread to see if we need to update this app, using the basic updater directly.
-		self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
-		self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver updater:managerUpdater] autorelease];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managerSparkleCompleted:) name:kMPCSUUpdateDriverAbortNotification object:self.updateDriver];
-		[self addFinalizeOperation:self.sparkleOperation];
+			//	Run a background thread to see if we need to update this app, using the basic updater directly.
+			self.updateDriver = [[[SUBasicUpdateDriver alloc] initWithUpdater:managerUpdater] autorelease];
+			self.sparkleOperation = [[[MPCSparkleAsyncOperation alloc] initWithUpdateDriver:self.updateDriver updater:managerUpdater] autorelease];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managerSparkleCompleted:) name:kMPCSUUpdateDriverAbortNotification object:self.updateDriver];
+			[self addFinalizeOperation:self.sparkleOperation];
+		}
 	}
 	
 	//	Find a file in the path and load it
