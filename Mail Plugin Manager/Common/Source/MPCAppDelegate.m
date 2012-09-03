@@ -588,8 +588,8 @@
 		NSError			*error;
 		for (NSString *file in [manager contentsOfDirectoryAtPath:performFolderPath error:NULL]) {
 			if ([file hasSuffix:MPT_PERFORM_ACTION_EXTENSION]) {
-				if (![manager removeItemAtPath:file error:&error]) {
-					LKWarn(@"Could not delete perform file '%@'", [file lastPathComponent]);
+				if (![manager removeItemAtPath:[performFolderPath stringByAppendingPathComponent:file] error:&error]) {
+					LKWarn(@"Could not delete perform file '%@'\nError:%@", [file lastPathComponent], error);
 				}
 			}
 		}
