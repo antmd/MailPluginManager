@@ -696,6 +696,7 @@
 			//	Throw this back onto the main queue
 			__block NSUInteger	mailResult;
 			dispatch_sync(dispatch_get_main_queue(), ^{
+				[NSApp activateIgnoringOtherApps:YES];
 				mailResult = [quitMailAlert runModal];
 			});
 			

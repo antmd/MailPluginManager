@@ -4,6 +4,19 @@
 <dict>
 	<key>contents</key>
 	<dict>
+		<key>064442B6-53C0-4A97-B71B-2F111AE4195B</key>
+		<dict>
+			<key>earliest-os-version-display</key>
+			<string>10.6.5</string>
+			<key>latest-os-version-display</key>
+			<string>10.6.6</string>
+			<key>latest-version-comparator</key>
+			<string>96</string>
+			<key>type</key>
+			<string>mail</string>
+			<key>type-version-display</key>
+			<string>4.6</string>
+		</dict>
 		<key>1146A009-E373-4DB6-AB4D-47E59A7E50FD</key>
 		<dict>
 			<key>earliest-os-version-display</key>
@@ -16,6 +29,17 @@
 			<string>message</string>
 			<key>type-version-display</key>
 			<string>5.0</string>
+		</dict>
+		<key>1C58722D-AFBD-464E-81BB-0E05C108BE06</key>
+		<dict>
+			<key>earliest-os-version-display</key>
+			<string>10.6.7</string>
+			<key>latest-os-version-display</key>
+			<string>10.6.8</string>
+			<key>latest-version-comparator</key>
+			<string>89</string>
+			<key>type</key>
+			<string>message</string>
 		</dict>
 		<key>2DE49D65-B49E-4303-A280-8448872EFE87</key>
 		<dict>
@@ -33,9 +57,9 @@
 		<key>36555EB0-53A7-4B29-9B84-6C0C6BACFC23</key>
 		<dict>
 			<key>earliest-os-version-display</key>
-			<string>10.6.7</string>
+			<string>10.6.6</string>
 			<key>latest-os-version-display</key>
-			<string>10.6.8</string>
+			<string>10.6.7</string>
 			<key>latest-version-comparator</key>
 			<integer>95</integer>
 			<key>type</key>
@@ -53,6 +77,19 @@
 			<string>mail</string>
 			<key>type-version-display</key>
 			<string>5.2</string>
+		</dict>
+		<key>588FF7D1-4310-4175-9980-145B7E975C02</key>
+		<dict>
+			<key>earliest-os-version-display</key>
+			<string>10.6.5</string>
+			<key>latest-os-version-display</key>
+			<string>10.6.6</string>
+			<key>latest-version-comparator</key>
+			<string>96</string>
+			<key>type</key>
+			<string>message</string>
+			<key>type-version-display</key>
+			<string>4.6</string>
 		</dict>
 		<key>608CE00F-4576-4CAD-B362-F3CCB7DE8D67</key>
 		<dict>
@@ -80,6 +117,17 @@
 			<key>type-version-display</key>
 			<string>5.1</string>
 		</dict>
+		<key>857A142A-AB81-4D99-BECC-D1B55A86D94E</key>
+		<dict>
+			<key>earliest-os-version-display</key>
+			<string>10.6.5</string>
+			<key>latest-os-version-display</key>
+			<string>10.6.7</string>
+			<key>latest-version-comparator</key>
+			<string>88</string>
+			<key>type</key>
+			<string>message</string>
+		</dict>
 		<key>9049EF7D-5873-4F54-A447-51D722009310</key>
 		<dict>
 			<key>earliest-os-version-display</key>
@@ -90,6 +138,19 @@
 			<integer>95</integer>
 			<key>type</key>
 			<string>mail</string>
+		</dict>
+		<key>BDD81F4D-6881-4A8D-94A7-E67410089EEB</key>
+		<dict>
+			<key>earliest-os-version-display</key>
+			<string>10.6.5</string>
+			<key>latest-os-version-display</key>
+			<string>10.6.6</string>
+			<key>latest-version-comparator</key>
+			<integer>88</integer>
+			<key>type</key>
+			<string>mail</string>
+			<key>type-version-display</key>
+			<string>4.5</string>
 		</dict>
 		<key>EF59EC5E-EFCD-4EA7-B617-6C5708397D24</key>
 		<dict>
