@@ -11,7 +11,7 @@
 			<key>latest-os-version-display</key>
 			<string>10.6.6</string>
 			<key>latest-version-comparator</key>
-			<string>96</string>
+			<integer>96</integer>
 			<key>type</key>
 			<string>mail</string>
 			<key>type-version-display</key>
@@ -37,7 +37,7 @@
 			<key>latest-os-version-display</key>
 			<string>10.6.8</string>
 			<key>latest-version-comparator</key>
-			<string>89</string>
+			<integer>89</integer>
 			<key>type</key>
 			<string>message</string>
 		</dict>
@@ -85,7 +85,7 @@
 			<key>latest-os-version-display</key>
 			<string>10.6.6</string>
 			<key>latest-version-comparator</key>
-			<string>96</string>
+			<integer>96</integer>
 			<key>type</key>
 			<string>message</string>
 			<key>type-version-display</key>
@@ -124,7 +124,7 @@
 			<key>latest-os-version-display</key>
 			<string>10.6.7</string>
 			<key>latest-version-comparator</key>
-			<string>88</string>
+			<integer>88</integer>
 			<key>type</key>
 			<string>message</string>
 		</dict>
@@ -167,6 +167,6 @@
 		</dict>
 	</dict>
 	<key>date</key>
-	<date>2012-08-15T12:55:00Z</date>
+	<date>2012-09-24T12:55:00Z</date>
 </dict>
 </plist>
