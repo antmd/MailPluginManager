@@ -16,7 +16,7 @@ export MY_UUID_REPO="$MY_TOP_LEVEL/$MY_UUID_REPO_NAME"
 export MY_REMOTE_FOLDER="$MY_TOP_LEVEL/Remote"
 export MY_CURRENT_FILE="UUIDDefinitions.current.plist"
 export MY_NEW_FILE="UUIDDefinitions.new.plist"
-export MY_UUID_FILE="uuid.plist"
+export MY_UUID_FILE="uuids.plist"
 
 #	Go into the MailMessagesUUIDs folder and ensure that it is up-to-date
 if [ ! -d "$MY_UUID_REPO" ]; then
