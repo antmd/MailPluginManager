@@ -395,7 +395,7 @@
 		D23D316D1444DD7A007D30F8 /* MPCSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCSystemInfo.m; sourceTree = "<group>"; };
 		D23D31701445B979007D30F8 /* NSUserDefaults+MPCShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MPCShared.h"; sourceTree = "<group>"; };
 		D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MPCShared.m"; sourceTree = "<group>"; };
-		D23EA64E164AAF3700094DE3 /* UpdateUUIDFile.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = UpdateUUIDFile.sh; path = Common/UpdateUUIDFile.sh; sourceTree = "<group>"; };
+		D23EA64E164AAF3700094DE3 /* UpdateUUIDFile.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = UpdateUUIDFile.sh; path = Common/UUIDWorkspace/UpdateUUIDFile.sh; sourceTree = "<group>"; };
 		D24248A4148E515700DE7E6A /* MPCConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConstantsList.h; path = Common/MPCConstantsList.h; sourceTree = "<group>"; };
 		D2487F28150579E90064C1AE /* MPCRestartAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCRestartAsyncOperation.h; path = Common/Source/MPCRestartAsyncOperation.h; sourceTree = "<group>"; };
 		D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCRestartAsyncOperation.m; path = Common/Source/MPCRestartAsyncOperation.m; sourceTree = "<group>"; };
