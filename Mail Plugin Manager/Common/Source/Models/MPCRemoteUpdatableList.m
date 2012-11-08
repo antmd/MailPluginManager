@@ -67,12 +67,12 @@
 		NSDate	*localDate = [[NSDictionary dictionaryWithContentsOfFile:localFilePath] valueForKey:DATE_KEY];
 		
 		//	If the remote contents are newer than ours, save it
-		if ([remoteDate laterDate:localDate]) {
+		if ([remoteDate compare:localDate] == NSOrderedDescending) {
 			[remoteContents writeToFile:localFilePath atomically:NO]; 
 		}
 		
 		//	Note that we have loaded this file in the user defaults
-		NSMutableDictionary	*changedDefaults = [defaults mutableCopy];
+		NSMutableDictionary	*changedDefaults = (defaults!=nil?[defaults mutableCopy]:[[NSMutableDictionary alloc]initWithCapacity:1]);
 		[changedDefaults setObject:[NSDate date] forKey:[theURL absoluteString]];
 		[[NSUserDefaults standardUserDefaults] setPersistentDomain:changedDefaults forName:kMPCUserDefaultSharedDomainName];
 		[changedDefaults release];
