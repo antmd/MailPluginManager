@@ -911,7 +911,7 @@
 /* Begin PBXLegacyTarget section */
 		D23EA624164AABBB00094DE3 /* UUID Information */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"$(PROJECT_DIR)/Common/UpdateUUIDFile.sh\" $(ACTION)";
+			buildArgumentsString = "\"$(PROJECT_DIR)/Common/UUIDWorkspace/UpdateUUIDFile.sh\" $(ACTION)";
 			buildConfigurationList = D23EA62D164AABBB00094DE3 /* Build configuration list for PBXLegacyTarget "UUID Information" */;
 			buildPhases = (
 			);
