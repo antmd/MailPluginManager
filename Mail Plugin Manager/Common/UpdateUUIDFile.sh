@@ -65,6 +65,12 @@ fi
 #	Move the new version with date into the Remote folder over the existing one
 if [ -f "$MY_UUID_FILE" ]; then
 	echo "Replacing uuid file in the Remote folder"
-#	mv -f "$MY_UUID_FILE" "$MY_REMOTE_FOLDER/$MY_UUID_FILE"
+	mv -f "$MY_UUID_FILE" "$MY_REMOTE_FOLDER/$MY_UUID_FILE"
+	exit 0
+fi
+
+echo "The uuid file was already up to date"
+if [ -f "$MY_NEW_FILE" ]; then
+	rm "$MY_NEW_FILE"
 fi
 
