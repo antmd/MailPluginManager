@@ -388,6 +388,7 @@
 		D23D316D1444DD7A007D30F8 /* MPCSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCSystemInfo.m; sourceTree = "<group>"; };
 		D23D31701445B979007D30F8 /* NSUserDefaults+MPCShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MPCShared.h"; sourceTree = "<group>"; };
 		D23D31711445B979007D30F8 /* NSUserDefaults+MPCShared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MPCShared.m"; sourceTree = "<group>"; };
+		D23EA64E164AAF3700094DE3 /* UpdateUUIDFile.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = UpdateUUIDFile.sh; path = Common/UpdateUUIDFile.sh; sourceTree = "<group>"; };
 		D24248A4148E515700DE7E6A /* MPCConstantsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCConstantsList.h; path = Common/MPCConstantsList.h; sourceTree = "<group>"; };
 		D2487F28150579E90064C1AE /* MPCRestartAsyncOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCRestartAsyncOperation.h; path = Common/Source/MPCRestartAsyncOperation.h; sourceTree = "<group>"; };
 		D2487F29150579E90064C1AE /* MPCRestartAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCRestartAsyncOperation.m; path = Common/Source/MPCRestartAsyncOperation.m; sourceTree = "<group>"; };
@@ -784,6 +785,7 @@
 				D231F44F1428F035002DB999 /* README.markdown */,
 				D231F44E1428EE7B002DB999 /* LKInclude.pch */,
 				D2E9029F141E643F0058618F /* lk-warnings.xcconfig */,
+				D23EA64E164AAF3700094DE3 /* UpdateUUIDFile.sh */,
 			);
 			name = Project;
 			sourceTree = "<group>";
@@ -899,6 +901,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXLegacyTarget section */
+		D23EA624164AABBB00094DE3 /* BuildUUIDs */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "\"$(PROJECT_DIR)/Common/UpdateUUIDFile.sh\" $(ACTION)";
+			buildConfigurationList = D23EA62D164AABBB00094DE3 /* Build configuration list for PBXLegacyTarget "BuildUUIDs" */;
+			buildPhases = (
+			);
+			buildToolPath = /bin/sh;
+			buildWorkingDirectory = "";
+			dependencies = (
+			);
+			name = BuildUUIDs;
+			passBuildSettingsInEnvironment = 1;
+			productName = BuildUUIDs;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		D216B339141DFDE1003788DC /* Mail Plugin Manager */ = {
 			isa = PBXNativeTarget;
@@ -1006,7 +1025,7 @@
 		D216B331141DFDE1003788DC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Little Known Software";
 			};
 			buildConfigurationList = D216B334141DFDE1003788DC /* Build configuration list for PBXProject "Mail Plugin Manager" */;
@@ -1037,6 +1056,7 @@
 				D216B35A141DFDE2003788DC /* Mail Plugin ManagerTests */,
 				D22CC052146BD87F0055CFBE /* ToolTestHarness */,
 				D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */,
+				D23EA624164AABBB00094DE3 /* BuildUUIDs */,
 			);
 		};
 /* End PBXProject section */
@@ -1519,7 +1539,6 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				BUILD_NUMBER = 17;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../InfusionSoft/Sidebar for Infusionsoft/Sidebar for Infusionsoft/External\"",
@@ -1558,7 +1577,6 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				BUILD_NUMBER = 17;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1589,6 +1607,7 @@
 		D216B36D141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed-test/mpm";
@@ -1599,6 +1618,7 @@
 		D216B36E141DFDE2003788DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://littleknownsoftware.com/feed/mpm";
@@ -1611,6 +1631,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Plugin Manager.app/Contents/MacOS/Mail Plugin Manager";
 				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
@@ -1628,6 +1649,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Plugin Manager.app/Contents/MacOS/Mail Plugin Manager";
 				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
@@ -1644,6 +1666,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
 				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1655,6 +1678,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = "ToolTestHarness/ToolTestHarness-Prefix.pch";
 				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1662,9 +1686,52 @@
 			};
 			name = Release;
 		};
+		D23EA62E164AABBB00094DE3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D23EA62F164AABBB00094DE3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		D2558A4515A62DFD0046E683 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
 				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1675,6 +1742,7 @@
 		D2558A4615A62DFD0046E683 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
 				INFOPLIST_FILE = "MailPluginRelaunch/MailPluginRelaunch-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1685,6 +1753,7 @@
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,
@@ -1698,6 +1767,7 @@
 		D2779BD714336287003F7BE0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					MB_TOOL,
@@ -1743,6 +1813,15 @@
 			buildConfigurations = (
 				D22CC069146BD8800055CFBE /* Debug */,
 				D22CC06A146BD8800055CFBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D23EA62D164AABBB00094DE3 /* Build configuration list for PBXLegacyTarget "BuildUUIDs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D23EA62E164AABBB00094DE3 /* Debug */,
+				D23EA62F164AABBB00094DE3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
