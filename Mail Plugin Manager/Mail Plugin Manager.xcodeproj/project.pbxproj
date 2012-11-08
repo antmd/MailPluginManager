@@ -220,6 +220,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Sparkle;
 		};
+		D23EA655164C2F6600094DE3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D23EA624164AABBB00094DE3;
+			remoteInfo = "UUID Information";
+		};
 		D24AF645147D177A000EDC6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D216B331141DFDE1003788DC /* Project object */;
@@ -902,17 +909,17 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		D23EA624164AABBB00094DE3 /* BuildUUIDs */ = {
+		D23EA624164AABBB00094DE3 /* UUID Information */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "\"$(PROJECT_DIR)/Common/UpdateUUIDFile.sh\" $(ACTION)";
-			buildConfigurationList = D23EA62D164AABBB00094DE3 /* Build configuration list for PBXLegacyTarget "BuildUUIDs" */;
+			buildConfigurationList = D23EA62D164AABBB00094DE3 /* Build configuration list for PBXLegacyTarget "UUID Information" */;
 			buildPhases = (
 			);
 			buildToolPath = /bin/sh;
 			buildWorkingDirectory = "";
 			dependencies = (
 			);
-			name = BuildUUIDs;
+			name = "UUID Information";
 			passBuildSettingsInEnvironment = 1;
 			productName = BuildUUIDs;
 		};
@@ -1013,6 +1020,7 @@
 			dependencies = (
 				D221E9AE15004A5800568952 /* PBXTargetDependency */,
 				D2558A4815A636560046E683 /* PBXTargetDependency */,
+				D23EA656164C2F6600094DE3 /* PBXTargetDependency */,
 			);
 			name = MailPluginTool;
 			productName = MailPluginTool;
@@ -1056,7 +1064,7 @@
 				D216B35A141DFDE2003788DC /* Mail Plugin ManagerTests */,
 				D22CC052146BD87F0055CFBE /* ToolTestHarness */,
 				D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */,
-				D23EA624164AABBB00094DE3 /* BuildUUIDs */,
+				D23EA624164AABBB00094DE3 /* UUID Information */,
 			);
 		};
 /* End PBXProject section */
@@ -1375,6 +1383,11 @@
 			isa = PBXTargetDependency;
 			name = Sparkle;
 			targetProxy = D221E9AD15004A5800568952 /* PBXContainerItemProxy */;
+		};
+		D23EA656164C2F6600094DE3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D23EA624164AABBB00094DE3 /* UUID Information */;
+			targetProxy = D23EA655164C2F6600094DE3 /* PBXContainerItemProxy */;
 		};
 		D24AF646147D177A000EDC6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1817,7 +1830,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D23EA62D164AABBB00094DE3 /* Build configuration list for PBXLegacyTarget "BuildUUIDs" */ = {
+		D23EA62D164AABBB00094DE3 /* Build configuration list for PBXLegacyTarget "UUID Information" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D23EA62E164AABBB00094DE3 /* Debug */,
