@@ -7,6 +7,11 @@
 #  Copyright (c) 2012 Little Known Software. All rights reserved.
 
 
+#	Ignore if we are cleaning
+if [ $ACTION = "clean" ]; then
+	exit 0
+fi
+
 #	Set the locations
 export MY_TOP_LEVEL="$SRCROOT/.."
 export MY_COMMON_FOLDER="$SRCROOT/Common"
