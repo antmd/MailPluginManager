@@ -43,7 +43,7 @@ git pull
 
 
 #	Run the script there that generates the UUID file
-/usr/bin/osascript "ProcessMailMessageInfo.applescript"
+/usr/bin/osascript "ProcessMailMessageInfo.applescript" "-def"
 
 
 #	Go back to where we store the current uuid copy and create hashes for both
