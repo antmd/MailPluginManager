@@ -8,7 +8,7 @@
 
 
 #	Ignore if we are cleaning
-if [ $ACTION = "clean" ]; then
+if [ -z $ACTION || $ACTION = "clean" ]; then
 	exit 0
 fi
 
