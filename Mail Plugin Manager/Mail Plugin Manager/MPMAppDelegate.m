@@ -92,7 +92,7 @@ typedef enum {
 		//		[self ensureRunningBestVersion];
 	}
 	
-	self.waitForOpenTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(openOrManage) userInfo:nil repeats:NO];
+	self.waitForOpenTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(openOrManage) userInfo:nil repeats:NO];
 	
 }
 
