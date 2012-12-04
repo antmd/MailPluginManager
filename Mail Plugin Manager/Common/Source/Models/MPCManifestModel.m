@@ -36,6 +36,7 @@
 @synthesize bundleManager = _bundleManager;
 @synthesize confirmationStepList = _confirmationStepList;
 @synthesize actionItemList = _actionItemList;
+@synthesize launchItemList = _launchItemList;
 @synthesize totalActionItemCount = _totalActionItemCount;
 @synthesize confirmationStepCount = _confirmationStepCount;
 @synthesize canDeleteManagerIfNotUsedByOthers = _canDeleteManagerIfNotUsedByOthers;
@@ -74,6 +75,7 @@
 		NSDictionary	*manifestDict = [NSDictionary dictionaryWithContentsOfFile:manifestPath];
 		NSArray			*actionItems = [manifestDict valueForKey:kMPCActionItemsKey];
 		NSArray			*confirmationSteps = [manifestDict valueForKey:kMPCConfirmationStepsKey];
+		NSArray			*launchItems = [manifestDict valueForKey:kMPCLaunchItemsKey];
 		NSMutableArray	*newItems = nil;
 		
 		//	Set the manifest type first
@@ -121,6 +123,9 @@
 				break;
 			}
 		}
+		
+		//	Store the launchItems, if there are any
+		_launchItemList = [launchItems retain];
 		
 		
 		//	See if there are any version requirements - set defaults first
