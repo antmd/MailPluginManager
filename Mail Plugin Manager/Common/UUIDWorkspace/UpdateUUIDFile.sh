@@ -6,11 +6,16 @@
 #  Created by Scott Little on 7/11/12.
 #  Copyright (c) 2012 Little Known Software. All rights reserved.
 
+echo $ACTION
 
 #	Ignore if we are cleaning
-if [ -z $ACTION || $ACTION = "clean" ]; then
-	exit 0
+if [ -n $ACTION ]; then
+	if [ $ACTION = "clean" ]; then
+		exit 0
+	fi
 fi
+
+echo "We are here"
 
 #	Set the locations
 export MY_TOP_LEVEL="$SRCROOT/.."
