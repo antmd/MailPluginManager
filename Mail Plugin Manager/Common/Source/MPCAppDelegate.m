@@ -395,7 +395,7 @@
 	return [NSDictionary dictionaryWithDictionary:myConfigs];
 }
 
-- (BOOL)runLaunchControlWithCommand:(NSString *)command andPath:(NSString *)filePath {
+- (BOOL)runLaunchControlWithCommand:(NSString *)command andPath:(NSString *)filePath force:(BOOL)shoudForce {
 	
 	//	Then call launchctl to load it
 	//	Get the list of my configs
@@ -451,7 +451,7 @@
 	}
 	
 	//	Then call launchctl to load it and return the results
-	return [self runLaunchControlWithCommand:@"load" andPath:filePath];
+	return [self runLaunchControlWithCommand:@"load" andPath:filePath force:YES];
 }
 
 - (BOOL)unloadLaunchControlAtPath:(NSString *)filePath {
@@ -473,7 +473,7 @@
 	}
 	
 	//	Then call launchctl to unload it and return the results
-	return [self runLaunchControlWithCommand:@"unload" andPath:filePath];
+	return [self runLaunchControlWithCommand:@"unload" andPath:filePath force:NO];
 }
 
 - (BOOL)addLaunchDDictionary:(NSDictionary *)launchDict forLabel:(NSString *)label replace:(BOOL)replace {

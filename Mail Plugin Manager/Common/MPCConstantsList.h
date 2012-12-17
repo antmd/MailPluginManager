@@ -57,12 +57,14 @@ STR_CONST(kMPCDescriptionKey, "description");
 STR_CONST(kMPCPermissionsKey, "permissions-needed");
 STR_CONST(kMPCIsBundleManagerKey, "is-bundle-manager");
 STR_CONST(kMPCUserCanChooseDomainKey, "user-can-choose-domain");
-//	Keys for the action items and sub objects
+//	Keys for the confirmation items and sub objects
 STR_CONST(kMPCConfirmationStepsKey, "confirmation-steps");
 STR_CONST(kMPCConfirmationTitleKey, "title");
 STR_CONST(kMPCConfirmationBulletTitleKey, "bullet-title");
 STR_CONST(kMPCConfirmationShouldAgreeToLicense, "license-agreement-required");
 STR_CONST(kMPCConfirmationTypeKey, "type");
+//	Keys for the launch items and sub objects
+STR_CONST(kMPCLaunchItemsKey, "launch-items");
 //	Other error keys
 STR_CONST(kMPCErrorKey, "mpc-error");
 

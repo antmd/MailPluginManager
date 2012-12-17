@@ -50,6 +50,7 @@ typedef enum {
 - (BOOL)processAllItems;
 - (BOOL)processItems;
 - (BOOL)processBundleManager;
+- (BOOL)processLaunchItems;
 - (BOOL)validateRequirements;
 - (BOOL)installBundleManager;
 - (BOOL)installItem:(MPCActionItem *)anItem;
@@ -671,6 +672,9 @@ typedef enum {
 
 - (BOOL)processItems {
 	
+	//	Handle launch items (ignore the result for now)
+	[self processLaunchItems];
+	
 	//	Install each one
 	for (MPCActionItem *anItem in self.manifestModel.actionItemList) {
 		if (self.manifestModel.manifestType == kMPCManifestTypeInstallation) {
@@ -685,6 +689,18 @@ typedef enum {
 		}
 	}
 	
+	return YES;
+}
+
+- (BOOL)processLaunchItems {
+
+	//	If we are doing an uninstall then, remove any launch items requested
+	if (self.manifestModel.manifestType == kMPCManifestTypeUninstallation) {
+		for (NSString *launchAgentLabel in self.manifestModel.launchItemList) {
+			//	Try to unload that launch agent and delete the file
+			[AppDel removeLaunchAgentForLabel:launchAgentLabel];
+		}
+	}
 	return YES;
 }
 
