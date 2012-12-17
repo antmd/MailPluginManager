@@ -1550,7 +1550,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 17;
+				BUILD_NUMBER = 18;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1578,7 +1578,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.4.4;
+				VERSION_STRING = 1.4.5;
 			};
 			name = Debug;
 		};
@@ -1588,7 +1588,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 17;
+				BUILD_NUMBER = 18;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1613,7 +1613,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.4.4;
+				VERSION_STRING = 1.4.5;
 			};
 			name = Release;
 		};
