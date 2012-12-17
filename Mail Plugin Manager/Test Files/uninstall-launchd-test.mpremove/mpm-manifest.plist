@@ -17,8 +17,6 @@
 	</array>
 	<key>background-image-path</key>
 	<string>image.png</string>
-	<key>com.littleknownsoftware.MyTest1</key>
-	<string></string>
 	<key>confirmation-steps</key>
 	<array>
 		<dict>
@@ -43,7 +41,9 @@
 	<key>display-name</key>
 	<string>ExamplePlugin</string>
 	<key>launch-items</key>
-	<array/>
+	<array>
+		<string>com.littleknownsoftware.MyTest1</string>
+	</array>
 	<key>manifest-type</key>
 	<string>uninstall</string>
 </dict>
