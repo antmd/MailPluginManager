@@ -36,7 +36,7 @@
 //	MPTUninstallForBundle(mailBundle);
 	
 //	MPTUpdateAndSendReportsForBundleNow(mailBundle);
-	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Sidebar for Infusionsoft.mailbundle"];
+	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/FusionSide.mailbundle"];
 //	MPTCheckForUpdatesForBundle(sisBundle);
 //	MPTUninstallForBundle(sisBundle);
 	MPTSendCrashReportsForBundle(sisBundle);
