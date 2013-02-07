@@ -46,7 +46,6 @@
 - (void)unarchiverDidFail:(SUUnarchiver *)ua;
 - (void)failedToApplyDeltaUpdate;
 
-- (void)installWithToolAndRelaunch:(BOOL)relaunch;
 - (void)installerForHost:(SUHost *)host failedWithError:(NSError *)error;
 
 - (void)installWithToolAndRelaunch:(BOOL)relaunch;
