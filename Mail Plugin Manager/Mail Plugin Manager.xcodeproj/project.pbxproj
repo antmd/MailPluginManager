@@ -1554,7 +1554,6 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../InfusionSoft/FusionSide/FusionSide/External\"",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
 					"\"$(SRCROOT)/Common\"",
 				);
@@ -1593,7 +1592,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../InfusionSoft/FusionSide/FusionSide/External\"",
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
 					"\"$(SRCROOT)/Common\"",
 				);
