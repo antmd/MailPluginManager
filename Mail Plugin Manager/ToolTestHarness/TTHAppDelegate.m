@@ -24,6 +24,7 @@
 	};
 	
 	NSBundle *mailBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/ExamplePlugin.mailbundle"];
+	NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
 
 //	MPTCallToolCommandForBundleWithBlock2(MPT_SEND_MAIL_INFO_TEXT, mailBundle, myBlock);
 //	MPTCallToolCommandForBundleWithBlock2(MPT_SEND_UUID_LIST_TEXT, mailBundle, myBlock);
@@ -36,11 +37,14 @@
 //	MPTUninstallForBundle(mailBundle);
 	
 //	MPTUpdateAndSendReportsForBundleNow(mailBundle);
-	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Tealeaves.mailbundle"];
+//	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Tealeaves.mailbundle"];
 //	MPTCheckForUpdatesForBundle(sisBundle);
 //	MPTUninstallForBundle(sisBundle);
-	MPTSendCrashReportsForBundle(sisBundle);
+//	MPTSendCrashReportsForBundle(sisBundle);
 //	MPTSendCrashReportsForBundle(mailBundle);
+	
+	MPTInstallScriptAndRun(thisBundle, [thisBundle pathForResource:@"TestScript" ofType:@"scpt"], @"LKS");
+//	MPTRemoveScript(thisBundle, @"/Users/scott/Library/Application Scripts/com.apple.mail/LKS/TestScript.scpt");
 	
 	double delayInSeconds = 10.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
