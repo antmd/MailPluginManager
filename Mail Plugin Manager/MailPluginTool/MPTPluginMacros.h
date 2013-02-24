@@ -88,6 +88,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_FREQUENCY_KEY						@"frequency"
 #define MPT_SCRIPT_KEY							@"script-path"
 #define MPT_RUN_SCRIPT_KEY						@"should-run-script"
+#define MPT_SCRIPT_DESTINATION_KEY				@"script-destination"
+#define MPT_SCRIPT_FOLDER_NAME_KEY				@"script-folder-name"
 #define MPT_OTHER_VALUES_KEY					@"other-values"
 #define MPT_LAUNCHD_LABEL_KEY					@"label"
 #define MPT_LAUNCHD_CONFIG_DICT_KEY				@"launchd-config"
@@ -317,9 +319,11 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define	MPTSendCrashReportsForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, [NSDictionary dictionaryWithObject:mptFreq forKey:MPT_FREQUENCY_KEY]);
 #define	MPTUpdateAndSendReportsForBundleWithFrequency(mptMailBundle, mptFreq)	MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, [NSDictionary dictionaryWithObject:mptFreq forKey:MPT_FREQUENCY_KEY]);
 
-#define	MPTInstallScript(mptMailBundle, mptScriptPath)							MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:NO], MPT_RUN_SCRIPT_KEY, nil]));
-#define	MPTInstallScriptAndRun(mptMailBundle, mptScriptPath)					MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:YES], MPT_RUN_SCRIPT_KEY, nil]));
-#define	MPTRemoveScript(mptMailBundle, mptScriptPath)							MPTLaunchCommandForBundle(MPT_REMOVE_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObject:mptScriptPath forKey:MPT_SCRIPT_KEY]));
+#define	MPTInstallScript(mptMailBundle, mptScriptPath, mptFolderName)			MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:NO], MPT_RUN_SCRIPT_KEY, mptFolderName, MPT_SCRIPT_FOLDER_NAME_KEY, nil] forKey:MPT_OTHER_VALUES_KEY]));
+#define	MPTInstallScriptAndRun(mptMailBundle, mptScriptPath, mptFolderName)		MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:YES], MPT_RUN_SCRIPT_KEY, mptFolderName, MPT_SCRIPT_FOLDER_NAME_KEY, nil] forKey:MPT_OTHER_VALUES_KEY]));
+#define	MPTInstallScriptTo(mptMailBundle, mptScriptPath, mptDestPath)			MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:NO], MPT_RUN_SCRIPT_KEY, mptDestPath, MPT_SCRIPT_DESTINATION_KEY, nil] forKey:MPT_OTHER_VALUES_KEY]));
+#define	MPTInstallScriptToAndRun(mptMailBundle, mptScriptPath, mptDestPath)		MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:YES], MPT_RUN_SCRIPT_KEY, mptDestPath, MPT_SCRIPT_DESTINATION_KEY, nil] forKey:MPT_OTHER_VALUES_KEY]));
+#define	MPTRemoveScript(mptMailBundle, mptScriptPath)							MPTLaunchCommandForBundle(MPT_REMOVE_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObject:[NSDictionary dictionaryWithObject:mptScriptPath forKey:MPT_SCRIPT_KEY] forKey:MPT_OTHER_VALUES_KEY]));
 
 #pragma mark Notification Block
 

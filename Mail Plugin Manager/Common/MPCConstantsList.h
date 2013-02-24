@@ -14,6 +14,8 @@ STR_CONST(kMPCCommandLineFrequencyOptionKey, "-freq");
 STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
 STR_CONST(kMPCCommandLineFinishInstallKey, "-finish-install");
 STR_CONST(kMPCCommandLineFileLoadKey, "-file-load");
+STR_CONST(kMPCCommandLineInstallScriptKey, "-install-script");
+STR_CONST(kMPCCommandLineRemoveScriptKey, "-remove-script");
 
 //	Extensions and commonly used values
 STR_CONST(kMPCPlistExtension, "plist");

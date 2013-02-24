@@ -278,6 +278,12 @@
 	else if ([kMPCCommandLineRemoveLaunchAgentKey isEqualToString:action]) {
 		type = MPTActionRemoveLaunchAgent;
 	}
+	else if ([kMPCCommandLineInstallScriptKey isEqualToString:action]) {
+		type = MPTActionInstallScriptAgent;
+	}
+	else if ([kMPCCommandLineRemoveScriptKey isEqualToString:action]) {
+		type = MPTActionRemoveScriptAgent;
+	}
 	
 	return type;
 }
@@ -304,6 +310,65 @@
 	}
 	[center postNotificationName:MPT_LAUNCHD_DONE_NOTIFICATION object:[bundle bundleIdentifier] userInfo:infoDict deliverImmediately:YES];
 
+}
+
+- (void)handleScriptWithArgs:(NSArray *)arguments shouldInstall:(BOOL)shouldInstall {
+
+	NSDictionary	*otherValues = [arguments objectAtIndex:1];
+	NSString		*sourceScriptPath = [otherValues valueForKey:MPT_SCRIPT_KEY];
+	BOOL			shouldRun = [[otherValues valueForKey:MPT_RUN_SCRIPT_KEY] boolValue];
+	//	Optional values
+	NSString		*destinationScriptPath = [otherValues valueForKey:MPT_SCRIPT_DESTINATION_KEY];
+
+	if (destinationScriptPath == nil) {
+		NSString	*appScriptsFolder = [[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"Application Scripts"] stringByAppendingPathComponent:kMPCMailBundleIdentifier] stringByExpandingTildeInPath];
+		NSString	*appScriptsSubFolderName = [otherValues valueForKey:MPT_SCRIPT_FOLDER_NAME_KEY];
+		if (appScriptsSubFolderName != nil) {
+			appScriptsFolder = [appScriptsFolder stringByAppendingPathComponent:appScriptsSubFolderName];
+		}
+		destinationScriptPath = [appScriptsFolder stringByAppendingPathComponent:[sourceScriptPath lastPathComponent]];
+	}
+
+	NSFileManager	*fileManager = [[[NSFileManager alloc] init] autorelease];
+	NSError			*error;
+	if (shouldInstall) {
+		BOOL			scriptDestinationFolderIsFolder = NO;
+		NSString		*destinationFolder = [destinationScriptPath stringByDeletingLastPathComponent];
+		//	Ensure that we have the destination directory
+		if (![fileManager fileExistsAtPath:destinationFolder isDirectory:&scriptDestinationFolderIsFolder] || !scriptDestinationFolderIsFolder) {
+			LKLog(@"Script destination folder not found - will try to create");
+			if ([fileManager createDirectoryAtPath:destinationFolder withIntermediateDirectories:YES attributes:nil error:&error]) {
+				scriptDestinationFolderIsFolder = YES;
+			}
+		}
+		if (!scriptDestinationFolderIsFolder) {
+			LKErr(@"There was an error trying to create the Destination Script folder, could not proceed.\n%@", error);
+			return;
+		}
+		
+		LKLog(@"Should have correct paths");
+		//	Copy my script to Application Scripts folder
+		if (![fileManager copyItemAtPath:sourceScriptPath toPath:destinationScriptPath error:&error]) {
+			//	Handle error
+			LKErr(@"Error copying the rename script to its destination:%@", error);
+			return;
+		}
+
+		//	Run it with correct values
+		if (shouldRun) {
+			[NSTask launchedTaskWithLaunchPath:@"/usr/bin/osascript" arguments:@[destinationScriptPath]];
+		}
+	}
+	else {
+		//	Ensure that we have the destination script to remove
+		if ([fileManager fileExistsAtPath:sourceScriptPath]) {
+			LKLog(@"Script found to remove - will try to do so");
+			if (![fileManager removeItemAtPath:sourceScriptPath error:&error]) {
+				LKErr(@"Error removing script '%@':%@", [sourceScriptPath lastPathComponent], error);
+			}
+		}
+	}
+	
 }
 
 
@@ -431,6 +496,18 @@
 						NSString		*label = [otherValues valueForKey:MPT_LAUNCHD_LABEL_KEY];
 						return [self removeLaunchAgentForLabel:label];
 					}];
+					
+					if (shouldFinish) {
+						[self quittingNowIsReasonable];
+					}
+				}];
+				break;
+				
+			case MPTActionInstallScriptAgent:
+			case MPTActionRemoveScriptAgent:
+				[self addActivityTask:^{
+					
+					[self handleScriptWithArgs:arguments shouldInstall:(action == MPTActionInstallScriptAgent)];
 					
 					if (shouldFinish) {
 						[self quittingNowIsReasonable];
