@@ -57,6 +57,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_UPDATE_CRASH_REPORTS_TEXT			@"-update-and-crash-reports"
 #define MPT_INSTALL_LAUNCH_AGENT_TEXT			@"-add-launch-agent"
 #define MPT_REMOVE_LAUNCH_AGENT_TEXT			@"-del-launch-agent"
+#define MPT_INSTALL_SCRIPT_TEXT					@"-install-script"
+#define MPT_REMOVE_SCRIPT_TEXT					@"-remove-script"
 #define MPT_FREQUENCY_OPTION					@"-freq"
 
 #pragma mark Internal Values
@@ -84,6 +86,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_ACTION_KEY							@"action"
 #define MPT_PLUGIN_PATH_KEY						@"plugin-path"
 #define MPT_FREQUENCY_KEY						@"frequency"
+#define MPT_SCRIPT_KEY							@"script-path"
+#define MPT_RUN_SCRIPT_KEY						@"should-run-script"
 #define MPT_OTHER_VALUES_KEY					@"other-values"
 #define MPT_LAUNCHD_LABEL_KEY					@"label"
 #define MPT_LAUNCHD_CONFIG_DICT_KEY				@"launchd-config"
@@ -111,8 +115,7 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 		} \
 	} \
 
-
-#define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptFrequency) \
+#define	MPTLaunchCommandForBundle(mptCommand, mptMailBundle, mptOptionDict) \
 { \
 	if (mptMailBundle != nil) { \
 		MPTGetLikelyToolPath(); \
@@ -120,8 +123,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 			NSMutableDictionary	*mptPerformDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
 			[mptPerformDict setObject:mptCommand forKey:MPT_ACTION_KEY]; \
 			[mptPerformDict setObject:[mptMailBundle bundlePath] forKey:MPT_PLUGIN_PATH_KEY]; \
-			if ((mptFrequency != nil) && ![mptFrequency isEqualToString:@""]) { \
-				[mptPerformDict setObject:mptFrequency forKey:MPT_FREQUENCY_KEY]; \
+			if (mptOptionDict != nil) { \
+				[mptPerformDict addEntriesFromDictionary:mptOptionDict]; \
 			} \
 			NSString		*mptPlistPath = MPTPerformFolderPath(); \
 			BOOL			mptIsDir = NO; \
@@ -166,7 +169,7 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 			} \
 		}]; \
 		/*	Then actually launch the app to get the information back	*/ \
-		MPTLaunchCommandForBundle(mptCommand, mptMailBundle, @""); \
+		MPTLaunchCommandForBundle(mptCommand, mptMailBundle, @{}); \
 		MPT_MACRO_RELEASE(mptQueue); \
 	} \
 	else { \
@@ -304,15 +307,19 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 
 #pragma mark Launch and Forget
 
-#define	MPTUninstallForBundle(mptMailBundle)									MPTLaunchCommandForBundle(MPT_UNINSTALL_TEXT, mptMailBundle, @"");
-#define	MPTCheckForUpdatesForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, @"");
-#define	MPTCheckForUpdatesForBundleNow(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, @"now");
-#define	MPTSendCrashReportsForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, @"");
-#define	MPTUpdateAndSendReportsForBundle(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, @"");
-#define	MPTUpdateAndSendReportsForBundleNow(mptMailBundle)						MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, @"now");
-#define	MPTCheckForUpdatesForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, mptFreq);
-#define	MPTSendCrashReportsForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, mptFreq);
-#define	MPTUpdateAndSendReportsForBundleWithFrequency(mptMailBundle, mptFreq)	MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, mptFreq);
+#define	MPTUninstallForBundle(mptMailBundle)									MPTLaunchCommandForBundle(MPT_UNINSTALL_TEXT, mptMailBundle, [NSDictionary dictionary]);
+#define	MPTCheckForUpdatesForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, [NSDictionary dictionary]);
+#define	MPTCheckForUpdatesForBundleNow(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, [NSDictionary dictionaryWithObject:@"now" forKey:MPT_FREQUENCY_KEY]);
+#define	MPTSendCrashReportsForBundle(mptMailBundle)								MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, [NSDictionary dictionary]);
+#define	MPTUpdateAndSendReportsForBundle(mptMailBundle)							MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, [NSDictionary dictionary]);
+#define	MPTUpdateAndSendReportsForBundleNow(mptMailBundle)						MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, [NSDictionary dictionaryWithObject:@"now" forKey:MPT_FREQUENCY_KEY]);
+#define	MPTCheckForUpdatesForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_UPDATE_TEXT, mptMailBundle, [NSDictionary dictionaryWithObject:mptFreq forKey:MPT_FREQUENCY_KEY]);
+#define	MPTSendCrashReportsForBundleWithFrequency(mptMailBundle, mptFreq)		MPTLaunchCommandForBundle(MPT_CRASH_REPORTS_TEXT, mptMailBundle, [NSDictionary dictionaryWithObject:mptFreq forKey:MPT_FREQUENCY_KEY]);
+#define	MPTUpdateAndSendReportsForBundleWithFrequency(mptMailBundle, mptFreq)	MPTLaunchCommandForBundle(MPT_UPDATE_CRASH_REPORTS_TEXT, mptMailBundle, [NSDictionary dictionaryWithObject:mptFreq forKey:MPT_FREQUENCY_KEY]);
+
+#define	MPTInstallScript(mptMailBundle, mptScriptPath)							MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:NO], MPT_RUN_SCRIPT_KEY, nil]));
+#define	MPTInstallScriptAndRun(mptMailBundle, mptScriptPath)					MPTLaunchCommandForBundle(MPT_INSTALL_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObjectsAndKeys:mptScriptPath, MPT_SCRIPT_KEY, [NSNumber numberWithBool:YES], MPT_RUN_SCRIPT_KEY, nil]));
+#define	MPTRemoveScript(mptMailBundle, mptScriptPath)							MPTLaunchCommandForBundle(MPT_REMOVE_SCRIPT_TEXT, mptMailBundle, ([NSDictionary dictionaryWithObject:mptScriptPath forKey:MPT_SCRIPT_KEY]));
 
 #pragma mark Notification Block
 
