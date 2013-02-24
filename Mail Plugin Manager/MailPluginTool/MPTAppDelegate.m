@@ -356,7 +356,12 @@
 
 		//	Run it with correct values
 		if (shouldRun) {
-			[NSTask launchedTaskWithLaunchPath:@"/usr/bin/osascript" arguments:@[destinationScriptPath]];
+			if ([[destinationScriptPath pathExtension] isEqualToString:@"scpt"]) {
+				[NSTask launchedTaskWithLaunchPath:@"/usr/bin/osascript" arguments:@[destinationScriptPath]];
+			}
+			else {
+				[NSTask launchedTaskWithLaunchPath:destinationScriptPath arguments:@[]];
+			}
 		}
 	}
 	else {
