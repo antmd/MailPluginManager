@@ -29,6 +29,8 @@
 		D221E9AF1501011E00568952 /* ManagerIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D2866E4614FADC790006A749 /* ManagerIcon.icns */; };
 		D222074014F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
 		D222074114F1B04000881515 /* NSObject+LKObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D222073F14F1B04000881515 /* NSObject+LKObject.m */; };
+		D2239D2416DAB0BA00B410B7 /* TestScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = D2239D2316DAB0BA00B410B7 /* TestScript.scpt */; };
+		D2239D2516DAB0BA00B410B7 /* TestScript.scpt in Resources */ = {isa = PBXBuildFile; fileRef = D2239D2316DAB0BA00B410B7 /* TestScript.scpt */; };
 		D227F2971504E69500907524 /* MPCSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */; };
 		D22CC055146BD87F0055CFBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D22CC059146BD87F0055CFBE /* InfoPlist.strings */; };
@@ -358,6 +360,7 @@
 		D221E994150049E700568952 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		D222073E14F1B04000881515 /* NSObject+LKObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+LKObject.h"; path = "../../LKKit/Categories/NSObject+LKObject.h"; sourceTree = "<group>"; };
 		D222073F14F1B04000881515 /* NSObject+LKObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+LKObject.m"; path = "../../LKKit/Categories/NSObject+LKObject.m"; sourceTree = "<group>"; };
+		D2239D2316DAB0BA00B410B7 /* TestScript.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = TestScript.scpt; path = "Test Files/TestScript.scpt"; sourceTree = SOURCE_ROOT; };
 		D22CC053146BD87F0055CFBE /* ToolTestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToolTestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D22CC058146BD87F0055CFBE /* ToolTestHarness-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToolTestHarness-Info.plist"; sourceTree = "<group>"; };
 		D22CC05A146BD87F0055CFBE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -651,6 +654,7 @@
 		D22CC057146BD87F0055CFBE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D2239D2316DAB0BA00B410B7 /* TestScript.scpt */,
 				D22CC058146BD87F0055CFBE /* ToolTestHarness-Info.plist */,
 				D22CC059146BD87F0055CFBE /* InfoPlist.strings */,
 				D22CC05C146BD87F0055CFBE /* main.m */,
@@ -1160,6 +1164,7 @@
 				D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */,
 				D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
 				D2558A4B15A6366D0046E683 /* MailPluginRelaunch.app in Resources */,
+				D2239D2416DAB0BA00B410B7 /* TestScript.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1179,6 +1184,7 @@
 				D22CC05B146BD87F0055CFBE /* InfoPlist.strings in Resources */,
 				D22CC061146BD8800055CFBE /* Credits.rtf in Resources */,
 				D22CC067146BD8800055CFBE /* MainMenu.xib in Resources */,
+				D2239D2516DAB0BA00B410B7 /* TestScript.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1550,7 +1556,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 18;
+				BUILD_NUMBER = 19;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1577,7 +1583,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.4.5;
+				VERSION_STRING = 1.5.0;
 			};
 			name = Debug;
 		};
@@ -1587,7 +1593,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 18;
+				BUILD_NUMBER = 19;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1611,7 +1617,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.4.5;
+				VERSION_STRING = 1.5.0;
 			};
 			name = Release;
 		};

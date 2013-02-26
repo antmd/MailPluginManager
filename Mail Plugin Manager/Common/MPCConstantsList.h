@@ -14,6 +14,8 @@ STR_CONST(kMPCCommandLineFrequencyOptionKey, "-freq");
 STR_CONST(kMPCCommandLineValidateAllKey, "-validate-all");
 STR_CONST(kMPCCommandLineFinishInstallKey, "-finish-install");
 STR_CONST(kMPCCommandLineFileLoadKey, "-file-load");
+STR_CONST(kMPCCommandLineInstallScriptKey, "-install-script");
+STR_CONST(kMPCCommandLineRemoveScriptKey, "-remove-script");
 
 //	Extensions and commonly used values
 STR_CONST(kMPCPlistExtension, "plist");
@@ -56,6 +58,8 @@ STR_CONST(kMPCDestinationDomainKey, "<LibraryDomain>");
 STR_CONST(kMPCDescriptionKey, "description");
 STR_CONST(kMPCPermissionsKey, "permissions-needed");
 STR_CONST(kMPCIsBundleManagerKey, "is-bundle-manager");
+STR_CONST(kMPCShouldDeletePathKey, "should-delete-path-if-exists");
+STR_CONST(kMPCShouldHideItemKey, "should-hide-item");
 STR_CONST(kMPCUserCanChooseDomainKey, "user-can-choose-domain");
 //	Keys for the confirmation items and sub objects
 STR_CONST(kMPCConfirmationStepsKey, "confirmation-steps");

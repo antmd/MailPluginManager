@@ -23,6 +23,8 @@ typedef enum {
 	MPTActionUUIDList,
 	MPTActionInstallLaunchAgent,
 	MPTActionRemoveLaunchAgent,
+	MPTActionInstallScriptAgent,
+	MPTActionRemoveScriptAgent,
 	MPTActionValidateAll
 } MPTActionType;
 

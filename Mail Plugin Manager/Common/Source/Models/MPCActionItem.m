@@ -28,6 +28,8 @@
 @synthesize isMailBundle = _isMailBundle;
 @synthesize isBundleManager = _isBundleManager;
 @synthesize useLibraryDomain = _useLibraryDomain;
+@synthesize shouldDeletePathIfExists = _shouldDeletePathIfExists;
+@synthesize shouldHideItem = _shouldHideItem;
 @synthesize domainMask = _domainMask;
 
 
@@ -40,9 +42,15 @@
         // Initialization code here.
 		_name = [MPCLocalizedStringFromPackageFile([itemDictionary valueForKey:kMPCNameKey], packageFilePath) copy];
 		
+		//	If there is a delete path key, set it otherwise set as NO
+		_shouldDeletePathIfExists = ([itemDictionary valueForKey:kMPCShouldDeletePathKey] != nil)?[[itemDictionary valueForKey:kMPCShouldDeletePathKey] boolValue]:NO;
+		
+		//	If there is a delete path key, set it otherwise set as NO
+		_shouldHideItem = ([itemDictionary valueForKey:kMPCShouldHideItemKey] != nil)?[[itemDictionary valueForKey:kMPCShouldHideItemKey] boolValue]:NO;
+		
 		//	Get the path, ensuring to take into account the manifestType
 		NSString	*tempPath = [itemDictionary valueForKey:kMPCPathKey];
-		if (type == kMPCManifestTypeInstallation) {
+		if ((type == kMPCManifestTypeInstallation) && !_shouldDeletePathIfExists) {
 			tempPath = [packageFilePath stringByAppendingPathComponent:tempPath];
 		}
 		else {	//	Uninstall package
@@ -129,6 +137,9 @@
 	[result appendFormat:@"name:%@  ", self.name];
 	[result appendFormat:@"itemDescription:%@  ", self.itemDescription];
 	[result appendFormat:@"isMailBundle:%@  ", [NSString stringWithBool:self.isMailBundle]];
+	[result appendFormat:@"useLibraryDomain:%@)\n", [NSString stringWithBool:self.useLibraryDomain]];
+	[result appendFormat:@"shouldDeletePathIfExists:%@)\n", [NSString stringWithBool:self.shouldDeletePathIfExists]];
+	[result appendFormat:@"shouldHideItem:%@)\n", [NSString stringWithBool:self.shouldHideItem]];
 	[result appendFormat:@"isBundleManager:%@)\n", [NSString stringWithBool:self.isBundleManager]];
 	[result appendFormat:@"\tpath:%@\n", self.path];
 	[result appendFormat:@"\tdestinatinPath:%@\n", self.destinationPath];

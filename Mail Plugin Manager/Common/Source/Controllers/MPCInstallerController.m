@@ -497,7 +497,7 @@ typedef enum {
 	
 	//	First just ensure that the all items are there to copy
 	for (MPCActionItem *anItem in model.actionItemList) {
-		if (![manager fileExistsAtPath:anItem.path]) {
+		if (![manager fileExistsAtPath:anItem.path] && !anItem.shouldDeletePathIfExists) {
 			NSDictionary	*dict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCNameKey, anItem.path, kMPCPathKey, nil];
 			LKPresentErrorCodeUsingDict(MPCInvalidSourcePath, dict);
 			LKErr(@"The source path for the item (%@) [%@] is invalid.", anItem.name, anItem.path);
@@ -678,8 +678,17 @@ typedef enum {
 	//	Install each one
 	for (MPCActionItem *anItem in self.manifestModel.actionItemList) {
 		if (self.manifestModel.manifestType == kMPCManifestTypeInstallation) {
-			if (![self installItem:anItem]) {
-				return NO;
+			if (anItem.shouldDeletePathIfExists) {
+				if ([[NSFileManager defaultManager] fileExistsAtPath:anItem.path]) {
+					if (![self removeItem:anItem]) {
+						return NO;
+					}
+				}
+			}
+			else {
+				if (![self installItem:anItem]) {
+					return NO;
+				}
 			}
 		}
 		else {
@@ -943,12 +952,12 @@ typedef enum {
 #pragma mark - TableView DataSource & Delegate
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return self.manifestModel.totalActionItemCount;
+	return self.manifestModel.totalVisibleActionItemCount;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 	
-	NSInteger			maxIndex = self.manifestModel.totalActionItemCount - 1;
+	NSInteger			maxIndex = self.manifestModel.totalVisibleActionItemCount - 1;
 	MPCActionItem	*theItem = nil;
 	
 	//	Get the correct item
@@ -959,7 +968,7 @@ typedef enum {
 		theItem = self.manifestModel.bundleManager;
 	}
 	else {
-		theItem = [self.manifestModel.actionItemList objectAtIndex:row];
+		theItem = [self.manifestModel.visibleActionItemList objectAtIndex:row];
 	}
 	
 	//	If we need the icon, get that from the filemanager
