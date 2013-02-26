@@ -32,6 +32,16 @@
 			<string>Large-File.dmg</string>
 		</dict>
 		<dict>
+			<key>name</key>
+			<string>Previous product name</string>
+			<key>path</key>
+			<string>~/Library/Mail/Bundles/Sidebar for Infusionsoft.mailbundle</string>
+			<key>should-delete-path-if-exists</key>
+			<true/>
+			<key>should-hide-item</key>
+			<true/>
+		</dict>
+		<dict>
 			<key>description</key>
 			<string>Just like it says - a thingy with a very long description that should do some wrapping.</string>
 			<key>destination-path</key>

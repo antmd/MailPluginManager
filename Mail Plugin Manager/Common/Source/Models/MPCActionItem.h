@@ -18,6 +18,8 @@
 	BOOL		_isMailBundle;
 	BOOL		_isBundleManager;
 	BOOL		_useLibraryDomain;
+	BOOL		_shouldDeletePathIfExists;
+	BOOL		_shouldHideItem;
 	
 	NSSearchPathDomainMask	_domainMask;
 }
@@ -30,6 +32,8 @@
 @property	(nonatomic, assign, readonly)	BOOL		isMailBundle;
 @property	(nonatomic, assign, readonly)	BOOL		isBundleManager;
 @property	(nonatomic, assign, readonly)	BOOL		useLibraryDomain;
+@property	(nonatomic, assign, readonly)	BOOL		shouldDeletePathIfExists;
+@property	(nonatomic, assign, readonly)	BOOL		shouldHideItem;
 
 @property	(nonatomic, assign)	NSSearchPathDomainMask	domainMask;
 

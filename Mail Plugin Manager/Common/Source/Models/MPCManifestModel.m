@@ -36,8 +36,10 @@
 @synthesize bundleManager = _bundleManager;
 @synthesize confirmationStepList = _confirmationStepList;
 @synthesize actionItemList = _actionItemList;
+@synthesize visibleActionItemList = _visibleActionItemList;
 @synthesize launchItemList = _launchItemList;
 @synthesize totalActionItemCount = _totalActionItemCount;
+@synthesize totalVisibleActionItemCount = _totalVisibleActionItemCount;
 @synthesize confirmationStepCount = _confirmationStepCount;
 @synthesize canDeleteManagerIfNotUsedByOthers = _canDeleteManagerIfNotUsedByOthers;
 @synthesize canDeleteManagerIfNoBundlesLeft = _canDeleteManagerIfNoBundlesLeft;
@@ -102,6 +104,7 @@
 		
 		//	Get the installation list
 		//	Create each of the items
+		NSMutableArray	*visualItems = [NSMutableArray arrayWithCapacity:[actionItems count]];
 		newItems = [NSMutableArray arrayWithCapacity:[actionItems count]];
 		for (NSDictionary *itemDict in actionItems) {
 			MPCActionItem	*anItem = [[[MPCActionItem alloc] initWithDictionary:itemDict fromPackageFilePath:packageFilePath manifestType:_manifestType] autorelease];
@@ -110,11 +113,15 @@
 			}
 			else {
 				[newItems addObject:anItem];
+				if (!anItem.shouldHideItem) {
+					[visualItems addObject:anItem];
+				}
 			}
 		}
 		
 		//	Set our items list to the new array
 		_actionItemList = [[NSArray arrayWithArray:newItems] retain];
+		_visibleActionItemList = [[NSArray arrayWithArray:visualItems] retain];
 		
 		//	Go through the action list and find the mail bundle
 		for (MPCActionItem *anItem in _actionItemList) {
@@ -168,12 +175,15 @@
 			_backgroundImagePath = [[packageFilePath stringByAppendingPathComponent:[manifestDict valueForKey:kMPCBackgroundImagePathKey]] copy];
 		}
 		
-		//	Set the action item total count
+		//	Set the action item total counts
 		NSInteger	count = [_actionItemList count];
+		NSInteger	visibleCount = [_visibleActionItemList count];
 		if (self.shouldInstallManager) {
 			count++;
+			visibleCount++;
 		}
 		_totalActionItemCount = count;
+		_totalVisibleActionItemCount = visibleCount;
 		
 		//	Set manager deletion flags
 		_canDeleteManagerIfNotUsedByOthers = NO;

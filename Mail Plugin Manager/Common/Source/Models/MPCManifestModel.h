@@ -28,8 +28,10 @@ typedef enum {
 	MPCActionItem	*_bundleManager;
 	NSArray			*_confirmationStepList;
 	NSArray			*_actionItemList;
+	NSArray			*_visibleActionItemList;
 	NSArray			*_launchItemList;
 	NSUInteger		_totalActionItemCount;
+	NSUInteger		_totalVisibleActionItemCount;
 	NSUInteger		_confirmationStepCount;
 	BOOL			_canDeleteManagerIfNotUsedByOthers;	//	Default is NO
 	BOOL			_canDeleteManagerIfNoBundlesLeft;	//	Default is YES
@@ -56,8 +58,10 @@ typedef enum {
 @property	(nonatomic, retain, readonly)	MPCActionItem	*bundleManager;
 @property	(nonatomic, retain, readonly)	NSArray			*confirmationStepList;
 @property	(nonatomic, retain, readonly)	NSArray			*actionItemList;
+@property	(nonatomic, retain, readonly)	NSArray			*visibleActionItemList;
 @property	(nonatomic, retain, readonly)	NSArray			*launchItemList;
 @property	(nonatomic, assign, readonly)	NSUInteger		totalActionItemCount;
+@property	(nonatomic, assign, readonly)	NSUInteger		totalVisibleActionItemCount;
 @property	(nonatomic, assign, readonly)	NSUInteger		confirmationStepCount;
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNotUsedByOthers;	//	Default is NO
 @property	(nonatomic, assign, readonly)	BOOL			canDeleteManagerIfNoBundlesLeft;	//	Default is YES
