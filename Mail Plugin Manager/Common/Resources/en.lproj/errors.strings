@@ -60,6 +60,7 @@
 "400-button-1" = "Quit";
 "401-description" = "This Installation file is corrupted.";
 "402-description" = "This Uninstallation file is corrupted.";
+"403-description" = "There is no installation file packaged in this Installer.";
 
 //	Messages from the MPCBundle class
 "500-description" = "Undefined error from the Plugin Bundle.";
