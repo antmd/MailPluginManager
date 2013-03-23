@@ -67,11 +67,12 @@
 		D25589C415A48F5B0046E683 /* MPCPluginUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = D25589C215A48F5B0046E683 /* MPCPluginUpdater.m */; };
 		D2558A3115A62DFD0046E683 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D2558A3915A62DFD0046E683 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2558A3815A62DFD0046E683 /* main.m */; };
-		D2558A4B15A6366D0046E683 /* MailPluginRelaunch.app in Resources */ = {isa = PBXBuildFile; fileRef = D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */; };
 		D2558A4C15A636720046E683 /* MailPluginRelaunch.app in Resources */ = {isa = PBXBuildFile; fileRef = D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */; };
-		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
+		D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Helper Apps */ = {isa = PBXBuildFile; fileRef = D2779BC014336287003F7BE0 /* MailPluginTool.app */; };
 		D256CF2F14F99D00001BA72D /* MPCSparkleAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D256CF2E14F99CFF001BA72D /* MPCSparkleAsyncOperation.m */; };
 		D25738D8143BBEF0009D4A97 /* DSClickableURLTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D25738D7143BBEF0009D4A97 /* DSClickableURLTextField.m */; };
+		D25EC03616FE54C600DE7CA0 /* MailPluginRelaunch.app in Copy Helper Apps */ = {isa = PBXBuildFile; fileRef = D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */; };
+		D25EC03A16FE550300DE7CA0 /* MailPluginRelaunch.app in Copy Helper Apps */ = {isa = PBXBuildFile; fileRef = D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */; };
 		D2730FD9142921B200EB5CB7 /* MPCManifestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FD8142921B200EB5CB7 /* MPCManifestModel.m */; };
 		D2730FDE142931D100EB5CB7 /* MPCInstallerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FDD142931D100EB5CB7 /* MPCInstallerController.m */; };
 		D2730FE614293F6100EB5CB7 /* MPCAnimatedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2730FE414293F6100EB5CB7 /* MPCAnimatedListController.m */; };
@@ -312,6 +313,13 @@
 			remoteGlobalIDString = D2779BBF14336287003F7BE0;
 			remoteInfo = MailPluginTool;
 		};
+		D25EC03716FE54DB00DE7CA0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2558A2E15A62DFC0046E683;
+			remoteInfo = MailPluginRelaunch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -326,15 +334,27 @@
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D256CF1414F92D2B001BA72D /* Copy Bundle Tool */ = {
+		D256CF1414F92D2B001BA72D /* Copy Helper Apps */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Bundle Tool */,
+				D25EC03616FE54C600DE7CA0 /* MailPluginRelaunch.app in Copy Helper Apps */,
+				D256CF1514F92D4A001BA72D /* MailPluginTool.app in Copy Helper Apps */,
 			);
-			name = "Copy Bundle Tool";
+			name = "Copy Helper Apps";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D25EC03916FE54E500DE7CA0 /* Copy Helper Apps */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				D25EC03A16FE550300DE7CA0 /* MailPluginRelaunch.app in Copy Helper Apps */,
+			);
+			name = "Copy Helper Apps";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D2779BEF14337344003F7BE0 /* Copy Frameworks */ = {
@@ -1059,7 +1079,7 @@
 				D216B337141DFDE1003788DC /* Frameworks */,
 				D216B379141E0071003788DC /* Copy Frameworks */,
 				D216B338141DFDE1003788DC /* Resources */,
-				D256CF1414F92D2B001BA72D /* Copy Bundle Tool */,
+				D256CF1414F92D2B001BA72D /* Copy Helper Apps */,
 				D2344AAF1518E197005B3B0F /* Set Build Number */,
 				D2344A871518D83B005B3B0F /* Package for Sparkle */,
 			);
@@ -1160,11 +1180,13 @@
 				D2A6C05B16EBACF8006AACAC /* Frameworks */,
 				D2A6C0A416ED0368006AACAC /* Copy Frameworks */,
 				D2A6C05C16EBACF8006AACAC /* Resources */,
+				D25EC03916FE54E500DE7CA0 /* Copy Helper Apps */,
 				D2A6C0A116ED0220006AACAC /* Copy Install Files */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D25EC03816FE54DB00DE7CA0 /* PBXTargetDependency */,
 			);
 			name = "Plugin Installer";
 			productName = "Plugin Installer";
@@ -1304,7 +1326,6 @@
 				D2866E4814FADC790006A749 /* ManagerIcon.icns in Resources */,
 				D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */,
 				D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
-				D2558A4B15A6366D0046E683 /* MailPluginRelaunch.app in Resources */,
 				D2239D2416DAB0BA00B410B7 /* TestScript.scpt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1616,6 +1637,11 @@
 			isa = PBXTargetDependency;
 			target = D2779BBF14336287003F7BE0 /* MailPluginTool */;
 			targetProxy = D256CF1114F92D12001BA72D /* PBXContainerItemProxy */;
+		};
+		D25EC03816FE54DB00DE7CA0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */;
+			targetProxy = D25EC03716FE54DB00DE7CA0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
