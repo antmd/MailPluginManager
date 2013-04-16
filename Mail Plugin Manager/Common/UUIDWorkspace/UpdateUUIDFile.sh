@@ -10,7 +10,7 @@ echo $ACTION
 
 #	Ignore if we are cleaning
 if [ -n $ACTION ]; then
-	if [ $ACTION = "clean" ]; then
+	if [ "$ACTION" == "clean" ]; then
 		exit 0
 	fi
 fi
@@ -34,21 +34,24 @@ if [ ! -d "$MY_UUID_REPO" ]; then
 	exit 1
 fi
 cd "$MY_UUID_REPO"
-BRANCH=`git status | grep "branch" | cut -c 13-`
+BRANCH=`git status | grep "On branch" | cut -c 13-`
 IS_CLEAN=`git status | grep "nothing" | cut -c 1-17`
-if [ $BRANCH != "master" ]; then
+if [ "$BRANCH" != "master" ]; then
 	echo "UUID Script ERROR - $MY_UUID_REPO_NAME needs to be on the master branch"
+	echo "Current branch is:'$BRANCH'"
+	echo "Clean status is:$IS_CLEAN"
 	exit 2
 fi
-if [[ -z $IS_CLEAN || $IS_CLEAN != "nothing to commit" ]]; then
+if [[ -z $IS_CLEAN || "$IS_CLEAN" != "nothing to commit" ]]; then
 	echo "UUID Script ERROR - $MY_UUID_REPO_NAME needs have a clean status"
+	echo "Clean status is:$IS_CLEAN"
 	exit 3
 fi
 git pull
 
 
 #	Run the script there that generates the UUID file
-/usr/bin/osascript "ProcessMailMessageInfo.applescript" "-def"
+/usr/bin/osascript "ProcessMailMessageInfo.applescript" "-defs"
 
 
 #	Go back to where we store the current uuid copy and create hashes for both
