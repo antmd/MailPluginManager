@@ -47,7 +47,7 @@ if [[ -z $IS_CLEAN || "$IS_CLEAN" != "nothing to commit" ]]; then
 	echo "Clean status is:$IS_CLEAN"
 	exit 3
 fi
-git pull
+git pull origin master
 
 
 #	Run the script there that generates the UUID file
