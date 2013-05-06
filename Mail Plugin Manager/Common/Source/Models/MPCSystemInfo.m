@@ -130,16 +130,53 @@
 		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self mailShortVersion], kMPCSysInfoVersionKey, [self mailVersion], kMPCSysInfoBuildKey, [MPCUUIDList currentMailUUID], kMPCSysInfoUUIDKey, nil] forKey:kMPCSysInfoMailKey];
 		[sysInfo setObject:[NSDictionary dictionaryWithObjectsAndKeys:[self messageShortVersion], kMPCSysInfoVersionKey, [self messageVersion], kMPCSysInfoBuildKey, [MPCUUIDList currentMessageUUID], kMPCSysInfoUUIDKey, nil] forKey:kMPCSysInfoMessageKey];
 		[sysInfo setObject:[self hardware] forKey:kMPCSysInfoHardwareKey];
+		
+		NSDictionary		*myDefaults = [[NSBundle mainBundle] infoDictionary];
+		[sysInfo setObject:@{kMPCSysInfoBuildKey: [myDefaults valueForKey:(NSString *)kCFBundleVersionKey], kMPCSysInfoVersionKey: [myDefaults valueForKey:@"CFBundleShortVersionString"], kMPCSysInfoBranchNameKey: [myDefaults valueForKey:@"LKSBuildBranch"], kMPCSysInfoBuildSHAKey: [myDefaults valueForKey:@"LKSBuildSHA"]} forKey:kMPCSysInfoPluginManagerKey];
+		
+		NSString			*searchPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
+		searchPath = [searchPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]];
+		searchPath = [searchPath stringByAppendingPathComponent:@"Preferences"];
+		NSLog(@"Container Prefs Path:%@", searchPath);
+		NSFileManager		*fileManager = [NSFileManager defaultManager];
+		BOOL				isFolder = NO;
+		NSMutableArray		*containerPrefs = [NSMutableArray array];
+		if ([fileManager fileExistsAtPath:searchPath isDirectory:&isFolder] && isFolder) {
+			NSLog(@"Container Path valid");
+			NSError	*error = nil;
+			for (NSString *aPath in [fileManager contentsOfDirectoryAtPath:searchPath error:&error]) {
+				if ([[aPath lastPathComponent] hasPrefix:@"com.littleknownsoftware."]) {
+					[containerPrefs addObject:[aPath lastPathComponent]];
+				}
+			}
+		}
+		[sysInfo setObject:containerPrefs forKey:kMPCSysInfoContainerPrefsKey];
+		
+		searchPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
+		searchPath = [searchPath stringByAppendingPathComponent:@"LaunchAgents"];
+		NSLog(@"Launch Agent Path:%@", searchPath);
+		NSMutableArray		*agentFiles = [NSMutableArray array];
+		if ([fileManager fileExistsAtPath:searchPath isDirectory:&isFolder] && isFolder) {
+			NSLog(@"Agent Path valid");
+			NSError	*error = nil;
+			for (NSString *aPath in [fileManager contentsOfDirectoryAtPath:searchPath error:&error]) {
+				if ([[aPath lastPathComponent] hasPrefix:@"com.littleknownsoftware."]) {
+					[agentFiles addObject:[aPath lastPathComponent]];
+				}
+			}
+		}
+		[sysInfo setObject:@{kMPCSysInfoLaunchAgentFilesKey: agentFiles, kMPCSysInfoLaunchAgentListKey: [AppDel launchdConfigurations]} forKey:kMPCSysInfoLaunchAgentsKey];
+		
 		NSArray				*bundles = [MPCMailBundle allActiveMailBundlesShouldLoadInfo:NO];
 		NSMutableArray		*bundleInfoList = [NSMutableArray arrayWithCapacity:[bundles count]];
 		for (MPCMailBundle *aBundle in bundles) {
-			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.anonymousPath, kMPCPathKey, IsEmpty(aBundle.shortVersion)?@"-":aBundle.shortVersion, kMPCVersionKey, aBundle.version, kMPCSysInfoBuildKey, aBundle.name, kMPCNameKey, nil]];
+			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.anonymousPath, kMPCPathKey, IsEmpty(aBundle.shortVersion)?@"-":aBundle.shortVersion, kMPCVersionKey, aBundle.version, kMPCSysInfoBuildKey, aBundle.name, kMPCNameKey, aBundle.buildName, kMPCSysInfoBranchNameKey, aBundle.buildSHA, kMPCSysInfoBuildSHAKey, nil]];
 		}
 		[sysInfo setObject:bundleInfoList forKey:kMPCSysInfoInstalledMailPluginsKey];
 		bundles = [MPCMailBundle allDisabledMailBundlesShouldLoadInfo:NO];
 		bundleInfoList = [NSMutableArray arrayWithCapacity:[bundles count]];
 		for (MPCMailBundle *aBundle in bundles) {
-			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.anonymousPath, kMPCPathKey, IsEmpty(aBundle.shortVersion)?@"-":aBundle.shortVersion, kMPCVersionKey, aBundle.version, kMPCSysInfoBuildKey, aBundle.name, kMPCNameKey, nil]];
+			[bundleInfoList addObject:[NSDictionary dictionaryWithObjectsAndKeys:aBundle.anonymousPath, kMPCPathKey, IsEmpty(aBundle.shortVersion)?@"-":aBundle.shortVersion, kMPCVersionKey, aBundle.version, kMPCSysInfoBuildKey, aBundle.name, kMPCNameKey, aBundle.buildName, kMPCSysInfoBranchNameKey, aBundle.buildSHA, kMPCSysInfoBuildSHAKey, nil]];
 		}
 		[sysInfo setObject:bundleInfoList forKey:kMPCSysInfoDisabledMailPluginsKey];
 		
