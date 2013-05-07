@@ -137,12 +137,10 @@
 		NSString			*searchPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
 		searchPath = [searchPath stringByAppendingPathComponent:[NSString stringWithFormat:kMPCContainersPathFormat, kMPCMailBundleIdentifier]];
 		searchPath = [searchPath stringByAppendingPathComponent:@"Preferences"];
-		NSLog(@"Container Prefs Path:%@", searchPath);
 		NSFileManager		*fileManager = [NSFileManager defaultManager];
 		BOOL				isFolder = NO;
 		NSMutableArray		*containerPrefs = [NSMutableArray array];
 		if ([fileManager fileExistsAtPath:searchPath isDirectory:&isFolder] && isFolder) {
-			NSLog(@"Container Path valid");
 			NSError	*error = nil;
 			for (NSString *aPath in [fileManager contentsOfDirectoryAtPath:searchPath error:&error]) {
 				if ([[aPath lastPathComponent] hasPrefix:@"com.littleknownsoftware."]) {
@@ -154,10 +152,8 @@
 		
 		searchPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject];
 		searchPath = [searchPath stringByAppendingPathComponent:@"LaunchAgents"];
-		NSLog(@"Launch Agent Path:%@", searchPath);
 		NSMutableArray		*agentFiles = [NSMutableArray array];
 		if ([fileManager fileExistsAtPath:searchPath isDirectory:&isFolder] && isFolder) {
-			NSLog(@"Agent Path valid");
 			NSError	*error = nil;
 			for (NSString *aPath in [fileManager contentsOfDirectoryAtPath:searchPath error:&error]) {
 				if ([[aPath lastPathComponent] hasPrefix:@"com.littleknownsoftware."]) {
