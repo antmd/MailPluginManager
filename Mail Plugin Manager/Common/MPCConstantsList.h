@@ -100,8 +100,17 @@ STR_CONST(kMPCSysInfoHardwareKey, "hardware");
 STR_CONST(kMPCSysInfoInstalledMailPluginsKey, "installed");
 STR_CONST(kMPCSysInfoDisabledMailPluginsKey, "disabled");
 
-STR_CONST(kMPCLocalMailFolderPlaceholder, "<LOCALMailFolder>");
-STR_CONST(kMPCUserMailFolderPlaceholder, "<USERMailFolder>");
+STR_CONST(kMPCSysInfoContainerPrefsKey, "container-prefs");
+STR_CONST(kMPCSysInfoLaunchAgentsKey, "launch-agents");
+STR_CONST(kMPCSysInfoLaunchAgentFilesKey, "files");
+STR_CONST(kMPCSysInfoLaunchAgentListKey, "list");
+STR_CONST(kMPCSysInfoPluginManagerKey, "plugin-manager");
+STR_CONST(kMPCSysInfoBranchNameKey, "branch-name");
+STR_CONST(kMPCSysInfoBuildSHAKey, "build-sha");
+
+
+STR_CONST(kMPCLocalMailFolderPlaceholder, "[LOCALMailFolder]");
+STR_CONST(kMPCUserMailFolderPlaceholder, "[USERMailFolder]");
 
 //	Progress handling
 STR_CONST(kMPCInstallationProgressNotification, "MPCInstallationProgressNotification");

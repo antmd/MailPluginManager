@@ -17,6 +17,8 @@
 	NSString		*_companyURL;
 	NSString		*_productURL;
 	NSString		*_iconPath;
+	NSString		*_buildName;
+	NSString		*_buildSHA;
 	NSImage			*_icon;
 	NSBundle		*_bundle;
 	BOOL			_incompatibleWithCurrentMail;
@@ -48,6 +50,8 @@
 @property	(nonatomic, copy, readonly)		NSString		*version;
 @property	(nonatomic, copy, readonly)		NSString		*shortVersion;
 @property	(nonatomic, copy, readonly)		NSString		*iconPath;
+@property	(nonatomic, copy, readonly)		NSString		*buildName;
+@property	(nonatomic, copy, readonly)		NSString		*buildSHA;
 @property	(nonatomic, copy, readonly)		NSString		*incompatibleString;
 @property	(nonatomic, copy, readonly)		NSColor			*incompatibleStringColor;
 @property	(nonatomic, retain, readonly)	NSImage			*icon;

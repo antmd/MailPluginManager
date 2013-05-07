@@ -1159,6 +1159,7 @@
 				D2779BBD14336287003F7BE0 /* Frameworks */,
 				D2779BEF14337344003F7BE0 /* Copy Frameworks */,
 				D2779BBE14336287003F7BE0 /* Resources */,
+				D2AC76621738696A00168E4C /* Set Build Number */,
 			);
 			buildRules = (
 			);
@@ -1444,6 +1445,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/usr/bin/perl -w";
 			shellScript = "# Xcode auto-versioning script for Subversion\n# by Axel Andersson, modified by Daniel Jalkut to add\n# \"--revision HEAD\" to the svn info line, which allows\n# the latest revision to always be used.\n\nuse strict;\n\ndie \"$0: Must be run from Xcode\" unless $ENV{\"BUILT_PRODUCTS_DIR\"};\n\n\n# Get the current git branch and sha hash\n# \tto use them to set the CFBundleVersion value\nmy $GIT_INFO = `git --work-tree=\"$ENV{PROJECT_DIR}\" branch --abbrev=10 -v | grep '^*'`;\nmy $BRANCH = $GIT_INFO;\nmy $SHAHASH = $GIT_INFO;\nmy $INFO = \"$ENV{BUILT_PRODUCTS_DIR}/$ENV{INFOPLIST_PATH}\";\n\n# Extract the branch and sha\n$BRANCH =~ s/^\\*\\s([^\\s]+)(\\s+)[^\\$]*/$1/;\n$SHAHASH =~ s/^\\*\\s([^\\s]+)(\\s+)([0-9a-f]+)[^\\$]*/$3/;\n\n# trim the ends\n$BRANCH =~ s/^\\s+//;\n$SHAHASH =~ s/^\\s+//;\n\ndie \"$0: No git branch found\" unless $BRANCH;\n\n# Get the contents as an XML format\nmy $info = `plutil -convert xml1 -o - \"$INFO\"`;\n\n# replace both the branch name and the hash value\n$info =~ s/\\[BRANCH\\]/$BRANCH/;\n$info =~ s/\\[SHA-HASH\\]/$SHAHASH/;\n\n# Rewrite the contents to the file\nopen(FH, \">$INFO\") or die \"$0: $INFO: $!\";\nprint FH $info;\nclose(FH);\n\n# Rest the contents of the file to the binary version\n`plutil -convert binary1 \"$INFO\"`;\n";
+		};
+		D2AC76621738696A00168E4C /* Set Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set Build Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/usr/bin/perl -w";
+			shellScript = "# Xcode auto-versioning script for Subversion\n# by Axel Andersson, modified by Daniel Jalkut to add\n# \"--revision HEAD\" to the svn info line, which allows\n# the latest revision to always be used.\n\nuse strict;\n\ndie \"$0: Must be run from Xcode\" unless $ENV{\"BUILT_PRODUCTS_DIR\"};\n\n\n# Get the current git branch and sha hash\n# \tto use them to set the CFBundleVersion value\nmy $GIT_INFO = `git --work-tree=\"$ENV{PROJECT_DIR}\" branch --abbrev=10 -v | grep '^*'`;\nmy $BRANCH = $GIT_INFO;\nmy $SHAHASH = $GIT_INFO;\nmy $INFO = \"$ENV{BUILT_PRODUCTS_DIR}/$ENV{INFOPLIST_PATH}\";\n\n# Extract the branch and sha\n$BRANCH =~ s/^\\*\\s([^\\s]+)(\\s+)[^\\$]*/$1/;\n$SHAHASH =~ s/^\\*\\s([^\\s]+)(\\s+)([0-9a-f]+)[^\\$]*/$3/;\n\n# trim the ends\n$BRANCH =~ s/^\\s+//;\n$SHAHASH =~ s/^\\s+//;\n\ndie \"$0: No git branch found\" unless $BRANCH;\n\n# Get the contents as an XML format\nmy $info = `plutil -convert xml1 -o - \"$INFO\"`;\n\n# replace both the branch name and the hash value\n$info =~ s/\\[BRANCH\\]/$BRANCH/;\n$info =~ s/\\[SHA-HASH\\]/$SHAHASH/;\n\n# Rewrite the contents to the file\nopen(FH, \">$INFO\") or die \"$0: $INFO: $!\";\nprint FH $info;\nclose(FH);\n\n# Rest the contents of the file to the binary version\n`plutil -convert binary1 \"$INFO\"`;";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1803,7 +1818,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 20;
+				BUILD_NUMBER = 22;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1826,7 +1841,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.5.1;
+				VERSION_STRING = 1.6.0;
 			};
 			name = Debug;
 		};
@@ -1836,7 +1851,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 20;
+				BUILD_NUMBER = 22;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1856,7 +1871,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.5.1;
+				VERSION_STRING = 1.6.0;
 			};
 			name = Release;
 		};
