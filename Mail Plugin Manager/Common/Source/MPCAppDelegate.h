@@ -88,6 +88,7 @@
 - (void)quittingNowIsReasonable;
 
 //	launchd management
+- (NSDictionary *)launchdConfigurations;
 - (BOOL)installStartupLaunchdConfigReplacingIfNeeded:(BOOL)replace;
 - (BOOL)installToolWatchLaunchdConfigReplacingIfNeeded:(BOOL)replace;
 - (BOOL)installLaunchAgentForConfig:(NSDictionary *)agentConfig replacingIfNeeded:(BOOL)replace;

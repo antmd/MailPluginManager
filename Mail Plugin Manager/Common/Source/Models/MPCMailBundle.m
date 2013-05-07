@@ -42,6 +42,8 @@ typedef enum {
 @property	(nonatomic, copy, readwrite)		NSString	*companyURL;
 @property	(nonatomic, copy, readwrite)		NSString	*productURL;
 @property	(nonatomic, copy, readwrite)		NSString	*iconPath;
+@property	(nonatomic, copy, readwrite)		NSString	*buildName;
+@property	(nonatomic, copy, readwrite)		NSString	*buildSHA;
 @property	(nonatomic, retain, readwrite)		NSImage		*icon;
 @property	(nonatomic, retain, readwrite)		NSBundle	*bundle;
 @property	(nonatomic, assign)					NSInteger	initialState;
@@ -65,6 +67,8 @@ typedef enum {
 @synthesize productURL = _productURL;
 @synthesize icon = _icon;
 @synthesize iconPath = _iconPath;
+@synthesize buildName = _buildName;
+@synthesize buildSHA = _buildSHA;
 @synthesize bundle = _bundle;
 @synthesize usesBundleManager = _usesBundleManager;
 @synthesize incompatibleWithCurrentMail = _incompatibleWithCurrentMail;
@@ -391,6 +395,19 @@ typedef enum {
 			_incompatibleWithFutureMail = YES;
 		}
 		
+		//	Add the build info, if it exists
+		NSDictionary	*infoDictionary = [_bundle infoDictionary];
+		_buildName = [[NSString alloc] initWithString:@"N/A"];
+		_buildSHA = [[NSString alloc] initWithString:@"N/A"];
+		if ([infoDictionary valueForKey:@"LKSBuildBranch"]) {
+			[_buildName release];
+			_buildName = [[infoDictionary valueForKey:@"LKSBuildBranch"] retain];
+		}
+		if ([infoDictionary valueForKey:@"LKSBuildSHA"]) {
+			[_buildSHA release];
+			_buildSHA = [[infoDictionary valueForKey:@"LKSBuildSHA"] retain];
+		}
+		
 		//	reset the initial state
 		[self resetInitialState];
 		
@@ -407,6 +424,8 @@ typedef enum {
 	self.productURL = nil;
 	self.icon = nil;
 	self.iconPath = nil;
+	self.buildName = nil;
+	self.buildSHA = nil;
 	self.bundle = nil;
 	self.latestVersion = nil;
 	self.latestShortVersion = nil;
