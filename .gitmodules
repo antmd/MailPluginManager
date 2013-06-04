@@ -7,6 +7,3 @@
 [submodule "MailMessageUUIDs"]
 	path = MailMessageUUIDs
 	url = https://github.com/lksoft/MailMessageUUIDs.git
-[submodule "LKConfigs"]
-	path = LKConfigs
-	url = ssh://git@littleknownsoftware.com/~/LKConfigs.git

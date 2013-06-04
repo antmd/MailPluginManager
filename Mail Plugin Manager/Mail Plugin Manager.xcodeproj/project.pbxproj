@@ -38,7 +38,6 @@
 		D22CC061146BD8800055CFBE /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D22CC05F146BD8800055CFBE /* Credits.rtf */; };
 		D22CC064146BD8800055CFBE /* TTHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D22CC063146BD8800055CFBE /* TTHAppDelegate.m */; };
 		D22CC067146BD8800055CFBE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22CC065146BD8800055CFBE /* MainMenu.xib */; };
-		D22ECBC4175E7DED00971BA5 /* lk-warnings.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D22ECBC3175E7DED00971BA5 /* lk-warnings.xcconfig */; };
 		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
 		D2344B23151F9EBB005B3B0F /* MPTCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B22151F9EBB005B3B0F /* MPTCrashReporter.m */; };
@@ -461,7 +460,6 @@
 		D22CC062146BD8800055CFBE /* TTHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTHAppDelegate.h; sourceTree = "<group>"; };
 		D22CC063146BD8800055CFBE /* TTHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTHAppDelegate.m; sourceTree = "<group>"; };
 		D22CC066146BD8800055CFBE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		D22ECBC3175E7DED00971BA5 /* lk-warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "lk-warnings.xcconfig"; path = "../LKConfigs/lk-warnings.xcconfig"; sourceTree = "<group>"; };
 		D231F4471428ED4E002DB999 /* NSString+LKStructUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+LKStructUtils.h"; path = "../../LKKit/Categories/NSString+LKStructUtils.h"; sourceTree = "<group>"; };
 		D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+LKStructUtils.m"; path = "../../LKKit/Categories/NSString+LKStructUtils.m"; sourceTree = "<group>"; };
 		D231F44B1428ED5E002DB999 /* LKLogHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKLogHelper.h; path = ../../LKKit/Helpers/LKLogHelper.h; sourceTree = "<group>"; };
@@ -564,6 +562,7 @@
 		D2E90296141E4C7F0058618F /* MPCMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCMailBundle.m; sourceTree = "<group>"; };
 		D2E90298141E5EF90058618F /* NSBundle+MPCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+MPCAdditions.h"; sourceTree = "<group>"; };
 		D2E90299141E5EF90058618F /* NSBundle+MPCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+MPCAdditions.m"; sourceTree = "<group>"; };
+		D2E9029F141E643F0058618F /* lk-warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "lk-warnings.xcconfig"; path = "../../lk-warnings.xcconfig"; sourceTree = "<group>"; };
 		D2E902AB141E72460058618F /* MPCSparkleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCSparkleDelegate.h; sourceTree = "<group>"; };
 		D2E902AC141E72470058618F /* MPCSparkleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCSparkleDelegate.m; sourceTree = "<group>"; };
 		D2EB824D148F9EE700C8B0DB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -904,10 +903,10 @@
 		D2779BDB143365DB003F7BE0 /* Project */ = {
 			isa = PBXGroup;
 			children = (
-				D22ECBC3175E7DED00971BA5 /* lk-warnings.xcconfig */,
 				D216B34C141DFDE1003788DC /* Mail Plugin Manager-Prefix.pch */,
 				D231F44F1428F035002DB999 /* README.markdown */,
 				D231F44E1428EE7B002DB999 /* LKInclude.pch */,
+				D2E9029F141E643F0058618F /* lk-warnings.xcconfig */,
 				D23EA64E164AAF3700094DE3 /* UpdateUUIDFile.sh */,
 			);
 			name = Project;
@@ -1329,7 +1328,6 @@
 				D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */,
 				D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
 				D2239D2416DAB0BA00B410B7 /* TestScript.scpt in Resources */,
-				D22ECBC4175E7DED00971BA5 /* lk-warnings.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1816,7 +1814,7 @@
 /* Begin XCBuildConfiguration section */
 		D216B36A141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D22ECBC3175E7DED00971BA5 /* lk-warnings.xcconfig */;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
@@ -1849,7 +1847,7 @@
 		};
 		D216B36B141DFDE2003788DC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D22ECBC3175E7DED00971BA5 /* lk-warnings.xcconfig */;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
@@ -1879,6 +1877,7 @@
 		};
 		D216B36D141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Mail Plugin Manager/Mail Plugin Manager-Info.plist";
@@ -1901,6 +1900,7 @@
 		};
 		D216B370141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mail Plugin Manager.app/Contents/MacOS/Mail Plugin Manager";
 				CODE_SIGN_IDENTITY = "";
@@ -1937,6 +1937,7 @@
 		};
 		D22CC069146BD8800055CFBE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1961,6 +1962,7 @@
 		};
 		D23EA62E164AABBB00094DE3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -2003,6 +2005,7 @@
 		};
 		D2558A4515A62DFD0046E683 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = "MailPluginRelaunch/MailPluginRelaunch-Prefix.pch";
@@ -2025,6 +2028,7 @@
 		};
 		D2779BD614336287003F7BE0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9029F141E643F0058618F /* lk-warnings.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
