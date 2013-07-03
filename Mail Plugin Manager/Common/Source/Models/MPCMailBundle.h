@@ -23,6 +23,7 @@
 	NSBundle		*_bundle;
 	BOOL			_incompatibleWithCurrentMail;
 	BOOL			_incompatibleWithFutureMail;
+	BOOL			_updaterIsInsecure;
 	BOOL			_usesBundleManager;
 	
 	NSString		*_latestVersion;

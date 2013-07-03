@@ -49,6 +49,8 @@ typedef enum {
 @property	(nonatomic, assign)					NSInteger	initialState;
 @property	(nonatomic, assign, readonly)		NSInteger	currentState;
 @property	(nonatomic, assign)					BOOL		hasBeenUpdated;
+@property	(nonatomic, assign)					BOOL		updaterIsInsecure;
+
 - (void)updateStateNow;
 - (void)updateState;
 + (NSString *)mailFolderPathForDomain:(NSSearchPathDomainMask)domain;
@@ -73,6 +75,7 @@ typedef enum {
 @synthesize usesBundleManager = _usesBundleManager;
 @synthesize incompatibleWithCurrentMail = _incompatibleWithCurrentMail;
 @synthesize incompatibleWithFutureMail = _incompatibleWithFutureMail;
+@synthesize updaterIsInsecure = _updaterIsInsecure;
 @synthesize hasUpdate = _hasUpdate;
 @synthesize latestVersion = _latestVersion;
 @synthesize latestShortVersion = _latestShortVersion;
@@ -294,13 +297,17 @@ typedef enum {
 	else if (self.incompatibleWithFutureMail) {
 		compatibleString = [NSString stringWithFormat:NSLocalizedString(@"Will be disabled in OS X >= %@", @"A string as short as possible describing that the plugin will become incompatible compatible with the OS with version X"), [self firstOSVersionUnsupported]];
 	}
+	else if (self.updaterIsInsecure) {
+		compatibleString = NSLocalizedString(@"Plugin has an insecure update!", @"Short string describing that the updater does not implement security well enough for Sparkle.");
+	}
 	
 	
 	return compatibleString;
 }
 
 - (NSColor *)incompatibleStringColor {
-	return self.incompatibleWithCurrentMail?CURRENT_INCOMPATIBLE_COLOR:FUTURE_INCOMPATIBLE_COLOR;
+	NSColor	*aColor = CURRENT_INCOMPATIBLE_COLOR;
+	return (self.incompatibleWithCurrentMail || self.updaterIsInsecure)?aColor:FUTURE_INCOMPATIBLE_COLOR;
 }
 
 - (BOOL)needsMailRestart {
@@ -524,6 +531,15 @@ typedef enum {
 	if ([self supportsSparkleUpdates] && (updater = [SUUpdater updaterForBundle:self.bundle])) {
 		[updater setDelegate:self];
 		[updater checkForUpdateInformation];
+		[self willChangeValueForKey:@"incompatibleString"];
+		[self willChangeValueForKey:@"incompatibleStringColor"];
+		self.updaterIsInsecure = NO;
+		if (!updater.updatingIsSecure) {
+			self.updaterIsInsecure = YES;
+			self.latestShortVersion = NSLocalizedString(@"N/A", @"Version information is unavailable because the download connections are not secure.");
+		}
+		[self didChangeValueForKey:@"incompatibleString"];
+		[self didChangeValueForKey:@"incompatibleStringColor"];
 	}
 	else {
 		self.latestVersion = NSLocalizedString(@"???", @"String indicating that the latest version is not known");
