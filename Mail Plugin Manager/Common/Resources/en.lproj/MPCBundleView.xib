@@ -38,8 +38,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="textColor" keyPath="lkCVI.representedObject.nameColor" id="148"/>
                         <binding destination="-2" name="value" keyPath="lkCVI.representedObject.name" id="141"/>
+                        <binding destination="-2" name="textColor" keyPath="lkCVI.representedObject.nameColor" id="148"/>
                     </connections>
                 </textField>
                 <button id="14" userLabel="Plugin Name Button">
@@ -136,39 +136,39 @@
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" id="8">
-                    <rect key="frame" x="17" y="33" width="90" height="32"/>
+                    <rect key="frame" x="14" y="33" width="102" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="21">
+                    <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="21">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="enabled" keyPath="lkCVI.representedObject.updateWaiting" id="179">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
                         <binding destination="-2" name="target" keyPath="lkCVI.representedObject" id="125">
                             <dictionary key="options">
                                 <string key="NSSelectorName">uninstall</string>
                             </dictionary>
                         </binding>
+                        <binding destination="-2" name="enabled" keyPath="lkCVI.representedObject.updateWaiting" id="179">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" id="12">
-                    <rect key="frame" x="141" y="33" width="95" height="32"/>
+                    <rect key="frame" x="134" y="33" width="102" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="Update" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="17">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <binding destination="-2" name="enabled" keyPath="lkCVI.representedObject.enableUpdateButton" id="196"/>
                         <binding destination="-2" name="target" keyPath="lkCVI.representedObject" id="136">
                             <dictionary key="options">
                                 <string key="NSSelectorName">updateIfNecessary</string>
                             </dictionary>
                         </binding>
+                        <binding destination="-2" name="enabled" keyPath="lkCVI.representedObject.enableUpdateButton" id="196"/>
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" id="13">
@@ -180,8 +180,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="textColor" keyPath="lkCVI.representedObject.incompatibleStringColor" id="171"/>
                         <binding destination="-2" name="value" keyPath="lkCVI.representedObject.incompatibleString" id="115"/>
+                        <binding destination="-2" name="textColor" keyPath="lkCVI.representedObject.incompatibleStringColor" id="171"/>
                     </connections>
                 </textField>
                 <button id="3" userLabel="Company Name Button">
@@ -219,4 +219,30 @@
     <resources>
         <image name="GenericPlugin" width="512" height="512"/>
     </resources>
+    <classes>
+        <class className="MPCAppDelegate" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPCAppDelegate.h"/>
+            <relationships>
+                <relationship kind="action" name="finishApplication:"/>
+                <relationship kind="action" name="showURL:"/>
+                <relationship kind="outlet" name="backgroundView" candidateClass="MPCBackgroundableView"/>
+                <relationship kind="outlet" name="collectionItem" candidateClass="NSCollectionViewItem"/>
+                <relationship kind="outlet" name="quitButton" candidateClass="NSButton"/>
+                <relationship kind="outlet" name="quittingIndicator" candidateClass="NSProgressIndicator"/>
+                <relationship kind="outlet" name="quittingNotice" candidateClass="NSTextField"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="NSScrollView"/>
+                <relationship kind="outlet" name="window" candidateClass="NSWindow"/>
+            </relationships>
+        </class>
+        <class className="MPCBackgroundableView" superclassName="NSView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MPCBackgroundableView.h"/>
+        </class>
+        <class className="NSCollectionViewItem">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSCollectionViewItem.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="NSImageView"/>
+                <relationship kind="outlet" name="textField" candidateClass="NSTextField"/>
+            </relationships>
+        </class>
+    </classes>
 </document>
