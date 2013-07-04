@@ -38,7 +38,6 @@
 		D22CC061146BD8800055CFBE /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D22CC05F146BD8800055CFBE /* Credits.rtf */; };
 		D22CC064146BD8800055CFBE /* TTHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D22CC063146BD8800055CFBE /* TTHAppDelegate.m */; };
 		D22CC067146BD8800055CFBE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D22CC065146BD8800055CFBE /* MainMenu.xib */; };
-		D22ECBD6175E867600971BA5 /* lk-warnings.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D22ECBD5175E867600971BA5 /* lk-warnings.xcconfig */; };
 		D231F4491428ED4E002DB999 /* NSString+LKStructUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F4481428ED4E002DB999 /* NSString+LKStructUtils.m */; };
 		D231F44D1428ED5E002DB999 /* LKLogHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D231F44C1428ED5E002DB999 /* LKLogHelper.m */; };
 		D2344B23151F9EBB005B3B0F /* MPTCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B22151F9EBB005B3B0F /* MPTCrashReporter.m */; };
@@ -1201,7 +1200,7 @@
 		D216B331141DFDE1003788DC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Little Known Software";
 			};
 			buildConfigurationList = D216B334141DFDE1003788DC /* Build configuration list for PBXProject "Mail Plugin Manager" */;
@@ -1329,7 +1328,6 @@
 				D2866E4914FADC790006A749 /* ManagerIcon.png in Resources */,
 				D2866E6D14FAF6DF0006A749 /* MPCBackgroundImage.png in Resources */,
 				D2239D2416DAB0BA00B410B7 /* TestScript.scpt in Resources */,
-				D22ECBD6175E867600971BA5 /* lk-warnings.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1818,8 +1816,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 22;
+				BUILD_NUMBER = 23;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1839,10 +1836,10 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.6.0;
+				VERSION_STRING = 1.7.0;
 			};
 			name = Debug;
 		};
@@ -1850,8 +1847,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				BUILD_NUMBER = 22;
+				BUILD_NUMBER = 23;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1871,7 +1867,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.6.0;
+				VERSION_STRING = 1.7.0;
 			};
 			name = Release;
 		};
@@ -1960,7 +1956,6 @@
 		D23EA62E164AABBB00094DE3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1985,7 +1980,6 @@
 		D23EA62F164AABBB00094DE3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;

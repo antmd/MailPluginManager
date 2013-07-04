@@ -31,19 +31,21 @@
 
 //	MPTLaunchCommandForBundle2(@"update", mailBundle, YES, nil);
 
-	MPTMailInformationForBundleWithBlock(mailBundle, myBlock);
+//	MPTMailInformationForBundleWithBlock(mailBundle, myBlock);
 //	MPTUUIDListForBundleWithBlock(mailBundle, myBlock);
 	
 //	MPTUninstallForBundle(mailBundle);
 	
 //	MPTUpdateAndSendReportsForBundleNow(mailBundle);
-//	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Tealeaves.mailbundle"];
-//	MPTCheckForUpdatesForBundle(sisBundle);
+	NSBundle *sisBundle = [NSBundle bundleWithPath:@"/Users/scott/Library/Mail/Bundles/Tealeaves.mailbundle"];
+	MPTCheckForUpdatesForBundle(sisBundle);
 //	MPTUninstallForBundle(sisBundle);
 //	MPTSendCrashReportsForBundle(sisBundle);
 //	MPTSendCrashReportsForBundle(mailBundle);
 	
-	MPTInstallScriptAndRun(thisBundle, [thisBundle pathForResource:@"TestScript" ofType:@"scpt"], @"LKS");
+	MPTMailInformationForBundleWithBlock(sisBundle, myBlock);
+
+//	MPTInstallScriptAndRun(thisBundle, [thisBundle pathForResource:@"TestScript" ofType:@"scpt"], @"LKS");
 //	MPTRemoveScript(thisBundle, @"/Users/scott/Library/Application Scripts/com.apple.mail/LKS/TestScript.scpt");
 	
 	double delayInSeconds = 10.0;

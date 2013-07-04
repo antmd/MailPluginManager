@@ -17,6 +17,7 @@
 #import "NSUserDefaults+MPCShared.h"
 
 #import "SUBasicUpdateDriver.h"
+#import <Sparkle/LKSPluginUpdater.h>
 
 typedef enum {
 	MPCGenericBundleErrorCode = 500,
@@ -527,8 +528,9 @@ typedef enum {
 - (void)loadUpdateInformation {
 	
 	//	Simply use the standard Sparkle behavior (with an instantiation via the path)
-	SUUpdater	*updater = nil;
-	if ([self supportsSparkleUpdates] && (updater = [SUUpdater updaterForBundle:self.bundle])) {
+	LKSPluginUpdater	*updater = nil;
+	if ([self supportsSparkleUpdates] && (updater = (LKSPluginUpdater *)[LKSPluginUpdater updaterForBundle:self.bundle])) {
+		updater.skipPreferenceSaves = YES;
 		[updater setDelegate:self];
 		[updater checkForUpdateInformation];
 		[self willChangeValueForKey:@"incompatibleString"];

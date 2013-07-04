@@ -45,6 +45,8 @@ typedef void(^MPTUpdateTestingCompleteBlock)(void);
 #define MPT_SYSINFO_NAME_KEY						@"name"
 #define MPT_SYSINFO_PATH_KEY						@"path"
 
+//	Notification string for when Sparkle modifies defaults outside of app
+#define MPT_DEFAULTS_CHANGE_DIST_NOTIFICATION		@"LKSSUPluginDefaultsChanged"
 
 
 #pragma mark Command List
