@@ -1816,7 +1816,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUILD_NUMBER = 23;
+				BUILD_NUMBER = 24;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1839,7 +1839,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.7.0;
+				VERSION_STRING = 1.7.1;
 			};
 			name = Debug;
 		};
@@ -1847,7 +1847,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUILD_NUMBER = 23;
+				BUILD_NUMBER = 24;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1867,7 +1867,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.7.0;
+				VERSION_STRING = 1.7.1;
 			};
 			name = Release;
 		};
