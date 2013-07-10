@@ -10,3 +10,6 @@
 [submodule "LKConfigs"]
 	path = LKConfigs
 	url = git@github.com:lksoft/LKConfigs.git
+[submodule "MailBuildScripts"]
+	path = MailBuildScripts
+	url = ssh://git@littleknownsoftware.com/~/MailBuildScripts.git

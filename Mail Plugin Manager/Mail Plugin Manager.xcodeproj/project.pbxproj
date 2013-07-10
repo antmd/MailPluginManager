@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		D20040BB178D7E69007F8140 /* PackageMPM */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D20040BC178D7E69007F8140 /* Build configuration list for PBXAggregateTarget "PackageMPM" */;
+			buildPhases = (
+				D20040BF178D7E72007F8140 /* Package for Sparkle */,
+			);
+			dependencies = (
+				D20040C1178D7E76007F8140 /* PBXTargetDependency */,
+			);
+			name = PackageMPM;
+			productName = PackApp;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		D20537B714361EB6002F0157 /* GenericPlugin.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537B614361EB6002F0157 /* GenericPlugin.png */; };
 		D20537B814361F95002F0157 /* GenericPlugin.png in Resources */ = {isa = PBXBuildFile; fileRef = D20537B614361EB6002F0157 /* GenericPlugin.png */; };
@@ -194,6 +209,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D20040C0178D7E76007F8140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D216B339141DFDE1003788DC;
+			remoteInfo = "Mail Plugin Manager";
+		};
 		D216B35F141DFDE2003788DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D216B331141DFDE1003788DC /* Project object */;
@@ -414,6 +436,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D20040AC178D7014007F8140 /* ConstructRelease.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ConstructRelease.sh; sourceTree = "<group>"; };
+		D20040AD178D7014007F8140 /* EnsureMailTest.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = EnsureMailTest.scpt; sourceTree = "<group>"; };
+		D20040AE178D7014007F8140 /* InstallPlugin.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = InstallPlugin.sh; sourceTree = "<group>"; };
+		D20040AF178D7014007F8140 /* MakeInstallerPackage.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = MakeInstallerPackage.sh; sourceTree = "<group>"; };
+		D20040B0178D7014007F8140 /* RebuildInstaller.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = RebuildInstaller.sh; sourceTree = "<group>"; };
+		D20040B1178D7014007F8140 /* SetBuildNumbers.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = SetBuildNumbers.pl; sourceTree = "<group>"; };
+		D20040B2178D7014007F8140 /* SetIcon.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SetIcon.sh; sourceTree = "<group>"; };
+		D20040B3178D7014007F8140 /* UpdateInstallerID.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = UpdateInstallerID.pl; sourceTree = "<group>"; };
+		D20040B4178D7054007F8140 /* MakeSparkleFile.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = MakeSparkleFile.sh; sourceTree = "<group>"; };
 		D20537B614361EB6002F0157 /* GenericPlugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GenericPlugin.png; path = Common/Resources/Images/GenericPlugin.png; sourceTree = "<group>"; };
 		D20537B91436223D002F0157 /* uuids.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = uuids.plist; path = ../Remote/uuids.plist; sourceTree = "<group>"; };
 		D20537C21439C9BB002F0157 /* BundleBackgroundRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BundleBackgroundRed.png; path = Common/Resources/Images/BundleBackgroundRed.png; sourceTree = "<group>"; };
@@ -640,6 +671,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D20040AB178D7014007F8140 /* MailBuildScripts */ = {
+			isa = PBXGroup;
+			children = (
+				D20040AC178D7014007F8140 /* ConstructRelease.sh */,
+				D20040AD178D7014007F8140 /* EnsureMailTest.scpt */,
+				D20040AE178D7014007F8140 /* InstallPlugin.sh */,
+				D20040AF178D7014007F8140 /* MakeInstallerPackage.sh */,
+				D20040B0178D7014007F8140 /* RebuildInstaller.sh */,
+				D20040B1178D7014007F8140 /* SetBuildNumbers.pl */,
+				D20040B2178D7014007F8140 /* SetIcon.sh */,
+				D20040B3178D7014007F8140 /* UpdateInstallerID.pl */,
+				D20040B4178D7054007F8140 /* MakeSparkleFile.sh */,
+			);
+			name = MailBuildScripts;
+			path = ../MailBuildScripts;
+			sourceTree = "<group>";
+		};
 		D216B32F141DFDE1003788DC = {
 			isa = PBXGroup;
 			children = (
@@ -652,6 +700,7 @@
 				D216B361141DFDE2003788DC /* Mail Plugin ManagerTests */,
 				D216B33D141DFDE1003788DC /* Frameworks */,
 				D216B33B141DFDE1003788DC /* Products */,
+				D20040AB178D7014007F8140 /* MailBuildScripts */,
 				D221E9851500499A00568952 /* LKKit.xcodeproj */,
 				D221E994150049E700568952 /* Sparkle.xcodeproj */,
 			);
@@ -1081,7 +1130,6 @@
 				D216B338141DFDE1003788DC /* Resources */,
 				D256CF1414F92D2B001BA72D /* Copy Helper Apps */,
 				D2344AAF1518E197005B3B0F /* Set Build Number */,
-				D2344A871518D83B005B3B0F /* Package for Sparkle */,
 			);
 			buildRules = (
 			);
@@ -1233,6 +1281,7 @@
 				D22CC052146BD87F0055CFBE /* ToolTestHarness */,
 				D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */,
 				D23EA624164AABBB00094DE3 /* UUID Information */,
+				D20040BB178D7E69007F8140 /* PackageMPM */,
 			);
 		};
 /* End PBXProject section */
@@ -1404,6 +1453,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		D20040BF178D7E72007F8140 /* Package for Sparkle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Package for Sparkle";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../MailBuildScripts/MakeSparkleFile.sh\"";
+		};
 		D216B359141DFDE2003788DC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1418,20 +1481,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
-		D2344A871518D83B005B3B0F /* Package for Sparkle */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Package for Sparkle";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# shell script goes here\n\nif [ $CONFIGURATION != \"Release\" ]; then\n#exit \"Can't package for Non-Deployment Style\"\necho \"nothing\"\nfi\n\nexport REAL_PRODUCT=\"Mail Plugin Manager\"\nexport MY_RELEASE_FOLDER=\"$SRCROOT/../Releases\"\nexport MY_PRODUCT_NEW_NAME=\"MailPluginManager.New\"\nexport MY_PRODUCT_VERSIONED_NAME=\"MailPluginManager.$VERSION_STRING\"\n\necho \"Extracting version info from plist\"\n\necho \"Creating the zip file for Sparkle\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\n#   remove old zip file if it exists\nif [ -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\" ]; then\n    rm -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_NEW_NAME.tar.bz2\"\nfi\n\n#   remove old zip file if it exists\nif [ -f \"$MY_RELEASE_FOLDER/$MY_PRODUCT_VERSIONED_NAME.tar.bz2\" ]; then\n    export MY_PRODUCT_VERSIONED_NAME=\"$MY_PRODUCT_NEW_NAME\"\nfi\n\n#   zip the file into new location\ntar -cyf \"$MY_RELEASE_FOLDER/$MY_PRODUCT_VERSIONED_NAME.tar.bz2\" \"$FULL_PRODUCT_NAME\"\n\n";
-		};
 		D2344AAF1518E197005B3B0F /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1443,8 +1492,9 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/usr/bin/perl -w";
-			shellScript = "# Xcode auto-versioning script for Subversion\n# by Axel Andersson, modified by Daniel Jalkut to add\n# \"--revision HEAD\" to the svn info line, which allows\n# the latest revision to always be used.\n\nuse strict;\n\ndie \"$0: Must be run from Xcode\" unless $ENV{\"BUILT_PRODUCTS_DIR\"};\n\n\n# Get the current git branch and sha hash\n# \tto use them to set the CFBundleVersion value\nmy $GIT_INFO = `git --work-tree=\"$ENV{PROJECT_DIR}\" branch --abbrev=10 -v | grep '^*'`;\nmy $BRANCH = $GIT_INFO;\nmy $SHAHASH = $GIT_INFO;\nmy $INFO = \"$ENV{BUILT_PRODUCTS_DIR}/$ENV{INFOPLIST_PATH}\";\n\n# Extract the branch and sha\n$BRANCH =~ s/^\\*\\s([^\\s]+)(\\s+)[^\\$]*/$1/;\n$SHAHASH =~ s/^\\*\\s([^\\s]+)(\\s+)([0-9a-f]+)[^\\$]*/$3/;\n\n# trim the ends\n$BRANCH =~ s/^\\s+//;\n$SHAHASH =~ s/^\\s+//;\n\ndie \"$0: No git branch found\" unless $BRANCH;\n\n# Get the contents as an XML format\nmy $info = `plutil -convert xml1 -o - \"$INFO\"`;\n\n# replace both the branch name and the hash value\n$info =~ s/\\[BRANCH\\]/$BRANCH/;\n$info =~ s/\\[SHA-HASH\\]/$SHAHASH/;\n\n# Rewrite the contents to the file\nopen(FH, \">$INFO\") or die \"$0: $INFO: $!\";\nprint FH $info;\nclose(FH);\n\n# Rest the contents of the file to the binary version\n`plutil -convert binary1 \"$INFO\"`;\n";
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../MailBuildScripts/SetBuildNumbers.pl\"\n";
+			showEnvVarsInLog = 0;
 		};
 		D2AC76621738696A00168E4C /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1613,6 +1663,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D20040C1178D7E76007F8140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D216B339141DFDE1003788DC /* Mail Plugin Manager */;
+			targetProxy = D20040C0178D7E76007F8140 /* PBXContainerItemProxy */;
+		};
 		D216B360141DFDE2003788DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D216B339141DFDE1003788DC /* Mail Plugin Manager */;
@@ -1812,6 +1867,24 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D20040BD178D7E69007F8140 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMPACT_PRODUCT_NAME = MailPluginManager;
+				MAIN_PRODUCT_NAME = "Mail Plugin Manager";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D20040BE178D7E69007F8140 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMPACT_PRODUCT_NAME = MailPluginManager;
+				MAIN_PRODUCT_NAME = "Mail Plugin Manager";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		D216B36A141DFDE2003788DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2072,6 +2145,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D20040BC178D7E69007F8140 /* Build configuration list for PBXAggregateTarget "PackageMPM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D20040BD178D7E69007F8140 /* Debug */,
+				D20040BE178D7E69007F8140 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		D216B334141DFDE1003788DC /* Build configuration list for PBXProject "Mail Plugin Manager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
