@@ -2152,6 +2152,7 @@
 				D20040BE178D7E69007F8140 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D216B334141DFDE1003788DC /* Build configuration list for PBXProject "Mail Plugin Manager" */ = {
 			isa = XCConfigurationList;
