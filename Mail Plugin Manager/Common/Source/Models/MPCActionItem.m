@@ -30,6 +30,7 @@
 @synthesize useLibraryDomain = _useLibraryDomain;
 @synthesize shouldDeletePathIfExists = _shouldDeletePathIfExists;
 @synthesize shouldHideItem = _shouldHideItem;
+@synthesize shouldReleaseFromQuarantine = _shouldReleaseFromQuarantine;
 @synthesize domainMask = _domainMask;
 
 
@@ -47,6 +48,9 @@
 		
 		//	If there is a delete path key, set it otherwise set as NO
 		_shouldHideItem = ([itemDictionary valueForKey:kMPCShouldHideItemKey] != nil)?[[itemDictionary valueForKey:kMPCShouldHideItemKey] boolValue]:NO;
+		
+		//	If there is a quarantine release key, set it otherwise set as NO
+		_shouldReleaseFromQuarantine = ([itemDictionary valueForKey:kMPCShouldReleaseQuarantineItemKey] != nil)?[[itemDictionary valueForKey:kMPCShouldReleaseQuarantineItemKey] boolValue]:NO;
 		
 		//	Get the path, ensuring to take into account the manifestType
 		NSString	*tempPath = [itemDictionary valueForKey:kMPCPathKey];
@@ -140,6 +144,7 @@
 	[result appendFormat:@"useLibraryDomain:%@)\n", [NSString stringWithBool:self.useLibraryDomain]];
 	[result appendFormat:@"shouldDeletePathIfExists:%@)\n", [NSString stringWithBool:self.shouldDeletePathIfExists]];
 	[result appendFormat:@"shouldHideItem:%@)\n", [NSString stringWithBool:self.shouldHideItem]];
+	[result appendFormat:@"shouldReleaseFromQuarantine:%@)\n", [NSString stringWithBool:self.shouldReleaseFromQuarantine]];
 	[result appendFormat:@"isBundleManager:%@)\n", [NSString stringWithBool:self.isBundleManager]];
 	[result appendFormat:@"\tpath:%@\n", self.path];
 	[result appendFormat:@"\tdestinatinPath:%@\n", self.destinationPath];

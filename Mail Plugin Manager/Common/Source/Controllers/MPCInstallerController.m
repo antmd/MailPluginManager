@@ -765,6 +765,11 @@ typedef enum {
 		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
 		return NO;
 	}
+	
+	//	Release from quarantine if required
+	if (anItem.shouldReleaseFromQuarantine) {
+		[manager releaseFromQuarantine:anItem.destinationPath];
+	}
 
 	//	Notification for progress bar
 	myDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1.0f], kMPCInstallationProgressValueKey, nil];

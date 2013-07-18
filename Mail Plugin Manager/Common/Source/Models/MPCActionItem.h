@@ -20,6 +20,7 @@
 	BOOL		_useLibraryDomain;
 	BOOL		_shouldDeletePathIfExists;
 	BOOL		_shouldHideItem;
+	BOOL		_shouldReleaseFromQuarantine;
 	
 	NSSearchPathDomainMask	_domainMask;
 }
@@ -34,6 +35,7 @@
 @property	(nonatomic, assign, readonly)	BOOL		useLibraryDomain;
 @property	(nonatomic, assign, readonly)	BOOL		shouldDeletePathIfExists;
 @property	(nonatomic, assign, readonly)	BOOL		shouldHideItem;
+@property	(nonatomic, assign, readonly)	BOOL		shouldReleaseFromQuarantine;
 
 @property	(nonatomic, assign)	NSSearchPathDomainMask	domainMask;
 
