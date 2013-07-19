@@ -31,6 +31,7 @@
 @synthesize shouldDeletePathIfExists = _shouldDeletePathIfExists;
 @synthesize shouldHideItem = _shouldHideItem;
 @synthesize shouldReleaseFromQuarantine = _shouldReleaseFromQuarantine;
+@synthesize shouldOnlyReleaseFromQuarantine = _shouldOnlyReleaseFromQuarantine;
 @synthesize domainMask = _domainMask;
 
 
@@ -51,6 +52,12 @@
 		
 		//	If there is a quarantine release key, set it otherwise set as NO
 		_shouldReleaseFromQuarantine = ([itemDictionary valueForKey:kMPCShouldReleaseQuarantineItemKey] != nil)?[[itemDictionary valueForKey:kMPCShouldReleaseQuarantineItemKey] boolValue]:NO;
+		
+		//	If there is a only quarantine release key, set it otherwise set as NO
+		_shouldOnlyReleaseFromQuarantine = ([itemDictionary valueForKey:kMPCShouldOnlyReleaseQuarantineItemKey] != nil)?[[itemDictionary valueForKey:kMPCShouldOnlyReleaseQuarantineItemKey] boolValue]:NO;
+		if (_shouldOnlyReleaseFromQuarantine) {
+			_shouldHideItem = YES;
+		}
 		
 		//	Get the path, ensuring to take into account the manifestType
 		NSString	*tempPath = [itemDictionary valueForKey:kMPCPathKey];
