@@ -734,6 +734,18 @@ typedef enum {
 		[AppDel migratePrefsIntoSandboxIfRequiredForMailBundle:mailBundle];
 	}
 	
+	//	For the case when we should ONLY release this path from quarantine
+	if (anItem.shouldOnlyReleaseFromQuarantine) {
+		if ([manager fileExistsAtPath:anItem.destinationPath]) {
+			[manager releaseFromQuarantine:anItem.destinationPath];
+		}
+		else {
+			LKErr(@"Could not find path for release ffrom quarantine only: '%@'", anItem.destinationPath);
+			//	Fail fairly quietly
+		}
+		return YES;
+	}
+	
 	//	Notification for what we are copying
 	NSDictionary	*myDict = [NSDictionary dictionaryWithObjectsAndKeys:anItem.name, kMPCInstallationProgressDescriptionKey, nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kMPCInstallationProgressNotification object:self userInfo:myDict];
@@ -764,6 +776,11 @@ typedef enum {
 		LKPresentErrorCodeUsingDict(MPCCopyFailed, theDict);
 		LKErr(@"Unable to copy item '%@' to %@\n%@", anItem.name, anItem.destinationPath, error);
 		return NO;
+	}
+	
+	//	Release from quarantine if required
+	if (anItem.shouldReleaseFromQuarantine) {
+		[manager releaseFromQuarantine:anItem.destinationPath];
 	}
 
 	//	Notification for progress bar

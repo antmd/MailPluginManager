@@ -60,6 +60,8 @@ STR_CONST(kMPCPermissionsKey, "permissions-needed");
 STR_CONST(kMPCIsBundleManagerKey, "is-bundle-manager");
 STR_CONST(kMPCShouldDeletePathKey, "should-delete-path-if-exists");
 STR_CONST(kMPCShouldHideItemKey, "should-hide-item");
+STR_CONST(kMPCShouldReleaseQuarantineItemKey, "should-release-quarantine");
+STR_CONST(kMPCShouldOnlyReleaseQuarantineItemKey, "should-only-release-quarantine");
 STR_CONST(kMPCUserCanChooseDomainKey, "user-can-choose-domain");
 //	Keys for the confirmation items and sub objects
 STR_CONST(kMPCConfirmationStepsKey, "confirmation-steps");
