@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SMAuthorizedClients</key>
+	<array>
+		<string>identifier com.littleknownsoftware.MPI-${HELPER_CALLING_APP} and certificate leaf[subject.CN] = &quot;Developer ID Application: Little Known Software, Inc.&quot;</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFBundleName</key>
+	<string>com.littleknownsoftware.MPC.CopyMoveHelper</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.littleknownsoftware.MPC.CopyMoveHelper</string>
+</dict>
+</plist>
