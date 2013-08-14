@@ -2167,7 +2167,7 @@
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"CopyMoveHelper/CopyMoveHelper-Launchd.plist",
+					"CopyMoveHelper/CopyMoveHelperFixed-Launchd.plist",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2208,7 +2208,7 @@
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"CopyMoveHelper/CopyMoveHelper-Launchd.plist",
+					"CopyMoveHelper/CopyMoveHelperFixed-Launchd.plist",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2313,8 +2313,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				INSTALLER_SUB_ID = REPLACESUBID;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2328,8 +2328,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				INSTALLER_SUB_ID = REPLACESUBID;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

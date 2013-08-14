@@ -109,7 +109,7 @@ int main(int argc, const char *argv[]) {
 	
 	@autoreleasepool {
 	    
-		xpc_connection_t service = xpc_connection_create_mach_service("com.littleknownsoftware.MPC.CopyMoveHelper",
+		xpc_connection_t service = xpc_connection_create_mach_service(argv[0],
 																	  dispatch_get_main_queue(),
 																	  XPC_CONNECTION_MACH_SERVICE_LISTENER);
 		

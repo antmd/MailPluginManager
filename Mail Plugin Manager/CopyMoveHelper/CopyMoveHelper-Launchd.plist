@@ -4,10 +4,10 @@
 <dict>
 	<key>MachServices</key>
 	<dict>
-		<key>com.littleknownsoftware.MPC.CopyMoveHelper</key>
+		<key>com.littleknownsoftware.MPC.CopyMoveHelper.REPLACESUBID</key>
 		<true/>
 	</dict>
 	<key>Label</key>
-	<string>com.littleknownsoftware.MPC.CopyMoveHelper</string>
+	<string>com.littleknownsoftware.MPC.CopyMoveHelper.REPLACESUBID</string>
 </dict>
 </plist>
