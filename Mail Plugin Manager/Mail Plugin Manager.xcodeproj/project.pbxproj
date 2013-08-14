@@ -1993,6 +1993,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_NUMBER = 25;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
+				COPY_MOVE_DIR = "";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
@@ -2010,7 +2011,6 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = "";
-				HELPER_CALLING_APP = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
@@ -2025,6 +2025,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_NUMBER = 25;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
+				COPY_MOVE_DIR = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2040,7 +2041,6 @@
 					"DEBUG_OUTPUT_OFF=1",
 				);
 				GCC_VERSION = "";
-				HELPER_CALLING_APP = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
@@ -2156,14 +2156,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelper-Info.plist";
+				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelperFixed-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
 					__info_plist,
-					"CopyMoveHelper/CopyMoveHelper-Info.plist",
+					"CopyMoveHelper/CopyMoveHelperFixed-Info.plist",
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
@@ -2197,14 +2197,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelper-Info.plist";
+				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelperFixed-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
 					__info_plist,
-					"CopyMoveHelper/CopyMoveHelper-Info.plist",
+					"CopyMoveHelper/CopyMoveHelperFixed-Info.plist",
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
@@ -2311,8 +2311,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REPLACESUBID = REPLACESUBID;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2324,8 +2326,10 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REPLACESUBID = REPLACESUBID;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

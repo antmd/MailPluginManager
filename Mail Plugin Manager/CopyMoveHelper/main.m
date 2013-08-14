@@ -31,9 +31,8 @@ static void __XPC_Peer_Event_Handler(xpc_connection_t connection, xpc_object_t e
 	} else {
         xpc_connection_t remote = xpc_dictionary_get_remote_connection(event);
 		
-		BOOL		success = YES;
-		
 		BOOL		shouldCopy = (BOOL)xpc_dictionary_get_bool(event, "shouldCopy");
+		BOOL		shouldOverwrite = (BOOL)xpc_dictionary_get_bool(event, "shouldOverwrite");
 		const char	*sourcePathStr = xpc_dictionary_get_string(event, "sourcePath");
 		const char	*destPathStr = xpc_dictionary_get_string(event, "destPath");
 		NSString	*fromPath = nil;
@@ -46,31 +45,49 @@ static void __XPC_Peer_Event_Handler(xpc_connection_t connection, xpc_object_t e
 			toPath = [NSString stringWithUTF8String:destPathStr];
 		}
 		
+		syslog(LOG_NOTICE, "From path: %s  To Path: %s copy:%s", sourcePathStr, destPathStr, shouldCopy?"YES":"NO");
+		
 		NSString	*errorString = nil;
 		if (fromPath && toPath) {
 			
-			BOOL			didSucceed = NO;
 			NSError			*localError = nil;
 			NSFileManager	*manager = [NSFileManager defaultManager];
-			if (shouldCopy) {
-				didSucceed = [manager copyItemAtPath:fromPath toPath:toPath error:&localError];
+			
+			//	Remove any existing file at destPath
+			if ([manager fileExistsAtPath:toPath]) {
+				if (shouldOverwrite) {
+					if (![manager removeItemAtPath:toPath error:&localError]) {
+						errorString = [NSString stringWithFormat:@"Could not delete a file (%@) to be overwritten:%@", [toPath lastPathComponent], [localError localizedDescription]];
+					}
+				}
+				else {
+					//	Create a new error message to return
+					errorString = [NSString stringWithFormat:@"File exists (%@) which should not be overwritten", [toPath lastPathComponent]];
+				}
 			}
-			else {
-				didSucceed = [manager moveItemAtPath:fromPath toPath:toPath error:&localError];
-			}
-			if (!didSucceed) {
-				success = NO;
-				errorString = [NSString stringWithFormat:@"Error %@ bundle (enable/disable):%@", (shouldCopy?@"copying":@"moving"), [localError localizedDescription]];
+			
+			if (errorString == nil) {
+				BOOL	didSucceed = NO;
+				if (shouldCopy) {
+					didSucceed = [manager copyItemAtPath:fromPath toPath:toPath error:&localError];
+				}
+				else {
+					didSucceed = [manager moveItemAtPath:fromPath toPath:toPath error:&localError];
+				}
+				if (!didSucceed) {
+					errorString = [NSString stringWithFormat:@"Error %@ bundle (enable/disable):%@", (shouldCopy?@"copying":@"moving"), [localError localizedDescription]];
+				}
 			}
 		}
 		else {
-			NSLog(@"Either the from or to path for copying a file with privileges was nil - From:%@ To:%@", fromPath, toPath);
-			success = NO;
+			errorString = [NSString stringWithFormat:@"Either the from or to path for copying a file with privileges was nil - From:%s To:%s", sourcePathStr, destPathStr];
+			syslog(LOG_NOTICE, "Either the from or to path for copying a file with privileges was nil - From:%s To:%s", sourcePathStr, destPathStr);
 		}
         
         xpc_object_t reply = xpc_dictionary_create_reply(event);
-        xpc_dictionary_set_bool(reply, "reply", (bool)success);
+        xpc_dictionary_set_bool(reply, "reply", (bool)(errorString == nil));
 		if (errorString) {
+			syslog(LOG_NOTICE, "Error in helper:%s", [errorString UTF8String]);
 			xpc_dictionary_set_string(reply, "error", [errorString UTF8String]);
 		}
         xpc_connection_send_message(remote, reply);
