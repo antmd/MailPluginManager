@@ -109,7 +109,8 @@ int main(int argc, const char *argv[]) {
 	
 	@autoreleasepool {
 	    
-		xpc_connection_t service = xpc_connection_create_mach_service(argv[0],
+		NSString	*filePath = [NSString stringWithUTF8String:argv[0]];
+		xpc_connection_t service = xpc_connection_create_mach_service([[filePath lastPathComponent] UTF8String],
 																	  dispatch_get_main_queue(),
 																	  XPC_CONNECTION_MACH_SERVICE_LISTENER);
 		
