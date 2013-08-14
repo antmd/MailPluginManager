@@ -2314,7 +2314,7 @@
 				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REPLACESUBID = REPLACESUBID;
+				INSTALLER_SUB_ID = REPLACESUBID;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2329,7 +2329,7 @@
 				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REPLACESUBID = REPLACESUBID;
+				INSTALLER_SUB_ID = REPLACESUBID;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
