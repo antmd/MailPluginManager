@@ -1317,7 +1317,6 @@
 				D25EC03916FE54E500DE7CA0 /* Copy Helper Apps */,
 				D29CD3A017B91F5400E918E9 /* Copy XPC Helpers */,
 				D2A6C0A116ED0220006AACAC /* Copy Install Files */,
-				D29CD3E617BBD58100E918E9 /* Rename helper */,
 			);
 			buildRules = (
 			);
@@ -1585,20 +1584,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../MailBuildScripts/SetBuildNumbers.pl\"\n";
 			showEnvVarsInLog = 0;
-		};
-		D29CD3E617BBD58100E918E9 /* Rename helper */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Rename helper";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/usr/bin/perl -w";
-			shellScript = "# Also rename the actual helper file inside the Installer\nmy $HELPER_BASE = \"com.littleknownsoftware.MPC.CopyMoveHelper\";\nmy $HELPER_FOLDER = \"$ENV{BUILT_PRODUCTS_DIR}/Plugin Installer.app/Contents/Library/LaunchServices\";\n`mv \"$HELPER_FOLDER/$HELPER_BASE\" \"$HELPER_FOLDER/$HELPER_BASE.REPLACESUBID\"`;\n";
 		};
 		D2AC76621738696A00168E4C /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
