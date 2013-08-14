@@ -4,7 +4,7 @@
 <dict>
 	<key>SMAuthorizedClients</key>
 	<array>
-		<string>identifier com.littleknownsoftware.MPI-${HELPER_CALLING_APP} and certificate leaf[subject.CN] = &quot;Developer ID Application: Little Known Software, Inc.&quot;</string>
+		<string>identifier com.littleknownsoftware.MPI-SigPro and certificate leaf[subject.CN] = &quot;Developer ID Application: Little Known Software, Inc.&quot;</string>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>

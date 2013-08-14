@@ -31,12 +31,48 @@ static void __XPC_Peer_Event_Handler(xpc_connection_t connection, xpc_object_t e
 	} else {
         xpc_connection_t remote = xpc_dictionary_get_remote_connection(event);
 		
-		const char	*sourcePath = xpc_dictionary_get_string(event, "sourcePath");
-		const char	*destPath = xpc_dictionary_get_string(event, "destPath");
-		bool		shouldCopy = xpc_dictionary_get_bool(event, "shouldCopy");
+		BOOL		success = YES;
+		
+		BOOL		shouldCopy = (BOOL)xpc_dictionary_get_bool(event, "shouldCopy");
+		const char	*sourcePathStr = xpc_dictionary_get_string(event, "sourcePath");
+		const char	*destPathStr = xpc_dictionary_get_string(event, "destPath");
+		NSString	*fromPath = nil;
+		NSString	*toPath = nil;
+		
+		if (sourcePathStr) {
+			fromPath = [NSString stringWithUTF8String:sourcePathStr];
+		}
+		if (destPathStr) {
+			toPath = [NSString stringWithUTF8String:destPathStr];
+		}
+		
+		NSString	*errorString = nil;
+		if (fromPath && toPath) {
+			
+			BOOL			didSucceed = NO;
+			NSError			*localError = nil;
+			NSFileManager	*manager = [NSFileManager defaultManager];
+			if (shouldCopy) {
+				didSucceed = [manager copyItemAtPath:fromPath toPath:toPath error:&localError];
+			}
+			else {
+				didSucceed = [manager moveItemAtPath:fromPath toPath:toPath error:&localError];
+			}
+			if (!didSucceed) {
+				success = NO;
+				errorString = [NSString stringWithFormat:@"Error %@ bundle (enable/disable):%@", (shouldCopy?@"copying":@"moving"), [localError localizedDescription]];
+			}
+		}
+		else {
+			NSLog(@"Either the from or to path for copying a file with privileges was nil - From:%@ To:%@", fromPath, toPath);
+			success = NO;
+		}
         
         xpc_object_t reply = xpc_dictionary_create_reply(event);
-        xpc_dictionary_set_string(reply, "reply", "Hi there, host application!");
+        xpc_dictionary_set_bool(reply, "reply", (bool)success);
+		if (errorString) {
+			xpc_dictionary_set_string(reply, "error", [errorString UTF8String]);
+		}
         xpc_connection_send_message(remote, reply);
         xpc_release(reply);
 	}
