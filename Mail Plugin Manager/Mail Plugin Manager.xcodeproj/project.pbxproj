@@ -125,11 +125,13 @@
 		D2866EF614FBC3D60006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D2866EF714FBC3DB0006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D28F77EA14209D1D0015E42F /* MPCActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MPCActionItem.m */; };
-		D29CD3A117B91FBD00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helpers */ = {isa = PBXBuildFile; fileRef = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */; };
+		D29CD3A117B91FBD00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */ = {isa = PBXBuildFile; fileRef = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */; };
 		D29CD3A417B9216200E918E9 /* SecurityFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A317B9216200E918E9 /* SecurityFoundation.framework */; };
 		D29CD3A717B921FC00E918E9 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */; };
 		D29CD3A817B9220400E918E9 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */; };
 		D29CD3A917B9220B00E918E9 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */; };
+		D29CD41217BD779900E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */ = {isa = PBXBuildFile; fileRef = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */; };
+		D29CD41617BD77CF00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */ = {isa = PBXBuildFile; fileRef = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */; };
 		D2A6C05F16EBACF9006AACAC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D2A6C06516EBACF9006AACAC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2A6C06316EBACF9006AACAC /* InfoPlist.strings */; };
 		D2A6C06716EBACF9006AACAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A6C06616EBACF9006AACAC /* main.m */; };
@@ -356,6 +358,20 @@
 			remoteGlobalIDString = D2397E4617B90EC80060BF02;
 			remoteInfo = com.littleknownsoftware.MPC.CopyMoveHelper;
 		};
+		D29CD41317BD77AC00E918E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2397E4617B90EC80060BF02;
+			remoteInfo = com.littleknownsoftware.MPC.CopyMoveHelper;
+		};
+		D2A14BE617BD770E00696337 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2397E4617B90EC80060BF02;
+			remoteInfo = com.littleknownsoftware.MPC.CopyMoveHelper;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -413,15 +429,37 @@
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D29CD3A017B91F5400E918E9 /* Copy XPC Helpers */ = {
+		D29CD3A017B91F5400E918E9 /* Copy XPC Helper */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Contents/Library/LaunchServices;
 			dstSubfolderSpec = 1;
 			files = (
-				D29CD3A117B91FBD00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helpers */,
+				D29CD3A117B91FBD00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */,
 			);
-			name = "Copy XPC Helpers";
+			name = "Copy XPC Helper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D29CD40917BD776100E918E9 /* Copy XPC Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				D29CD41217BD779900E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */,
+			);
+			name = "Copy XPC Helper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D29CD41517BD77B100E918E9 /* Copy XPC Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				D29CD41617BD77CF00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */,
+			);
+			name = "Copy XPC Helper";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D2A6C0A116ED0220006AACAC /* Copy Install Files */ = {
@@ -1197,11 +1235,13 @@
 				D216B379141E0071003788DC /* Copy Frameworks */,
 				D216B338141DFDE1003788DC /* Resources */,
 				D256CF1414F92D2B001BA72D /* Copy Helper Apps */,
+				D29CD41517BD77B100E918E9 /* Copy XPC Helper */,
 				D2344AAF1518E197005B3B0F /* Set Build Number */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D29CD41417BD77AC00E918E9 /* PBXTargetDependency */,
 				D256CF1214F92D12001BA72D /* PBXTargetDependency */,
 				D2558A4A15A6365A0046E683 /* PBXTargetDependency */,
 			);
@@ -1292,11 +1332,13 @@
 				D2779BBD14336287003F7BE0 /* Frameworks */,
 				D2779BEF14337344003F7BE0 /* Copy Frameworks */,
 				D2779BBE14336287003F7BE0 /* Resources */,
+				D29CD40917BD776100E918E9 /* Copy XPC Helper */,
 				D2AC76621738696A00168E4C /* Set Build Number */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D2A14BE717BD770E00696337 /* PBXTargetDependency */,
 				D221E9AE15004A5800568952 /* PBXTargetDependency */,
 				D2558A4815A636560046E683 /* PBXTargetDependency */,
 				D23EA656164C2F6600094DE3 /* PBXTargetDependency */,
@@ -1315,7 +1357,7 @@
 				D2A6C0A416ED0368006AACAC /* Copy Frameworks */,
 				D2A6C05C16EBACF8006AACAC /* Resources */,
 				D25EC03916FE54E500DE7CA0 /* Copy Helper Apps */,
-				D29CD3A017B91F5400E918E9 /* Copy XPC Helpers */,
+				D29CD3A017B91F5400E918E9 /* Copy XPC Helper */,
 				D2A6C0A116ED0220006AACAC /* Copy Install Files */,
 			);
 			buildRules = (
@@ -1815,6 +1857,16 @@
 			target = D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */;
 			targetProxy = D29CD39E17B91F2C00E918E9 /* PBXContainerItemProxy */;
 		};
+		D29CD41417BD77AC00E918E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */;
+			targetProxy = D29CD41317BD77AC00E918E9 /* PBXContainerItemProxy */;
+		};
+		D2A14BE717BD770E00696337 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */;
+			targetProxy = D2A14BE617BD770E00696337 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1991,9 +2043,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				BUILD_NUMBER = 25;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
-				COPY_MOVE_DIR = "";
+				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Mail Plugin Manager\"",
@@ -2023,9 +2076,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				BUILD_NUMBER = 25;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
-				COPY_MOVE_DIR = "";
+				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2157,7 +2211,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelperFixed-Info.plist";
-				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
@@ -2167,7 +2220,7 @@
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"CopyMoveHelper/CopyMoveHelperFixed-Launchd.plist",
+					"CopyMoveHelper/CopyMoveHelper-Launchd.plist",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2198,7 +2251,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelperFixed-Info.plist";
-				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
@@ -2208,7 +2260,7 @@
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"CopyMoveHelper/CopyMoveHelperFixed-Launchd.plist",
+					"CopyMoveHelper/CopyMoveHelper-Launchd.plist",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2311,7 +2363,6 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
 				INSTALLER_SUB_ID = REPLACESUBID;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2326,7 +2377,6 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				COPY_MOVE_DIR = "${SRCROOT}/CopyMoveHelper";
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
 				INSTALLER_SUB_ID = REPLACESUBID;
 				PRODUCT_NAME = "$(TARGET_NAME)";

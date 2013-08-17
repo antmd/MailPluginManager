@@ -57,6 +57,11 @@
 	<string>NSApplication</string>
 	<key>OSAScriptingDefinition</key>
 	<string>MPT Scripting.sdef</string>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>com.littleknownsoftware.MPC.CopyMoveHelper</key>
+		<string>identifier com.littleknownsoftware.MPC.CopyMoveHelper and certificate leaf[subject.CN] = "${CODE_SIGN_IDENTITY}"</string>
+	</dict>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

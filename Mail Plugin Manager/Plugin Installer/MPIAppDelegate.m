@@ -9,8 +9,6 @@
 #import "MPIAppDelegate.h"
 #import "MPCInstallerController.h"
 
-#import <ServiceManagement/ServiceManagement.h>
-
 typedef enum MPIAppDelegateErrorDomain {
 	MPIInstallerHasBadTypeCode = 401,
 	MPIUninstallerHasBadTypeCode = 402,
@@ -81,41 +79,7 @@ typedef enum MPIAppDelegateErrorDomain {
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
-	
-	NSDictionary	*helpers = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kSMInfoKeyPrivilegedExecutables];
-	NSString		*label = nil;
-	NSError			*error = nil;
-	for (NSString *key in [helpers allKeys]) {
-		if ([key hasPrefix:@"com.littleknownsoftware.MPC.CopyMoveHelper"]) {
-			label = [key copy];
-			break;
-		}
-	}
-	NSDictionary	*jobDict = (NSDictionary *)SMJobCopyDictionary(kSMDomainSystemLaunchd, (CFStringRef)label);
-	if (jobDict) {
-	
-		AuthorizationItem	authItem	= { kSMRightModifySystemDaemons, 0, NULL, 0 };
-		AuthorizationRights	authRights	= { 1, &authItem };
-		AuthorizationFlags	flags		=	kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
-		
-		AuthorizationRef authRef = NULL;
-		
-		/* Obtain the right to install privileged helper tools (kSMRightBlessPrivilegedHelper). */
-		OSStatus	status = AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &authRef);
-		if (status != errAuthorizationSuccess) {
-			NSLog(@"Failed to create AuthorizationRef. Error code: %d", (int)status);
-			
-		} else {
-			/* This does all the work of verifying the helper tool against the application
-			 * and vice-versa. Once verification has passed, the embedded launchd.plist
-			 * is extracted and placed in /Library/LaunchDaemons and then loaded. The
-			 * executable is placed in /Library/PrivilegedHelperTools.
-			 */
-			SMJobRemove(kSMDomainSystemLaunchd, (CFStringRef)label, authRef, false, (CFErrorRef *)&error);
-		}
-	}
-	[jobDict release];
-	
+	[super applicationWillTerminate:notification];
 }
 
 
