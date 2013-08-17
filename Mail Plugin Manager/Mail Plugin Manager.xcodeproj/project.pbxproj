@@ -386,15 +386,6 @@
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D2397E4517B90EC80060BF02 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		D256CF1414F92D2B001BA72D /* Copy Helper Apps */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1294,9 +1285,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D2397E5017B90EC90060BF02 /* Build configuration list for PBXNativeTarget "com.littleknownsoftware.MPC.CopyMoveHelper" */;
 			buildPhases = (
+				D283351217BF968A004D2FCA /* Update Info.plist */,
 				D2397E4317B90EC80060BF02 /* Sources */,
 				D2397E4417B90EC80060BF02 /* Frameworks */,
-				D2397E4517B90EC80060BF02 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1626,6 +1617,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../MailBuildScripts/SetBuildNumbers.pl\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D283351217BF968A004D2FCA /* Update Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Update Info.plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../MailBuildScripts/SetInstallHelperInfoPlist.pl\"";
 		};
 		D2AC76621738696A00168E4C /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
