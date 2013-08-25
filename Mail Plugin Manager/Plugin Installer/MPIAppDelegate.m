@@ -79,7 +79,7 @@ typedef enum MPIAppDelegateErrorDomain {
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
-	
+	[super applicationWillTerminate:notification];
 }
 
 

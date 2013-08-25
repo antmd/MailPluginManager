@@ -61,6 +61,8 @@
 		D2344B3515206ACF005B3B0F /* NSString+LKAnonymizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B33152069E0005B3B0F /* NSString+LKAnonymizer.m */; };
 		D2344B3815207F09005B3B0F /* MPTReporterAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344B3715207F08005B3B0F /* MPTReporterAsyncOperation.m */; };
 		D2344BA815212030005B3B0F /* MPTPluginCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = D2344BA71521202F005B3B0F /* MPTPluginCrashReporter.m */; };
+		D2397E4817B90EC90060BF02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2558A1F15A62D9D0046E683 /* Foundation.framework */; };
+		D2397E4B17B90EC90060BF02 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2397E4A17B90EC90060BF02 /* main.m */; };
 		D23D3151144216E3007D30F8 /* companies.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23D3150144216E3007D30F8 /* companies.plist */; };
 		D23D3152144216E3007D30F8 /* companies.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23D3150144216E3007D30F8 /* companies.plist */; };
 		D23D3155144234B4007D30F8 /* MPCCompanyList.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D3154144234B4007D30F8 /* MPCCompanyList.m */; };
@@ -123,6 +125,13 @@
 		D2866EF614FBC3D60006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D2866EF714FBC3DB0006A749 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2866EF214FBC3890006A749 /* Sparkle.framework */; };
 		D28F77EA14209D1D0015E42F /* MPCActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F77E914209D1D0015E42F /* MPCActionItem.m */; };
+		D29CD3A117B91FBD00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */ = {isa = PBXBuildFile; fileRef = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */; };
+		D29CD3A417B9216200E918E9 /* SecurityFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A317B9216200E918E9 /* SecurityFoundation.framework */; };
+		D29CD3A717B921FC00E918E9 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */; };
+		D29CD3A817B9220400E918E9 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */; };
+		D29CD3A917B9220B00E918E9 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */; };
+		D29CD41217BD779900E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */ = {isa = PBXBuildFile; fileRef = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */; };
+		D29CD41617BD77CF00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */ = {isa = PBXBuildFile; fileRef = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */; };
 		D2A6C05F16EBACF9006AACAC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D216B33E141DFDE1003788DC /* Cocoa.framework */; };
 		D2A6C06516EBACF9006AACAC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2A6C06316EBACF9006AACAC /* InfoPlist.strings */; };
 		D2A6C06716EBACF9006AACAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A6C06616EBACF9006AACAC /* main.m */; };
@@ -342,6 +351,27 @@
 			remoteGlobalIDString = D2558A2E15A62DFC0046E683;
 			remoteInfo = MailPluginRelaunch;
 		};
+		D29CD39E17B91F2C00E918E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2397E4617B90EC80060BF02;
+			remoteInfo = com.littleknownsoftware.MPC.CopyMoveHelper;
+		};
+		D29CD41317BD77AC00E918E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2397E4617B90EC80060BF02;
+			remoteInfo = com.littleknownsoftware.MPC.CopyMoveHelper;
+		};
+		D2A14BE617BD770E00696337 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D216B331141DFDE1003788DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2397E4617B90EC80060BF02;
+			remoteInfo = com.littleknownsoftware.MPC.CopyMoveHelper;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -388,6 +418,39 @@
 				D2EA4C8615BA0B8600A4E6A1 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D29CD3A017B91F5400E918E9 /* Copy XPC Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				D29CD3A117B91FBD00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */,
+			);
+			name = "Copy XPC Helper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D29CD40917BD776100E918E9 /* Copy XPC Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				D29CD41217BD779900E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */,
+			);
+			name = "Copy XPC Helper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D29CD41517BD77B100E918E9 /* Copy XPC Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				D29CD41617BD77CF00E918E9 /* com.littleknownsoftware.MPC.CopyMoveHelper in Copy XPC Helper */,
+			);
+			name = "Copy XPC Helper";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D2A6C0A116ED0220006AACAC /* Copy Install Files */ = {
@@ -508,6 +571,10 @@
 		D2344B3715207F08005B3B0F /* MPTReporterAsyncOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTReporterAsyncOperation.m; sourceTree = "<group>"; };
 		D2344BA61521202F005B3B0F /* MPTPluginCrashReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTPluginCrashReporter.h; sourceTree = "<group>"; };
 		D2344BA71521202F005B3B0F /* MPTPluginCrashReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTPluginCrashReporter.m; sourceTree = "<group>"; };
+		D2397E2517B8FE870060BF02 /* CopyMoveHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CopyMoveHelper-Info.plist"; sourceTree = "<group>"; };
+		D2397E2617B8FE9E0060BF02 /* CopyMoveHelper-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CopyMoveHelper-Launchd.plist"; sourceTree = "<group>"; };
+		D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.littleknownsoftware.MPC.CopyMoveHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2397E4A17B90EC90060BF02 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CopyMoveHelper/main.m; sourceTree = SOURCE_ROOT; };
 		D23D3150144216E3007D30F8 /* companies.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = companies.plist; path = ../Remote/companies.plist; sourceTree = "<group>"; };
 		D23D3153144234B4007D30F8 /* MPCCompanyList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCCompanyList.h; sourceTree = "<group>"; };
 		D23D3154144234B4007D30F8 /* MPCCompanyList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCCompanyList.m; sourceTree = "<group>"; };
@@ -567,6 +634,9 @@
 		D2866EF214FBC3890006A749 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Common/Sparkle.framework; sourceTree = "<group>"; };
 		D28F77E814209D1D0015E42F /* MPCActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCActionItem.h; sourceTree = "<group>"; };
 		D28F77E914209D1D0015E42F /* MPCActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCActionItem.m; sourceTree = "<group>"; };
+		D29CD37117B9180700E918E9 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		D29CD3A317B9216200E918E9 /* SecurityFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityFoundation.framework; path = System/Library/Frameworks/SecurityFoundation.framework; sourceTree = SDKROOT; };
+		D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		D2A6C05E16EBACF8006AACAC /* Plugin Installer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Plugin Installer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2A6C06216EBACF9006AACAC /* Plugin Installer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Plugin Installer-Info.plist"; sourceTree = "<group>"; };
 		D2A6C06416EBACF9006AACAC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -614,6 +684,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D29CD3A917B9220B00E918E9 /* ServiceManagement.framework in Frameworks */,
 				D2EB824E148F9EE700C8B0DB /* Security.framework in Frameworks */,
 				D24248A6148E53C800DE7E6A /* QuartzCore.framework in Frameworks */,
 				D216B33F141DFDE1003788DC /* Cocoa.framework in Frameworks */,
@@ -638,6 +709,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D2397E4417B90EC80060BF02 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D29CD3A417B9216200E918E9 /* SecurityFoundation.framework in Frameworks */,
+				D2397E4817B90EC90060BF02 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2558A2C15A62DFC0046E683 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -650,6 +730,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D29CD3A817B9220400E918E9 /* ServiceManagement.framework in Frameworks */,
 				D2EB824F148F9EFA00C8B0DB /* Security.framework in Frameworks */,
 				D2779BC214336287003F7BE0 /* Cocoa.framework in Frameworks */,
 				D2C473CA146B44DA00B2981D /* QuartzCore.framework in Frameworks */,
@@ -661,6 +742,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D29CD3A717B921FC00E918E9 /* ServiceManagement.framework in Frameworks */,
 				D2A6C09B16ECFF69006AACAC /* Security.framework in Frameworks */,
 				D2A6C09A16ECFF5E006AACAC /* QuartzCore.framework in Frameworks */,
 				D2A6C05F16EBACF9006AACAC /* Cocoa.framework in Frameworks */,
@@ -698,6 +780,7 @@
 				D2558A3215A62DFD0046E683 /* MailPluginRelaunch */,
 				D22CC056146BD87F0055CFBE /* ToolTestHarness */,
 				D216B361141DFDE2003788DC /* Mail Plugin ManagerTests */,
+				D2397E1D17B8FC8B0060BF02 /* CopyMoveHelper */,
 				D216B33D141DFDE1003788DC /* Frameworks */,
 				D216B33B141DFDE1003788DC /* Products */,
 				D20040AB178D7014007F8140 /* MailBuildScripts */,
@@ -715,6 +798,7 @@
 				D22CC053146BD87F0055CFBE /* ToolTestHarness.app */,
 				D2558A2F15A62DFC0046E683 /* MailPluginRelaunch.app */,
 				D2A6C05E16EBACF8006AACAC /* Plugin Installer.app */,
+				D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -722,12 +806,15 @@
 		D216B33D141DFDE1003788DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D29CD3A517B921AB00E918E9 /* ServiceManagement.framework */,
+				D29CD3A317B9216200E918E9 /* SecurityFoundation.framework */,
 				D2EB824D148F9EE700C8B0DB /* Security.framework */,
 				D2779BF214337389003F7BE0 /* QuartzCore.framework */,
 				D216B33E141DFDE1003788DC /* Cocoa.framework */,
 				D216B35C141DFDE2003788DC /* SenTestingKit.framework */,
 				D2866EF214FBC3890006A749 /* Sparkle.framework */,
 				D2558A1F15A62D9D0046E683 /* Foundation.framework */,
+				D29CD37117B9180700E918E9 /* XCTest.framework */,
 				D216B340141DFDE1003788DC /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -822,6 +909,16 @@
 				D22CC05F146BD8800055CFBE /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D2397E1D17B8FC8B0060BF02 /* CopyMoveHelper */ = {
+			isa = PBXGroup;
+			children = (
+				D2397E4A17B90EC90060BF02 /* main.m */,
+				D2397E2517B8FE870060BF02 /* CopyMoveHelper-Info.plist */,
+				D2397E2617B8FE9E0060BF02 /* CopyMoveHelper-Launchd.plist */,
+			);
+			path = CopyMoveHelper;
 			sourceTree = "<group>";
 		};
 		D2558A3215A62DFD0046E683 /* MailPluginRelaunch */ = {
@@ -1129,11 +1226,13 @@
 				D216B379141E0071003788DC /* Copy Frameworks */,
 				D216B338141DFDE1003788DC /* Resources */,
 				D256CF1414F92D2B001BA72D /* Copy Helper Apps */,
+				D29CD41517BD77B100E918E9 /* Copy XPC Helper */,
 				D2344AAF1518E197005B3B0F /* Set Build Number */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D29CD41417BD77AC00E918E9 /* PBXTargetDependency */,
 				D256CF1214F92D12001BA72D /* PBXTargetDependency */,
 				D2558A4A15A6365A0046E683 /* PBXTargetDependency */,
 			);
@@ -1182,6 +1281,23 @@
 			productReference = D22CC053146BD87F0055CFBE /* ToolTestHarness.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2397E5017B90EC90060BF02 /* Build configuration list for PBXNativeTarget "com.littleknownsoftware.MPC.CopyMoveHelper" */;
+			buildPhases = (
+				D283351217BF968A004D2FCA /* Update Info.plist */,
+				D2397E4317B90EC80060BF02 /* Sources */,
+				D2397E4417B90EC80060BF02 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = com.littleknownsoftware.MPC.CopyMoveHelper;
+			productName = CopyMoveHelper2;
+			productReference = D2397E4717B90EC90060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */;
+			productType = "com.apple.product-type.tool";
+		};
 		D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D2558A4415A62DFD0046E683 /* Build configuration list for PBXNativeTarget "MailPluginRelaunch" */;
@@ -1207,11 +1323,13 @@
 				D2779BBD14336287003F7BE0 /* Frameworks */,
 				D2779BEF14337344003F7BE0 /* Copy Frameworks */,
 				D2779BBE14336287003F7BE0 /* Resources */,
+				D29CD40917BD776100E918E9 /* Copy XPC Helper */,
 				D2AC76621738696A00168E4C /* Set Build Number */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D2A14BE717BD770E00696337 /* PBXTargetDependency */,
 				D221E9AE15004A5800568952 /* PBXTargetDependency */,
 				D2558A4815A636560046E683 /* PBXTargetDependency */,
 				D23EA656164C2F6600094DE3 /* PBXTargetDependency */,
@@ -1230,11 +1348,13 @@
 				D2A6C0A416ED0368006AACAC /* Copy Frameworks */,
 				D2A6C05C16EBACF8006AACAC /* Resources */,
 				D25EC03916FE54E500DE7CA0 /* Copy Helper Apps */,
+				D29CD3A017B91F5400E918E9 /* Copy XPC Helper */,
 				D2A6C0A116ED0220006AACAC /* Copy Install Files */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D29CD39F17B91F2C00E918E9 /* PBXTargetDependency */,
 				D25EC03816FE54DB00DE7CA0 /* PBXTargetDependency */,
 			);
 			name = "Plugin Installer";
@@ -1258,6 +1378,7 @@
 			knownRegions = (
 				en,
 				fr,
+				Base,
 			);
 			mainGroup = D216B32F141DFDE1003788DC;
 			productRefGroup = D216B33B141DFDE1003788DC /* Products */;
@@ -1282,6 +1403,7 @@
 				D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */,
 				D23EA624164AABBB00094DE3 /* UUID Information */,
 				D20040BB178D7E69007F8140 /* PackageMPM */,
+				D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */,
 			);
 		};
 /* End PBXProject section */
@@ -1496,6 +1618,20 @@
 			shellScript = "\"$SRCROOT/../MailBuildScripts/SetBuildNumbers.pl\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D283351217BF968A004D2FCA /* Update Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Update Info.plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../MailBuildScripts/SetInstallHelperInfoPlist.pl\"";
+		};
 		D2AC76621738696A00168E4C /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1566,6 +1702,14 @@
 			files = (
 				D22CC05D146BD87F0055CFBE /* main.m in Sources */,
 				D22CC064146BD8800055CFBE /* TTHAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2397E4317B90EC80060BF02 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2397E4B17B90EC90060BF02 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1712,6 +1856,21 @@
 			isa = PBXTargetDependency;
 			target = D2558A2E15A62DFC0046E683 /* MailPluginRelaunch */;
 			targetProxy = D25EC03716FE54DB00DE7CA0 /* PBXContainerItemProxy */;
+		};
+		D29CD39F17B91F2C00E918E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */;
+			targetProxy = D29CD39E17B91F2C00E918E9 /* PBXContainerItemProxy */;
+		};
+		D29CD41417BD77AC00E918E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */;
+			targetProxy = D29CD41317BD77AC00E918E9 /* PBXContainerItemProxy */;
+		};
+		D2A14BE717BD770E00696337 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2397E4617B90EC80060BF02 /* com.littleknownsoftware.MPC.CopyMoveHelper */;
+			targetProxy = D2A14BE617BD770E00696337 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1889,7 +2048,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUILD_NUMBER = 24;
+				ARCHS = "$(ARCHS_STANDARD)";
+				BUILD_NUMBER = 25;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1912,7 +2072,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.7.1;
+				VERSION_STRING = 1.7.2;
 			};
 			name = Debug;
 		};
@@ -1920,7 +2080,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUILD_NUMBER = 24;
+				ARCHS = "$(ARCHS_STANDARD)";
+				BUILD_NUMBER = 25;
 				CODE_SIGN_IDENTITY = "Developer ID Application: Little Known Software, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1940,7 +2101,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
-				VERSION_STRING = 1.7.1;
+				VERSION_STRING = 1.7.2;
 			};
 			name = Release;
 		};
@@ -2023,6 +2184,88 @@
 				INFOPLIST_FILE = "ToolTestHarness/ToolTestHarness-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		D2397E5117B90EC90060BF02 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelperFixed-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"CopyMoveHelper/CopyMoveHelperFixed-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"CopyMoveHelper/CopyMoveHelper-Launchd.plist",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D2397E5217B90EC90060BF02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "CopyMoveHelper/CopyMoveHelperFixed-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"CopyMoveHelper/CopyMoveHelperFixed-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"CopyMoveHelper/CopyMoveHelper-Launchd.plist",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -2124,6 +2367,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
+				INSTALLER_SUB_ID = REPLACESUBID;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2137,6 +2381,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Plugin Installer/Plugin Installer-Info.plist";
+				INSTALLER_SUB_ID = REPLACESUBID;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2186,6 +2431,15 @@
 			buildConfigurations = (
 				D22CC069146BD8800055CFBE /* Debug */,
 				D22CC06A146BD8800055CFBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2397E5017B90EC90060BF02 /* Build configuration list for PBXNativeTarget "com.littleknownsoftware.MPC.CopyMoveHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2397E5117B90EC90060BF02 /* Debug */,
+				D2397E5217B90EC90060BF02 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

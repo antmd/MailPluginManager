@@ -127,6 +127,7 @@ typedef enum {
 	if (self.installing || self.uninstalling) {
 		[self changePluginManagerDefaultValue:self.savedEnableAutoChecks forKey:SU_AUTOMATIC_CHECKS_KEY];
 	}
+	[super applicationWillTerminate:notification];
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename {

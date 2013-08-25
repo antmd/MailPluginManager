@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SMAuthorizedClients</key>
+	<array>
+		<string>identifier com.littleknownsoftware.MPI.SigPro and certificate leaf[subject.CN] = &quot;CODESIGNID&quot;</string>
+		<string>identifier com.littleknownsoftware.MPI.Tealeaves and certificate leaf[subject.CN] = &quot;CODESIGNID&quot;</string>
+		<string>identifier com.littleknownsoftware.MailPluginManager and certificate leaf[subject.CN] = &quot;CODESIGNID&quot;</string>
+		<string>identifier com.littleknownsoftware.MailPluginTool and certificate leaf[subject.CN] = &quot;CODESIGNID&quot;</string>
+		<string>identifier com.littleknownsoftware.MPI.REPLACESUBID and certificate leaf[subject.CN] = &quot;CODESIGNID&quot;</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>BUILD_NUMBER</string>
+	<key>CFBundleName</key>
+	<string>com.littleknownsoftware.MPC.CopyMoveHelper</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.littleknownsoftware.MPC.CopyMoveHelper</string>
+</dict>
+</plist>
