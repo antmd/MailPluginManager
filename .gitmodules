@@ -12,4 +12,4 @@
 	url = git@github.com:lksoft/LKConfigs.git
 [submodule "MailBuildScripts"]
 	path = MailBuildScripts
-	url = ssh://git@littleknownsoftware.com/~/MailBuildScripts.git
+url=git@github.com:lksoft/MailBuildScripts.git
