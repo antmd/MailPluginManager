@@ -34,7 +34,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>${BUILD_NUMBER}</string>
+	<string>[GIT-BUILD-COUNT]</string>
 	<key>LKSBuildBranch</key>
 	<string>[BRANCH]</string>
 	<key>LKSBuildSHA</key>

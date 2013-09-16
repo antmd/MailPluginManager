@@ -394,7 +394,7 @@ typedef enum {
 		NSString	*messageUUID = [MPCUUIDList currentMessageUUID];
 		
 		//	Test to ensure that the plugin list contains both the mail and message UUIDs
-		if (![supportedUUIDs containsObject:mailUUID] || ![supportedUUIDs containsObject:messageUUID]) {
+		if (![supportedUUIDs containsObject:mailUUID] || ((messageUUID != nil) && ![supportedUUIDs containsObject:messageUUID])) {
 			_incompatibleWithCurrentMail = YES;
 		}
 		
